@@ -1,0 +1,62 @@
+---
+// HalftoneShape.astro
+// Renderiza una figura halftone en un <canvas>.
+// Uso:
+//   <HalftoneShape shape="diamond" width={160} height={160} />
+//   <HalftoneShape shape="blob"    width={120} height={120} color="#ffffff" />
+
+import type { ShapeType, HalftoneOptions } from '../scripts/halftone'
+
+interface Props {
+  shape:      ShapeType
+  width:      number
+  height:     number
+  lineGap?:   number   // default: 4.5
+  lineWidth?: number   // default: 0.38
+  light?:     number   // default: 1.6
+  angle?:     number   // default: 42
+  color?:     string   // default: '#3a3af4'
+  bg?:        string   // default: transparent
+  class?:     string
+  id?:        string
+}
+
+const {
+  shape,
+  width,
+  height,
+  lineGap   = 4.5,
+  lineWidth = 0.38,
+  light     = 1.6,
+  angle     = 42,
+  color     = '#3a3af4',
+  bg,
+  class: className = '',
+  id,
+} = Astro.props
+
+// Pasamos los opts como data-attributes para leerlos en el script
+const opts: HalftoneOptions = { shape, lineGap, lineWidth, light, angle, color, bg }
+---
+
+<canvas
+  id={id}
+  class={`halftone-shape ${className}`}
+  data-opts={JSON.stringify(opts)}
+  data-width={width}
+  data-height={height}
+  style={`width:${width}px;height:${height}px;display:block`}
+></canvas>
+
+<script>
+  import { drawHalftone } from '../scripts/halftone'
+  import type { HalftoneOptions } from '../scripts/halftone'
+
+  // Inicializa todos los canvas en la página
+  document.querySelectorAll<HTMLCanvasElement>('.halftone-shape').forEach(canvas => {
+    const opts   = JSON.parse(canvas.dataset.opts!) as HalftoneOptions
+    const width  = parseInt(canvas.dataset.width!)
+    const height = parseInt(canvas.dataset.height!)
+    drawHalftone(canvas, width, height, opts)
+  })
+</script>
