@@ -1,49 +1,65 @@
-# Interforma Hero — Halftone + Parallax para Astro
+# ✦ Interforma Hero — Halftone + Parallax
 
-Efecto de figuras con líneas halftone 3D y parallax multi-capa,
-inspirado en twenty.com. Sin dependencias externas — solo Canvas API nativa.
+> Hero section con figuras 3D en líneas halftone y parallax multi-capa para **Astro**.  
+> Técnica inspirada en [twenty.com](https://twenty.com) — sin dependencias externas.
 
 ---
 
-## Instalación
+## ¿Qué es esto?
 
-Copia estas carpetas a tu proyecto Astro:
+Un componente listo para usar en cualquier proyecto **Astro** que genera:
+
+- **Figuras geométricas** (diamante, blob, candado, esfera, hexágono, cruz) renderizadas con líneas horizontales que simulan profundidad 3D
+- **Parallax de 3 capas** ligado al scroll: cada figura se mueve a distinta velocidad creando ilusión de profundidad
+- **Fondo animado** con patrón de líneas sutiles
+- **0 dependencias npm** — solo Canvas 2D API nativa del browser
+
+---
+
+## Archivos incluidos
 
 ```
 src/
-  components/
-    HeroSection.astro     ← hero completo listo para usar
-    HalftoneShape.astro   ← canvas individual reutilizable
-  scripts/
-    halftone.ts           ← engine de dibujo
-    parallax.ts           ← listener de scroll
+├── scripts/
+│   ├── halftone.ts           ← engine de dibujo (Canvas 2D + efecto 3D)
+│   └── parallax.ts           ← listener de scroll multi-capa
+└── components/
+    ├── HeroSection.astro     ← hero completo listo para usar
+    └── HalftoneShape.astro   ← canvas individual reutilizable en cualquier sección
 ```
-
-No requiere ningún `npm install` adicional.
 
 ---
 
-## Uso mínimo
+## Uso rápido
+
+**1. Copia los 4 archivos a tu proyecto Astro**
+
+**2. Importa el hero en tu página:**
 
 ```astro
 ---
-// src/pages/index.astro
 import HeroSection from '../components/HeroSection.astro'
 ---
 <HeroSection />
 ```
 
+**3. Listo.** No necesitas instalar nada más.
+
 ---
 
-## Usar HalftoneShape en cualquier lugar
+## HalftoneShape — uso individual
+
+Puedes usar las figuras sueltas en cualquier sección, no solo en el hero:
 
 ```astro
+---
 import HalftoneShape from '../components/HalftoneShape.astro'
+---
 
-<!-- diamante azul 160×160 -->
+<!-- Diamante azul 160×160px -->
 <HalftoneShape shape="diamond" width={160} height={160} />
 
-<!-- blob blanco sobre fondo oscuro -->
+<!-- Blob blanco sobre fondo oscuro -->
 <HalftoneShape
   shape="blob"
   width={200} height={200}
@@ -52,63 +68,59 @@ import HalftoneShape from '../components/HalftoneShape.astro'
 />
 ```
 
-### Props disponibles
+### Props
 
-| Prop        | Tipo   | Default      | Descripción                        |
-|-------------|--------|--------------|------------------------------------|
-| `shape`     | string | —            | `diamond` `blob` `sphere` `lock` `hexagon` `cross` |
-| `width`     | number | —            | Ancho del canvas en px             |
-| `height`    | number | —            | Alto del canvas en px              |
-| `lineGap`   | number | `4.5`        | Espacio entre líneas               |
-| `lineWidth` | number | `0.38`       | Grosor relativo (0.1 – 0.9)        |
-| `light`     | number | `1.6`        | Intensidad de luz 3D               |
-| `angle`     | number | `42`         | Ángulo de la luz en grados         |
-| `color`     | string | `'#3a3af4'`  | Color de las líneas                |
-| `bg`        | string | `undefined`  | Color de fondo (vacío=transparente)|
+| Prop        | Tipo   | Default     | Descripción                              |
+|-------------|--------|-------------|------------------------------------------|
+| `shape`     | string | —           | `diamond` `blob` `sphere` `lock` `hexagon` `cross` |
+| `width`     | number | —           | Ancho en px                              |
+| `height`    | number | —           | Alto en px                               |
+| `lineGap`   | number | `4.5`       | Espaciado entre líneas                   |
+| `lineWidth` | number | `0.38`      | Grosor de línea (0.1 – 0.9)             |
+| `light`     | number | `1.6`       | Intensidad de luz 3D                     |
+| `angle`     | number | `42`        | Ángulo de la luz en grados               |
+| `color`     | string | `#3a3af4`   | Color de las líneas                      |
+| `bg`        | string | transparente| Color de fondo                           |
 
 ---
 
-## Ajustar el parallax
+## Personalizar el parallax
 
-En `HeroSection.astro`, cada capa tiene `data-fy` y `data-fx`:
+En `HeroSection.astro` cada capa tiene `data-fy` — cuanto más negativo, más rápido sube al hacer scroll (parece más cerca):
 
 ```html
-<!-- más negativo = sube más rápido = parece más cerca -->
-<div class="parallax-layer" data-fy="-0.06">  <!-- capa trasera  -->
-<div class="parallax-layer" data-fy="-0.18">  <!-- capa media    -->
-<div class="parallax-layer" data-fy="-0.34">  <!-- capa frontal  -->
+<div class="parallax-layer" data-fy="0.22">   <!-- fondo: baja lento → sensación de lejanía -->
+<div class="parallax-layer" data-fy="-0.06">  <!-- capa trasera: casi sin mover             -->
+<div class="parallax-layer" data-fy="-0.18">  <!-- capa media                               -->
+<div class="parallax-layer" data-fy="-0.34">  <!-- capa frontal: más dinámica               -->
 ```
-
-El fondo de líneas usa `data-fy="0.22"` (positivo = baja más lento que el scroll).
 
 ---
 
 ## Cambiar colores
 
-Edita las variables CSS en `HeroSection.astro`:
+Edita las variables CSS al inicio de `HeroSection.astro`:
 
 ```css
 .hero {
-  --hero-bg:     #0d0d0d;   /* fondo del hero        */
-  --hero-accent: #3a3af4;   /* color figuras y CTAs  */
-  --hero-text:   #ffffff;   /* título                */
-  --hero-muted:  #666666;   /* subtítulo y párrafo   */
+  --hero-bg:     #0d0d0d;  /* fondo */
+  --hero-accent: #3a3af4;  /* color de figuras y botón principal */
+  --hero-text:   #ffffff;  /* título */
+  --hero-muted:  #666666;  /* subtítulo y párrafo */
 }
 ```
 
 ---
 
-## Agregar una forma personalizada
+## Agregar una forma nueva
 
-En `halftone.ts`, agrega tu forma al tipo y a la función `buildShapeBuffer`:
+En `halftone.ts`, añade el nombre al tipo y dibuja con Canvas 2D:
 
 ```ts
 export type ShapeType = 'diamond' | 'blob' | ... | 'miforma'
 
-// dentro de buildShapeBuffer:
 else if (shape === 'miforma') {
   c.fillStyle = '#fff'
-  // dibuja con Canvas 2D API
   c.beginPath()
   c.arc(W * .5, H * .5, W * .4, 0, Math.PI * 2)
   c.fill()
@@ -119,8 +131,22 @@ else if (shape === 'miforma') {
 
 ## Compatibilidad
 
-- Astro 4+ y 5+
-- Funciona con `output: 'static'` y `output: 'server'`
-- Compatible con View Transitions (`astro:before-swap` hace cleanup)
-- Respeta `prefers-reduced-motion` (parallax desactivado vía CSS)
-- Sin dependencias npm adicionales
+| | |
+|---|---|
+| Astro | 4+ y 5+ |
+| Output | `static` y `server` |
+| View Transitions | ✅ cleanup automático |
+| `prefers-reduced-motion` | ✅ parallax desactivado vía CSS |
+| Dependencias externas | ninguna |
+
+---
+
+## Probar online
+
+Abre el proyecto directamente en el browser sin instalar nada:
+
+**[→ Abrir en StackBlitz](https://stackblitz.com/github/interforma/interforma-hero)**
+
+---
+
+Hecho por [Interforma Digital](https://interforma.digital) · Viña del Mar, Chile
