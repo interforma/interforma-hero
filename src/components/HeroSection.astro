@@ -1,0 +1,308 @@
+---
+// HeroSection.astro
+// Hero con fondo halftone + figuras flotantes con parallax de 3 capas.
+// Coloca este componente directamente en tu página index.astro:
+//   import HeroSection from '../components/HeroSection.astro'
+//   <HeroSection />
+
+import HalftoneShape from './HalftoneShape.astro'
+---
+
+<section class="hero" id="hero">
+
+  <!-- ── Capa 0: patrón de líneas de fondo ── -->
+  <!-- Se mueve MÁS LENTO que el contenido → sensación de profundidad lejana -->
+  <div class="parallax-layer" data-fy="0.22" data-fx="0" aria-hidden="true">
+    <canvas id="hero-bg-canvas" class="hero-bg-lines"></canvas>
+  </div>
+
+  <!-- ── Capa 1: figuras traseras, velocidad lenta ── -->
+  <!-- Parecen estar al fondo de la escena -->
+  <div class="parallax-layer" data-fy="-0.06" data-fx="0.015" aria-hidden="true">
+    <HalftoneShape
+      shape="hexagon"
+      width={150} height={150}
+      lineGap={5} lineWidth={0.36} light={1.3} angle={38}
+      class="fig fig--back-left"
+    />
+    <HalftoneShape
+      shape="blob"
+      width={95} height={95}
+      lineGap={3.5} lineWidth={0.32} light={1.2} angle={58}
+      class="fig fig--back-right"
+    />
+  </div>
+
+  <!-- ── Capa 2: figuras medias ── -->
+  <div class="parallax-layer" data-fy="-0.18" data-fx="-0.025" aria-hidden="true">
+    <HalftoneShape
+      shape="diamond"
+      width={125} height={125}
+      lineGap={4} lineWidth={0.37} light={1.6} angle={44}
+      class="fig fig--mid-top"
+    />
+    <HalftoneShape
+      shape="sphere"
+      width={88} height={88}
+      lineGap={3} lineWidth={0.33} light={1.4} angle={62}
+      class="fig fig--mid-bottom"
+    />
+  </div>
+
+  <!-- ── Capa 3: figura principal, más cercana ── -->
+  <!-- Se mueve más rápido → parece estar al frente -->
+  <div class="parallax-layer" data-fy="-0.34" data-fx="0.04" aria-hidden="true">
+    <HalftoneShape
+      shape="lock"
+      width={170} height={170}
+      lineGap={4.5} lineWidth={0.40} light={1.9} angle={35}
+      class="fig fig--front"
+    />
+  </div>
+
+  <!-- ── Contenido del hero ── -->
+  <div class="hero-content">
+    <p class="hero-eyebrow">Agencia digital · Viña del Mar</p>
+
+    <h1 class="hero-h1">
+      Diseño que<br>
+      <strong>convierte.</strong><br>
+      <em>Código que escala.</em>
+    </h1>
+
+    <p class="hero-p">
+      Soluciones digitales para salud y logística.
+      De la estrategia al deploy, con tu stack favorito.
+    </p>
+
+    <div class="hero-ctas">
+      <a href="/proyectos" class="btn-primary">Ver proyectos</a>
+      <a href="/contacto"  class="btn-secondary">Contactar</a>
+    </div>
+  </div>
+
+  <!-- ── Indicador de scroll ── -->
+  <div class="scroll-indicator" id="scroll-indicator" aria-hidden="true">
+    <span class="scroll-line"></span>
+    <span class="scroll-label">scroll</span>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════
+     ESTILOS
+     ══════════════════════════════════════════ -->
+<style>
+  /* Variables locales del hero — cambia aquí tu paleta */
+  .hero {
+    --hero-bg:       #0d0d0d;
+    --hero-accent:   #3a3af4;
+    --hero-text:     #ffffff;
+    --hero-muted:    #666666;
+    --hero-border:   #222222;
+    --hero-height:   100svh;   /* svh: respeta la barra de móvil */
+  }
+
+  /* ── Contenedor ── */
+  .hero {
+    position:   relative;
+    height:     var(--hero-height);
+    min-height: 560px;
+    overflow:   hidden;
+    display:    flex;
+    align-items: center;
+    padding:    0 clamp(24px, 6vw, 96px);
+    background: var(--hero-bg);
+  }
+
+  /* ── Capas de parallax ── */
+  .parallax-layer {
+    position:       absolute;
+    inset:          0;
+    pointer-events: none;
+    will-change:    transform;
+  }
+
+  /* ── Fondo de líneas ── */
+  .hero-bg-lines {
+    position: absolute;
+    inset:    0;
+    width:    100%;
+    height:   100%;
+    opacity:  0.22;
+  }
+
+  /* ── Posición de cada figura ── */
+  .fig { position: absolute; }
+
+  .fig--back-left   { right: 40%; top: -4%;  }
+  .fig--back-right  { right: 4%;  bottom: 6%; }
+  .fig--mid-top     { right: 20%; top: 10%;  }
+  .fig--mid-bottom  { right: 46%; bottom: 10%; }
+  .fig--front       { right: 6%;  top: 6%;   }
+
+  /* ── Texto ── */
+  .hero-content {
+    position:  relative;
+    z-index:   10;
+    max-width: 480px;
+  }
+
+  .hero-eyebrow {
+    font-size:      11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color:          var(--hero-accent);
+    margin-bottom:  18px;
+    display:        flex;
+    align-items:    center;
+    gap:            10px;
+  }
+
+  /* línea decorativa antes del eyebrow */
+  .hero-eyebrow::before {
+    content:    '';
+    display:    block;
+    width:      28px;
+    height:     1px;
+    background: var(--hero-accent);
+    flex-shrink: 0;
+  }
+
+  .hero-h1 {
+    font-size:     clamp(36px, 5vw, 58px);
+    font-weight:   300;
+    color:         var(--hero-text);
+    line-height:   1.1;
+    margin-bottom: 22px;
+    letter-spacing: -.02em;
+  }
+
+  .hero-h1 strong { font-weight: 600; }
+  .hero-h1 em     { font-style: italic; color: var(--hero-muted); font-weight: 300; }
+
+  .hero-p {
+    font-size:     14px;
+    color:         var(--hero-muted);
+    line-height:   1.7;
+    margin-bottom: 36px;
+    max-width:     360px;
+  }
+
+  /* ── CTAs ── */
+  .hero-ctas {
+    display:     flex;
+    gap:         12px;
+    align-items: center;
+    flex-wrap:   wrap;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding:       11px 26px;
+    border-radius: 6px;
+    font-size:     13px;
+    font-weight:   500;
+    text-decoration: none;
+    transition:    opacity .15s, transform .15s;
+  }
+
+  .btn-primary:hover,
+  .btn-secondary:hover { opacity: .8; transform: translateY(-1px); }
+
+  .btn-primary {
+    background: var(--hero-accent);
+    color:      #fff;
+    border:     none;
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color:      var(--hero-muted);
+    border:     1px solid var(--hero-border);
+  }
+
+  /* ── Indicador de scroll ── */
+  .scroll-indicator {
+    position:        absolute;
+    bottom:          28px;
+    left:            50%;
+    transform:       translateX(-50%);
+    display:         flex;
+    flex-direction:  column;
+    align-items:     center;
+    gap:             8px;
+    color:           #333;
+    font-size:       10px;
+    letter-spacing:  .1em;
+    text-transform:  uppercase;
+    transition:      opacity .4s;
+    pointer-events:  none;
+  }
+
+  .scroll-line {
+    display:    block;
+    width:      1px;
+    height:     36px;
+    background: linear-gradient(var(--hero-accent), transparent);
+    animation:  scrollpulse 1.8s ease-in-out infinite;
+  }
+
+  @keyframes scrollpulse {
+    0%, 100% { transform: scaleY(0); opacity: 0; transform-origin: top; }
+    50%       { transform: scaleY(1); opacity: 1; transform-origin: top; }
+  }
+
+  /* ── Accesibilidad: respeta prefers-reduced-motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    .parallax-layer { will-change: auto; }
+    .scroll-line    { animation: none; opacity: .4; }
+  }
+
+  /* ── Responsive: oculta algunas figuras en móvil ── */
+  @media (max-width: 640px) {
+    .fig--back-left,
+    .fig--mid-bottom { display: none; }
+
+    .fig--front { right: -10px; top: 10%; }
+    .fig--mid-top { right: 10%; top: 15%; }
+  }
+</style>
+
+<!-- ══════════════════════════════════════════
+     SCRIPT — se ejecuta en el cliente
+     ══════════════════════════════════════════ -->
+<script>
+  import { drawHeroBackground } from '../scripts/halftone'
+  import { initParallax }       from '../scripts/parallax'
+
+  // ─── Fondo de líneas ───
+  const bgCanvas = document.getElementById('hero-bg-canvas') as HTMLCanvasElement | null
+  if (bgCanvas) drawHeroBackground(bgCanvas)
+
+  // ─── Parallax ───
+  // Leemos los data-attributes de cada capa para no hardcodear velocidades en TS
+  const layers = Array.from(
+    document.querySelectorAll<HTMLElement>('#hero .parallax-layer')
+  ).map(el => ({
+    selector: `#hero .parallax-layer:nth-child(${
+      Array.from(el.parentElement!.children).indexOf(el) + 1
+    })`,
+    fy: parseFloat(el.dataset.fy ?? '0'),
+    fx: parseFloat(el.dataset.fx ?? '0'),
+  }))
+
+  // initParallax devuelve una función de cleanup (útil si usas View Transitions)
+  const cleanup = initParallax(layers)
+
+  // ─── Ocultar indicador de scroll al bajar ───
+  const indicator = document.getElementById('scroll-indicator')
+  if (indicator) {
+    window.addEventListener('scroll', () => {
+      indicator.style.opacity = String(Math.max(0, 1 - window.scrollY / 80))
+    }, { passive: true })
+  }
+
+  // ─── Cleanup para View Transitions de Astro ───
+  document.addEventListener('astro:before-swap', cleanup)
+</script>
