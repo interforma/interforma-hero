@@ -1,0 +1,141 @@
+---
+import Icon from '@components/base/Icon.astro';
+import { site } from '@config/site';
+
+const number = site.whatsappNumber;
+const message = site.whatsappMessage;
+const href = number
+  ? `https://wa.me/${number}${message ? `?text=${encodeURIComponent(message)}` : ''}`
+  : '#contacto';
+const isExternal = !!number;
+---
+
+<a
+  href={href}
+  target={isExternal ? '_blank' : undefined}
+  rel={isExternal ? 'noopener noreferrer' : undefined}
+  class="wa-float"
+  aria-label="Hablar por WhatsApp"
+  data-track-event="click_whatsapp_float"
+  title="Hablar por WhatsApp"
+>
+  <Icon name="whatsapp" size={28} aria-hidden="true" />
+  <span class="wa-float__tooltip" aria-hidden="true">Hablar por WhatsApp</span>
+</a>
+
+<style>
+  .wa-float {
+    position: fixed;
+    bottom: var(--spacing-6);
+    right: var(--spacing-6);
+    z-index: 90;
+    width: 56px;
+    height: 56px;
+    background: #25D366;
+    color: var(--color-neutral-0);
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: var(--shadow-lg), 0 0 0 0 rgba(37, 211, 102, 0);
+    transition:
+      transform var(--duration-fast) var(--easing-default),
+      box-shadow var(--duration-fast) var(--easing-default);
+  }
+
+  .wa-float::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-full);
+    animation: wa-pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    background: rgba(37, 211, 102, 0.35);
+    z-index: -1;
+  }
+
+  .wa-float:hover {
+    transform: scale(1.08);
+    box-shadow: var(--shadow-lg), 0 8px 32px rgba(37, 211, 102, 0.4);
+  }
+
+  .wa-float:focus-visible {
+    outline: 3px solid #25D366;
+    outline-offset: 3px;
+    transform: scale(1.08);
+  }
+
+  .wa-float:active {
+    transform: scale(0.96);
+  }
+
+  /* ── Tooltip ──────────────────────────────────────────────── */
+  .wa-float__tooltip {
+    position: absolute;
+    right: calc(100% + var(--spacing-3));
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--color-neutral-900);
+    color: var(--color-neutral-0);
+    font-size: var(--font-size-body-sm);
+    font-weight: var(--font-weight-medium);
+    white-space: nowrap;
+    padding: var(--spacing-2) var(--spacing-4);
+    border-radius: var(--radius-md);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--duration-fast) var(--easing-default);
+  }
+
+  .wa-float__tooltip::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    transform: translateY(-50%);
+    border: 6px solid transparent;
+    border-left-color: var(--color-neutral-900);
+  }
+
+  .wa-float:hover .wa-float__tooltip,
+  .wa-float:focus-visible .wa-float__tooltip {
+    opacity: 1;
+  }
+
+  /* ── Pulse animation ──────────────────────────────────────── */
+  @keyframes wa-pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.6;
+    }
+    70% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+  }
+
+  /* ── prefers-reduced-motion ───────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    .wa-float::before {
+      animation: none;
+    }
+
+    .wa-float:hover {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  import { track } from '@lib/analytics/track';
+
+  document
+    .querySelector('[data-track-event="click_whatsapp_float"]')
+    ?.addEventListener('click', () => {
+      track({ name: 'click_whatsapp', properties: { source: 'float_button' } });
+    });
+</script>

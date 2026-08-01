@@ -1,0 +1,294 @@
+---
+import { methodSteps, methodCopy } from '@config/content';
+---
+
+<section id="metodo" class="method" aria-labelledby="method-headline">
+  <div class="container">
+
+    <div class="method__header">
+      <p class="eyebrow method__eyebrow">{methodCopy.eyebrow}</p>
+      <h2 id="method-headline" class="method__headline">{methodCopy.headline}</h2>
+      <p class="method__subheadline">{methodCopy.subheadline}</p>
+    </div>
+
+    <div class="method__steps-outer">
+      <!-- Progress track (left of steps) -->
+      <div class="method__progress-track" aria-hidden="true">
+        <div class="method__progress-fill"></div>
+      </div>
+      <ol class="method__steps" role="list">
+        {methodSteps.map((step) => (
+          <li class="method-step">
+            <div class="method-step__num-col" aria-hidden="true">
+              <span class="method-step__indicator" aria-hidden="true"></span>
+              <span class="method-step__num">{step.number}</span>
+            </div>
+            <div class="method-step__content">
+              <h3 class="method-step__name">{step.name}</h3>
+              <p class="method-step__desc">{step.description}</p>
+              <p class="method-step__output">→ {step.output}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  /* ── Section ──────────────────────────────────────────────── */
+  .method {
+    background: var(--color-bg-dark-refined);
+    color: var(--color-text-on-dark-primary);
+    padding-block: var(--spacing-20);
+    scroll-margin-top: var(--header-height);
+  }
+
+  .method__header {
+    max-width: 640px;
+    margin-bottom: var(--spacing-12);
+  }
+
+  .method__eyebrow {
+    color: var(--color-primary-300);
+    margin-bottom: var(--spacing-4);
+  }
+
+  .method__headline {
+    font-size: var(--font-size-display-md);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-display-md);
+    letter-spacing: -0.02em;
+    color: var(--color-text-on-dark-primary);
+    margin-bottom: var(--spacing-4);
+  }
+
+  .method__subheadline {
+    font-size: var(--font-size-body-lg);
+    line-height: var(--line-height-body-lg);
+    color: rgba(255, 255, 255, 0.65);
+    max-width: 52ch;
+  }
+
+  /* ── Steps outer layout with progress track ───────────────── */
+  .method__steps-outer {
+    position: relative;
+    display: grid;
+    grid-template-columns: 3px 1fr;
+    gap: var(--spacing-6);
+  }
+
+  .method__progress-track {
+    position: relative;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    align-self: stretch;
+    min-height: 100%;
+  }
+
+  .method__progress-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: var(--color-primary-500);
+    transform: scaleY(0);
+    transform-origin: top;
+    border-radius: var(--radius-full);
+    will-change: transform;
+  }
+
+  /* ── Steps list ───────────────────────────────────────────── */
+  .method__steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.13);
+  }
+
+  /* ── Single step ──────────────────────────────────────────── */
+  .method-step {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: var(--spacing-6);
+    padding-block: var(--spacing-8);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+    align-items: start;
+    /* Inactive: legible pero sin énfasis completo */
+    opacity: 0.6;
+    transition: opacity var(--duration-motion-normal) var(--ease-standard);
+  }
+
+  /* Active: full emphasis */
+  .method-step.is-active {
+    opacity: 1;
+  }
+
+  .method-step__num-col {
+    padding-top: var(--spacing-1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-2);
+  }
+
+  /* Status indicator dot */
+  .method-step__indicator {
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    flex-shrink: 0;
+    transition:
+      background  var(--duration-motion-fast) var(--ease-standard),
+      border-color var(--duration-motion-fast) var(--ease-standard),
+      box-shadow  var(--duration-motion-fast) var(--ease-standard);
+  }
+
+  .method-step.is-active .method-step__indicator {
+    background: var(--color-primary-500);
+    border-color: var(--color-primary-500);
+    box-shadow: 0 0 6px rgba(38, 85, 232, 0.5);
+  }
+
+  .method-step__num {
+    font-size: var(--font-size-display-md);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-dark-accent);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    opacity: 0.7;
+  }
+
+  .method-step.is-active .method-step__num {
+    opacity: 1;
+  }
+
+  .method-step__name {
+    font-size: var(--font-size-heading-xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-heading-xl);
+    color: var(--color-neutral-0);
+    margin-bottom: var(--spacing-3);
+  }
+
+  .method-step__desc {
+    font-size: var(--font-size-body-lg);
+    line-height: var(--line-height-body-lg);
+    color: rgba(255, 255, 255, 0.72);
+    margin-bottom: var(--spacing-4);
+    max-width: 52ch;
+  }
+
+  .method-step__output {
+    font-size: var(--font-size-body-md);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-dark-accent);
+    letter-spacing: 0.01em;
+  }
+
+  /* ── Responsive ───────────────────────────────────────────── */
+  @media (max-width: 767px) {
+    .method__steps-outer {
+      grid-template-columns: 1fr;
+    }
+    .method__progress-track {
+      display: none;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .method__headline {
+      font-size: var(--font-size-display-lg);
+      line-height: var(--line-height-display-lg);
+    }
+
+    .method-step {
+      grid-template-columns: 72px 1fr;
+      gap: var(--spacing-8);
+      padding-block: var(--spacing-10);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .method {
+      padding-block: var(--spacing-24);
+    }
+
+    .method-step {
+      grid-template-columns: 96px 1fr;
+      gap: var(--spacing-10);
+      padding-block: var(--spacing-12);
+    }
+
+    .method-step__num {
+      font-size: var(--font-size-display-lg);
+    }
+
+    .method-step__name {
+      font-size: var(--font-size-display-md);
+      line-height: var(--line-height-display-md);
+    }
+
+    .method-step__desc {
+      font-size: var(--font-size-body-xl);
+      line-height: var(--line-height-body-xl);
+    }
+  }
+
+  /* prefers-reduced-motion: all steps fully visible immediately */
+  @media (prefers-reduced-motion: reduce) {
+    .method-step {
+      opacity: 1;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { animate, inView, scroll } from 'motion';
+  import { prefersReducedMotion } from '@lib/motion';
+
+  const methodSection = document.querySelector<HTMLElement>('.method');
+  const steps = document.querySelectorAll<HTMLElement>('.method-step');
+  const progressFill = document.querySelector<HTMLElement>('.method__progress-fill');
+
+  // ── Scroll-linked progress fill ────────────────────────────────
+  if (methodSection && progressFill && !prefersReducedMotion()) {
+    scroll(
+      animate(progressFill, { scaleY: [0, 1] }, { duration: 1 }),
+      { target: methodSection, offset: ['start 75%', 'end 25%'] }
+    );
+  }
+
+  // ── Per-step activation via inView ────────────────────────────
+  steps.forEach((step) => {
+    if (prefersReducedMotion()) {
+      step.classList.add('is-active');
+      return;
+    }
+
+    inView(step, (element) => {
+      element.classList.add('is-active');
+
+      return () => {
+        // When step leaves viewport (scroll back up), deactivate
+        element.classList.remove('is-active');
+      };
+    }, { margin: '-30% 0px -30% 0px', amount: 0.3 });
+  });
+
+  // ── prefers-reduced-motion: show all immediately ───────────────
+  if (prefersReducedMotion()) {
+    steps.forEach((step) => step.classList.add('is-active'));
+    if (progressFill) {
+      progressFill.style.transform = 'scaleY(1)';
+    }
+  }
+</script>

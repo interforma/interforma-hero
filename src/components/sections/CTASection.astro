@@ -1,0 +1,111 @@
+---
+import WhatsAppButton from '@components/composite/WhatsAppButton.astro';
+import { ctaCopy } from '@config/content';
+---
+
+<section class="cta-section" aria-labelledby="cta-headline">
+  <div class="container cta-section__inner">
+
+    <div class="cta-section__content">
+      <p class="eyebrow cta-section__eyebrow">{ctaCopy.eyebrow}</p>
+      <h2 id="cta-headline" class="cta-section__headline">{ctaCopy.headline}</h2>
+      <p class="cta-section__subheadline">{ctaCopy.subheadline}</p>
+
+      <div class="cta-section__actions">
+        <WhatsAppButton
+          label={ctaCopy.ctaLabel}
+          size="lg"
+          variant="secondary"
+          class="cta-section__btn"
+        />
+        <p class="cta-section__note">{ctaCopy.note}</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  /* ── Section ──────────────────────────────────────────────── */
+  .cta-section {
+    background: var(--color-interactive-default);
+    color: var(--color-neutral-0);
+    padding-block: var(--spacing-16);
+  }
+
+  .cta-section__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--spacing-10);
+  }
+
+  /* ── Content ──────────────────────────────────────────────── */
+  .cta-section__eyebrow {
+    color: rgba(255, 255, 255, 0.65);
+    margin-bottom: var(--spacing-4);
+  }
+
+  .cta-section__headline {
+    font-size: var(--font-size-display-md);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-display-md);
+    letter-spacing: -0.02em;
+    color: var(--color-neutral-0);
+    margin-bottom: var(--spacing-5);
+    max-width: 24ch;
+  }
+
+  .cta-section__subheadline {
+    font-size: var(--font-size-body-xl);
+    line-height: var(--line-height-body-xl);
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 48ch;
+    margin-bottom: var(--spacing-10);
+  }
+
+  .cta-section__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-3);
+  }
+
+  /* Override WhatsApp button for blue-bg context */
+  .cta-section__btn {
+    background: var(--color-neutral-0) !important;
+    color: var(--color-interactive-default) !important;
+    border-color: var(--color-neutral-0) !important;
+  }
+
+  .cta-section__btn:hover {
+    background: var(--color-neutral-100) !important;
+    border-color: var(--color-neutral-100) !important;
+  }
+
+  .cta-section__note {
+    font-size: var(--font-size-body-sm);
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* ── Responsive ───────────────────────────────────────────── */
+  @media (min-width: 640px) {
+    .cta-section__headline {
+      font-size: var(--font-size-display-lg);
+      line-height: var(--line-height-display-lg);
+    }
+
+    .cta-section__actions {
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .cta-section__headline {
+      font-size: var(--font-size-display-xl);
+      line-height: var(--line-height-display-xl);
+    }
+  }
+</style>

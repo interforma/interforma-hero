@@ -1,0 +1,94 @@
+---
+/**
+ * CornerMarks.astro
+ * Marcas técnicas "+" en las esquinas de un contenedor posicionado.
+ *
+ * El padre debe tener: position: relative (o absolute/fixed).
+ * Las marcas quedan levemente fuera del borde (efecto de marco técnico).
+ *
+ * Props:
+ *   corners — esquinas a mostrar (default: todas las cuatro)
+ *   color   — 'primary' (#2655E8) | 'neutral' (#D1D1CD)
+ *   size    — longitud de cada brazo en px (default: 10)
+ *   weight  — grosor de línea en px (default: 1)
+ *   offset  — cuánto se solapan fuera del borde en px (default: size/2)
+ */
+
+interface Props {
+  corners?: Array<'tl' | 'tr' | 'bl' | 'br'>;
+  color?:   'primary' | 'neutral';
+  size?:    number;
+  weight?:  number;
+  offset?:  number;
+}
+
+const {
+  corners = ['tl', 'tr', 'bl', 'br'],
+  color   = 'primary',
+  size    = 10,
+  weight  = 1,
+  offset,
+} = Astro.props;
+
+const half   = (offset ?? Math.round(size / 2));
+const varCol = color === 'primary' ? 'var(--color-primary-500)' : 'var(--color-neutral-300)';
+---
+
+<div
+  class="corner-marks"
+  aria-hidden="true"
+  style={`--cm-color:${varCol};--cm-size:${size}px;--cm-w:${weight}px;--cm-half:${half}px`}
+>
+  {corners.includes('tl') && <span class="cm cm--tl"></span>}
+  {corners.includes('tr') && <span class="cm cm--tr"></span>}
+  {corners.includes('bl') && <span class="cm cm--bl"></span>}
+  {corners.includes('br') && <span class="cm cm--br"></span>}
+</div>
+
+<style>
+  .corner-marks {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    overflow: visible;
+  }
+
+  .cm {
+    position: absolute;
+    width:  var(--cm-size);
+    height: var(--cm-size);
+  }
+
+  /* Horizontal bar of the "+" */
+  .cm::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: var(--cm-w);
+    background: var(--cm-color);
+    transform: translateY(-50%);
+    opacity: 0.55;
+  }
+
+  /* Vertical bar of the "+" */
+  .cm::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: var(--cm-w);
+    background: var(--cm-color);
+    transform: translateX(-50%);
+    opacity: 0.55;
+  }
+
+  /* Position each mark centered on its respective corner */
+  .cm--tl { top:    calc(-1 * var(--cm-half)); left:  calc(-1 * var(--cm-half)); }
+  .cm--tr { top:    calc(-1 * var(--cm-half)); right: calc(-1 * var(--cm-half)); }
+  .cm--bl { bottom: calc(-1 * var(--cm-half)); left:  calc(-1 * var(--cm-half)); }
+  .cm--br { bottom: calc(-1 * var(--cm-half)); right: calc(-1 * var(--cm-half)); }
+</style>

@@ -1,0 +1,503 @@
+---
+import '@styles/global.css';
+import '@styles/utilities.css';
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Design Test — Interforma</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <style>
+    .test-page {
+      padding: var(--spacing-10) var(--spacing-6);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section {
+      margin-bottom: var(--spacing-16);
+    }
+    .section-title {
+      font-size: var(--font-size-label-md);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-text-tertiary);
+      margin-bottom: var(--spacing-6);
+      padding-bottom: var(--spacing-3);
+      border-bottom: 1px solid var(--color-border-default);
+    }
+    /* Color swatches */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: var(--spacing-3);
+    }
+    .swatch {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--color-border-default);
+    }
+    .swatch-color {
+      height: 64px;
+    }
+    .swatch-label {
+      padding: var(--spacing-2) var(--spacing-3);
+      font-size: var(--font-size-caption);
+      font-weight: var(--font-weight-medium);
+      background: var(--color-bg-surface);
+    }
+    /* Typography */
+    .type-row {
+      margin-bottom: var(--spacing-6);
+      padding-bottom: var(--spacing-6);
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+    .type-meta {
+      font-size: var(--font-size-caption);
+      color: var(--color-text-tertiary);
+      margin-bottom: var(--spacing-2);
+    }
+    /* Spacing */
+    .spacing-grid {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-3);
+    }
+    .spacing-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-4);
+    }
+    .spacing-bar {
+      height: 24px;
+      background: var(--color-primary-100);
+      border-radius: var(--radius-sm);
+      flex-shrink: 0;
+    }
+    .spacing-label {
+      font-size: var(--font-size-caption);
+      color: var(--color-text-secondary);
+      white-space: nowrap;
+    }
+    /* Radius */
+    .radius-grid {
+      display: flex;
+      gap: var(--spacing-6);
+      flex-wrap: wrap;
+    }
+    .radius-demo {
+      width: 80px;
+      height: 80px;
+      background: var(--color-primary-100);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: var(--spacing-2);
+    }
+    .radius-label {
+      font-size: var(--font-size-caption);
+      color: var(--color-primary-700);
+    }
+    /* Shadow */
+    .shadow-grid {
+      display: flex;
+      gap: var(--spacing-8);
+      flex-wrap: wrap;
+    }
+    .shadow-demo {
+      width: 120px;
+      height: 80px;
+      background: var(--color-bg-surface);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .shadow-label {
+      font-size: var(--font-size-caption);
+      color: var(--color-text-secondary);
+    }
+    /* Buttons */
+    .button-row {
+      display: flex;
+      gap: var(--spacing-4);
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: var(--spacing-4);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-3) var(--spacing-6);
+      border-radius: var(--radius-full);
+      font-size: var(--font-size-body-md);
+      font-weight: var(--font-weight-semibold);
+      font-family: inherit;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: background var(--duration-fast) var(--easing-default),
+                  color var(--duration-fast) var(--easing-default),
+                  box-shadow var(--duration-fast) var(--easing-default);
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--color-interactive-default);
+      color: var(--color-neutral-0);
+    }
+    .btn-primary:hover {
+      background: var(--color-interactive-hover);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--color-interactive-default);
+      border-color: var(--color-interactive-default);
+    }
+    .btn-secondary:hover {
+      background: var(--color-primary-50);
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--color-text-primary);
+    }
+    .btn-ghost:hover {
+      background: var(--color-neutral-100);
+    }
+    .btn-lg {
+      padding: var(--spacing-4) var(--spacing-8);
+      font-size: var(--font-size-body-lg);
+    }
+    .btn-sm {
+      padding: var(--spacing-2) var(--spacing-4);
+      font-size: var(--font-size-body-sm);
+    }
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    /* Dark section */
+    .dark-section {
+      background: var(--color-bg-dark);
+      color: var(--color-text-on-dark);
+      padding: var(--spacing-10);
+      border-radius: var(--radius-xl);
+    }
+  </style>
+</head>
+<body>
+<div class="test-page">
+  <h1 style="margin-bottom: var(--spacing-2);">Design System Test</h1>
+  <p class="eyebrow" style="margin-bottom: var(--spacing-16);">Interforma — Release 0 — Visual Verification</p>
+
+  <!-- TYPOGRAPHY -->
+  <section class="section">
+    <h2 class="section-title">Tipografía</h2>
+
+    <div class="type-row">
+      <div class="type-meta">display-xl · 72px / 1.05 lh / 700</div>
+      <p style="font-size: var(--font-size-display-xl); font-weight: var(--font-weight-bold); line-height: var(--line-height-display-xl);">Transformación real</p>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">display-lg · 60px / 1.1 lh / 700</div>
+      <p style="font-size: var(--font-size-display-lg); font-weight: var(--font-weight-bold); line-height: var(--line-height-display-lg);">Transformación real</p>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">display-md · 48px / 1.15 lh / 700</div>
+      <p style="font-size: var(--font-size-display-md); font-weight: var(--font-weight-bold); line-height: var(--line-height-display-md);">Transformación real</p>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">heading-xl · 36px / 1.25 lh / 600</div>
+      <p style="font-size: var(--font-size-heading-xl); font-weight: var(--font-weight-semibold); line-height: var(--line-height-heading-xl);">El verdadero problema de tu empresa</p>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">heading-lg · 28px / 1.3 lh / 600</div>
+      <p style="font-size: var(--font-size-heading-lg); font-weight: var(--font-weight-semibold); line-height: var(--line-height-heading-lg);">El verdadero problema de tu empresa</p>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">heading-md · 22px / 1.4 lh / 600</div>
+      <p style="font-size: var(--font-size-heading-md); font-weight: var(--font-weight-semibold); line-height: var(--line-height-heading-md);">El verdadero problema de tu empresa</p>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">body-xl · 20px / 1.6 lh / 400</div>
+      <p style="font-size: var(--font-size-body-xl); line-height: var(--line-height-body-xl);">Ayudamos a empresas medianas a implementar transformación digital real, con procesos que su equipo adopta, no solo tecnología que se instala.</p>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">body-lg · 18px / 1.65 lh / 400</div>
+      <p style="font-size: var(--font-size-body-lg); line-height: var(--line-height-body-lg);">Ayudamos a empresas medianas a implementar transformación digital real, con procesos que su equipo adopta, no solo tecnología que se instala.</p>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">body-md · 16px / 1.7 lh / 400</div>
+      <p style="font-size: var(--font-size-body-md); line-height: var(--line-height-body-md);">Ayudamos a empresas medianas a implementar transformación digital real, con procesos que su equipo adopta, no solo tecnología que se instala.</p>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">label-md · 14px / 1.5 lh / 500</div>
+      <p style="font-size: var(--font-size-label-md); font-weight: var(--font-weight-medium); line-height: var(--line-height-label-md);">Método Interforma</p>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">caption · 12px / 1.5 lh / 400</div>
+      <p style="font-size: var(--font-size-caption); line-height: var(--line-height-caption);">Nota al pie de página o etiqueta auxiliar</p>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">Eyebrow utility class</div>
+      <p class="eyebrow">Nuestro método de trabajo</p>
+    </div>
+  </section>
+
+  <!-- COLORS - Neutrals -->
+  <section class="section">
+    <h2 class="section-title">Colores — Neutrales</h2>
+    <div class="color-grid">
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-neutral-0); border-bottom: 1px solid var(--color-border-default);"></div>
+        <div class="swatch-label">neutral-0<br>#FFFFFF</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-neutral-50);"></div>
+        <div class="swatch-label">neutral-50<br>#F9F9F8</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-neutral-100);"></div>
+        <div class="swatch-label">neutral-100<br>#F0F0EF</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-neutral-200);"></div>
+        <div class="swatch-label">neutral-200<br>#E2E2E0</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-neutral-300);"></div>
+        <div class="swatch-label">neutral-300<br>#C8C8C5</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-neutral-400);"></div>
+        <div class="swatch-label">neutral-400<br>#A0A09D</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-neutral-500);"></div>
+        <div class="swatch-label" style="color: #fff;">neutral-500<br>#78787A</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-neutral-600);"></div>
+        <div class="swatch-label" style="color: #fff;">neutral-600<br>#545455</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-neutral-700);"></div>
+        <div class="swatch-label" style="color: #fff;">neutral-700<br>#3C3C3D</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-neutral-800);"></div>
+        <div class="swatch-label" style="color: #fff;">neutral-800<br>#252525</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-neutral-900);"></div>
+        <div class="swatch-label" style="color: #fff;">neutral-900<br>#111110</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COLORS - Primary -->
+  <section class="section">
+    <h2 class="section-title">Colores — Primario</h2>
+    <div class="color-grid">
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-primary-50);"></div>
+        <div class="swatch-label">primary-50</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-primary-100);"></div>
+        <div class="swatch-label">primary-100</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-primary-200);"></div>
+        <div class="swatch-label">primary-200</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-primary-300);"></div>
+        <div class="swatch-label">primary-300</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-primary-400);"></div>
+        <div class="swatch-label" style="color: #fff;">primary-400</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-primary-500);"></div>
+        <div class="swatch-label" style="color: #fff;">primary-500<br>#2655E8 ✓</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-primary-600);"></div>
+        <div class="swatch-label" style="color: #fff;">primary-600</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-primary-700);"></div>
+        <div class="swatch-label" style="color: #fff;">primary-700</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-primary-800);"></div>
+        <div class="swatch-label" style="color: #fff;">primary-800</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-primary-900);"></div>
+        <div class="swatch-label" style="color: #fff;">primary-900</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COLORS - Semantic -->
+  <section class="section">
+    <h2 class="section-title">Colores — Semánticos y Roles</h2>
+    <div class="color-grid">
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-success-500);"></div>
+        <div class="swatch-label" style="color: #fff;">success</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-warning-500);"></div>
+        <div class="swatch-label" style="color: #fff;">warning</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-error-500);"></div>
+        <div class="swatch-label" style="color: #fff;">error</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-bg-page);"></div>
+        <div class="swatch-label">bg-page</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-default);"></div>
+        <div class="swatch-label">bg-surface</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-bg-dark);"></div>
+        <div class="swatch-label" style="color: #fff;">bg-dark</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-interactive-default);"></div>
+        <div class="swatch-label" style="color: #fff;">interactive</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: var(--color-interactive-hover);"></div>
+        <div class="swatch-label" style="color: #fff;">interactive-hover</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUTTONS -->
+  <section class="section">
+    <h2 class="section-title">Botones</h2>
+
+    <p style="font-size: var(--font-size-caption); color: var(--color-text-tertiary); margin-bottom: var(--spacing-3);">Primario</p>
+    <div class="button-row">
+      <button class="btn btn-primary btn-lg">Iniciar diagnóstico</button>
+      <button class="btn btn-primary">Iniciar diagnóstico</button>
+      <button class="btn btn-primary btn-sm">Iniciar diagnóstico</button>
+      <button class="btn btn-primary" disabled>Deshabilitado</button>
+    </div>
+
+    <p style="font-size: var(--font-size-caption); color: var(--color-text-tertiary); margin-bottom: var(--spacing-3);">Secundario</p>
+    <div class="button-row">
+      <button class="btn btn-secondary btn-lg">Ver método</button>
+      <button class="btn btn-secondary">Ver método</button>
+      <button class="btn btn-secondary btn-sm">Ver método</button>
+      <button class="btn btn-secondary" disabled>Deshabilitado</button>
+    </div>
+
+    <p style="font-size: var(--font-size-caption); color: var(--color-text-tertiary); margin-bottom: var(--spacing-3);">Ghost</p>
+    <div class="button-row">
+      <button class="btn btn-ghost">Más información</button>
+      <button class="btn btn-ghost btn-sm">Más información</button>
+    </div>
+  </section>
+
+  <!-- SPACING -->
+  <section class="section">
+    <h2 class="section-title">Espaciado (selección)</h2>
+    <div class="spacing-grid">
+      {[
+        { token: '--spacing-1', size: '4px', width: 4 },
+        { token: '--spacing-2', size: '8px', width: 8 },
+        { token: '--spacing-4', size: '16px', width: 16 },
+        { token: '--spacing-6', size: '24px', width: 24 },
+        { token: '--spacing-8', size: '32px', width: 32 },
+        { token: '--spacing-10', size: '40px', width: 40 },
+        { token: '--spacing-12', size: '48px', width: 48 },
+        { token: '--spacing-16', size: '64px', width: 64 },
+        { token: '--spacing-20', size: '80px', width: 80 },
+        { token: '--spacing-24', size: '96px', width: 96 },
+      ].map(({ token, size, width }) => (
+        <div class="spacing-row">
+          <div class="spacing-bar" style={`width: ${width * 2}px;`}></div>
+          <span class="spacing-label">{token} · {size}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- RADIUS -->
+  <section class="section">
+    <h2 class="section-title">Radio de borde</h2>
+    <div class="radius-grid">
+      {[
+        { name: 'none', token: '--radius-none' },
+        { name: 'sm', token: '--radius-sm' },
+        { name: 'md', token: '--radius-md' },
+        { name: 'lg', token: '--radius-lg' },
+        { name: 'xl', token: '--radius-xl' },
+        { name: 'full', token: '--radius-full' },
+      ].map(({ name, token }) => (
+        <div>
+          <div class="radius-demo" style={`border-radius: var(${token});`}>
+            <span class="radius-label">{name}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- SHADOWS -->
+  <section class="section">
+    <h2 class="section-title">Sombras</h2>
+    <div class="shadow-grid">
+      {[
+        { name: 'none', token: '--shadow-none' },
+        { name: 'sm', token: '--shadow-sm' },
+        { name: 'md', token: '--shadow-md' },
+        { name: 'lg', token: '--shadow-lg' },
+      ].map(({ name, token }) => (
+        <div>
+          <div class="shadow-demo" style={`box-shadow: var(${token});`}>
+            <span class="shadow-label">{name}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- DARK SECTION -->
+  <section class="section">
+    <h2 class="section-title">Sección oscura</h2>
+    <div class="dark-section">
+      <p class="eyebrow" style="color: var(--color-primary-300); margin-bottom: var(--spacing-4);">Nuestro método</p>
+      <h3 style="font-size: var(--font-size-heading-xl); font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-4);">Transformación que su equipo adopta</h3>
+      <p style="color: var(--color-text-on-dark); opacity: 0.8; margin-bottom: var(--spacing-8);">No instalamos software. Implementamos procesos que generan resultados medibles.</p>
+      <button class="btn btn-primary">Iniciar diagnóstico</button>
+    </div>
+  </section>
+
+  <!-- FOCUS AND ACCESSIBILITY -->
+  <section class="section">
+    <h2 class="section-title">Accesibilidad — Focus ring</h2>
+    <p style="font-size: var(--font-size-body-md); margin-bottom: var(--spacing-4);">Presiona Tab para ver el foco en los elementos interactivos.</p>
+    <div class="button-row">
+      <button class="btn btn-primary">Foco aquí</button>
+      <button class="btn btn-secondary">Y aquí</button>
+      <a href="#top" class="btn btn-ghost">Y en enlaces</a>
+    </div>
+    <p class="sr-only">Este texto es solo visible para lectores de pantalla</p>
+    <p style="font-size: var(--font-size-caption); color: var(--color-text-tertiary);">El texto .sr-only de arriba no es visible pero existe en el DOM.</p>
+  </section>
+
+</div>
+</body>
+</html>

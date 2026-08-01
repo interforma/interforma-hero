@@ -1,0 +1,39 @@
+---
+export interface Props {
+  href: string;
+  trackEvent?: string;
+  class?: string;
+}
+
+const { href, trackEvent, class: className } = Astro.props;
+---
+<a
+  href={href}
+  class:list={['nav-link', className]}
+  data-track-event={trackEvent}
+>
+  <slot />
+</a>
+
+<style>
+  .nav-link {
+    display: inline-block;
+    font-size: var(--font-size-body-md);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    padding: var(--spacing-1) var(--spacing-2);
+    border-radius: var(--radius-sm);
+    transition: color var(--duration-fast) var(--easing-default);
+  }
+
+  .nav-link:hover {
+    color: var(--color-text-primary);
+  }
+
+  .nav-link:focus-visible {
+    outline: 2px solid var(--color-interactive-default);
+    outline-offset: 2px;
+    color: var(--color-text-primary);
+  }
+</style>

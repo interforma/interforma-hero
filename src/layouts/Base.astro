@@ -1,0 +1,39 @@
+---
+import Header from '@components/layout/Header.astro';
+import Footer from '@components/layout/Footer.astro';
+import WhatsAppFloat from '@components/utility/WhatsAppFloat.astro';
+import SEOHead from '@components/utility/SEOHead.astro';
+import SkipToContent from '@components/utility/SkipToContent.astro';
+import '@styles/global.css';
+import '@styles/utilities.css';
+import type { SEOProps } from '@t/seo';
+import { ACTIVE_FONT } from '@config/typography';
+
+export interface Props extends SEOProps {
+  bodyClass?: string;
+  showFloat?: boolean;
+}
+
+const { bodyClass, showFloat = true, ...seoProps } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="es" class={`font-${ACTIVE_FONT}`}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <SEOHead {...seoProps} />
+    <slot name="head" />
+  </head>
+  <body class={bodyClass}>
+    <SkipToContent />
+    <Header />
+    <main id="main-content" tabindex="-1">
+      <slot />
+    </main>
+    <slot name="footer">
+      <Footer />
+    </slot>
+    {showFloat && <WhatsAppFloat />}
+  </body>
+</html>

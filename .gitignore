@@ -1,0 +1,43 @@
+# ── Build output ──────────────────────────────────
+dist/
+.output/
+
+# ── Plataformas de deploy ──────────────────────────
+.vercel/
+.netlify/
+
+# ── Dependencias ──────────────────────────────────
+node_modules/
+
+# ── Variables de entorno — NUNCA commitear ────────
+.env
+.env.local
+.env.*.local
+# Excepción: el template sí se commitea
+!.env.example
+
+# ── Astro generated ───────────────────────────────
+.astro/
+
+# ── OS ────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# ── IDE ───────────────────────────────────────────
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.iml
+
+# ── Logs ──────────────────────────────────────────
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# ── Knowledge base — datos privados de clientes ───
+knowledge/clients/

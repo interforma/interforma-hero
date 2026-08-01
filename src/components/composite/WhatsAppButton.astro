@@ -1,0 +1,101 @@
+---
+import Icon from '@components/base/Icon.astro';
+import { site } from '@config/site';
+
+export interface Props {
+  label?: string;
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'primary' | 'secondary';
+  class?: string;
+  showIcon?: boolean;
+}
+
+const {
+  label = 'Hablar por WhatsApp',
+  size = 'md',
+  variant = 'primary',
+  class: className,
+  showIcon = true,
+} = Astro.props;
+
+const number = site.whatsappNumber;
+const message = site.whatsappMessage;
+const href = number
+  ? `https://wa.me/${number}${message ? `?text=${encodeURIComponent(message)}` : ''}`
+  : '#contacto';
+const isExternal = !!number;
+---
+<a
+  href={href}
+  target={isExternal ? '_blank' : undefined}
+  rel={isExternal ? 'noopener noreferrer' : undefined}
+  aria-label={label}
+  class:list={['wa-btn', `wa-btn--${variant}`, `wa-btn--${size}`, className]}
+  data-track-event="click_whatsapp"
+>
+  {showIcon && <Icon name="whatsapp" size={size === 'sm' ? 16 : size === 'lg' ? 22 : 18} aria-hidden="true" />}
+  <span>{label}</span>
+</a>
+
+<style>
+  .wa-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    border-radius: var(--radius-full);
+    font-family: inherit;
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition:
+      background var(--duration-fast) var(--easing-default),
+      color var(--duration-fast) var(--easing-default),
+      border-color var(--duration-fast) var(--easing-default),
+      transform var(--duration-fast) var(--easing-default);
+    white-space: nowrap;
+  }
+
+  .wa-btn:focus-visible {
+    outline: 2px solid var(--color-interactive-default);
+    outline-offset: 2px;
+  }
+
+  .wa-btn:active {
+    transform: scale(0.98);
+  }
+
+  /* Variants */
+  .wa-btn--primary {
+    background: var(--color-interactive-default);
+    color: var(--color-neutral-0);
+    border-color: var(--color-interactive-default);
+  }
+  .wa-btn--primary:hover {
+    background: var(--color-interactive-hover);
+    border-color: var(--color-interactive-hover);
+  }
+
+  .wa-btn--secondary {
+    background: transparent;
+    color: var(--color-interactive-default);
+    border-color: var(--color-interactive-default);
+  }
+  .wa-btn--secondary:hover {
+    background: var(--color-primary-50);
+  }
+
+  /* Sizes */
+  .wa-btn--sm {
+    padding: var(--spacing-2) var(--spacing-4);
+    font-size: var(--font-size-body-sm);
+  }
+  .wa-btn--md {
+    padding: var(--spacing-3) var(--spacing-5);
+    font-size: var(--font-size-body-md);
+  }
+  .wa-btn--lg {
+    padding: var(--spacing-4) var(--spacing-8);
+    font-size: var(--font-size-body-lg);
+  }
+</style>

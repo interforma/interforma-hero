@@ -1,0 +1,41 @@
+{
+  "$description": "Animation and transition tokens for Interforma.digital.",
+  "$version": "1.1.0",
+  "$source": "Product Design System v1.0 §14 — updated Motion Language v1.1",
+  "duration": {
+    "fast":     "100ms",
+    "normal":   "200ms",
+    "slow":     "350ms",
+    "enter":    "400ms",
+    "instant":  "100ms",
+    "motion-fast":     "180ms",
+    "motion-normal":   "260ms",
+    "motion-slow":     "480ms",
+    "motion-sequence": "2200ms"
+  },
+  "easing": {
+    "default":   "cubic-bezier(0.16, 1, 0.3, 1)",
+    "out":       "cubic-bezier(0, 0, 0.2, 1)",
+    "in-out":    "cubic-bezier(0.4, 0, 0.2, 1)",
+    "standard":  "cubic-bezier(0.16, 1, 0.3, 1)",
+    "enter":     "cubic-bezier(0, 0, 0.2, 1)",
+    "exit":      "cubic-bezier(0.4, 0, 1, 1)"
+  },
+  "usage": {
+    "fast":           "Cambios de color, hover sobre elementos pequeños",
+    "normal":         "Transiciones de estado de componentes",
+    "slow":           "Apertura de overlays, cambios de layout",
+    "enter":          "Entrada de elementos al viewport (scroll reveal)",
+    "instant":        "Feedback inmediato (< 100ms)",
+    "motion-fast":    "Hover refinado: translateY, border-color, opacity (180ms)",
+    "motion-normal":  "Cambios de estado de sección, activación de pasos (260ms)",
+    "motion-slow":    "Transiciones de sección completa (480ms)",
+    "motion-sequence":"Duración total de secuencia de diagrama animado (2200ms)",
+    "standard":       "Curva general: aceleración rápida, desaceleración suave",
+    "exit":           "Salida de elementos (accelerated)"
+  },
+  "reduceMotion": {
+    "$description": "Comportamiento con prefers-reduced-motion: reduce",
+    "rule": "Todas las transiciones de translate, scale y rotate se eliminan. Los fades (opacity) se mantienen a 250ms como máximo. El diagrama muestra su estado final inmediatamente."
+  }
+}

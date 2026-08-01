@@ -1,0 +1,268 @@
+---
+import Base from '@layouts/Base.astro';
+import { site } from '@config/site';
+
+const title = `Política de privacidad — ${site.name}`;
+const description = 'Política de privacidad y tratamiento de datos personales de Interforma.';
+---
+
+<Base
+  title={title}
+  description={description}
+  canonical={`${site.url}/privacidad`}
+>
+  <article class="privacy container" aria-labelledby="privacy-title">
+
+    <!-- Aviso provisional -->
+    <div class="privacy__notice" role="note" aria-label="Aviso de contenido provisional">
+      <strong>CONTENIDO PROVISIONAL</strong> — Esta política está pendiente de revisión y aprobación legal.
+      No constituye un documento legal vigente hasta su aprobación formal.
+    </div>
+
+    <header class="privacy__header">
+      <p class="eyebrow" style="margin-bottom: var(--spacing-4);">Legal</p>
+      <h1 id="privacy-title" class="privacy__title">Política de privacidad</h1>
+      <p class="privacy__meta">
+        Última actualización: <time datetime="2026-07-31">31 de julio de 2026</time>
+        &nbsp;(versión provisional)
+      </p>
+    </header>
+
+    <div class="privacy__body">
+
+      <section aria-labelledby="privacy-s1">
+        <h2 id="privacy-s1">1. Responsable del tratamiento</h2>
+        <p>
+          <strong>Interforma</strong> es responsable del tratamiento de los datos personales
+          que usted proporciona a través de este sitio web
+          (<a href={site.url}>{site.url}</a>).
+        </p>
+        {site.contactEmail && (
+          <p>
+            Contacto: <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>
+          </p>
+        )}
+      </section>
+
+      <section aria-labelledby="privacy-s2">
+        <h2 id="privacy-s2">2. Datos que recopilamos</h2>
+        <p>Podemos recopilar los siguientes datos personales:</p>
+        <ul>
+          <li>Datos de contacto (nombre, correo electrónico, teléfono) cuando usted nos escribe.</li>
+          <li>Datos de navegación (dirección IP, páginas visitadas, tiempo en el sitio) a través de herramientas de analítica web.</li>
+          <li>Información que usted proporciona voluntariamente en el diagnóstico o formularios de contacto.</li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="privacy-s3">
+        <h2 id="privacy-s3">3. Finalidad del tratamiento</h2>
+        <p>Los datos recopilados se utilizan para:</p>
+        <ul>
+          <li>Responder solicitudes de contacto y diagnóstico.</li>
+          <li>Mejorar la experiencia del sitio web.</li>
+          <li>Enviar comunicaciones de servicio cuando usted las solicite.</li>
+          <li>Cumplir con obligaciones legales aplicables.</li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="privacy-s4">
+        <h2 id="privacy-s4">4. Base legal</h2>
+        <p>
+          El tratamiento de sus datos se basa en su consentimiento explícito, la ejecución
+          de un contrato de servicios, y el cumplimiento de obligaciones legales, de acuerdo
+          con la Ley N° 19.628 de Chile sobre Protección de la Vida Privada y normativas
+          aplicables.
+        </p>
+      </section>
+
+      <section aria-labelledby="privacy-s5">
+        <h2 id="privacy-s5">5. Conservación de datos</h2>
+        <p>
+          Sus datos personales se conservarán únicamente durante el tiempo necesario para
+          cumplir con las finalidades descritas, o el tiempo exigido por la legislación
+          aplicable.
+        </p>
+      </section>
+
+      <section aria-labelledby="privacy-s6">
+        <h2 id="privacy-s6">6. Compartición de datos</h2>
+        <p>
+          No vendemos ni cedemos sus datos personales a terceros. Podemos compartirlos
+          con proveedores de servicios tecnológicos (analítica, comunicación) bajo
+          acuerdos de confidencialidad y únicamente para las finalidades descritas.
+        </p>
+      </section>
+
+      <section aria-labelledby="privacy-s7">
+        <h2 id="privacy-s7">7. Sus derechos</h2>
+        <p>Usted tiene derecho a:</p>
+        <ul>
+          <li>Acceder a sus datos personales.</li>
+          <li>Rectificar datos inexactos.</li>
+          <li>Solicitar la eliminación de sus datos.</li>
+          <li>Oponerse al tratamiento de sus datos.</li>
+          <li>Retirar su consentimiento en cualquier momento.</li>
+        </ul>
+        <p>
+          Para ejercer estos derechos, contáctenos en{' '}
+          {site.contactEmail
+            ? <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>
+            : 'nuestro correo de contacto'}.
+        </p>
+      </section>
+
+      <section aria-labelledby="privacy-s8">
+        <h2 id="privacy-s8">8. Cookies y analítica</h2>
+        <p>
+          Este sitio puede utilizar herramientas de analítica web (como Google Analytics)
+          que recopilan datos de navegación de forma anonimizada. Puede desactivar
+          el seguimiento desde la configuración de su navegador.
+        </p>
+      </section>
+
+      <section aria-labelledby="privacy-s9">
+        <h2 id="privacy-s9">9. Modificaciones</h2>
+        <p>
+          Esta política puede actualizarse periódicamente. La versión vigente siempre
+          estará disponible en esta página con su fecha de actualización.
+        </p>
+      </section>
+
+      <section aria-labelledby="privacy-s10">
+        <h2 id="privacy-s10">10. Contacto</h2>
+        <p>
+          Para consultas sobre esta política o el tratamiento de sus datos:
+        </p>
+        {site.contactEmail && (
+          <p>
+            <strong>Correo:</strong>{' '}
+            <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>
+          </p>
+        )}
+        <p>
+          <strong>Sitio web:</strong>{' '}
+          <a href={site.url}>{site.url}</a>
+        </p>
+      </section>
+
+    </div>
+
+    <div class="privacy__back">
+      <a href="/" class="privacy__back-link">← Volver al inicio</a>
+    </div>
+
+  </article>
+</Base>
+
+<style>
+  .privacy {
+    padding-block: var(--spacing-16);
+    max-width: var(--container-content);
+  }
+
+  /* ── Provisional notice ───────────────────────────────────── */
+  .privacy__notice {
+    background: #FFF3CD;
+    border: 1px solid #F59E0B;
+    border-radius: var(--radius-md);
+    padding: var(--spacing-4) var(--spacing-5);
+    font-size: var(--font-size-body-sm);
+    color: #92400E;
+    margin-bottom: var(--spacing-10);
+    line-height: var(--line-height-body-md);
+  }
+
+  /* ── Header ───────────────────────────────────────────────── */
+  .privacy__header {
+    margin-bottom: var(--spacing-12);
+    padding-bottom: var(--spacing-8);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .privacy__title {
+    font-size: var(--font-size-display-md);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-3);
+  }
+
+  .privacy__meta {
+    font-size: var(--font-size-body-sm);
+    color: var(--color-text-tertiary);
+  }
+
+  /* ── Body ─────────────────────────────────────────────────── */
+  .privacy__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-10);
+  }
+
+  .privacy__body section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+  }
+
+  .privacy__body h2 {
+    font-size: var(--font-size-heading-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  .privacy__body p,
+  .privacy__body li {
+    font-size: var(--font-size-body-lg);
+    line-height: var(--line-height-body-lg);
+    color: var(--color-text-secondary);
+  }
+
+  .privacy__body ul {
+    padding-left: var(--spacing-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+  }
+
+  .privacy__body a {
+    color: var(--color-interactive-default);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .privacy__body a:hover {
+    color: var(--color-interactive-hover);
+  }
+
+  .privacy__body a:focus-visible {
+    outline: 2px solid var(--color-interactive-default);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* ── Back link ────────────────────────────────────────────── */
+  .privacy__back {
+    margin-top: var(--spacing-16);
+    padding-top: var(--spacing-8);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .privacy__back-link {
+    font-size: var(--font-size-body-md);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--easing-default);
+  }
+
+  .privacy__back-link:hover {
+    color: var(--color-interactive-default);
+  }
+
+  .privacy__back-link:focus-visible {
+    outline: 2px solid var(--color-interactive-default);
+    outline-offset: 4px;
+    border-radius: var(--radius-sm);
+  }
+</style>

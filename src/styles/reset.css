@@ -1,0 +1,107 @@
+/*
+ * reset.css — Interforma.digital
+ * Reset CSS moderno con base en Josh Comeau's CSS Reset.
+ * Accesibilidad y comportamiento cross-browser garantizados.
+ */
+
+/* 1. Box sizing en todos los elementos */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* 2. Eliminar márgenes y paddings por defecto */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* 3. HTML base */
+html {
+  /* Evitar que iOS agrande texto en orientación landscape */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Scroll suave por defecto — se cancela con prefers-reduced-motion */
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* 4. Body base */
+body {
+  line-height: 1.5;
+  /* Font rendering optimizado para pantalla */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 5. Elementos multimedia */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 6. Formularios heredan tipografía */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* 7. Texto largo no desborda su contenedor */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+/* 8. Links heredan color */
+a {
+  color: inherit;
+  text-decoration-skip-ink: auto;
+}
+
+/* 9. Botones: eliminar estilos nativos */
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+}
+
+/* 10. Listas: eliminar bullet points por defecto */
+ul,
+ol {
+  list-style: none;
+}
+
+/* 11. HR semántico */
+hr {
+  border: none;
+  border-top: 1px solid currentColor;
+}
+
+/* 12. Tablas */
+table {
+  border-collapse: collapse;
+}
+
+/* 13. Preservar espacio en blanco en pre */
+pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+}

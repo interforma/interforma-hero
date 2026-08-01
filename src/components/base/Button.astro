@@ -1,0 +1,142 @@
+---
+export interface Props {
+  variant?: 'primary' | 'secondary' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
+  as?: 'button' | 'a';
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
+  class?: string;
+  target?: string;
+  rel?: string;
+  'aria-label'?: string;
+  'aria-expanded'?: 'true' | 'false';
+  'aria-controls'?: string;
+  [key: string]: unknown;
+}
+
+const {
+  variant = 'primary',
+  size = 'md',
+  as: Tag = 'button',
+  href,
+  type = 'button',
+  disabled = false,
+  class: className,
+  target,
+  rel,
+  'aria-label': ariaLabel,
+  'aria-expanded': ariaExpanded,
+  'aria-controls': ariaControls,
+} = Astro.props;
+
+const safeRel =
+  target === '_blank' && !rel ? 'noopener noreferrer' : rel;
+---
+
+{Tag === 'a' ? (
+  <a
+    href={href}
+    target={target}
+    rel={safeRel}
+    aria-label={ariaLabel}
+    class:list={['btn', `btn--${variant}`, `btn--${size}`, className]}
+  >
+    <slot />
+  </a>
+) : (
+  <button
+    type={type}
+    disabled={disabled || undefined}
+    aria-label={ariaLabel}
+    aria-expanded={ariaExpanded}
+    aria-controls={ariaControls}
+    class:list={['btn', `btn--${variant}`, `btn--${size}`, className]}
+  >
+    <slot />
+  </button>
+)}
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-2);
+    padding: var(--spacing-3) var(--spacing-6);
+    border-radius: var(--radius-full);
+    font-family: inherit;
+    font-size: var(--font-size-body-md);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition:
+      background var(--duration-fast) var(--easing-default),
+      color var(--duration-fast) var(--easing-default),
+      border-color var(--duration-fast) var(--easing-default),
+      transform var(--duration-fast) var(--easing-default);
+    white-space: nowrap;
+  }
+
+  .btn:focus-visible {
+    outline: 2px solid var(--color-interactive-default);
+    outline-offset: 2px;
+  }
+
+  .btn:active {
+    transform: scale(0.98);
+  }
+
+  .btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* Variants */
+  .btn--primary {
+    background: var(--color-interactive-default);
+    color: var(--color-neutral-0);
+    border-color: var(--color-interactive-default);
+  }
+  .btn--primary:hover:not(:disabled) {
+    background: var(--color-interactive-hover);
+    border-color: var(--color-interactive-hover);
+  }
+
+  .btn--secondary {
+    background: transparent;
+    color: var(--color-interactive-default);
+    border-color: var(--color-interactive-default);
+  }
+  .btn--secondary:hover:not(:disabled) {
+    background: var(--color-primary-50);
+  }
+
+  .btn--ghost {
+    background: transparent;
+    color: var(--color-text-primary);
+    border-color: transparent;
+  }
+  .btn--ghost:hover:not(:disabled) {
+    background: var(--color-neutral-100);
+  }
+
+  /* Sizes */
+  .btn--sm {
+    padding: var(--spacing-2) var(--spacing-4);
+    font-size: var(--font-size-body-sm);
+  }
+
+  .btn--md {
+    padding: var(--spacing-3) var(--spacing-6);
+    font-size: var(--font-size-body-md);
+  }
+
+  .btn--lg {
+    padding: var(--spacing-4) var(--spacing-8);
+    font-size: var(--font-size-body-lg);
+  }
+</style>

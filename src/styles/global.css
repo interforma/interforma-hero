@@ -1,0 +1,150 @@
+/*
+ * global.css — Interforma.digital
+ * Estilos globales del sitio.
+ * Importa reset y tokens. Define estilos de elementos HTML base.
+ * No contiene estilos de componentes específicos.
+ */
+
+@import './reset.css';
+@import './tokens.css';
+
+/* ============================================================
+   BASE HTML
+   ============================================================ */
+
+html {
+  font-family: var(--font-family-base);
+  font-size: 16px;
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-page);
+  /* Altura mínima considerando safe area en mobile */
+  min-height: 100svh;
+}
+
+body {
+  min-height: 100svh;
+  /* Prevenir overflow horizontal accidental */
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   TIPOGRAFÍA — Elementos HTML
+   Los componentes usan variables directamente.
+   Estos estilos aplican a HTML semántico sin clase.
+   ============================================================ */
+
+h1 {
+  font-size: var(--font-size-display-md);     /* mobile-first: 40px */
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-display-md);
+  text-wrap: balance;
+}
+
+h2 {
+  font-size: var(--font-size-heading-xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-heading-xl);
+  text-wrap: balance;
+}
+
+h3 {
+  font-size: var(--font-size-heading-lg);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-heading-lg);
+}
+
+h4 {
+  font-size: var(--font-size-heading-md);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-heading-md);
+}
+
+h5,
+h6 {
+  font-size: var(--font-size-heading-sm);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-heading-sm);
+}
+
+p {
+  font-size: var(--font-size-body-md);
+  line-height: var(--line-height-body-md);
+  color: var(--color-text-secondary);
+}
+
+/* Desktop: h1 escala a display-xl */
+@media (min-width: 1280px) {
+  h1 {
+    font-size: var(--font-size-display-xl);
+    line-height: var(--line-height-display-xl);
+  }
+}
+
+/* Tablet: h1 escala a display-lg */
+@media (min-width: 768px) and (max-width: 1279px) {
+  h1 {
+    font-size: var(--font-size-display-lg);
+    line-height: var(--line-height-display-lg);
+  }
+}
+
+/* ============================================================
+   ENLACES
+   ============================================================ */
+
+a {
+  transition: color var(--duration-fast) var(--ease-default);
+}
+
+a:hover {
+  color: var(--color-interactive-default);
+}
+
+/* ============================================================
+   FOCO — Accesibilidad
+   Ring de foco visible en todos los elementos interactivos.
+   Nunca se oculta sin reemplazar.
+   Referencia: Frontend Architecture v1.0 §10
+   ============================================================ */
+
+:focus-visible {
+  outline: 2px solid var(--color-interactive-default);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Eliminar outline para usuarios de mouse (solo visible con teclado) */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ============================================================
+   SELECCIÓN DE TEXTO
+   ============================================================ */
+
+::selection {
+  background-color: var(--color-primary-100);
+  color: var(--color-primary-900);
+}
+
+/* ============================================================
+   SCROLLBAR — Estilo sutil (navegadores compatibles)
+   ============================================================ */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-subtle);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-neutral-300);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-neutral-400);
+}

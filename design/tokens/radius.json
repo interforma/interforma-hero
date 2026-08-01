@@ -1,0 +1,21 @@
+{
+  "$description": "Border radius tokens for Interforma.digital.",
+  "$version": "1.0.0",
+  "$source": "Product Design System v1.0 §4",
+  "scale": {
+    "none": "0",
+    "sm":   "4px",
+    "md":   "8px",
+    "lg":   "12px",
+    "xl":   "16px",
+    "full": "9999px"
+  },
+  "usage": {
+    "none": "Sin redondeo — separadores, bordes de sección",
+    "sm":   "Badges pequeños, indicadores",
+    "md":   "Botones, inputs, cards pequeñas (uso principal)",
+    "lg":   "Cards, panels",
+    "xl":   "Contenedores destacados",
+    "full": "Pills, avatares, badges redondeados"
+  }
+}

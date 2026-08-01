@@ -1,0 +1,108 @@
+{
+  "$description": "Typography tokens for Interforma.digital.",
+  "$version": "1.0.0",
+  "$source": "Product Design System v1.0 §5",
+  "fontFamily": {
+    "base": "'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+  },
+  "fontWeight": {
+    "regular":  400,
+    "medium":   500,
+    "semibold": 600,
+    "bold":     700
+  },
+  "scale": {
+    "display-xl": {
+      "size":       "4.5rem",
+      "sizePx":     72,
+      "lineHeight": 1.05,
+      "weight":     700,
+      "use":        "Headline principal del Hero (desktop)"
+    },
+    "display-lg": {
+      "size":       "3.5rem",
+      "sizePx":     56,
+      "lineHeight": 1.1,
+      "weight":     700,
+      "use":        "Headline Hero (tablet) / Titulares grandes de sección"
+    },
+    "display-md": {
+      "size":       "2.5rem",
+      "sizePx":     40,
+      "lineHeight": 1.15,
+      "weight":     700,
+      "use":        "Headline Hero (mobile)"
+    },
+    "heading-xl": {
+      "size":       "2rem",
+      "sizePx":     32,
+      "lineHeight": 1.2,
+      "weight":     600,
+      "use":        "Títulos de sección principales (H2)"
+    },
+    "heading-lg": {
+      "size":       "1.5rem",
+      "sizePx":     24,
+      "lineHeight": 1.25,
+      "weight":     600,
+      "use":        "Subtítulos de sección (H3)"
+    },
+    "heading-md": {
+      "size":       "1.25rem",
+      "sizePx":     20,
+      "lineHeight": 1.3,
+      "weight":     600,
+      "use":        "Títulos de cards, MethodStep"
+    },
+    "heading-sm": {
+      "size":       "1rem",
+      "sizePx":     16,
+      "lineHeight": 1.35,
+      "weight":     600,
+      "use":        "Labels de sección, eyebrows"
+    },
+    "body-lg": {
+      "size":       "1.125rem",
+      "sizePx":     18,
+      "lineHeight": 1.65,
+      "weight":     400,
+      "use":        "Párrafo principal, subheadline"
+    },
+    "body-md": {
+      "size":       "1rem",
+      "sizePx":     16,
+      "lineHeight": 1.6,
+      "weight":     400,
+      "use":        "Texto de cuerpo estándar"
+    },
+    "body-sm": {
+      "size":       "0.875rem",
+      "sizePx":     14,
+      "lineHeight": 1.55,
+      "weight":     400,
+      "use":        "Texto secundario, metadata"
+    },
+    "label-lg": {
+      "size":       "0.875rem",
+      "sizePx":     14,
+      "lineHeight": 1.4,
+      "weight":     500,
+      "use":        "Labels de botones, badges"
+    },
+    "label-md": {
+      "size":       "0.75rem",
+      "sizePx":     12,
+      "lineHeight": 1.4,
+      "weight":     500,
+      "tracking":   "0.08em",
+      "use":        "Eyebrows, labels pequeños (mayúsculas con tracking)"
+    },
+    "caption": {
+      "size":       "0.75rem",
+      "sizePx":     12,
+      "lineHeight": 1.5,
+      "weight":     400,
+      "use":        "Texto legal, footnotes"
+    }
+  }
+}

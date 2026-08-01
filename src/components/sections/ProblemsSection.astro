@@ -1,0 +1,326 @@
+---
+import { problems, problemsCopy } from '@config/content';
+import CornerMarks from '@components/base/CornerMarks.astro';
+---
+
+<section id="problemas" class="problems" aria-labelledby="problems-headline">
+  <div class="container">
+
+    <div class="problems__header">
+      <CornerMarks color="neutral" size={10} />
+      <p class="eyebrow problems__eyebrow">{problemsCopy.eyebrow}</p>
+      <h2 id="problems-headline" class="problems__headline">{problemsCopy.headline}</h2>
+      <p class="problems__subheadline">{problemsCopy.subheadline}</p>
+    </div>
+
+    <ul class="problems__grid" role="list">
+      {problems.map((problem) => (
+        <li class="problem-card" data-pid={problem.id}>
+          {problem.id === 1 && (
+            <div class="card-graphic" aria-hidden="true">
+              <svg viewBox="0 0 64 16" fill="none">
+                <rect x="0" y="6" width="64" height="4" rx="2" fill="var(--color-neutral-100)" stroke="var(--color-neutral-200)" stroke-width="1"/>
+                <rect class="g-bar" x="0" y="6" width="19" height="4" rx="2" fill="var(--color-neutral-400)" style="transform-box:fill-box;transform-origin:left center"/>
+                <line x1="21" y1="4" x2="21" y2="12" stroke="var(--color-neutral-300)" stroke-width="0.75"/>
+                <line x1="42" y1="4" x2="42" y2="12" stroke="var(--color-neutral-300)" stroke-width="0.75"/>
+              </svg>
+            </div>
+          )}
+          {problem.id === 2 && (
+            <div class="card-graphic" aria-hidden="true">
+              <svg viewBox="0 0 64 16" fill="none">
+                <line x1="0" y1="8" x2="22" y2="8" stroke="var(--color-neutral-300)" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="27" cy="8" r="1.5" fill="var(--color-neutral-300)"/>
+                <circle cx="32" cy="8" r="1.5" fill="var(--color-neutral-300)"/>
+                <circle cx="37" cy="8" r="1.5" fill="var(--color-neutral-300)"/>
+                <line x1="42" y1="8" x2="64" y2="8" stroke="var(--color-neutral-300)" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+          )}
+          {problem.id === 3 && (
+            <div class="card-graphic" aria-hidden="true">
+              <svg viewBox="0 0 64 16" fill="none">
+                <circle cx="8" cy="8" r="4.5" fill="white" stroke="var(--color-neutral-300)" stroke-width="1.5"/>
+                <circle cx="32" cy="8" r="4.5" fill="white" stroke="var(--color-neutral-300)" stroke-width="1.5"/>
+                <circle cx="56" cy="8" r="4.5" fill="white" stroke="var(--color-neutral-300)" stroke-width="1.5"/>
+              </svg>
+            </div>
+          )}
+          {problem.id === 4 && (
+            <div class="card-graphic" aria-hidden="true">
+              <svg viewBox="0 0 64 16" fill="none">
+                <polyline class="g-signal" points="0,8 10,8 20,8 30,8 40,8 50,8 64,8" stroke="var(--color-neutral-300)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          )}
+          {problem.id === 5 && (
+            <div class="card-graphic" aria-hidden="true">
+              <svg viewBox="0 0 64 16" fill="none">
+                <circle cx="40" cy="8" r="5" fill="white" stroke="var(--color-neutral-300)" stroke-width="1.5"/>
+                <circle cx="8" cy="8" r="3.5" fill="white" stroke="var(--color-neutral-200)" stroke-width="1" opacity="0.7"/>
+                <line class="g-ext-line" x1="12" y1="8" x2="34" y2="8" stroke="var(--color-neutral-200)" stroke-width="1" stroke-dasharray="3 3"/>
+              </svg>
+            </div>
+          )}
+          {problem.id === 6 && (
+            <div class="card-graphic" aria-hidden="true">
+              <svg viewBox="0 0 64 16" fill="none">
+                <rect x="0" y="3" width="24" height="10" rx="2.5" fill="white" stroke="var(--color-neutral-300)" stroke-width="1.5"/>
+                <rect x="40" y="3" width="24" height="10" rx="2.5" fill="white" stroke="var(--color-neutral-300)" stroke-width="1.5"/>
+                <circle cx="24" cy="8" r="2" fill="var(--color-neutral-300)"/>
+                <circle cx="40" cy="8" r="2" fill="var(--color-neutral-300)"/>
+              </svg>
+            </div>
+          )}
+          <span class="problem-card__num" aria-hidden="true">0{problem.id}</span>
+          <h3 class="problem-card__title">{problem.title}</h3>
+          <p class="problem-card__desc">{problem.description}</p>
+        </li>
+      ))}
+    </ul>
+
+  </div>
+</section>
+
+<style>
+  /* ── Section ──────────────────────────────────────────────── */
+  .problems {
+    background: var(--color-bg-surface);
+    padding-block: var(--spacing-20);
+    scroll-margin-top: var(--header-height);
+  }
+
+  /* ── Header ───────────────────────────────────────────────── */
+  .problems__header {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto var(--spacing-16);
+    position: relative;
+    padding: var(--spacing-8);
+  }
+
+  .problems__eyebrow {
+    margin-bottom: var(--spacing-4);
+  }
+
+  .problems__headline {
+    font-size: var(--font-size-display-md);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-display-md);
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-5);
+  }
+
+  .problems__subheadline {
+    font-size: var(--font-size-body-xl);
+    line-height: var(--line-height-body-xl);
+    color: var(--color-text-secondary);
+  }
+
+  /* ── Grid ─────────────────────────────────────────────────── */
+  .problems__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-4);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* ── Problem card ─────────────────────────────────────────── */
+  .problem-card {
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border-subtle);
+    border-top: 2px solid transparent;
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-8) var(--spacing-7);
+    /* Motion handles opacity reveal; keep hover transitions */
+    opacity: 0; /* Motion will reveal */
+    transition:
+      transform        var(--duration-motion-fast) var(--ease-standard),
+      box-shadow       var(--duration-motion-fast) var(--ease-standard),
+      border-color     var(--duration-motion-fast) var(--ease-standard),
+      border-top-color var(--duration-motion-fast) var(--ease-standard);
+  }
+
+  .problem-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--color-border-default);
+    border-top-color: var(--color-primary-500);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* ── Card micro-graphic ───────────────────────────────────── */
+  .card-graphic {
+    margin-bottom: var(--spacing-4);
+  }
+  .card-graphic svg {
+    width: 64px;
+    height: 16px;
+    overflow: visible;
+  }
+
+  .problem-card__num {
+    display: block;
+    font-size: var(--font-size-label-md);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.08em;
+    color: var(--color-primary-500);
+    opacity: 0.7;
+    margin-bottom: var(--spacing-3);
+    transition: opacity var(--duration-motion-fast) var(--ease-standard);
+  }
+
+  .problem-card:hover .problem-card__num {
+    opacity: 1;
+  }
+
+  .problem-card__title {
+    font-size: var(--font-size-heading-lg);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-heading-lg);
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-3);
+  }
+
+  .problem-card__desc {
+    font-size: var(--font-size-body-lg);
+    line-height: var(--line-height-body-lg);
+    color: var(--color-text-secondary);
+  }
+
+  /* ── Responsive ───────────────────────────────────────────── */
+  @media (min-width: 640px) {
+    .problems__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .problems__headline {
+      font-size: var(--font-size-display-md);
+      line-height: var(--line-height-display-md);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .problems {
+      padding-block: var(--spacing-20);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .problems__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* prefers-reduced-motion: skip scroll-reveal, show immediately */
+  @media (prefers-reduced-motion: reduce) {
+    .problem-card {
+      opacity: 1;
+      transition:
+        box-shadow       var(--duration-motion-fast) var(--ease-standard),
+        border-color     var(--duration-motion-fast) var(--ease-standard),
+        border-top-color var(--duration-motion-fast) var(--ease-standard);
+    }
+
+    .problem-card:hover {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  import { inView, hover, animate } from 'motion';
+  import { prefersReducedMotion } from '@lib/motion';
+
+  const cards = document.querySelectorAll<HTMLElement>('.problem-card');
+
+  if (prefersReducedMotion()) {
+    cards.forEach((card) => { card.style.opacity = '1'; card.style.translate = 'none'; });
+  } else {
+    // Individual scroll-reveal per card
+    cards.forEach((card) => {
+      inView(card, (element) => {
+        animate(element, { opacity: [0, 1], y: [12, 0] }, {
+          duration: 0.4, ease: [0, 0, 0.2, 1]
+        });
+      }, { amount: 0.15, margin: '0px 0px -40px 0px' });
+    });
+  }
+
+  // Micro-graphic hover interactions
+  if (!prefersReducedMotion()) {
+    // id=1: animate bar scale (use scaleX as SVG attr via Element cast)
+    const card1 = document.querySelector<HTMLElement>('[data-pid="1"]');
+    if (card1) {
+      hover(card1, () => {
+        const bar = card1.querySelector('.g-bar') as Element | null;
+        if (bar) animate(bar, { scaleX: 1.35 }, { duration: 0.3, ease: [0, 0, 0.2, 1] });
+        return () => { if (bar) animate(bar, { scaleX: 1 }, { duration: 0.2 }); };
+      });
+    }
+
+    // id=2: dots fade on hover
+    const card2 = document.querySelector<HTMLElement>('[data-pid="2"]');
+    if (card2) {
+      const dots = Array.from(card2.querySelectorAll('circle')) as Element[];
+      hover(card2, () => {
+        animate(dots, { opacity: [1, 0.5] }, { duration: 0.3 });
+        return () => animate(dots, { opacity: 1 }, { duration: 0.2 });
+      });
+    }
+
+    // id=3: nodes move slightly closer
+    const card3 = document.querySelector<HTMLElement>('[data-pid="3"]');
+    if (card3) {
+      const circleEls = card3.querySelectorAll('circle');
+      const n1 = circleEls[0] as Element | undefined;
+      const n3 = circleEls[2] as Element | undefined;
+      hover(card3, () => {
+        if (n1) animate(n1, { x: 2 }, { type: 'spring', stiffness: 300, damping: 20 });
+        if (n3) animate(n3, { x: -2 }, { type: 'spring', stiffness: 300, damping: 20 });
+        return () => {
+          if (n1) animate(n1, { x: 0 }, { type: 'spring', stiffness: 300, damping: 20 });
+          if (n3) animate(n3, { x: 0 }, { type: 'spring', stiffness: 300, damping: 20 });
+        };
+      });
+    }
+
+    // id=4: signal line gets a slight pulse
+    const card4 = document.querySelector<HTMLElement>('[data-pid="4"]');
+    if (card4) {
+      const sig = card4.querySelector('.g-signal') as Element | null;
+      if (sig) hover(card4, () => {
+        animate(sig, { opacity: [1, 0.4, 1] }, { duration: 0.6, repeat: 1 });
+        return () => animate(sig, { opacity: 1 }, { duration: 0.1 });
+      });
+    }
+
+    // id=5: ext line becomes more visible
+    const card5 = document.querySelector<HTMLElement>('[data-pid="5"]');
+    if (card5) {
+      const extLine = card5.querySelector('.g-ext-line') as Element | null;
+      if (extLine) hover(card5, () => {
+        animate(extLine, { opacity: [0.4, 0.85], strokeDasharray: '5 2' }, { duration: 0.3 });
+        return () => animate(extLine, { opacity: 0.4, strokeDasharray: '3 3' }, { duration: 0.2 });
+      });
+    }
+
+    // id=6: modules slightly apart
+    const card6 = document.querySelector<HTMLElement>('[data-pid="6"]');
+    if (card6) {
+      const rectEls = card6.querySelectorAll('rect');
+      const mod1 = rectEls[0] as Element | undefined;
+      const mod2 = rectEls[1] as Element | undefined;
+      hover(card6, () => {
+        if (mod1) animate(mod1, { x: -2 }, { type: 'spring', stiffness: 300, damping: 20 });
+        if (mod2) animate(mod2, { x: 2 }, { type: 'spring', stiffness: 300, damping: 20 });
+        return () => {
+          if (mod1) animate(mod1, { x: 0 }, { type: 'spring', stiffness: 300, damping: 20 });
+          if (mod2) animate(mod2, { x: 0 }, { type: 'spring', stiffness: 300, damping: 20 });
+        };
+      });
+    }
+  }
+</script>

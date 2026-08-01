@@ -1,0 +1,44 @@
+{
+  "$description": "Spacing tokens for Interforma.digital. Base unit: 4px.",
+  "$version": "1.0.0",
+  "$source": "Product Design System v1.0 §7",
+  "base": 4,
+  "unit": "px",
+  "scale": {
+    "1":  4,
+    "2":  8,
+    "3":  12,
+    "4":  16,
+    "5":  20,
+    "6":  24,
+    "8":  32,
+    "10": 40,
+    "12": 48,
+    "16": 64,
+    "20": 80,
+    "24": 96,
+    "32": 128,
+    "40": 160
+  },
+  "container": {
+    "max":     1280,
+    "content": 720,
+    "padding": {
+      "desktop": 48,
+      "tablet":  32,
+      "mobile":  20
+    }
+  },
+  "grid": {
+    "columns": {
+      "desktop": 12,
+      "tablet":  8,
+      "mobile":  4
+    },
+    "gutter": {
+      "desktop": 24,
+      "tablet":  20,
+      "mobile":  16
+    }
+  }
+}

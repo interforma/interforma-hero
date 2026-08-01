@@ -1,0 +1,21 @@
+---
+import Base from '@layouts/Base.astro';
+import HeroSection from '@components/sections/HeroSection.astro';
+import ProblemsSection from '@components/sections/ProblemsSection.astro';
+import MethodSection from '@components/sections/MethodSection.astro';
+import CTASection from '@components/sections/CTASection.astro';
+import ContactSection from '@components/sections/ContactSection.astro';
+import { site } from '@config/site';
+---
+
+<Base
+  title={site.defaultTitle}
+  description={site.defaultDescription}
+  canonical={site.url}
+>
+  <HeroSection />
+  <ProblemsSection />
+  <MethodSection />
+  <CTASection />
+  <ContactSection />
+</Base>

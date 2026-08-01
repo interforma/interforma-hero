@@ -1,0 +1,279 @@
+---
+import WhatsAppButton from '@components/composite/WhatsAppButton.astro';
+import Icon from '@components/base/Icon.astro';
+import MethodSystemDiagram from '@components/visual/MethodSystemDiagram.astro';
+import HeroBackground from '@components/background/HeroBackground.astro';
+import CornerMarks from '@components/base/CornerMarks.astro';
+// Alternativas de headline → src/config/content.ts › headlineAlternatives
+// Activa: A — "Transformamos la forma en que tu empresa trabaja."
+
+/**
+ * HeroSection — Release 0
+ * Contenido placeholder basado en el ADN de Interforma.
+ * El copy definitivo, imagen y micro-animaciones se ajustarán
+ * con el equipo antes de publicar.
+ */
+export interface Props {
+  eyebrow?: string;
+  headline?: string;
+  subheadline?: string;
+  primaryCtaLabel?: string;
+  secondaryCtaLabel?: string;
+  secondaryCtaHref?: string;
+}
+
+const {
+  eyebrow       = 'Transformación digital con método',
+  headline      = 'Transformamos la forma en que tu empresa trabaja.',
+  subheadline   = 'Ayudamos a empresas medianas a implementar procesos digitales con resultados medibles — no solo tecnología que se instala.',
+  primaryCtaLabel   = 'Iniciar diagnóstico',
+  secondaryCtaLabel = 'Ver el método',
+  secondaryCtaHref  = '#metodo',
+} = Astro.props;
+---
+
+<section
+  id="inicio"
+  class="hero"
+  aria-labelledby="hero-headline"
+>
+  <HeroBackground />
+  <div class="container hero__inner">
+
+    <!-- ── Contenido textual ─────────────────────────────────── -->
+    <div class="hero__content">
+      <p class="eyebrow hero__eyebrow">{eyebrow}</p>
+
+      <h1 id="hero-headline" class="hero__headline">
+        {headline}
+      </h1>
+
+      <p class="hero__subheadline">
+        {subheadline}
+      </p>
+
+      <div class="hero__actions">
+        <WhatsAppButton
+          label={primaryCtaLabel}
+          size="lg"
+          class="hero__primary-cta"
+        />
+        <a
+          href={secondaryCtaHref}
+          class="hero__secondary-cta"
+          aria-label={`${secondaryCtaLabel} — desplazarse a la sección Método`}
+        >
+          {secondaryCtaLabel}
+          <Icon name="arrow-right" size={18} aria-hidden="true" class="hero__secondary-icon" />
+        </a>
+      </div>
+    </div>
+
+    <!-- ── Elemento visual ──────────────────────────────────── -->
+    <div class="hero__visual">
+      <CornerMarks color="primary" size={10} />
+      <MethodSystemDiagram />
+    </div>
+
+  </div>
+</section>
+
+<style>
+  /* ── Section shell ────────────────────────────────────────── */
+  .hero {
+    min-height: 88vh;
+    min-height: 88svh;
+    display: flex;
+    align-items: center;
+    background: var(--color-bg-page);
+    padding-block: var(--spacing-16) var(--spacing-12);
+    scroll-margin-top: var(--header-height);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .hero__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-16);
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Text column ──────────────────────────────────────────── */
+  .hero__eyebrow {
+    margin-bottom: var(--spacing-5);
+    animation: hero-fade-up var(--duration-enter) var(--easing-out) both;
+    animation-delay: 50ms;
+  }
+
+  .hero__headline {
+    font-size: var(--font-size-display-md);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-display-md);
+    color: var(--color-text-primary);
+    letter-spacing: -0.02em;
+    max-width: 16ch;
+    margin-bottom: var(--spacing-6);
+    animation: hero-fade-up var(--duration-enter) var(--easing-out) both;
+    animation-delay: 100ms;
+  }
+
+  .hero__subheadline {
+    font-size: var(--font-size-body-xl);
+    line-height: var(--line-height-body-xl);
+    color: var(--color-text-primary);
+    max-width: 44ch;
+    margin-bottom: var(--spacing-10);
+    animation: hero-fade-up var(--duration-enter) var(--easing-out) both;
+    animation-delay: 150ms;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-5);
+    animation: hero-fade-up var(--duration-enter) var(--easing-out) both;
+    animation-delay: 200ms;
+  }
+
+  .hero__secondary-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    font-size: var(--font-size-body-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    padding: var(--spacing-1) 0;
+    border-bottom: 2px solid var(--color-border-default);
+    transition:
+      color var(--duration-fast) var(--easing-default),
+      border-color var(--duration-fast) var(--easing-default);
+  }
+
+  .hero__secondary-cta:hover {
+    color: var(--color-interactive-default);
+    border-color: var(--color-interactive-default);
+  }
+
+  .hero__secondary-cta:focus-visible {
+    outline: 2px solid var(--color-interactive-default);
+    outline-offset: 4px;
+    border-radius: var(--radius-sm);
+    border-color: transparent;
+  }
+
+  .hero__secondary-icon {
+    transition: transform var(--duration-fast) var(--easing-default);
+  }
+
+  .hero__secondary-cta:hover .hero__secondary-icon {
+    transform: translateX(4px);
+  }
+
+  /* ── Visual column ────────────────────────────────────────── */
+  .hero__visual {
+    display: none;
+    position: relative;
+    animation: hero-fade-up var(--duration-enter) var(--ease-enter) both;
+    animation-delay: 250ms;
+  }
+
+  /* ── Animations ───────────────────────────────────────────── */
+  @keyframes hero-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ── Tablet ───────────────────────────────────────────────── */
+  @media (min-width: 640px) {
+    .hero__headline {
+      font-size: var(--font-size-display-lg);
+      line-height: var(--line-height-display-lg);
+    }
+  }
+
+  /* ── Desktop ──────────────────────────────────────────────── */
+  @media (min-width: 1024px) {
+    .hero__inner {
+      grid-template-columns: 1fr 480px;
+      gap: var(--spacing-20);
+    }
+
+    .hero__headline {
+      font-size: var(--font-size-display-xl);
+      line-height: var(--line-height-display-xl);
+    }
+
+    .hero__visual {
+      display: block;
+    }
+  }
+
+  /* ── prefers-reduced-motion ───────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    .hero__eyebrow,
+    .hero__headline,
+    .hero__subheadline,
+    .hero__actions,
+    .hero__visual {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+
+    .hero__secondary-cta:hover .hero__secondary-icon {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  import { track } from '@lib/analytics/track';
+
+  const heroPrimaryCta = document.querySelector<HTMLAnchorElement>('.hero__primary-cta');
+  const heroSecondaryCta = document.querySelector<HTMLAnchorElement>('.hero__secondary-cta');
+
+  heroPrimaryCta?.addEventListener('click', () => {
+    track({
+      name: 'click_primary_cta',
+      properties: { source: 'hero', label: heroPrimaryCta.textContent?.trim() },
+    });
+    track({ name: 'click_whatsapp', properties: { source: 'hero' } });
+  });
+
+  heroSecondaryCta?.addEventListener('click', () => {
+    track({
+      name: 'nav_click',
+      properties: { target: '#metodo', source: 'hero_secondary_cta' },
+    });
+  });
+</script>
+
+<script>
+  import { scroll, animate } from 'motion';
+  import { prefersReducedMotion } from '@lib/motion';
+
+  if (!prefersReducedMotion()) {
+    const heroSection = document.querySelector<HTMLElement>('.hero');
+    const heroVisual = document.querySelector<HTMLElement>('.hero__visual');
+    if (heroSection && heroVisual) {
+      scroll(
+        animate(heroVisual,
+          { scale: [1, 0.97], opacity: [1, 0.82] },
+          { duration: 1 }
+        ),
+        { target: heroSection, offset: ['start start', 'end start'] }
+      );
+    }
+  }
+</script>

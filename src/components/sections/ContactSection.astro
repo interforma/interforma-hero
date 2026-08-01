@@ -1,0 +1,144 @@
+---
+import WhatsAppButton from '@components/composite/WhatsAppButton.astro';
+import { contactCopy } from '@config/content';
+import { site } from '@config/site';
+---
+
+<section id="contacto" class="contact" aria-labelledby="contact-headline">
+  <div class="container contact__inner">
+
+    <div class="contact__content">
+      <p class="eyebrow contact__eyebrow">{contactCopy.eyebrow}</p>
+      <h2 id="contact-headline" class="contact__headline">{contactCopy.headline}</h2>
+      <p class="contact__subheadline">{contactCopy.subheadline}</p>
+
+      <div class="contact__actions">
+        <WhatsAppButton
+          label={contactCopy.whatsappLabel}
+          size="lg"
+          class="contact__wa-btn"
+          data-track-event="click_whatsapp"
+        />
+
+        {site.contactEmail && (
+          <a
+            href={`mailto:${site.contactEmail}`}
+            class="contact__email-link"
+            aria-label={`${contactCopy.emailLabel}: ${site.contactEmail}`}
+            data-track-event="click_email"
+          >
+            {contactCopy.emailLabel}
+          </a>
+        )}
+      </div>
+
+      <p class="contact__note">{contactCopy.note}</p>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  /* ── Section ──────────────────────────────────────────────── */
+  .contact {
+    background: var(--color-bg-page);
+    padding-block: var(--spacing-20);
+    scroll-margin-top: var(--header-height);
+  }
+
+  .contact__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* ── Content ──────────────────────────────────────────────── */
+  .contact__eyebrow {
+    margin-bottom: var(--spacing-4);
+  }
+
+  .contact__headline {
+    font-size: var(--font-size-display-md);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-display-md);
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-5);
+    max-width: 16ch;
+  }
+
+  .contact__subheadline {
+    font-size: var(--font-size-body-xl);
+    line-height: var(--line-height-body-xl);
+    color: var(--color-text-secondary);
+    max-width: 48ch;
+    margin-bottom: var(--spacing-10);
+  }
+
+  .contact__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-5);
+    margin-bottom: var(--spacing-6);
+  }
+
+  .contact__email-link {
+    font-size: var(--font-size-body-lg);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    text-decoration: underline;
+    text-decoration-color: var(--color-border-default);
+    text-underline-offset: 3px;
+    transition: color var(--duration-fast) var(--easing-default);
+  }
+
+  .contact__email-link:hover {
+    color: var(--color-text-primary);
+    text-decoration-color: var(--color-text-primary);
+  }
+
+  .contact__email-link:focus-visible {
+    outline: 2px solid var(--color-interactive-default);
+    outline-offset: 4px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+  }
+
+  .contact__note {
+    font-size: var(--font-size-body-sm);
+    color: var(--color-text-tertiary);
+  }
+
+  /* ── Responsive ───────────────────────────────────────────── */
+  @media (min-width: 640px) {
+    .contact__headline {
+      font-size: var(--font-size-display-lg);
+      line-height: var(--line-height-display-lg);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .contact__inner {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: var(--spacing-20);
+    }
+
+    .contact__content {
+      flex: 1;
+    }
+  }
+</style>
+
+<script>
+  import { track } from '@lib/analytics/track';
+
+  document.querySelector('[data-track-event="click_email"]')?.addEventListener('click', () => {
+    track({ name: 'click_email', properties: { source: 'contact_section' } });
+  });
+
+  document.querySelector<HTMLElement>('.contact__wa-btn')?.addEventListener('click', () => {
+    track({ name: 'click_whatsapp', properties: { source: 'contact_section' } });
+  });
+</script>

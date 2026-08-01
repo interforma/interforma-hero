@@ -1,0 +1,36 @@
+---
+export interface Props {
+  targetId?: string;
+  label?: string;
+}
+
+const {
+  targetId = 'main-content',
+  label = 'Saltar al contenido principal',
+} = Astro.props;
+---
+<a href={`#${targetId}`} class="skip-link sr-only sr-only-focusable">
+  {label}
+</a>
+
+<style>
+  .skip-link {
+    position: fixed;
+    top: var(--spacing-4);
+    left: var(--spacing-4);
+    z-index: 9999;
+    padding: var(--spacing-3) var(--spacing-6);
+    background: var(--color-interactive-default);
+    color: var(--color-neutral-0);
+    font-size: var(--font-size-body-md);
+    font-weight: var(--font-weight-semibold);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .skip-link:focus {
+    outline: 2px solid var(--color-neutral-0);
+    outline-offset: 2px;
+  }
+</style>

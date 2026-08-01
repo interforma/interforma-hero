@@ -1,0 +1,298 @@
+/*
+ * tokens.css — Interforma.digital
+ * CSS Custom Properties generadas desde design/tokens/*.json
+ * Fuente de verdad visual del sistema.
+ *
+ * IMPORTANTE: No editar directamente los valores aquí sin actualizar
+ * el JSON correspondiente en design/tokens/.
+ *
+ * Generación: manual en Release 0.
+ * Futuro: script de build (style-dictionary o equivalente).
+ */
+
+/* ============================================================
+   FUENTE — Plus Jakarta Sans Variable
+   Fuente instalada via @fontsource-variable/plus-jakarta-sans
+   Referencia: design/tokens/typography.json
+   ============================================================ */
+
+@import '@fontsource-variable/plus-jakarta-sans';
+@import '@fontsource-variable/host-grotesk';
+
+/* ============================================================
+   VARIABLES GLOBALES
+   Todas las propiedades viven en :root
+   ============================================================ */
+
+:root {
+
+  /* ----------------------------------------------------------
+     COLORES — Paleta base (neutrales)
+     Referencia: design/tokens/colors.json > neutrals
+     ---------------------------------------------------------- */
+
+  --color-neutral-0:   #FFFFFF;
+  --color-neutral-50:  #F9F9F8;
+  --color-neutral-100: #F2F2F0;
+  --color-neutral-200: #E8E8E5;
+  --color-neutral-300: #D1D1CD;
+  --color-neutral-400: #A5A5A0;
+  --color-neutral-500: #737370;
+  --color-neutral-600: #5A5A57;
+  --color-neutral-700: #3D3D3B;
+  --color-neutral-800: #252523;
+  --color-neutral-900: #111110;
+
+  /* ----------------------------------------------------------
+     COLORES — Primario (azul-índigo)
+     Referencia: design/tokens/colors.json > primary
+     ---------------------------------------------------------- */
+
+  --color-primary-50:  #EEF2FD;
+  --color-primary-100: #D5DFFB;
+  --color-primary-500: #2655E8;
+  --color-primary-600: #1A44C9;
+  --color-primary-700: #1236A8;
+  --color-primary-900: #0B2060;
+
+  /* ----------------------------------------------------------
+     COLORES — Semánticos
+     Referencia: design/tokens/colors.json > success/warning/error
+     ---------------------------------------------------------- */
+
+  --color-success-50:  #EFFAF6;
+  --color-success-500: #18794E;
+
+  --color-warning-50:  #FFF8ED;
+  --color-warning-500: #A35200;
+
+  --color-error-50:  #FFF0F0;
+  --color-error-500: #C53030;
+
+  /* ----------------------------------------------------------
+     COLORES — Sección oscura
+     Referencia: design/tokens/colors.json > dark
+     ---------------------------------------------------------- */
+
+  --color-dark-accent: #7BA3FF;
+
+  /* ----------------------------------------------------------
+     COLORES — Roles semánticos
+     Los componentes SOLO usan estas variables, nunca los valores
+     de la paleta base directamente.
+     Referencia: design/tokens/colors.json > roles
+     ---------------------------------------------------------- */
+
+  /* Fondos */
+  --color-bg-page:          var(--color-neutral-50);
+  --color-bg-surface:       var(--color-neutral-0);
+  --color-bg-subtle:        var(--color-neutral-100);
+  --color-bg-dark:          var(--color-neutral-900);
+  --color-bg-dark-refined:  #15171C;   /* Azul-negro profundo: Método + Footer */
+  --color-bg-diagram:       var(--color-neutral-0); /* Diagrama hero: superficie clara */
+
+  /* Diagram-specific */
+  --color-grid-subtle:      rgba(0, 0, 0, 0.04);   /* Grid en fondos claros */
+  --color-line-inactive:    var(--color-neutral-200); /* Líneas de diagrama sin activar */
+
+  /* Bordes */
+  --color-border-default: var(--color-neutral-200);
+  --color-border-strong:  var(--color-neutral-300);
+
+  /* Texto */
+  --color-text-primary:          var(--color-neutral-900);
+  --color-text-secondary:        var(--color-neutral-600);
+  --color-text-tertiary:         var(--color-neutral-500);
+  --color-text-disabled:         var(--color-neutral-400);
+  --color-text-inverse:          var(--color-neutral-0);
+  --color-text-on-dark-primary:  var(--color-neutral-50);
+  --color-text-on-dark-secondary:var(--color-neutral-400);
+
+  /* Interactivos */
+  --color-interactive-default: var(--color-primary-500);
+  --color-interactive-hover:   var(--color-primary-600);
+  --color-interactive-active:  var(--color-primary-700);
+  --color-interactive-subtle:  var(--color-primary-50);
+
+  /* ----------------------------------------------------------
+     TIPOGRAFÍA — Familia
+     Referencia: design/tokens/typography.json > fontFamily
+     ---------------------------------------------------------- */
+
+  --font-family-jakarta: 'Plus Jakarta Sans Variable', 'Plus Jakarta Sans',
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family-host-grotesk: 'Host Grotesk Variable', 'Host Grotesk',
+    'Plus Jakarta Sans Variable', 'Plus Jakarta Sans',
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family-base: var(--font-family-jakarta); /* overridden by html class */
+
+  /* ----------------------------------------------------------
+     TIPOGRAFÍA — Pesos
+     Referencia: design/tokens/typography.json > fontWeight
+     ---------------------------------------------------------- */
+
+  --font-weight-regular:  400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:     700;
+
+  /* ----------------------------------------------------------
+     TIPOGRAFÍA — Escala de tamaños
+     Referencia: design/tokens/typography.json > scale
+     ---------------------------------------------------------- */
+
+  --font-size-display-xl:  4.5rem;    /* 72px */
+  --font-size-display-lg:  3.5rem;    /* 56px */
+  --font-size-display-md:  2.5rem;    /* 40px */
+  --font-size-heading-xl:  2rem;      /* 32px */
+  --font-size-heading-lg:  1.5rem;    /* 24px */
+  --font-size-heading-md:  1.25rem;   /* 20px */
+  --font-size-heading-sm:  1rem;      /* 16px */
+  --font-size-body-lg:     1.125rem;  /* 18px */
+  --font-size-body-md:     1rem;      /* 16px */
+  --font-size-body-sm:     0.875rem;  /* 14px */
+  --font-size-label-lg:    0.875rem;  /* 14px */
+  --font-size-label-md:    0.75rem;   /* 12px */
+  --font-size-caption:     0.75rem;   /* 12px */
+
+  /* ----------------------------------------------------------
+     TIPOGRAFÍA — Line heights
+     Referencia: design/tokens/typography.json > scale[n].lineHeight
+     ---------------------------------------------------------- */
+
+  --line-height-display-xl: 1.05;
+  --line-height-display-lg: 1.1;
+  --line-height-display-md: 1.15;
+  --line-height-heading-xl: 1.2;
+  --line-height-heading-lg: 1.25;
+  --line-height-heading-md: 1.3;
+  --line-height-heading-sm: 1.35;
+  --line-height-body-lg:    1.65;
+  --line-height-body-md:    1.6;
+  --line-height-body-sm:    1.55;
+  --line-height-label-lg:   1.4;
+  --line-height-label-md:   1.4;
+  --line-height-caption:    1.5;
+
+  /* ----------------------------------------------------------
+     ESPACIADO
+     Base: 4px. Referencia: design/tokens/spacing.json > scale
+     ---------------------------------------------------------- */
+
+  --spacing-1:  4px;
+  --spacing-2:  8px;
+  --spacing-3:  12px;
+  --spacing-4:  16px;
+  --spacing-5:  20px;
+  --spacing-6:  24px;
+  --spacing-8:  32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+  --spacing-16: 64px;
+  --spacing-20: 80px;
+  --spacing-24: 96px;
+  --spacing-32: 128px;
+  --spacing-40: 160px;
+
+  /* ----------------------------------------------------------
+     CONTENEDOR Y GRID
+     Referencia: design/tokens/spacing.json > container / grid
+     ---------------------------------------------------------- */
+
+  --container-max:        1280px;
+  --container-content:    720px;
+  --container-padding-x:  48px;   /* desktop  ≥ 1280px */
+  --container-padding-md: 32px;   /* tablet   768px–1279px */
+  --container-padding-sm: 20px;   /* mobile   < 768px */
+
+  /* ----------------------------------------------------------
+     RADIO DE BORDE
+     Referencia: design/tokens/radius.json > scale
+     ---------------------------------------------------------- */
+
+  --radius-none: 0;
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-full: 9999px;
+
+  /* ----------------------------------------------------------
+     SOMBRAS
+     Referencia: design/tokens/shadow.json > scale
+     ---------------------------------------------------------- */
+
+  --shadow-none: none;
+  --shadow-sm:   0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md:   0 4px 6px -1px rgb(0 0 0 / 0.07),
+                 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-lg:   0 10px 15px -3px rgb(0 0 0 / 0.08),
+                 0 4px 6px -4px rgb(0 0 0 / 0.05);
+
+  /* ----------------------------------------------------------
+     MOVIMIENTO — Duraciones
+     Referencia: design/tokens/motion.json > duration
+     ---------------------------------------------------------- */
+
+  --duration-fast:            100ms;
+  --duration-normal:          200ms;
+  --duration-slow:            350ms;
+  --duration-enter:           400ms;
+
+  /* Motion Language v1.1 */
+  --duration-instant:         100ms;
+  --duration-motion-fast:     180ms;
+  --duration-motion-normal:   260ms;
+  --duration-motion-slow:     480ms;
+  --duration-motion-sequence: 2200ms;
+
+  /* ----------------------------------------------------------
+     MOVIMIENTO — Easings
+     Referencia: design/tokens/motion.json > easing
+     ---------------------------------------------------------- */
+
+  --ease-default:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out:      cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out:   cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Motion Language v1.1 */
+  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-enter:    cubic-bezier(0, 0, 0.2, 1);
+  --ease-exit:     cubic-bezier(0.4, 0, 1, 1);
+
+}
+
+html.font-host-grotesk {
+  --font-family-base: var(--font-family-host-grotesk);
+}
+
+/* ============================================================
+   PREFERS-REDUCED-MOTION
+   Cuando el usuario prefiere reducir movimiento:
+   - Los fades (opacity) se mantienen a 250ms máximo.
+   - Las transiciones de translate, scale y rotate se eliminan.
+   Referencia: design/tokens/motion.json > reduceMotion
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast:            0ms;
+    --duration-normal:          0ms;
+    --duration-slow:            250ms;  /* Solo fades, sin movimiento */
+    --duration-enter:           250ms;
+    --duration-instant:         0ms;
+    --duration-motion-fast:     0ms;
+    --duration-motion-normal:   0ms;
+    --duration-motion-slow:     250ms;
+    --duration-motion-sequence: 0ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
