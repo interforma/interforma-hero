@@ -1,0 +1,110 @@
+---
+// pages/index.astro
+// Página de ejemplo — muestra cómo integrar el hero
+
+import HeroSection from '../components/HeroSection.astro'
+import HalftoneShape from '../components/HalftoneShape.astro'
+---
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interforma Digital</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #0d0d0d;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── HERO con parallax y figuras halftone ── -->
+  <HeroSection />
+
+  <!-- ── SECCIÓN CASOS DE ÉXITO ── -->
+  <section style="padding: 80px clamp(24px,6vw,96px); background: #111; border-top: 1px solid #1e1e1e;">
+    <p style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#3a3af4;margin-bottom:10px">
+      Casos de éxito
+    </p>
+    <h2 style="font-size:clamp(24px,3vw,36px);font-weight:300;color:#fff;margin-bottom:8px">
+      Clientes que <em style="color:#555;font-style:italic">crecieron</em> con Interforma
+    </h2>
+    <p style="font-size:13px;color:#555;margin-bottom:44px;max-width:480px;line-height:1.6">
+      Proyectos reales en salud y logística con resultados medibles.
+    </p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px">
+
+      <!-- Card 1 -->
+      <div style="background:#161616;border-radius:10px;border:1px solid #222;overflow:hidden">
+        <HalftoneShape
+          shape="cross"
+          width={280} height={150}
+          lineGap={4} lineWidth={0.36} light={1.4} angle={45}
+          bg="#131313"
+        />
+        <div style="padding:16px">
+          <p style="font-size:13px;font-weight:500;color:#e0e0e0;margin-bottom:6px">Medic-Home</p>
+          <hr style="border:none;border-top:.5px solid #222;margin-bottom:10px" />
+          <p style="font-size:12px;color:#555;line-height:1.55;margin-bottom:14px">
+            Plataforma de hospitalización domiciliaria con analítica avanzada.
+          </p>
+          <div style="display:flex;justify-content:space-between;border-top:.5px solid #1e1e1e;padding-top:10px">
+            <span style="font-size:11px;color:#3a3af4">Salud · Next.js</span>
+            <span style="font-size:11px;color:#444">→</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="background:#161616;border-radius:10px;border:1px solid #222;overflow:hidden">
+        <HalftoneShape
+          shape="diamond"
+          width={280} height={150}
+          lineGap={4} lineWidth={0.37} light={1.5} angle={50}
+          bg="#131313"
+        />
+        <div style="padding:16px">
+          <p style="font-size:13px;font-weight:500;color:#e0e0e0;margin-bottom:6px">First Cargo</p>
+          <hr style="border:none;border-top:.5px solid #222;margin-bottom:10px" />
+          <p style="font-size:12px;color:#555;line-height:1.55;margin-bottom:14px">
+            Tracking de carga en tiempo real para Grupo Borie.
+          </p>
+          <div style="display:flex;justify-content:space-between;border-top:.5px solid #1e1e1e;padding-top:10px">
+            <span style="font-size:11px;color:#3a3af4">Logística · Firebase</span>
+            <span style="font-size:11px;color:#444">→</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div style="background:#161616;border-radius:10px;border:1px solid #222;overflow:hidden">
+        <HalftoneShape
+          shape="blob"
+          width={280} height={150}
+          lineGap={4} lineWidth={0.35} light={1.3} angle={42}
+          bg="#131313"
+        />
+        <div style="padding:16px">
+          <p style="font-size:13px;font-weight:500;color:#e0e0e0;margin-bottom:6px">MediMind</p>
+          <hr style="border:none;border-top:.5px solid #222;margin-bottom:10px" />
+          <p style="font-size:12px;color:#555;line-height:1.55;margin-bottom:14px">
+            SaaS multi-tenant para gestión de medicamentos en Vercel.
+          </p>
+          <div style="display:flex;justify-content:space-between;border-top:.5px solid #1e1e1e;padding-top:10px">
+            <span style="font-size:11px;color:#3a3af4">SaaS · Astro</span>
+            <span style="font-size:11px;color:#444">→</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
