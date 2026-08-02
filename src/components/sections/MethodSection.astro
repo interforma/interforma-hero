@@ -5,6 +5,10 @@ import { methodSteps, methodCopy } from '@config/content';
 <section id="metodo" class="method" aria-labelledby="method-headline">
   <div class="container">
 
+    <p class="method__definition">
+      Interforma es una consultora digital chilena especializada en transformación empresarial mediante estrategia, procesos, tecnología, automatización e inteligencia artificial.
+    </p>
+
     <div class="method__header">
       <p class="eyebrow method__eyebrow">{methodCopy.eyebrow}</p>
       <h2 id="method-headline" class="method__headline">{methodCopy.headline}</h2>
@@ -37,6 +41,15 @@ import { methodSteps, methodCopy } from '@config/content';
 </section>
 
 <style>
+  /* ── Entity definition (GEO/AI) ──────────────────────────── */
+  .method__definition {
+    font-size: var(--font-size-body-sm);
+    color: rgba(255, 255, 255, 0.35);
+    max-width: 72ch;
+    margin-bottom: var(--spacing-10);
+    line-height: var(--line-height-body-lg);
+  }
+
   /* ── Section ──────────────────────────────────────────────── */
   .method {
     background: var(--color-bg-dark-refined);

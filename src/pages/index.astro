@@ -5,7 +5,56 @@ import ProblemsSection from '@components/sections/ProblemsSection.astro';
 import MethodSection from '@components/sections/MethodSection.astro';
 import CTASection from '@components/sections/CTASection.astro';
 import ContactSection from '@components/sections/ContactSection.astro';
+import JsonLd from '@components/utility/JsonLd.astro';
 import { site } from '@config/site';
+
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': 'https://interforma.digital/#organization',
+  name: 'Interforma',
+  url: 'https://interforma.digital/',
+  description:
+    'Interforma es una consultora digital chilena especializada en transformación empresarial mediante estrategia, procesos, tecnología, automatización e inteligencia artificial.',
+  areaServed: 'Chile',
+  logo: {
+    '@type': 'ImageObject',
+    url: 'https://interforma.digital/favicon.svg',
+  },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer service',
+    contactOption: 'TollFree',
+    areaServed: 'CL',
+    availableLanguage: 'Spanish',
+    url: 'https://wa.me/56985408771',
+  },
+};
+
+const professionalService = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  '@id': 'https://interforma.digital/#service',
+  name: 'Interforma',
+  url: 'https://interforma.digital/',
+  description:
+    'Interforma es una consultora digital chilena especializada en transformación empresarial mediante estrategia, procesos, tecnología, automatización e inteligencia artificial.',
+  areaServed: 'Chile',
+  provider: {
+    '@id': 'https://interforma.digital/#organization',
+  },
+};
+
+const webSite = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': 'https://interforma.digital/#website',
+  name: 'Interforma',
+  url: 'https://interforma.digital/',
+  publisher: {
+    '@id': 'https://interforma.digital/#organization',
+  },
+};
 ---
 
 <Base
@@ -13,6 +62,9 @@ import { site } from '@config/site';
   description={site.defaultDescription}
   canonical={site.url}
 >
+  <JsonLd schema={organization} />
+  <JsonLd schema={professionalService} />
+  <JsonLd schema={webSite} />
   <HeroSection />
   <ProblemsSection />
   <MethodSection />

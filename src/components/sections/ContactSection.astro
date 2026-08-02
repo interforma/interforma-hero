@@ -33,6 +33,7 @@ import { site } from '@config/site';
       </div>
 
       <p class="contact__note">{contactCopy.note}</p>
+      <p class="contact__location">Chile · WhatsApp</p>
     </div>
 
   </div>
@@ -108,6 +109,14 @@ import { site } from '@config/site';
   .contact__note {
     font-size: var(--font-size-body-sm);
     color: var(--color-text-tertiary);
+  }
+
+  .contact__location {
+    font-size: var(--font-size-label-md);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-tertiary);
+    letter-spacing: 0.04em;
+    margin-top: var(--spacing-3);
   }
 
   /* ── Responsive ───────────────────────────────────────────── */
