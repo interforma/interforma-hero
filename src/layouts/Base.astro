@@ -17,7 +17,7 @@ export interface Props extends SEOProps {
 const { bodyClass, showFloat = true, ...seoProps } = Astro.props;
 
 const clarityId = import.meta.env.PUBLIC_CLARITY_ID || 'xwqi4gkp67';
-const ga4Id = import.meta.env.PUBLIC_GA4_MEASUREMENT_ID;
+const ga4Id = import.meta.env.PUBLIC_GA4_MEASUREMENT_ID?.trim();
 ---
 <!DOCTYPE html>
 <html lang="es" class={`font-${ACTIVE_FONT}`}>
