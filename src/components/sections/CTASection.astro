@@ -109,3 +109,11 @@ import { ctaCopy } from '@config/content';
     }
   }
 </style>
+
+<script>
+  import { track } from '@lib/analytics/track';
+
+  document.querySelector<HTMLElement>('.cta-section__btn')?.addEventListener('click', () => {
+    track('click_whatsapp', { placement: 'cta_section' });
+  });
+</script>

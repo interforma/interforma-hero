@@ -136,6 +136,6 @@ const isExternal = !!number;
   document
     .querySelector('[data-track-event="click_whatsapp_float"]')
     ?.addEventListener('click', () => {
-      track({ name: 'click_whatsapp', properties: { source: 'float_button' } });
+      track({ name: 'click_whatsapp', properties: { placement: 'float' } });
     });
 </script>

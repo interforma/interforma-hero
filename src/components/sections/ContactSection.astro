@@ -144,10 +144,24 @@ import { site } from '@config/site';
   import { track } from '@lib/analytics/track';
 
   document.querySelector('[data-track-event="click_email"]')?.addEventListener('click', () => {
-    track({ name: 'click_email', properties: { source: 'contact_section' } });
+    track('click_email', { placement: 'contact' });
   });
 
   document.querySelector<HTMLElement>('.contact__wa-btn')?.addEventListener('click', () => {
-    track({ name: 'click_whatsapp', properties: { source: 'contact_section' } });
+    track('contact_whatsapp', { placement: 'contact' });
   });
+
+  const contactSection = document.querySelector<HTMLElement>('.contact');
+  if (contactSection) {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          track('contact_start', { page_path: window.location.pathname });
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(contactSection);
+  }
 </script>

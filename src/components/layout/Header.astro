@@ -400,7 +400,7 @@ import { navigation } from '@config/navigation';
       overlay.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
       activateTrap();
-      track({ name: 'menu_open', properties: { source: 'header' } });
+      track({ name: 'menu_open', properties: { placement: 'header' } });
     }
 
     function closeMenu(returnFocus = true) {
@@ -430,8 +430,8 @@ import { navigation } from '@config/navigation';
         track({
           name: 'nav_click',
           properties: {
-            target: link.getAttribute('href'),
-            source: 'mobile_menu',
+            destination: link.getAttribute('href'),
+            placement: 'mobile_menu',
             event: link.dataset.trackEvent,
           },
         });
@@ -444,8 +444,8 @@ import { navigation } from '@config/navigation';
         track({
           name: 'nav_click',
           properties: {
-            target: link.getAttribute('href'),
-            source: 'header_desktop',
+            destination: link.getAttribute('href'),
+            placement: 'header_desktop',
             event: link.dataset.trackEvent,
           },
         });
@@ -455,7 +455,7 @@ import { navigation } from '@config/navigation';
     // ── WhatsApp CTA tracking (scoped to header to avoid double-fire) ─
     header.querySelectorAll<HTMLAnchorElement>('[data-track-event="click_whatsapp"]').forEach((el) => {
       el.addEventListener('click', () => {
-        track({ name: 'click_whatsapp', properties: { source: 'header' } });
+        track({ name: 'click_whatsapp', properties: { placement: 'header' } });
       });
     });
   }

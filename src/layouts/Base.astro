@@ -17,6 +17,7 @@ export interface Props extends SEOProps {
 const { bodyClass, showFloat = true, ...seoProps } = Astro.props;
 
 const clarityId = import.meta.env.PUBLIC_CLARITY_ID || 'xwqi4gkp67';
+const ga4Id = import.meta.env.PUBLIC_GA4_MEASUREMENT_ID;
 ---
 <!DOCTYPE html>
 <html lang="es" class={`font-${ACTIVE_FONT}`}>
@@ -26,6 +27,10 @@ const clarityId = import.meta.env.PUBLIC_CLARITY_ID || 'xwqi4gkp67';
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <SEOHead {...seoProps} />
     <slot name="head" />
+    <!-- Google Analytics 4 -->
+    {ga4Id && (
+      <Fragment set:html={`<script async src="https://www.googletagmanager.com/gtag/js?id=${ga4Id}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${ga4Id}');</script>`} />
+    )}
     <!-- Microsoft Clarity -->
     <script is:inline define:vars={{ clarityId }}>
       (function(c,l,a,r,i,t,y){
@@ -45,5 +50,9 @@ const clarityId = import.meta.env.PUBLIC_CLARITY_ID || 'xwqi4gkp67';
       <Footer />
     </slot>
     {showFloat && <WhatsAppFloat />}
+    <script>
+      import { initScrollTracking } from '@lib/analytics/scroll';
+      initScrollTracking();
+    </script>
   </body>
 </html>

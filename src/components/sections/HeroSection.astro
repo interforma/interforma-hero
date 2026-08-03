@@ -244,18 +244,11 @@ const {
   const heroSecondaryCta = document.querySelector<HTMLAnchorElement>('.hero__secondary-cta');
 
   heroPrimaryCta?.addEventListener('click', () => {
-    track({
-      name: 'click_primary_cta',
-      properties: { source: 'hero', label: heroPrimaryCta.textContent?.trim() },
-    });
-    track({ name: 'click_whatsapp', properties: { source: 'hero' } });
+    track('hero_cta', { placement: 'hero', label: heroPrimaryCta.textContent?.trim() });
   });
 
   heroSecondaryCta?.addEventListener('click', () => {
-    track({
-      name: 'nav_click',
-      properties: { target: '#metodo', source: 'hero_secondary_cta' },
-    });
+    track('click_secondary_cta', { destination: '#metodo', placement: 'hero' });
   });
 </script>
 
