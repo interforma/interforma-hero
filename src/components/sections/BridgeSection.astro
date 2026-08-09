@@ -7,7 +7,7 @@
  */
 ---
 
-<div class="bridge" aria-hidden="true">
+<div class="bridge">
   <div class="container bridge__inner">
     <p class="bridge__copy">
       Hay una respuesta estructurada para cada uno de esos patrones.
@@ -21,10 +21,13 @@
   .bridge {
     background: linear-gradient(
       to bottom,
-      var(--color-bg-surface)   0%,
+      var(--color-bg-surface)      0%,
+      var(--color-bg-surface)     20%,
+      var(--color-neutral-800)    55%,
       var(--color-bg-dark-refined) 100%
     );
-    padding-block: var(--spacing-16);
+    padding-block-start: var(--spacing-24);
+    padding-block-end: var(--spacing-12);
   }
 
   .bridge__inner {
@@ -47,7 +50,8 @@
 
   @media (min-width: 768px) {
     .bridge {
-      padding-block: var(--spacing-20);
+      padding-block-start: var(--spacing-32);
+      padding-block-end: var(--spacing-16);
     }
 
     .bridge__copy {
