@@ -96,6 +96,7 @@
   --color-line-inactive:    var(--color-neutral-200); /* Líneas de diagrama sin activar */
 
   /* Bordes */
+  --color-border-subtle:  var(--color-neutral-100);
   --color-border-default: var(--color-neutral-200);
   --color-border-strong:  var(--color-neutral-300);
 
@@ -149,6 +150,7 @@
   --font-size-heading-md:  1.25rem;   /* 20px */
   --font-size-heading-sm:  1rem;      /* 16px */
   --font-size-body-xl:     1.25rem;   /* 20px */
+  --line-height-body-xl:  1.6;
   --font-size-body-lg:     1.125rem;  /* 18px */
   --font-size-body-md:     1rem;      /* 16px */
   --font-size-body-sm:     0.875rem;  /* 14px */
@@ -260,6 +262,11 @@
   --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-enter:    cubic-bezier(0, 0, 0.2, 1);
   --ease-exit:     cubic-bezier(0.4, 0, 1, 1);
+
+  /* Legacy aliases — components still using the old naming */
+  --easing-default: var(--ease-default);
+  --easing-out:     var(--ease-out);
+  --easing-in-out:  var(--ease-in-out);
 
 }
 
