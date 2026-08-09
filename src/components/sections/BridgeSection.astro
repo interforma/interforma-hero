@@ -1,0 +1,57 @@
+---
+/**
+ * BridgeSection — narrative connector between Problemas and Método.
+ * A slim transitional band that explicitly links the 6 identified problems
+ * to the structured 6-stage method response. No anchor needed — not a
+ * navigable section, purely a reading-flow element.
+ */
+---
+
+<div class="bridge" aria-hidden="true">
+  <div class="container bridge__inner">
+    <p class="bridge__copy">
+      Hay una respuesta estructurada para cada uno de esos patrones.
+      <strong>El Método Interforma</strong> fue diseñado específicamente para resolverlos
+      — en orden, sin atajos.
+    </p>
+  </div>
+</div>
+
+<style>
+  .bridge {
+    background: linear-gradient(
+      to bottom,
+      var(--color-bg-surface)   0%,
+      var(--color-bg-dark-refined) 100%
+    );
+    padding-block: var(--spacing-16);
+  }
+
+  .bridge__inner {
+    display: flex;
+    justify-content: center;
+  }
+
+  .bridge__copy {
+    font-size: var(--font-size-body-xl);
+    line-height: var(--line-height-body-lg);
+    color: rgba(255, 255, 255, 0.72);
+    text-align: center;
+    max-width: 52ch;
+  }
+
+  .bridge__copy strong {
+    color: var(--color-neutral-0);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  @media (min-width: 768px) {
+    .bridge {
+      padding-block: var(--spacing-20);
+    }
+
+    .bridge__copy {
+      font-size: var(--font-size-heading-lg);
+    }
+  }
+</style>
