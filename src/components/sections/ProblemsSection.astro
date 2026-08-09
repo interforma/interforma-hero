@@ -13,6 +13,8 @@ import CornerMarks from '@components/base/CornerMarks.astro';
       <p class="problems__subheadline">{problemsCopy.subheadline}</p>
     </div>
 
+    <p class="problems__frame">{problemsCopy.frame}</p>
+
     <ul class="problems__grid" role="list">
       {problems.map((problem) => (
         <li class="problem-card" data-pid={problem.id}>
@@ -94,7 +96,7 @@ import CornerMarks from '@components/base/CornerMarks.astro';
   .problems__header {
     text-align: center;
     max-width: 640px;
-    margin: 0 auto var(--spacing-16);
+    margin: 0 auto var(--spacing-10);
     position: relative;
     padding: var(--spacing-8);
   }
@@ -116,6 +118,17 @@ import CornerMarks from '@components/base/CornerMarks.astro';
     font-size: var(--font-size-body-xl);
     line-height: var(--line-height-body-xl);
     color: var(--color-text-secondary);
+  }
+
+  /* ── Frame ────────────────────────────────────────────────── */
+  .problems__frame {
+    font-size: var(--font-size-body-lg);
+    line-height: var(--line-height-body-lg);
+    color: var(--color-text-secondary);
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto var(--spacing-12);
+    padding-inline: var(--spacing-4);
   }
 
   /* ── Grid ─────────────────────────────────────────────────── */

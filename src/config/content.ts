@@ -42,6 +42,8 @@ export const problemsCopy = {
   headline: '¿Le suena familiar?',
   subheadline:
     'La mayoría de los proyectos de transformación digital no fracasan por la tecnología — fracasan por lo que ocurre alrededor.',
+  frame:
+    'Estos son los patrones que vemos con más frecuencia. Si reconoció alguno, no está solo — son exactamente los problemas que el Método Interforma está diseñado para resolver.',
 } as const;
 
 export const problems: ProblemItem[] = [
