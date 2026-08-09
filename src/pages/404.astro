@@ -1,0 +1,76 @@
+---
+import Base from '@layouts/Base.astro';
+import { site } from '@config/site';
+
+const title = `Página no encontrada — ${site.name}`;
+const description = 'La página que buscas no existe o fue movida.';
+---
+
+<Base title={title} description={description} noindex>
+  <main class="not-found">
+    <div class="container not-found__inner">
+      <p class="not-found__code">404</p>
+      <h1 class="not-found__headline">Página no encontrada</h1>
+      <p class="not-found__body">
+        La dirección que buscas no existe o fue movida.<br />
+        Vuelve al inicio para encontrar lo que necesitas.
+      </p>
+      <a href="/" class="not-found__link">Volver al inicio</a>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .not-found {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    padding-block: var(--spacing-24);
+  }
+
+  .not-found__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--spacing-4);
+  }
+
+  .not-found__code {
+    font-size: var(--font-size-display-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-neutral-200);
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .not-found__headline {
+    font-size: var(--font-size-display-md);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-2);
+  }
+
+  .not-found__body {
+    font-size: var(--font-size-body-lg);
+    line-height: var(--line-height-body-lg);
+    color: var(--color-text-secondary);
+    max-width: 40ch;
+  }
+
+  .not-found__link {
+    margin-top: var(--spacing-4);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    font-size: var(--font-size-body-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-interactive-default);
+    text-decoration: none;
+  }
+
+  .not-found__link:hover {
+    text-decoration: underline;
+  }
+</style>
