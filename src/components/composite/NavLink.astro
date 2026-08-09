@@ -31,6 +31,11 @@ const { href, trackEvent, class: className } = Astro.props;
     color: var(--color-text-primary);
   }
 
+  .nav-link.is-active {
+    color: var(--color-interactive-default);
+    font-weight: var(--font-weight-semibold);
+  }
+
   .nav-link:focus-visible {
     outline: 2px solid var(--color-interactive-default);
     outline-offset: 2px;
