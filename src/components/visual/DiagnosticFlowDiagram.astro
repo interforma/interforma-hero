@@ -1,0 +1,264 @@
+---
+/**
+ * DiagnosticFlowDiagram.astro
+ * Flujo lineal: Conversación → Diagnóstico → Hoja de ruta
+ * Complementa el CTA sin competir con el texto principal.
+ * Visual language coherente con MethodSystemDiagram — mismos tokens,
+ * misma estética, pero flujo lineal horizontal en lugar de hub-and-spoke.
+ * Decorativo — aria-hidden="true".
+ */
+---
+
+<div class="dflow" aria-hidden="true" role="presentation">
+  <svg
+    class="dflow__svg"
+    viewBox="0 0 420 112"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+  >
+    <defs>
+      <!-- Dot grid (same density as Hero diagram) -->
+      <pattern id="dfgrid" width="24" height="24" patternUnits="userSpaceOnUse">
+        <circle cx="0"  cy="0"  r="0.7" fill="rgba(0,0,0,0.04)"/>
+        <circle cx="24" cy="0"  r="0.7" fill="rgba(0,0,0,0.04)"/>
+        <circle cx="0"  cy="24" r="0.7" fill="rgba(0,0,0,0.04)"/>
+        <circle cx="24" cy="24" r="0.7" fill="rgba(0,0,0,0.04)"/>
+      </pattern>
+
+      <!-- Gradient for connection lines: neutral → primary -->
+      <linearGradient id="dflow-grad-1" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%"   stop-color="var(--color-neutral-300)"/>
+        <stop offset="100%" stop-color="var(--color-primary-500)"/>
+      </linearGradient>
+      <linearGradient id="dflow-grad-2" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%"   stop-color="var(--color-primary-500)"/>
+        <stop offset="100%" stop-color="var(--color-primary-500)"/>
+      </linearGradient>
+
+      <!-- Arrowhead marker -->
+      <marker id="df-arrow" markerWidth="6" markerHeight="6"
+        refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M 0,0.5 L 5.5,3 L 0,5.5" stroke="var(--color-primary-500)"
+          stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </marker>
+
+      <!-- Subtle glow for node-3 -->
+      <filter id="df-glow" x="-60%" y="-60%" width="220%" height="220%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur"/>
+        <feMerge>
+          <feMergeNode in="blur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+
+    <!-- ── Background ──────────────────────────────────────── -->
+    <rect width="420" height="112" fill="url(#dfgrid)"/>
+
+    <!-- ── Ghost connection lines ─────────────────────────── -->
+    <g stroke="var(--color-neutral-200)" stroke-width="1" stroke-linecap="round">
+      <line x1="94" y1="52" x2="178" y2="52"/>
+      <line x1="242" y1="52" x2="326" y2="52"/>
+    </g>
+
+    <!-- ── Active connection lines ─────────────────────────── -->
+    <line class="dflow-conn dflow-conn-1" x1="94" y1="52" x2="178" y2="52"
+      stroke="url(#dflow-grad-1)" stroke-width="1.5" stroke-linecap="round"
+      marker-end="url(#df-arrow)"/>
+    <line class="dflow-conn dflow-conn-2" x1="242" y1="52" x2="326" y2="52"
+      stroke="url(#dflow-grad-2)" stroke-width="1.5" stroke-linecap="round"
+      marker-end="url(#df-arrow)"/>
+
+    <!-- ── Step 1: Conversación ────────────────────────────── -->
+    <g class="dflow-node dflow-node-1">
+      <!-- Duration badge above -->
+      <rect x="56" y="12" width="36" height="14" rx="3"
+        fill="var(--color-neutral-100)" stroke="var(--color-neutral-200)" stroke-width="1"/>
+      <text x="74" y="22.5" class="dflow__badge">30 min</text>
+
+      <!-- Node ring + dot (neutral — starting point) -->
+      <circle cx="74" cy="52" r="20"
+        fill="var(--color-bg-surface)"
+        stroke="var(--color-neutral-300)" stroke-width="1.5"/>
+      <circle cx="74" cy="52" r="6"
+        fill="var(--color-neutral-400)"/>
+
+      <!-- Port -->
+      <circle cx="94" cy="52" r="2.5" fill="var(--color-neutral-300)"/>
+
+      <!-- Label -->
+      <text x="74" y="83" class="dflow__label">Conversación</text>
+    </g>
+
+    <!-- ── Step 2: Diagnóstico ─────────────────────────────── -->
+    <g class="dflow-node dflow-node-2" opacity="0.72">
+      <!-- Port left -->
+      <circle cx="178" cy="52" r="2.5" fill="var(--color-primary-500)"/>
+
+      <!-- Node ring + dot (transitional — mid-opacity) -->
+      <circle cx="210" cy="52" r="20"
+        fill="var(--color-primary-50)"
+        stroke="var(--color-primary-500)" stroke-width="1.5"/>
+      <circle cx="210" cy="52" r="6"
+        fill="var(--color-primary-500)"/>
+
+      <!-- Port right -->
+      <circle cx="242" cy="52" r="2.5" fill="var(--color-primary-500)"/>
+
+      <!-- Label -->
+      <text x="210" y="83" class="dflow__label dflow__label--mid">Diagnóstico</text>
+    </g>
+
+    <!-- ── Step 3: Hoja de ruta ───────────────────────────── -->
+    <g class="dflow-node dflow-node-3">
+      <!-- Port left -->
+      <circle cx="326" cy="52" r="2.5" fill="var(--color-primary-500)" opacity="0.7"/>
+
+      <!-- Node ring + dot (active output — full blue) -->
+      <circle cx="346" cy="52" r="20"
+        fill="var(--color-primary-50)"
+        stroke="var(--color-primary-500)" stroke-width="1.5"
+        filter="url(#df-glow)"/>
+      <circle cx="346" cy="52" r="6"
+        fill="var(--color-primary-500)"/>
+
+      <!-- Label -->
+      <text x="346" y="83" class="dflow__label dflow__label--active">Hoja de ruta</text>
+    </g>
+
+    <!-- ── Step numbers ────────────────────────────────────── -->
+    <text x="74"  y="104" class="dflow__step">01</text>
+    <text x="210" y="104" class="dflow__step">02</text>
+    <text x="346" y="104" class="dflow__step">03</text>
+  </svg>
+</div>
+
+<style>
+  /* ── Wrapper ──────────────────────────────────────────────── */
+  .dflow {
+    background: var(--color-bg-diagram);
+    border: 1px solid var(--color-neutral-200);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-3);
+    width: 100%;
+    max-width: 480px;
+    margin-inline: auto;
+    overflow: hidden;
+  }
+
+  .dflow__svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* ── Connection lines ─────────────────────────────────────── */
+  .dflow-conn {
+    stroke-dasharray: 90;
+    stroke-dashoffset: 90;
+  }
+
+  /* ── Nodes (hidden until animated) ───────────────────────── */
+  .dflow-node {
+    opacity: 0;
+  }
+
+  /* ── Node labels ──────────────────────────────────────────── */
+  .dflow__label {
+    fill: var(--color-text-secondary);
+    font-size: 10px;
+    font-family: var(--font-family-base);
+    font-weight: 500;
+    text-anchor: middle;
+    letter-spacing: 0.03em;
+  }
+
+  .dflow__label--mid {
+    fill: var(--color-primary-700);
+    font-weight: 600;
+  }
+
+  .dflow__label--active {
+    fill: var(--color-primary-700);
+    font-weight: 700;
+  }
+
+  /* ── Duration badge ───────────────────────────────────────── */
+  .dflow__badge {
+    fill: var(--color-text-secondary);
+    font-size: 8px;
+    font-family: var(--font-family-base);
+    font-weight: 600;
+    text-anchor: middle;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── Step numbers ─────────────────────────────────────────── */
+  .dflow__step {
+    fill: var(--color-text-tertiary);
+    font-size: 8px;
+    font-family: var(--font-family-base);
+    font-weight: 600;
+    text-anchor: middle;
+    letter-spacing: 0.1em;
+    opacity: 0.6;
+  }
+
+  /* ── prefers-reduced-motion ───────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    .dflow-conn { stroke-dashoffset: 0; }
+    .dflow-node { opacity: 1; }
+  }
+</style>
+
+<script>
+  import { animate, inView, stagger } from 'motion';
+  import { prefersReducedMotion } from '@lib/motion';
+
+  const container = document.querySelector<HTMLElement>('.dflow');
+  if (!container) throw new Error('[DiagnosticFlow] .dflow not found');
+
+  const node1 = container.querySelector('.dflow-node-1') as Element;
+  const node2 = container.querySelector('.dflow-node-2') as Element;
+  const node3 = container.querySelector('.dflow-node-3') as Element;
+  const conn1 = container.querySelector('.dflow-conn-1') as SVGLineElement;
+  const conn2 = container.querySelector('.dflow-conn-2') as SVGLineElement;
+
+  // Prime dasharray from computed length
+  [conn1, conn2].forEach((el) => {
+    const len = el instanceof SVGGeometryElement ? el.getTotalLength() : 90;
+    el.style.strokeDasharray = String(len);
+    el.style.strokeDashoffset = String(len);
+  });
+
+  const ease = [0, 0, 0.2, 1] as const;
+  let done = false;
+
+  function runEntrance() {
+    if (done) return;
+    done = true;
+
+    if (prefersReducedMotion()) {
+      animate([node1, node2, node3], { opacity: 1 }, { duration: 0 });
+      [conn1, conn2].forEach(el => { (el as HTMLElement).style.strokeDashoffset = '0'; });
+      return;
+    }
+
+    // Node 1 (0ms)
+    animate(node1, { opacity: [0, 1], x: [-3, 0] }, { duration: 0.28, ease });
+
+    // Line 1 draws (280ms)
+    animate(conn1, { strokeDashoffset: 0 }, { delay: 0.28, duration: 0.36, ease });
+
+    // Node 2 (580ms)
+    animate(node2, { opacity: [0, 1], x: [-3, 0] }, { delay: 0.58, duration: 0.28, ease });
+
+    // Line 2 draws (820ms)
+    animate(conn2, { strokeDashoffset: 0 }, { delay: 0.82, duration: 0.36, ease });
+
+    // Node 3 (1120ms)
+    animate(node3, { opacity: [0, 1], x: [-3, 0] }, { delay: 1.12, duration: 0.28, ease });
+  }
+
+  inView(container, () => { runEntrance(); }, { amount: 0.4 });
+</script>

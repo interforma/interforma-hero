@@ -1,5 +1,6 @@
 ---
 import WhatsAppButton from '@components/composite/WhatsAppButton.astro';
+import DiagnosticFlowDiagram from '@components/visual/DiagnosticFlowDiagram.astro';
 import { ctaCopy } from '@config/content';
 ---
 
@@ -15,11 +16,15 @@ import { ctaCopy } from '@config/content';
         <WhatsAppButton
           label={ctaCopy.ctaLabel}
           size="lg"
-          variant="secondary"
+          variant="primary"
           class="cta-section__btn"
         />
         <p class="cta-section__note">{ctaCopy.note}</p>
       </div>
+    </div>
+
+    <div class="cta-section__visual">
+      <DiagnosticFlowDiagram />
     </div>
 
   </div>
@@ -37,11 +42,17 @@ import { ctaCopy } from '@config/content';
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
-    gap: var(--spacing-10);
+    gap: var(--spacing-12);
   }
 
   /* ── Content ──────────────────────────────────────────────── */
+  .cta-section__content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .cta-section__eyebrow {
     color: rgba(255, 255, 255, 0.65);
     margin-bottom: var(--spacing-4);
@@ -72,21 +83,35 @@ import { ctaCopy } from '@config/content';
     gap: var(--spacing-3);
   }
 
-  /* Override WhatsApp button for blue-bg context */
-  .cta-section__btn {
+  /* ── Button: white on blue ────────────────────────────────────
+     WhatsApp button renders in a child component scope, so :global()
+     is required to override the scoped styles that don't cross
+     Astro's component boundary.
+  ─────────────────────────────────────────────────────────────── */
+  :global(.cta-section__btn) {
     background: var(--color-neutral-0) !important;
     color: var(--color-interactive-default) !important;
     border-color: var(--color-neutral-0) !important;
   }
 
-  .cta-section__btn:hover {
+  :global(.cta-section__btn:hover) {
     background: var(--color-neutral-100) !important;
     border-color: var(--color-neutral-100) !important;
+  }
+
+  :global(.cta-section__btn:focus-visible) {
+    outline-color: var(--color-neutral-0) !important;
   }
 
   .cta-section__note {
     font-size: var(--font-size-body-sm);
     color: rgba(255, 255, 255, 0.85);
+  }
+
+  /* ── Visual (diagram) ─────────────────────────────────────── */
+  .cta-section__visual {
+    width: 100%;
+    max-width: 480px;
   }
 
   /* ── Responsive ───────────────────────────────────────────── */
@@ -98,14 +123,31 @@ import { ctaCopy } from '@config/content';
 
     .cta-section__actions {
       flex-direction: row;
-      justify-content: center;
     }
   }
 
   @media (min-width: 1024px) {
+    .cta-section__inner {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--spacing-16);
+    }
+
+    .cta-section__content {
+      text-align: left;
+      align-items: flex-start;
+      flex: 1;
+    }
+
     .cta-section__headline {
       font-size: var(--font-size-display-xl);
       line-height: var(--line-height-display-xl);
+    }
+
+    .cta-section__visual {
+      flex-shrink: 0;
+      width: 420px;
     }
   }
 </style>
