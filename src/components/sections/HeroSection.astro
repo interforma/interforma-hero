@@ -67,6 +67,7 @@ const {
           <Icon name="arrow-right" size={18} aria-hidden="true" class="hero__secondary-icon" />
         </a>
       </div>
+      <p class="hero__reassurance">Diagnóstico gratuito · 30 min · Sin compromiso</p>
     </div>
 
     <!-- ── Elemento visual ──────────────────────────────────── -->
@@ -139,6 +140,14 @@ const {
     animation-delay: 200ms;
   }
 
+  .hero__reassurance {
+    font-size: var(--font-size-body-sm);
+    color: var(--color-text-tertiary);
+    margin-top: var(--spacing-3);
+    animation: hero-fade-up var(--duration-enter) var(--easing-out) both;
+    animation-delay: 250ms;
+  }
+
   .hero__secondary-cta {
     display: inline-flex;
     align-items: center;
@@ -179,7 +188,7 @@ const {
     display: none;
     position: relative;
     animation: hero-fade-up var(--duration-enter) var(--ease-enter) both;
-    animation-delay: 250ms;
+    animation-delay: 300ms;
   }
 
   /* ── Animations ───────────────────────────────────────────── */
@@ -225,6 +234,7 @@ const {
     .hero__headline,
     .hero__subheadline,
     .hero__actions,
+    .hero__reassurance,
     .hero__visual {
       animation: none;
       opacity: 1;
