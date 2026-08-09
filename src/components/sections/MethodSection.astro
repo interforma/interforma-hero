@@ -171,16 +171,16 @@ import { methodSteps, methodCopy } from '@config/content';
   }
 
   .method-step__num {
-    font-size: var(--font-size-display-md);
+    font-size: var(--font-size-heading-lg);
     font-weight: var(--font-weight-bold);
     color: var(--color-dark-accent);
     line-height: 1;
     letter-spacing: -0.04em;
-    opacity: 0.7;
+    opacity: 0.5;
   }
 
   .method-step.is-active .method-step__num {
-    opacity: 1;
+    opacity: 0.85;
   }
 
   .method-step__name {
@@ -227,6 +227,10 @@ import { methodSteps, methodCopy } from '@config/content';
       gap: var(--spacing-8);
       padding-block: var(--spacing-10);
     }
+
+    .method-step__num {
+      font-size: var(--font-size-heading-xl);
+    }
   }
 
   @media (min-width: 1024px) {
@@ -241,7 +245,7 @@ import { methodSteps, methodCopy } from '@config/content';
     }
 
     .method-step__num {
-      font-size: var(--font-size-display-lg);
+      font-size: var(--font-size-heading-xl);
     }
 
     .method-step__name {
