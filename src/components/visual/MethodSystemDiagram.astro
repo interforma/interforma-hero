@@ -1,8 +1,9 @@
 ---
 /**
- * MethodSystemDiagram.astro — v3
+ * MethodSystemDiagram.astro — v4
  * Sistema/máquina: Datos · Procesos · Equipos → IF Método → Sistema · Claridad · Resultados
- * Loop continuo con partículas simultáneas, sin contenedor/tarjeta.
+ * Particles follow actual SVG bezier paths via getPointAtLength().
+ * Plays once on inView, replays on pointerenter.
  * Decorativo — aria-hidden="true", role="presentation".
  */
 ---
@@ -15,8 +16,7 @@
     fill="none"
   >
     <defs>
-      <!-- Hub glow -->
-      <filter id="msd-hub-glow" x="-55%" y="-55%" width="210%" height="210%">
+      <filter id="msd-hub-glow" x="-60%" y="-60%" width="220%" height="220%">
         <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/>
         <feMerge>
           <feMergeNode in="blur"/>
@@ -24,163 +24,142 @@
         </feMerge>
       </filter>
 
-      <!-- Node active glow -->
-      <filter id="msd-node-glow" x="-80%" y="-80%" width="260%" height="260%">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
-        <feMerge>
-          <feMergeNode in="blur"/>
-          <feMergeNode in="SourceGraphic"/>
-        </feMerge>
-      </filter>
-
-      <!-- Gradient: neutral → signal blue (entrada paths) -->
+      <!-- Gradient: neutral → signal blue -->
       <linearGradient id="msd-grad-e" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%"   stop-color="#E8E8E5"/>
+        <stop offset="0%"   stop-color="rgba(21,23,28,0.13)"/>
         <stop offset="100%" stop-color="#2655E8"/>
       </linearGradient>
-
-      <!-- Gradient: signal blue (salida paths) -->
       <linearGradient id="msd-grad-s" x1="0%" y1="0%" x2="100%" y2="0%">
         <stop offset="0%"   stop-color="#2655E8"/>
         <stop offset="100%" stop-color="#1A44C9"/>
       </linearGradient>
     </defs>
 
-    <!-- ── Zone dividers (always visible, subtle) ─────────────── -->
+    <!-- ── Zone dividers ───────────────────────────────────────── -->
     <line x1="160" y1="16" x2="160" y2="272"
-      stroke="#E8E8E5" stroke-width="1" stroke-dasharray="2 9" opacity="0.5"/>
+      stroke="rgba(21,23,28,0.09)" stroke-width="1" stroke-dasharray="2 9"/>
     <line x1="320" y1="16" x2="320" y2="272"
-      stroke="#E8E8E5" stroke-width="1" stroke-dasharray="2 9" opacity="0.5"/>
+      stroke="rgba(21,23,28,0.09)" stroke-width="1" stroke-dasharray="2 9"/>
 
-    <!-- ── Ghost paths (skeleton, always visible) ─────────────── -->
-    <g class="msd-ghosts" stroke="#E8E8E5" stroke-width="1" stroke-linecap="round" opacity="0.7">
-      <path d="M 94,68 C 160,68 176,150 202,150"/>
+    <!-- ── Corner registration marks ──────────────────────────── -->
+    <g class="msd-tick">
+      <path d="M28 20 h10 M28 20 v10"/>
+      <path d="M452 20 h-10 M452 20 v10"/>
+      <path d="M28 284 h10 M28 284 v-10"/>
+      <path d="M452 284 h-10 M452 284 v-10"/>
+    </g>
+
+    <!-- ── Ghost paths (always faint) ─────────────────────────── -->
+    <g stroke="rgba(21,23,28,0.1)" stroke-width="1" stroke-linecap="round">
+      <path d="M 94,68  C 160,68  176,150 202,150"/>
       <path d="M 94,150 L 202,150"/>
       <path d="M 94,232 C 160,232 176,150 202,150"/>
-      <path d="M 278,150 C 304,150 320,68 386,68"/>
+      <path d="M 278,150 C 304,150 320,68  386,68"/>
       <path d="M 278,150 L 386,150"/>
       <path d="M 278,150 C 304,150 320,232 386,232"/>
     </g>
 
-    <!-- ── Active paths: ENTRADA → HUB ──────────────────────────── -->
-    <path class="msd-conn msd-conn-e1" d="M 94,68 C 160,68 176,150 202,150"
+    <!-- ── Active paths: ENTRADA → HUB ───────────────────────── -->
+    <path class="msd-conn msd-conn-e1" id="msd-ce1" d="M 94,68  C 160,68  176,150 202,150"
       stroke="url(#msd-grad-e)" stroke-width="1.5" stroke-linecap="round"/>
-    <path class="msd-conn msd-conn-e2" d="M 94,150 L 202,150"
+    <path class="msd-conn msd-conn-e2" id="msd-ce2" d="M 94,150 L 202,150"
       stroke="url(#msd-grad-e)" stroke-width="1.5" stroke-linecap="round"/>
-    <path class="msd-conn msd-conn-e3" d="M 94,232 C 160,232 176,150 202,150"
+    <path class="msd-conn msd-conn-e3" id="msd-ce3" d="M 94,232 C 160,232 176,150 202,150"
       stroke="url(#msd-grad-e)" stroke-width="1.5" stroke-linecap="round"/>
 
-    <!-- ── Active paths: HUB → SALIDA ───────────────────────────── -->
-    <path class="msd-conn msd-conn-s1" d="M 278,150 C 304,150 320,68 386,68"
+    <!-- ── Active paths: HUB → SALIDA ─────────────────────────── -->
+    <path class="msd-conn msd-conn-s1" id="msd-cs1" d="M 278,150 C 304,150 320,68  386,68"
       stroke="url(#msd-grad-s)" stroke-width="1.5" stroke-linecap="round"/>
-    <path class="msd-conn msd-conn-s2" d="M 278,150 L 386,150"
+    <path class="msd-conn msd-conn-s2" id="msd-cs2" d="M 278,150 L 386,150"
       stroke="url(#msd-grad-s)" stroke-width="1.5" stroke-linecap="round"/>
-    <path class="msd-conn msd-conn-s3" d="M 278,150 C 304,150 320,232 386,232"
+    <path class="msd-conn msd-conn-s3" id="msd-cs3" d="M 278,150 C 304,150 320,232 386,232"
       stroke="url(#msd-grad-s)" stroke-width="1.5" stroke-linecap="round"/>
 
-    <!-- ── ENTRADA nodes ─────────────────────────────────────────── -->
-    <!-- Datos -->
+    <!-- ── ENTRADA nodes ───────────────────────────────────────── -->
     <g class="msd-node msd-node-e1">
-      <circle cx="74" cy="68" r="20" class="msd-node__ring"/>
-      <circle cx="74" cy="68" r="20" class="msd-node__ring-active"/>
-      <circle cx="74" cy="68" r="6"  class="msd-node__dot"/>
-      <circle cx="74" cy="68" r="6"  class="msd-node__dot-active"/>
-      <circle cx="94" cy="68" r="2.5" class="msd-node__port"/>
-      <text x="74" y="99" class="msd-label">Datos</text>
-      <text x="74" y="99" class="msd-label msd-label--blue msd-label-active">Datos</text>
+      <circle cx="74" cy="68"  r="27" class="msd-node__halo"/>
+      <circle cx="74" cy="68"  r="20" class="msd-node__ring"/>
+      <circle cx="74" cy="68"  r="5"  class="msd-node__dot"/>
+      <circle cx="94" cy="68"  r="2.5" class="msd-node__port"/>
+      <text x="74" y="100" class="msd-label">Datos</text>
     </g>
 
-    <!-- Procesos -->
     <g class="msd-node msd-node-e2">
+      <circle cx="74" cy="150" r="27" class="msd-node__halo"/>
       <circle cx="74" cy="150" r="20" class="msd-node__ring"/>
-      <circle cx="74" cy="150" r="20" class="msd-node__ring-active"/>
-      <circle cx="74" cy="150" r="6"  class="msd-node__dot"/>
-      <circle cx="74" cy="150" r="6"  class="msd-node__dot-active"/>
+      <circle cx="74" cy="150" r="5"  class="msd-node__dot"/>
       <circle cx="94" cy="150" r="2.5" class="msd-node__port"/>
-      <text x="74" y="181" class="msd-label">Procesos</text>
-      <text x="74" y="181" class="msd-label msd-label--blue msd-label-active">Procesos</text>
+      <text x="74" y="182" class="msd-label">Procesos</text>
     </g>
 
-    <!-- Equipos -->
     <g class="msd-node msd-node-e3">
+      <circle cx="74" cy="232" r="27" class="msd-node__halo"/>
       <circle cx="74" cy="232" r="20" class="msd-node__ring"/>
-      <circle cx="74" cy="232" r="20" class="msd-node__ring-active"/>
-      <circle cx="74" cy="232" r="6"  class="msd-node__dot"/>
-      <circle cx="74" cy="232" r="6"  class="msd-node__dot-active"/>
+      <circle cx="74" cy="232" r="5"  class="msd-node__dot"/>
       <circle cx="94" cy="232" r="2.5" class="msd-node__port"/>
-      <text x="74" y="263" class="msd-label">Equipos</text>
-      <text x="74" y="263" class="msd-label msd-label--blue msd-label-active">Equipos</text>
+      <text x="74" y="264" class="msd-label">Equipos</text>
     </g>
 
-    <!-- ── Hub: IF Método ────────────────────────────────────────── -->
-    <g class="msd-hub">
-      <!-- Halo pulse -->
-      <circle cx="240" cy="150" r="54" class="msd-hub__halo"
-        transform-box="fill-box" transform-origin="center"/>
+    <!-- ── Hub: IF Método ──────────────────────────────────────── -->
+    <g class="msd-hub" id="msd-hub">
+      <!-- Ambient glow -->
+      <circle cx="240" cy="150" r="54" class="msd-hub__glow"/>
       <!-- Outer accent ring -->
-      <circle cx="240" cy="150" r="38"
-        fill="white" stroke="#2655E8" stroke-width="1.5"/>
-      <!-- Filled core -->
-      <circle cx="240" cy="150" r="30"
-        fill="#2655E8" filter="url(#msd-hub-glow)"/>
+      <circle cx="240" cy="150" r="40" class="msd-hub__outer"/>
+      <!-- Filled core — scale animates on .on -->
+      <circle cx="240" cy="150" r="30" class="msd-hub__core"
+        transform-box="fill-box" transform-origin="center"
+        filter="url(#msd-hub-glow)"/>
       <!-- Port dots -->
-      <circle cx="202" cy="150" r="3" fill="#2655E8" opacity="0.5"/>
-      <circle cx="278" cy="150" r="3" fill="#2655E8" opacity="0.5"/>
-      <!-- Labels -->
-      <text x="240" y="146" class="msd-hub__if">IF</text>
-      <text x="240" y="161" class="msd-hub__method">MÉTODO</text>
+      <circle cx="202" cy="150" r="2.5" class="msd-hub__port"/>
+      <circle cx="278" cy="150" r="2.5" class="msd-hub__port"/>
+      <!-- Text -->
+      <text x="240" y="147" class="msd-hub__if">IF</text>
+      <text x="240" y="162" class="msd-hub__method">MÉTODO</text>
     </g>
 
-    <!-- ── SALIDA nodes — inline active styles (no opacity overlay) ── -->
-    <!-- Sistema -->
+    <!-- ── SALIDA nodes ────────────────────────────────────────── -->
     <g class="msd-node msd-node-s1">
-      <circle cx="406" cy="68" r="20"
-        fill="#EEF2FD" stroke="#2655E8" stroke-width="1.5"
-        filter="url(#msd-node-glow)"/>
-      <circle cx="406" cy="68" r="6" fill="#2655E8"/>
-      <circle cx="386" cy="68" r="2.5" fill="#2655E8" opacity="0.5"/>
-      <text x="406" y="99" class="msd-label msd-label--blue">Sistema</text>
+      <circle cx="406" cy="68"  r="27" class="msd-node__halo"/>
+      <circle cx="406" cy="68"  r="20" class="msd-node__ring"/>
+      <circle cx="406" cy="68"  r="5"  class="msd-node__dot"/>
+      <circle cx="386" cy="68"  r="2.5" class="msd-node__port"/>
+      <text x="406" y="100" class="msd-label">Sistema</text>
     </g>
 
-    <!-- Claridad -->
     <g class="msd-node msd-node-s2">
-      <circle cx="406" cy="150" r="20"
-        fill="#EEF2FD" stroke="#2655E8" stroke-width="1.5"
-        filter="url(#msd-node-glow)"/>
-      <circle cx="406" cy="150" r="6" fill="#2655E8"/>
-      <circle cx="386" cy="150" r="2.5" fill="#2655E8" opacity="0.5"/>
-      <text x="406" y="181" class="msd-label msd-label--blue">Claridad</text>
+      <circle cx="406" cy="150" r="27" class="msd-node__halo"/>
+      <circle cx="406" cy="150" r="20" class="msd-node__ring"/>
+      <circle cx="406" cy="150" r="5"  class="msd-node__dot"/>
+      <circle cx="386" cy="150" r="2.5" class="msd-node__port"/>
+      <text x="406" y="182" class="msd-label">Claridad</text>
     </g>
 
-    <!-- Resultados -->
     <g class="msd-node msd-node-s3">
-      <circle cx="406" cy="232" r="20"
-        fill="#EEF2FD" stroke="#2655E8" stroke-width="1.5"
-        filter="url(#msd-node-glow)"/>
-      <circle cx="406" cy="232" r="6" fill="#2655E8"/>
-      <circle cx="386" cy="232" r="2.5" fill="#2655E8" opacity="0.5"/>
-      <text x="406" y="263" class="msd-label msd-label--blue">Resultados</text>
+      <circle cx="406" cy="232" r="27" class="msd-node__halo"/>
+      <circle cx="406" cy="232" r="20" class="msd-node__ring"/>
+      <circle cx="406" cy="232" r="5"  class="msd-node__dot"/>
+      <circle cx="386" cy="232" r="2.5" class="msd-node__port"/>
+      <text x="406" y="264" class="msd-label">Resultados</text>
     </g>
 
-    <!-- ── Particles: ENTRADA → HUB (cx/cy = node center) ───────── -->
-    <circle class="msd-p msd-p-e1" cx="74"  cy="68"  r="3" fill="#2655E8" opacity="0"/>
-    <circle class="msd-p msd-p-e2" cx="74"  cy="150" r="3" fill="#2655E8" opacity="0"/>
-    <circle class="msd-p msd-p-e3" cx="74"  cy="232" r="3" fill="#2655E8" opacity="0"/>
+    <!-- ── Particles (positioned by JS via getPointAtLength) ───── -->
+    <circle class="msd-p" id="msd-pe1" r="3" fill="#2655E8" opacity="0"/>
+    <circle class="msd-p" id="msd-pe2" r="3" fill="#2655E8" opacity="0"/>
+    <circle class="msd-p" id="msd-pe3" r="3" fill="#2655E8" opacity="0"/>
+    <circle class="msd-p" id="msd-ps1" r="3" fill="#2655E8" opacity="0"/>
+    <circle class="msd-p" id="msd-ps2" r="3" fill="#2655E8" opacity="0"/>
+    <circle class="msd-p" id="msd-ps3" r="3" fill="#2655E8" opacity="0"/>
 
-    <!-- ── Particles: HUB → SALIDA (cx/cy = hub center) ─────────── -->
-    <circle class="msd-p msd-p-s1" cx="240" cy="150" r="3" fill="#2655E8" opacity="0"/>
-    <circle class="msd-p msd-p-s2" cx="240" cy="150" r="3" fill="#2655E8" opacity="0"/>
-    <circle class="msd-p msd-p-s3" cx="240" cy="150" r="3" fill="#2655E8" opacity="0"/>
-
-    <!-- ── Zone labels ────────────────────────────────────────────── -->
-    <text x="74"  y="292" class="msd-zone">ENTRADA</text>
-    <text x="240" y="292" class="msd-zone">TRANSFORMACIÓN</text>
-    <text x="406" y="292" class="msd-zone">SALIDA</text>
+    <!-- ── Zone labels (always visible) ──────────────────────── -->
+    <text x="74"  y="294" class="msd-zone">ENTRADA</text>
+    <text x="240" y="294" class="msd-zone">TRANSFORMACIÓN</text>
+    <text x="406" y="294" class="msd-zone">SALIDA</text>
   </svg>
 </div>
 
 <style>
-  /* ── Wrapper — no card, transparent ──────────────────────── */
+  /* ── Wrapper ──────────────────────────────────────────────── */
   .msd {
     width: 100%;
     position: relative;
@@ -193,46 +172,58 @@
     overflow: visible;
   }
 
-  /* ── Active connection lines — initially hidden via dashoffset ── */
+  /* ── Suppress transitions during instant reset ───────────── */
+  .msd.no-transition * {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  /* ── Corner ticks ─────────────────────────────────────────── */
+  .msd-tick path {
+    stroke: rgba(21, 23, 28, 0.18);
+    stroke-width: 1;
+    stroke-linecap: square;
+    fill: none;
+  }
+
+  /* ── Active connection lines — initially hidden ───────────── */
   .msd-conn {
     fill: none;
-    stroke-dasharray: 999;
-    stroke-dashoffset: 999;
+    /* stroke-dasharray / stroke-dashoffset set by JS */
+    transition: stroke-dashoffset 0.95s cubic-bezier(0.4, 0, 0.2, 1);
   }
+  .msd-conn.on { stroke-dashoffset: 0 !important; }
 
-  /* ── Nodes — initially invisible ─────────────────────────── */
-  .msd-node { opacity: 0; }
-
-  /* Node ring: neutral (rest) */
-  .msd-node__ring {
-    fill: white;
-    stroke: #E8E8E5;
-    stroke-width: 1.5;
-  }
-
-  /* Node ring: active (blue tint) — sits on top, opacity toggled */
-  .msd-node__ring-active {
-    fill: #EEF2FD;
-    stroke: #2655E8;
-    stroke-width: 1.5;
-    opacity: 0;
-  }
-
-  /* Node dot: neutral */
-  .msd-node__dot {
-    fill: #A5A5A0;
-  }
-
-  /* Node dot: active (signal blue) */
-  .msd-node__dot-active {
+  /* ── Node elements — always visible, colors change on .on ── */
+  .msd-node__halo {
     fill: #2655E8;
     opacity: 0;
+    transition: opacity 0.55s ease;
+  }
+  .msd-node.on .msd-node__halo { opacity: 0.08; }
+
+  .msd-node__ring {
+    fill: white;
+    stroke: rgba(21, 23, 28, 0.14);
+    stroke-width: 1.25;
+    transition: stroke 0.55s ease, fill 0.55s ease;
+  }
+  .msd-node.on .msd-node__ring {
+    stroke: rgba(38, 85, 232, 0.38);
+    fill: #f5f8ff;
   }
 
-  /* Port dot */
-  .msd-node__port {
-    fill: #D1D1CD;
+  .msd-node__dot {
+    fill: rgba(21, 23, 28, 0.28);
+    transition: fill 0.55s ease;
   }
+  .msd-node.on .msd-node__dot { fill: #2655E8; }
+
+  .msd-node__port {
+    fill: rgba(21, 23, 28, 0.14);
+    transition: fill 0.55s ease;
+  }
+  .msd-node.on .msd-node__port { fill: rgba(38, 85, 232, 0.45); }
 
   /* ── Labels ───────────────────────────────────────────────── */
   .msd-label {
@@ -240,40 +231,42 @@
     font-family: var(--font-family-base);
     font-weight: 600;
     text-anchor: middle;
-    letter-spacing: 0.03em;
-    fill: rgba(17, 17, 16, 0.72);
+    letter-spacing: 0.02em;
+    fill: rgba(17, 17, 16, 0.65);
+    transition: fill 0.55s ease, opacity 0.55s ease;
   }
-
-  /* Blue label variant (active state + salida nodes) */
-  .msd-label--blue {
-    fill: #2655E8;
-  }
-
-  /* Active label overlay — sits on top, opacity toggled */
-  .msd-label-active {
-    opacity: 0;
-  }
+  .msd-node.on .msd-label { fill: #2655E8; }
 
   /* ── Hub ──────────────────────────────────────────────────── */
-  .msd-hub { opacity: 0; }
-
-  .msd-hub__halo {
-    fill: #EEF2FD;
+  .msd-hub__glow {
+    fill: #2655E8;
     opacity: 0;
-    transform-box: fill-box;
-    transform-origin: center;
+    transition: opacity 0.6s ease;
   }
+  .msd-hub.on .msd-hub__glow { opacity: 0.07; }
 
-  /* Hub pulse — triggered by .is-pulsing class added via JS */
-  .msd-hub.is-pulsing .msd-hub__halo {
-    animation: msd-hub-pulse 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+  .msd-hub__outer {
+    fill: none;
+    stroke: #2655E8;
+    stroke-width: 1.5;
+    opacity: 0;
+    transition: opacity 0.6s ease;
   }
+  .msd-hub.on .msd-hub__outer { opacity: 0.3; }
 
-  @keyframes msd-hub-pulse {
-    0%   { transform: scale(1);    opacity: 0.6; }
-    65%  { transform: scale(1.22); opacity: 0;   }
-    100% { transform: scale(1.22); opacity: 0;   }
+  .msd-hub__core {
+    fill: #2655E8;
+    transform: scale(0.78);
+    transition: transform 0.5s cubic-bezier(0.34, 1.38, 0.64, 1);
   }
+  .msd-hub.on .msd-hub__core { transform: scale(1); }
+
+  .msd-hub__port {
+    fill: #2655E8;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .msd-hub.on .msd-hub__port { opacity: 0.5; }
 
   .msd-hub__if {
     fill: white;
@@ -285,242 +278,216 @@
   }
 
   .msd-hub__method {
-    fill: rgba(255, 255, 255, 0.72);
-    font-size: 7px;
+    fill: rgba(255, 255, 255, 0.78);
+    font-size: 6.5px;
     font-family: var(--font-family-base);
-    font-weight: 500;
+    font-weight: 600;
     text-anchor: middle;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
   }
 
   /* ── Zone labels ──────────────────────────────────────────── */
   .msd-zone {
-    fill: var(--color-text-tertiary, #737370);
+    fill: rgba(21, 23, 28, 0.38);
     font-size: 8px;
     font-family: var(--font-family-base);
-    font-weight: 600;
+    font-weight: 700;
     text-anchor: middle;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
   }
 
-  /* ── prefers-reduced-motion: static fully-active state ───── */
+  /* ── prefers-reduced-motion: fully-active static state ───── */
   @media (prefers-reduced-motion: reduce) {
-    .msd-conn        { stroke-dashoffset: 0; opacity: 1; }
-    .msd-node        { opacity: 1; }
-    .msd-hub         { opacity: 1; }
-    .msd-hub__halo   { opacity: 0.35; }
-    .msd-node__ring-active,
-    .msd-node__dot-active,
-    .msd-label-active { opacity: 1; }
-    .msd-p           { display: none; }
+    .msd-conn           { stroke-dashoffset: 0 !important; }
+    .msd-node__halo     { opacity: 0.08; }
+    .msd-node__ring     { stroke: rgba(38,85,232,0.38); fill: #f5f8ff; }
+    .msd-node__dot      { fill: #2655E8; }
+    .msd-node__port     { fill: rgba(38,85,232,0.45); }
+    .msd-label          { fill: #2655E8; }
+    .msd-hub__glow      { opacity: 0.07; }
+    .msd-hub__outer     { opacity: 0.3; }
+    .msd-hub__core      { transform: scale(1); }
+    .msd-hub__port      { opacity: 0.5; }
   }
 </style>
 
 <script>
-  import { animate, inView } from 'motion';
+  import { inView } from 'motion';
   import { prefersReducedMotion } from '@lib/motion';
 
   const root = document.querySelector<HTMLElement>('.msd');
   if (!root) throw new Error('[MethodSystemDiagram] .msd not found');
 
   // ── Element references ───────────────────────────────────────
-  const nodeE1 = root.querySelector('.msd-node-e1') as Element;
-  const nodeE2 = root.querySelector('.msd-node-e2') as Element;
-  const nodeE3 = root.querySelector('.msd-node-e3') as Element;
-  const hub    = root.querySelector('.msd-hub')    as Element;
-  const nodeS1 = root.querySelector('.msd-node-s1') as Element;
-  const nodeS2 = root.querySelector('.msd-node-s2') as Element;
-  const nodeS3 = root.querySelector('.msd-node-s3') as Element;
+  const nodeE1 = root.querySelector('.msd-node-e1')!;
+  const nodeE2 = root.querySelector('.msd-node-e2')!;
+  const nodeE3 = root.querySelector('.msd-node-e3')!;
+  const hub    = root.querySelector('#msd-hub')!;
+  const nodeS1 = root.querySelector('.msd-node-s1')!;
+  const nodeS2 = root.querySelector('.msd-node-s2')!;
+  const nodeS3 = root.querySelector('.msd-node-s3')!;
 
-  const connE1 = root.querySelector('.msd-conn-e1') as SVGPathElement;
-  const connE2 = root.querySelector('.msd-conn-e2') as SVGPathElement;
-  const connE3 = root.querySelector('.msd-conn-e3') as SVGPathElement;
-  const connS1 = root.querySelector('.msd-conn-s1') as SVGPathElement;
-  const connS2 = root.querySelector('.msd-conn-s2') as SVGPathElement;
-  const connS3 = root.querySelector('.msd-conn-s3') as SVGPathElement;
+  const ceE1 = root.querySelector('#msd-ce1') as SVGPathElement;
+  const ceE2 = root.querySelector('#msd-ce2') as SVGPathElement;
+  const ceE3 = root.querySelector('#msd-ce3') as SVGPathElement;
+  const ceS1 = root.querySelector('#msd-cs1') as SVGPathElement;
+  const ceS2 = root.querySelector('#msd-cs2') as SVGPathElement;
+  const ceS3 = root.querySelector('#msd-cs3') as SVGPathElement;
 
-  // Active-state overlays (ring, dot, label) for entrada nodes
-  const ringActiveE1   = nodeE1.querySelectorAll('.msd-node__ring-active');
-  const ringActiveE2   = nodeE2.querySelectorAll('.msd-node__ring-active');
-  const ringActiveE3   = nodeE3.querySelectorAll('.msd-node__ring-active');
-  const dotActiveE1    = nodeE1.querySelectorAll('.msd-node__dot-active');
-  const dotActiveE2    = nodeE2.querySelectorAll('.msd-node__dot-active');
-  const dotActiveE3    = nodeE3.querySelectorAll('.msd-node__dot-active');
-  const labelActiveE1  = nodeE1.querySelectorAll('.msd-label-active');
-  const labelActiveE2  = nodeE2.querySelectorAll('.msd-label-active');
-  const labelActiveE3  = nodeE3.querySelectorAll('.msd-label-active');
+  const pE1 = root.querySelector('#msd-pe1') as SVGCircleElement;
+  const pE2 = root.querySelector('#msd-pe2') as SVGCircleElement;
+  const pE3 = root.querySelector('#msd-pe3') as SVGCircleElement;
+  const pS1 = root.querySelector('#msd-ps1') as SVGCircleElement;
+  const pS2 = root.querySelector('#msd-ps2') as SVGCircleElement;
+  const pS3 = root.querySelector('#msd-ps3') as SVGCircleElement;
 
-  const allEntradaActives = [
-    ...ringActiveE1, ...ringActiveE2, ...ringActiveE3,
-    ...dotActiveE1,  ...dotActiveE2,  ...dotActiveE3,
-    ...labelActiveE1,...labelActiveE2,...labelActiveE3,
-  ];
+  const allConns = [ceE1, ceE2, ceE3, ceS1, ceS2, ceS3];
+  const allNodes = [nodeE1, nodeE2, nodeE3, nodeS1, nodeS2, nodeS3];
+  const allParticles = [pE1, pE2, pE3, pS1, pS2, pS3];
 
-  // Particles
-  const pE1 = root.querySelector('.msd-p-e1') as SVGCircleElement;
-  const pE2 = root.querySelector('.msd-p-e2') as SVGCircleElement;
-  const pE3 = root.querySelector('.msd-p-e3') as SVGCircleElement;
-  const pS1 = root.querySelector('.msd-p-s1') as SVGCircleElement;
-  const pS2 = root.querySelector('.msd-p-s2') as SVGCircleElement;
-  const pS3 = root.querySelector('.msd-p-s3') as SVGCircleElement;
-
-  // ── Compute path lengths ────────────────────────────────────
-  const allConns = [connE1, connE2, connE3, connS1, connS2, connS3];
-  const connLengths: number[] = [];
-  for (const p of allConns) {
-    const len = p instanceof SVGGeometryElement ? p.getTotalLength() : 160;
-    connLengths.push(len);
-    p.style.strokeDasharray  = String(len);
-    p.style.strokeDashoffset = String(len);
+  // ── Prime dasharray from actual path lengths ─────────────────
+  for (const path of allConns) {
+    const len = path.getTotalLength();
+    path.style.strokeDasharray  = String(len);
+    path.style.strokeDashoffset = String(len);
   }
 
-  // ── Helpers ─────────────────────────────────────────────────
-  const ease = [0, 0, 0.2, 1] as const;
-  const wait = (ms: number) => new Promise<void>(r => setTimeout(r, ms));
+  // ── Timer management ─────────────────────────────────────────
+  let timers: ReturnType<typeof setTimeout>[] = [];
+  let rafs:   number[] = [];
 
-  // ── Static state for reduced-motion ─────────────────────────
-  function showStatic() {
-    animate([nodeE1,nodeE2,nodeE3,hub,nodeS1,nodeS2,nodeS3], { opacity: 1 }, { duration: 0 });
-    allConns.forEach((c, i) => {
-      (c as HTMLElement).style.strokeDashoffset = '0';
+  function clearAll() {
+    timers.forEach(clearTimeout);
+    rafs.forEach(cancelAnimationFrame);
+    timers = [];
+    rafs = [];
+  }
+
+  function d(ms: number, fn: () => void) {
+    timers.push(setTimeout(fn, ms));
+  }
+
+  // ── Instant reset (suppress transitions for one frame) ───────
+  function reset() {
+    clearAll();
+    root.classList.add('no-transition');
+
+    // Remove all .on classes
+    [...allNodes, hub].forEach(el => el.classList.remove('on'));
+    allConns.forEach(path => {
+      path.classList.remove('on');
+      path.style.strokeDashoffset = String(path.getTotalLength());
     });
-    animate(allEntradaActives, { opacity: 1 }, { duration: 0 });
-  }
 
-  // ── Loop reset ───────────────────────────────────────────────
-  function resetAll() {
-    // Opacity resets
-    animate([nodeE1,nodeE2,nodeE3,hub,nodeS1,nodeS2,nodeS3], { opacity: 0 }, { duration: 0 });
-    // Conn dashoffset resets
-    allConns.forEach((c, i) => {
-      const el = c as HTMLElement;
-      el.style.opacity = '1';
-      el.style.strokeDashoffset = String(connLengths[i]);
-    });
-    // Particle resets
-    animate([pE1,pE2,pE3,pS1,pS2,pS3], { opacity: 0, x: 0, y: 0 }, { duration: 0 });
-    // Entrada active overlays reset
-    animate(allEntradaActives, { opacity: 0 }, { duration: 0 });
-    // Hub pulse stop
-    hub.classList.remove('is-pulsing');
-  }
-
-  // ── Loop ────────────────────────────────────────────────────
-  let running = false;
-  let killed  = false;
-
-  async function loop() {
-    while (!killed) {
-      resetAll();
-      await wait(60);
-
-      // ── Step 1: Entrada nodes appear (neutral) ──────────────
-      await animate(
-        [nodeE1, nodeE2, nodeE3],
-        { opacity: [0, 1] },
-        { duration: 0.32, ease }
-      ).finished;
-
-      // ── Step 2a: Activate entrada node styles simultaneously ─
-      animate(allEntradaActives, { opacity: [0, 1] }, { duration: 0.28, ease });
-
-      // ── Step 2b: Entrada lines draw simultaneously ───────────
-      animate(connE1, { strokeDashoffset: 0 }, { duration: 0.52, ease });
-      animate(connE2, { strokeDashoffset: 0 }, { duration: 0.52, ease });
-      animate(connE3, { strokeDashoffset: 0 }, { duration: 0.52, ease });
-
-      // ── Step 3: 3 particles travel to hub — staggered start ──
-      // pE1 top (bezier):    delay 0ms,   duration 1.05s → arrives at 1.05s
-      animate(pE1, { opacity: [0, 0.9] }, { delay: 0,    duration: 0.12 });
-      animate(pE1, { x: 166, y: 82  },   { delay: 0,    duration: 1.05, ease: [0.3, 0, 0.5, 1] });
-      // pE2 middle (straight): delay 120ms, duration 0.88s → arrives at 1.0s
-      animate(pE2, { opacity: [0, 0.9] }, { delay: 0.12, duration: 0.12 });
-      animate(pE2, { x: 166, y: 0   },   { delay: 0.12, duration: 0.88, ease: [0.3, 0, 0.5, 1] });
-      // pE3 bottom (bezier):  delay 200ms, duration 1.0s → arrives at 1.2s (last)
-      animate(pE3, { opacity: [0, 0.9] }, { delay: 0.20, duration: 0.12 });
-      await animate(pE3, { x: 166, y: -82 }, { delay: 0.20, duration: 1.00, ease: [0.3, 0, 0.5, 1] }).finished;
-      // Fade out all entrada particles
-      animate([pE1,pE2,pE3], { opacity: 0 }, { duration: 0.15 });
-
-      // ── Step 4: Hub activates ────────────────────────────────
-      await animate(hub,
-        { opacity: [0, 1], scale: [0.88, 1] },
-        { duration: 0.32, ease }
-      ).finished;
-      // Start halo pulse after hub is visible
-      hub.classList.add('is-pulsing');
-      await wait(80);
-
-      // ── Step 5: Salida lines draw simultaneously ─────────────
-      animate(connS1, { strokeDashoffset: 0 }, { duration: 0.52, ease });
-      animate(connS2, { strokeDashoffset: 0 }, { duration: 0.52, ease });
-      animate(connS3, { strokeDashoffset: 0 }, { duration: 0.52, ease });
-
-      // ── Step 6: 3 particles travel to output nodes — staggered ──
-      // pS1 top (bezier):    delay 0ms,   duration 1.05s → arrives at 1.05s
-      animate(pS1, { opacity: [0, 0.9] }, { delay: 0,    duration: 0.12 });
-      animate(pS1, { x: 166, y: -82 },   { delay: 0,    duration: 1.05, ease: [0.3, 0, 0.5, 1] });
-      // pS2 middle (straight): delay 120ms, duration 0.88s → arrives at 1.0s
-      animate(pS2, { opacity: [0, 0.9] }, { delay: 0.12, duration: 0.12 });
-      animate(pS2, { x: 166, y: 0   },   { delay: 0.12, duration: 0.88, ease: [0.3, 0, 0.5, 1] });
-      // pS3 bottom (bezier):  delay 200ms, duration 1.0s → arrives at 1.2s (last)
-      animate(pS3, { opacity: [0, 0.9] }, { delay: 0.20, duration: 0.12 });
-      await animate(pS3, { x: 166, y: 82 }, { delay: 0.20, duration: 1.00, ease: [0.3, 0, 0.5, 1] }).finished;
-      // Fade out all salida particles
-      animate([pS1,pS2,pS3], { opacity: 0 }, { duration: 0.15 });
-
-      // ── Step 7: Output nodes appear (already active-styled) ──
-      await animate(
-        [nodeS1, nodeS2, nodeS3],
-        { opacity: [0, 1] },
-        { duration: 0.30, ease }
-      ).finished;
-
-      // ── Step 8: Pause ~2s with everything lit ────────────────
-      await wait(2000);
-
-      // ── Step 9: Fade everything out ──────────────────────────
-      animate(
-        [nodeE1,nodeE2,nodeE3,hub,nodeS1,nodeS2,nodeS3],
-        { opacity: 0 },
-        { duration: 0.55, ease }
-      );
-      // Also fade active conn paths (dashoffset back but opacity fade looks smoother)
-      await animate(
-        allConns as unknown as Element[],
-        { opacity: 0 },
-        { duration: 0.55, ease }
-      ).finished;
-
-      // ── Step 10: Pause ~1s ────────────────────────────────────
-      await wait(1000);
+    // Reset particles
+    for (const p of allParticles) {
+      p.style.opacity = '0';
+      p.setAttribute('cx', '0');
+      p.setAttribute('cy', '0');
     }
+
+    // Re-enable transitions after two frames
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      root.classList.remove('no-transition');
+    }));
   }
 
-  // ── Start ────────────────────────────────────────────────────
+  // ── Particle travel along actual SVG path ────────────────────
+  function travel(
+    particle: SVGCircleElement,
+    path: SVGPathElement,
+    duration: number,
+    delay: number
+  ) {
+    const len = path.getTotalLength();
+
+    d(delay, () => {
+      particle.style.opacity = '1';
+      const start = performance.now();
+
+      function step(now: number) {
+        const t = Math.min((now - start) / duration, 1);
+        // ease-in-out
+        const e = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        const pt = path.getPointAtLength(e * len);
+        particle.setAttribute('cx', String(pt.x));
+        particle.setAttribute('cy', String(pt.y));
+        // Fade out in last 12% of travel
+        particle.style.opacity = t > 0.88 ? String(Math.max(0, (1 - t) / 0.12)) : '1';
+
+        if (t < 1) {
+          rafs.push(requestAnimationFrame(step));
+        } else {
+          particle.style.opacity = '0';
+        }
+      }
+
+      rafs.push(requestAnimationFrame(step));
+    });
+  }
+
+  // ── Main play sequence ───────────────────────────────────────
+  let playing = false;
+
+  function play() {
+    if (prefersReducedMotion()) return;
+
+    playing = true;
+    reset();
+
+    // Small breathing room after reset
+    d(60, () => {
+      // 1. Input nodes light up simultaneously
+      d(400, () => {
+        [nodeE1, nodeE2, nodeE3].forEach(n => n.classList.add('on'));
+      });
+
+      // 2. Input paths draw simultaneously
+      d(660, () => {
+        [ceE1, ceE2, ceE3].forEach(c => c.classList.add('on'));
+      });
+
+      // 3. Particles → hub (staggered 70ms: top, mid, bottom)
+      travel(pE1, ceE1, 1100, 720);   // top bezier,   arrives ~1820ms
+      travel(pE2, ceE2,  920, 790);   // mid straight, arrives ~1710ms
+      travel(pE3, ceE3, 1100, 860);   // bot bezier,   arrives ~1960ms
+
+      // 4. Hub activates when last particle arrives
+      d(1700, () => hub.classList.add('on'));
+
+      // 5. Output paths draw
+      d(1920, () => {
+        [ceS1, ceS2, ceS3].forEach(c => c.classList.add('on'));
+      });
+
+      // 6. Particles → output nodes (staggered 70ms)
+      travel(pS1, ceS1, 1100, 1980);  // top bezier
+      travel(pS2, ceS2,  920, 2050);  // mid straight
+      travel(pS3, ceS3, 1100, 2120);  // bot bezier
+
+      // 7. Output nodes light up as particles arrive
+      d(2900, () => {
+        [nodeS1, nodeS2, nodeS3].forEach(n => n.classList.add('on'));
+      });
+
+      // 8. Sequence complete — release playing lock
+      d(3800, () => { playing = false; });
+    });
+  }
+
+  // ── Trigger on inView (first time) ──────────────────────────
   let started = false;
-
   inView(root, () => {
-    if (started) return;
+    if (started || prefersReducedMotion()) return;
     started = true;
-
-    if (prefersReducedMotion()) {
-      showStatic();
-      return;
-    }
-
-    loop();
+    d(300, play);
   }, { amount: 0.25 });
 
-  // ── Page visibility: pause loop when hidden ───────────────────
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      killed = true;
-    } else if (started && !prefersReducedMotion()) {
-      killed = false;
-      loop();
-    }
+  // ── Replay on hover ──────────────────────────────────────────
+  root.addEventListener('pointerenter', () => {
+    if (!started || prefersReducedMotion()) return;
+    play();
   });
 </script>
