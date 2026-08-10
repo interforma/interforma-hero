@@ -131,31 +131,34 @@
       <text x="240" y="161" class="msd-hub__method">MÉTODO</text>
     </g>
 
-    <!-- ── SALIDA nodes ──────────────────────────────────────────── -->
+    <!-- ── SALIDA nodes — inline active styles (no opacity overlay) ── -->
     <!-- Sistema -->
     <g class="msd-node msd-node-s1">
-      <circle cx="406" cy="68" r="20" class="msd-node__ring msd-node__ring-active"
+      <circle cx="406" cy="68" r="20"
+        fill="#EEF2FD" stroke="#2655E8" stroke-width="1.5"
         filter="url(#msd-node-glow)"/>
-      <circle cx="406" cy="68" r="6"  class="msd-node__dot msd-node__dot-active"/>
-      <circle cx="386" cy="68" r="2.5" class="msd-node__port" style="fill:#2655E8;opacity:0.5"/>
+      <circle cx="406" cy="68" r="6" fill="#2655E8"/>
+      <circle cx="386" cy="68" r="2.5" fill="#2655E8" opacity="0.5"/>
       <text x="406" y="99" class="msd-label msd-label--blue">Sistema</text>
     </g>
 
     <!-- Claridad -->
     <g class="msd-node msd-node-s2">
-      <circle cx="406" cy="150" r="20" class="msd-node__ring msd-node__ring-active"
+      <circle cx="406" cy="150" r="20"
+        fill="#EEF2FD" stroke="#2655E8" stroke-width="1.5"
         filter="url(#msd-node-glow)"/>
-      <circle cx="406" cy="150" r="6"  class="msd-node__dot msd-node__dot-active"/>
-      <circle cx="386" cy="150" r="2.5" class="msd-node__port" style="fill:#2655E8;opacity:0.5"/>
+      <circle cx="406" cy="150" r="6" fill="#2655E8"/>
+      <circle cx="386" cy="150" r="2.5" fill="#2655E8" opacity="0.5"/>
       <text x="406" y="181" class="msd-label msd-label--blue">Claridad</text>
     </g>
 
     <!-- Resultados -->
     <g class="msd-node msd-node-s3">
-      <circle cx="406" cy="232" r="20" class="msd-node__ring msd-node__ring-active"
+      <circle cx="406" cy="232" r="20"
+        fill="#EEF2FD" stroke="#2655E8" stroke-width="1.5"
         filter="url(#msd-node-glow)"/>
-      <circle cx="406" cy="232" r="6"  class="msd-node__dot msd-node__dot-active"/>
-      <circle cx="386" cy="232" r="2.5" class="msd-node__port" style="fill:#2655E8;opacity:0.5"/>
+      <circle cx="406" cy="232" r="6" fill="#2655E8"/>
+      <circle cx="386" cy="232" r="2.5" fill="#2655E8" opacity="0.5"/>
       <text x="406" y="263" class="msd-label msd-label--blue">Resultados</text>
     </g>
 
@@ -428,16 +431,17 @@
       animate(connE2, { strokeDashoffset: 0 }, { duration: 0.52, ease });
       animate(connE3, { strokeDashoffset: 0 }, { duration: 0.52, ease });
 
-      // ── Step 3: 3 particles travel to hub simultaneously ─────
-      animate([pE1,pE2,pE3], { opacity: [0, 0.9] }, { duration: 0.1, ease });
-      // pE1: (74,68) → hub (240,150) = delta (+166, +82)
-      animate(pE1, { x: 166, y: 82  }, { duration: 0.52, ease: [0.4, 0, 0.6, 1] });
-      // pE2: (74,150) → hub (240,150) = delta (+166, 0)
-      animate(pE2, { x: 166, y: 0   }, { duration: 0.52, ease: [0.4, 0, 0.6, 1] });
-      // pE3: (74,232) → hub (240,150) = delta (+166, -82)
-      await animate(pE3, { x: 166, y: -82 }, { duration: 0.52, ease: [0.4, 0, 0.6, 1] }).finished;
-
-      // Fade out entrada particles
+      // ── Step 3: 3 particles travel to hub — staggered start ──
+      // pE1 top (bezier):    delay 0ms,   duration 1.05s → arrives at 1.05s
+      animate(pE1, { opacity: [0, 0.9] }, { delay: 0,    duration: 0.12 });
+      animate(pE1, { x: 166, y: 82  },   { delay: 0,    duration: 1.05, ease: [0.3, 0, 0.5, 1] });
+      // pE2 middle (straight): delay 120ms, duration 0.88s → arrives at 1.0s
+      animate(pE2, { opacity: [0, 0.9] }, { delay: 0.12, duration: 0.12 });
+      animate(pE2, { x: 166, y: 0   },   { delay: 0.12, duration: 0.88, ease: [0.3, 0, 0.5, 1] });
+      // pE3 bottom (bezier):  delay 200ms, duration 1.0s → arrives at 1.2s (last)
+      animate(pE3, { opacity: [0, 0.9] }, { delay: 0.20, duration: 0.12 });
+      await animate(pE3, { x: 166, y: -82 }, { delay: 0.20, duration: 1.00, ease: [0.3, 0, 0.5, 1] }).finished;
+      // Fade out all entrada particles
       animate([pE1,pE2,pE3], { opacity: 0 }, { duration: 0.15 });
 
       // ── Step 4: Hub activates ────────────────────────────────
@@ -454,16 +458,17 @@
       animate(connS2, { strokeDashoffset: 0 }, { duration: 0.52, ease });
       animate(connS3, { strokeDashoffset: 0 }, { duration: 0.52, ease });
 
-      // ── Step 6: 3 particles travel to output nodes simultaneously
-      animate([pS1,pS2,pS3], { opacity: [0, 0.9] }, { duration: 0.1, ease });
-      // pS1: hub(240,150) → (406,68) = delta (+166, -82)
-      animate(pS1, { x: 166, y: -82 }, { duration: 0.52, ease: [0.4, 0, 0.6, 1] });
-      // pS2: hub(240,150) → (406,150) = delta (+166, 0)
-      animate(pS2, { x: 166, y: 0   }, { duration: 0.52, ease: [0.4, 0, 0.6, 1] });
-      // pS3: hub(240,150) → (406,232) = delta (+166, +82)
-      await animate(pS3, { x: 166, y: 82 }, { duration: 0.52, ease: [0.4, 0, 0.6, 1] }).finished;
-
-      // Fade out salida particles
+      // ── Step 6: 3 particles travel to output nodes — staggered ──
+      // pS1 top (bezier):    delay 0ms,   duration 1.05s → arrives at 1.05s
+      animate(pS1, { opacity: [0, 0.9] }, { delay: 0,    duration: 0.12 });
+      animate(pS1, { x: 166, y: -82 },   { delay: 0,    duration: 1.05, ease: [0.3, 0, 0.5, 1] });
+      // pS2 middle (straight): delay 120ms, duration 0.88s → arrives at 1.0s
+      animate(pS2, { opacity: [0, 0.9] }, { delay: 0.12, duration: 0.12 });
+      animate(pS2, { x: 166, y: 0   },   { delay: 0.12, duration: 0.88, ease: [0.3, 0, 0.5, 1] });
+      // pS3 bottom (bezier):  delay 200ms, duration 1.0s → arrives at 1.2s (last)
+      animate(pS3, { opacity: [0, 0.9] }, { delay: 0.20, duration: 0.12 });
+      await animate(pS3, { x: 166, y: 82 }, { delay: 0.20, duration: 1.00, ease: [0.3, 0, 0.5, 1] }).finished;
+      // Fade out all salida particles
       animate([pS1,pS2,pS3], { opacity: 0 }, { duration: 0.15 });
 
       // ── Step 7: Output nodes appear (already active-styled) ──
