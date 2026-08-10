@@ -24,12 +24,14 @@
         </feMerge>
       </filter>
 
-      <!-- Gradient: faint blue → signal blue (start visible so straight lines show color) -->
-      <linearGradient id="msd-grad-e" x1="0%" y1="0%" x2="100%" y2="0%">
+      <!-- userSpaceOnUse avoids degenerate-bbox failure on horizontal lines -->
+      <linearGradient id="msd-grad-e" gradientUnits="userSpaceOnUse"
+        x1="74" y1="150" x2="240" y2="150">
         <stop offset="0%"   stop-color="#2655E8" stop-opacity="0.22"/>
         <stop offset="100%" stop-color="#2655E8" stop-opacity="1"/>
       </linearGradient>
-      <linearGradient id="msd-grad-s" x1="0%" y1="0%" x2="100%" y2="0%">
+      <linearGradient id="msd-grad-s" gradientUnits="userSpaceOnUse"
+        x1="240" y1="150" x2="406" y2="150">
         <stop offset="0%"   stop-color="#2655E8" stop-opacity="1"/>
         <stop offset="100%" stop-color="#1A44C9" stop-opacity="1"/>
       </linearGradient>
