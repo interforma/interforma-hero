@@ -55,38 +55,38 @@
   }
 
   const LAYERS: LayerDef[] = [
-    // ── 0: Blob — bottom-left, primary blue ───────────────────
+    // ── 0: Blob — bottom-left, neutral warm ───────────────────
     {
       shape:     'blob',
       sizeD:     620, sizeM: 260,
       getX:      (_W, _s) => -140,
       getY:      (H, s)  => H - s * 0.60,
-      opacity:   0.30,
+      opacity:   0.18,
       lineGap: 5.0, lineWidth: 0.36, light: 1.4, angle: 40,
-      color:     '#2655E8',
+      color:     '#D1D1CD',
       scrollFy: 0.026, scrollFx:  0.010,
       pointerFy: 0.004, pointerFx: 0.003,
     },
-    // ── 1: Sphere — upper right, primary blue, lower opacity ──
+    // ── 1: Sphere — upper right, neutral, very low opacity ────
     {
       shape:     'sphere',
       sizeD:     480, sizeM: 200,
       getX:      (W, s) => W - s * 0.70,
       getY:      (_H, s) => -s * 0.20,
-      opacity:   0.20,
+      opacity:   0.10,
       lineGap: 5.5, lineWidth: 0.30, light: 1.3, angle: 55,
-      color:     '#2655E8',
+      color:     '#E8E8E5',
       scrollFy: -0.018, scrollFx: -0.012,
       pointerFy: -0.003, pointerFx: -0.002,
       desktopOnly: true,
     },
-    // ── 2: Hexagon — behind diagram area, neutral ─────────────
+    // ── 2: Hexagon — behind widget area, neutral ──────────────
     {
       shape:     'hexagon',
       sizeD:     300, sizeM: 150,
       getX:      (W, s) => W * 0.58 - s * 0.35,
       getY:      (H, s) => H * 0.22 - s * 0.15,
-      opacity:   0.13,
+      opacity:   0.10,
       lineGap: 4.0, lineWidth: 0.40, light: 1.8, angle: 28,
       color:     '#D1D1CD',
       scrollFy: 0.013, scrollFx:  0.006,

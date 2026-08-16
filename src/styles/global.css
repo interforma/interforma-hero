@@ -33,29 +33,39 @@ body {
    Estos estilos aplican a HTML semántico sin clase.
    ============================================================ */
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-family-heading);
+  letter-spacing: -0.02em;
+}
+
 h1 {
   font-size: var(--font-size-display-md);     /* mobile-first: 40px */
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-extrabold);
   line-height: var(--line-height-display-md);
   text-wrap: balance;
 }
 
 h2 {
   font-size: var(--font-size-heading-xl);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-bold);
   line-height: var(--line-height-heading-xl);
   text-wrap: balance;
 }
 
 h3 {
   font-size: var(--font-size-heading-lg);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-bold);
   line-height: var(--line-height-heading-lg);
 }
 
 h4 {
   font-size: var(--font-size-heading-md);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-bold);
   line-height: var(--line-height-heading-md);
 }
 
@@ -123,8 +133,8 @@ a:hover {
    ============================================================ */
 
 ::selection {
-  background-color: var(--color-primary-100);
-  color: var(--color-primary-900);
+  background-color: var(--cj-gray-200);
+  color: var(--cj-ink);
 }
 
 /* ============================================================

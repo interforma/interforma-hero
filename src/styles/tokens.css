@@ -11,12 +11,14 @@
  */
 
 /* ============================================================
-   FUENTE — Plus Jakarta Sans Variable
-   Fuente instalada via @fontsource-variable/plus-jakarta-sans
-   Referencia: design/tokens/typography.json
+   FUENTES
+   Plus Jakarta Sans  — titulares (700–800)
+   Inter Variable     — cuerpo / UI (400–600)
+   Host Grotesk       — conservado para compatibilidad
    ============================================================ */
 
 @import '@fontsource-variable/plus-jakarta-sans';
+@import '@fontsource-variable/inter';
 @import '@fontsource-variable/host-grotesk';
 
 /* ============================================================
@@ -25,6 +27,33 @@
    ============================================================ */
 
 :root {
+
+  /* ----------------------------------------------------------
+     REDISEÑO v2 — Paleta Cal.com (blanco / negro / gris)
+     Referencia: handoff/DESIGN_BRIEF_interforma.md §2
+     ---------------------------------------------------------- */
+
+  --cj-white:    #FFFFFF;
+  --cj-gray-50:  #F6F6F5;
+  --cj-gray-100: #EFEFED;
+  --cj-gray-200: #E3E3E0;
+  --cj-gray-400: #9C9C97;
+  --cj-gray-500: #6E6E68;
+  --cj-ink:      #111110;
+
+  /* Familias tipográficas v2 */
+  --font-family-heading: 'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-family-ui:      'Inter Variable', 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Peso extra para display */
+  --font-weight-extrabold: 800;
+
+  /* Radios de componente v2 */
+  --radius-btn:     11px;
+  --radius-card:    16px;
+  --radius-card-lg: 20px;
+  --radius-cta:     28px;
+  --radius-badge:   13px;
 
   /* ----------------------------------------------------------
      COLORES — Paleta base (neutrales)
@@ -83,37 +112,40 @@
      Referencia: design/tokens/colors.json > roles
      ---------------------------------------------------------- */
 
-  /* Fondos */
-  --color-bg-page:          var(--color-neutral-50);
-  --color-bg-surface:       var(--color-neutral-0);
-  --color-bg-subtle:        var(--color-neutral-100);
-  --color-bg-dark:          var(--color-neutral-900);
-  --color-bg-dark-refined:  #15171C;   /* Azul-negro profundo: Método + Footer */
-  --color-bg-diagram:       var(--color-neutral-0); /* Diagrama hero: superficie clara */
+  /* Fondos — v2: blanco puro como base, gris cálido para secciones alternas */
+  --color-bg-page:          var(--cj-white);
+  --color-bg-surface:       var(--cj-white);
+  --color-bg-subtle:        var(--cj-gray-50);
+  --color-bg-dark:          var(--cj-ink);
+  --color-bg-dark-refined:  var(--cj-ink);
+  --color-bg-diagram:       var(--cj-white);
 
   /* Diagram-specific */
-  --color-grid-subtle:      rgba(0, 0, 0, 0.04);   /* Grid en fondos claros */
-  --color-line-inactive:    var(--color-neutral-200); /* Líneas de diagrama sin activar */
+  --color-grid-subtle:      rgba(0, 0, 0, 0.04);
+  --color-line-inactive:    var(--cj-gray-200);
 
-  /* Bordes */
-  --color-border-subtle:  var(--color-neutral-100);
-  --color-border-default: var(--color-neutral-200);
-  --color-border-strong:  var(--color-neutral-300);
+  /* Bordes — v2 */
+  --color-border-subtle:  var(--cj-gray-100);
+  --color-border-default: var(--cj-gray-200);
+  --color-border-strong:  var(--cj-gray-400);
 
-  /* Texto */
-  --color-text-primary:          var(--color-neutral-900);
-  --color-text-secondary:        var(--color-neutral-600);
-  --color-text-tertiary:         var(--color-neutral-500);
-  --color-text-disabled:         var(--color-neutral-400);
-  --color-text-inverse:          var(--color-neutral-0);
-  --color-text-on-dark-primary:  var(--color-neutral-50);
-  --color-text-on-dark-secondary:var(--color-neutral-400);
+  /* Texto — v2 */
+  --color-text-primary:           var(--cj-ink);
+  --color-text-secondary:         var(--cj-gray-500);
+  --color-text-tertiary:          var(--cj-gray-400);
+  --color-text-disabled:          var(--cj-gray-400);
+  --color-text-inverse:           var(--cj-white);
+  --color-text-on-dark-primary:   var(--cj-white);
+  --color-text-on-dark-secondary: var(--cj-gray-400);
 
-  /* Interactivos */
-  --color-interactive-default: var(--color-primary-500);
-  --color-interactive-hover:   var(--color-primary-600);
-  --color-interactive-active:  var(--color-primary-700);
-  --color-interactive-subtle:  var(--color-primary-50);
+  /* Interactivos — v2: ink como único acento de acción (sin azul) */
+  --color-interactive-default: var(--cj-ink);
+  --color-interactive-hover:   #2a2a28;
+  --color-interactive-active:  #1a1a18;
+  --color-interactive-subtle:  var(--cj-gray-50);
+
+  /* Base font → UI (Inter) */
+  --font-family-base: var(--font-family-ui);
 
   /* ----------------------------------------------------------
      TIPOGRAFÍA — Familia

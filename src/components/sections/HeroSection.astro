@@ -1,9 +1,8 @@
 ---
 import WhatsAppButton from '@components/composite/WhatsAppButton.astro';
 import Icon from '@components/base/Icon.astro';
-import MethodSystemDiagram from '@components/visual/MethodSystemDiagram.astro';
+import DiagnosticWidget from '@components/visual/DiagnosticWidget.astro';
 import HeroBackground from '@components/background/HeroBackground.astro';
-import CornerMarks from '@components/base/CornerMarks.astro';
 // Alternativas de headline → src/config/content.ts › headlineAlternatives
 // Activa: A — "Transformamos la forma en que tu empresa trabaja."
 
@@ -72,8 +71,7 @@ const {
 
     <!-- ── Elemento visual ──────────────────────────────────── -->
     <div class="hero__visual">
-      <CornerMarks color="primary" size={10} />
-      <MethodSystemDiagram />
+      <DiagnosticWidget />
     </div>
 
   </div>
@@ -82,12 +80,12 @@ const {
 <style>
   /* ── Section shell ────────────────────────────────────────── */
   .hero {
-    min-height: 88vh;
-    min-height: 88svh;
+    min-height: 80vh;
+    min-height: 80svh;
     display: flex;
     align-items: center;
     background: var(--color-bg-page);
-    padding-block: var(--spacing-16) var(--spacing-12);
+    padding-block: var(--spacing-16) var(--spacing-16);
     scroll-margin-top: var(--header-height);
     overflow: hidden;
     position: relative;
@@ -124,7 +122,7 @@ const {
   .hero__subheadline {
     font-size: var(--font-size-body-xl);
     line-height: var(--line-height-body-xl);
-    color: var(--color-text-primary);
+    color: var(--color-text-secondary);
     max-width: 44ch;
     margin-bottom: var(--spacing-10);
     animation: hero-fade-up var(--duration-enter) var(--easing-out) both;
@@ -189,6 +187,8 @@ const {
     position: relative;
     animation: hero-fade-up var(--duration-enter) var(--ease-enter) both;
     animation-delay: 300ms;
+    align-items: center;
+    justify-content: center;
   }
 
   /* ── Animations ───────────────────────────────────────────── */
@@ -224,7 +224,7 @@ const {
     }
 
     .hero__visual {
-      display: block;
+      display: flex;
     }
   }
 

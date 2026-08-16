@@ -33,16 +33,24 @@ import { ctaCopy } from '@config/content';
 <style>
   /* ── Section ──────────────────────────────────────────────── */
   .cta-section {
-    background: var(--color-interactive-default);
-    color: var(--color-neutral-0);
-    padding-block: var(--spacing-16);
+    /* outer wrapper keeps white page background visible on sides */
+    background: transparent;
+    padding-block: var(--spacing-4) var(--spacing-16);
+    padding-inline: var(--spacing-8);
   }
 
   .cta-section__inner {
+    background: var(--cj-ink);
+    color: var(--color-neutral-0);
+    border-radius: var(--radius-cta);
+    padding-block: var(--spacing-16);
+    padding-inline: var(--spacing-10);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: var(--spacing-12);
+    max-width: calc(var(--container-max) - var(--spacing-16));
+    margin-inline: auto;
   }
 
   /* ── Content ──────────────────────────────────────────────── */
@@ -83,29 +91,27 @@ import { ctaCopy } from '@config/content';
     gap: var(--spacing-3);
   }
 
-  /* ── Button: white on blue ────────────────────────────────────
-     WhatsApp button renders in a child component scope, so :global()
-     is required to override the scoped styles that don't cross
-     Astro's component boundary.
+  /* ── Button: white on ink ─────────────────────────────────────
+     :global() necesario para cruzar el límite de scoped de Astro.
   ─────────────────────────────────────────────────────────────── */
   :global(.cta-section__btn) {
-    background: var(--color-neutral-0) !important;
-    color: var(--color-interactive-default) !important;
-    border-color: var(--color-neutral-0) !important;
+    background: var(--cj-white) !important;
+    color: var(--cj-ink) !important;
+    border-color: var(--cj-white) !important;
   }
 
   :global(.cta-section__btn:hover) {
-    background: var(--color-neutral-100) !important;
-    border-color: var(--color-neutral-100) !important;
+    background: var(--cj-gray-100) !important;
+    border-color: var(--cj-gray-100) !important;
   }
 
   :global(.cta-section__btn:focus-visible) {
-    outline-color: var(--color-neutral-0) !important;
+    outline-color: var(--cj-white) !important;
   }
 
   .cta-section__note {
     font-size: var(--font-size-body-sm);
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255, 0.65);
   }
 
   /* ── Visual (diagram) ─────────────────────────────────────── */
@@ -148,6 +154,17 @@ import { ctaCopy } from '@config/content';
     .cta-section__visual {
       flex-shrink: 0;
       width: 420px;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .cta-section {
+      padding-inline: var(--spacing-5);
+    }
+
+    .cta-section__inner {
+      padding-inline: var(--spacing-6);
+      border-radius: var(--radius-card-lg);
     }
   }
 </style>

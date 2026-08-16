@@ -64,7 +64,7 @@ import { methodSteps, methodCopy } from '@config/content';
   }
 
   .method__eyebrow {
-    color: var(--color-dark-accent);
+    color: rgba(255, 255, 255, 0.55);
     margin-bottom: var(--spacing-4);
   }
 
@@ -107,7 +107,7 @@ import { methodSteps, methodCopy } from '@config/content';
     left: 0;
     right: 0;
     height: 100%;
-    background: var(--color-primary-500);
+    background: rgba(255, 255, 255, 0.55);
     transform: scaleY(0);
     transform-origin: top;
     border-radius: var(--radius-full);
@@ -165,22 +165,21 @@ import { methodSteps, methodCopy } from '@config/content';
   }
 
   .method-step.is-active .method-step__indicator {
-    background: var(--color-primary-500);
-    border-color: var(--color-primary-500);
-    box-shadow: 0 0 6px rgba(38, 85, 232, 0.5);
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.25);
   }
 
   .method-step__num {
     font-size: var(--font-size-heading-lg);
     font-weight: var(--font-weight-bold);
-    color: var(--color-dark-accent);
+    color: rgba(255, 255, 255, 0.45);
     line-height: 1;
     letter-spacing: -0.04em;
-    opacity: 0.5;
   }
 
   .method-step.is-active .method-step__num {
-    opacity: 0.85;
+    color: rgba(255, 255, 255, 0.85);
   }
 
   .method-step__name {
@@ -202,7 +201,7 @@ import { methodSteps, methodCopy } from '@config/content';
   .method-step__output {
     font-size: var(--font-size-body-md);
     font-weight: var(--font-weight-medium);
-    color: var(--color-dark-accent);
+    color: rgba(255, 255, 255, 0.65);
     letter-spacing: 0.01em;
   }
 
