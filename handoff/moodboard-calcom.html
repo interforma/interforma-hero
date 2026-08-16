@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interforma — Línea Cal.com (opción B)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --white:#FFFFFF;
+    --gray-50:#F6F6F5;
+    --gray-100:#EFEFED;
+    --gray-200:#E3E3E0;
+    --gray-400:#9C9C97;
+    --gray-500:#6E6E68;
+    --ink:#111110;
+    --radius:20px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--white);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+  a{color:inherit;}
+  h1,h2,h3,h4{font-family:'Plus Jakarta Sans',sans-serif;letter-spacing:-.02em;margin:0;}
+
+  .banner{
+    background:var(--ink);color:#fff;text-align:center;
+    font-size:12px;letter-spacing:.06em;padding:9px 12px;text-transform:uppercase;
+    font-weight:600;
+  }
+
+  /* icon line-svgs share this */
+  svg.ico{width:19px;height:19px;stroke:var(--ink);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+
+  /* icon badge — gray square with 4 corner dots, cal.com signature */
+  .badge{
+    position:relative;
+    width:44px;height:44px;
+    background:var(--gray-50);
+    border:1px solid var(--gray-200);
+    border-radius:13px;
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:16px;
+  }
+  .badge::before,.badge::after,.badge .d3,.badge .d4{content:"";position:absolute;width:3px;height:3px;border-radius:50%;background:var(--gray-400);}
+  .badge::before{top:6px;left:6px;}
+  .badge::after{top:6px;right:6px;}
+  .badge .d3{bottom:6px;left:6px;}
+  .badge .d4{bottom:6px;right:6px;}
+
+  header{display:flex;align-items:center;justify-content:space-between;padding:22px 0;border-bottom:1px solid var(--gray-100);}
+  .brand{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:20px;color:var(--ink);text-decoration:none;}
+  nav{display:flex;gap:30px;font-size:14.5px;color:var(--gray-500);font-weight:500;}
+  nav a{text-decoration:none;}
+  nav a:hover{color:var(--ink);}
+
+  .btn{
+    font-family:'Inter',sans-serif;font-weight:600;font-size:14px;
+    display:inline-flex;align-items:center;gap:6px;
+    padding:11px 20px;border-radius:11px;
+    text-decoration:none;transition:all .15s ease;border:1px solid transparent;
+  }
+  .btn.dark{background:var(--ink);color:#fff;}
+  .btn.dark:hover{background:#2a2a28;}
+  .btn.light{background:var(--white);color:var(--ink);border-color:var(--gray-200);}
+  .btn.light:hover{background:var(--gray-50);}
+
+  .pill{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--gray-50);border:1px solid var(--gray-200);
+    border-radius:999px;padding:6px 14px 6px 6px;
+    font-size:12.5px;color:var(--gray-500);font-weight:500;margin-bottom:22px;
+  }
+  .pill .dot{width:20px;height:20px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;}
+
+  .hero{padding:64px 0 0;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;}
+  h1{font-weight:800;font-size:47px;line-height:1.08;margin-bottom:20px;}
+  .lede{font-size:16.5px;color:var(--gray-500);max-width:430px;margin-bottom:30px;}
+  .hero-ctas{display:flex;gap:12px;margin-bottom:22px;}
+  .trust-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--gray-500);}
+  .trust-row .stars{color:var(--ink);letter-spacing:1px;}
+
+  /* mini widget card — booking-style preview */
+  .widget{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);box-shadow:0 24px 48px -28px rgba(17,17,16,.22);overflow:hidden;display:grid;grid-template-columns:1fr 1fr;}
+  .widget-left{padding:22px 20px;border-right:1px solid var(--gray-100);}
+  .widget .avatar{width:34px;height:34px;border-radius:50%;background:var(--gray-100);border:1px solid var(--gray-200);margin-bottom:12px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--gray-500);}
+  .widget .name{font-size:12px;color:var(--gray-500);margin-bottom:2px;}
+  .widget .title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:16px;margin-bottom:8px;}
+  .widget .desc{font-size:12.5px;color:var(--gray-500);margin-bottom:16px;line-height:1.5;}
+  .widget .durations{display:flex;gap:6px;margin-bottom:14px;}
+  .widget .durations span{font-size:11.5px;padding:5px 9px;border-radius:8px;border:1px solid var(--gray-200);color:var(--gray-500);}
+  .widget .durations span.on{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .widget .meta{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--gray-500);margin-bottom:8px;}
+  .widget-right{padding:20px 18px;}
+  .widget-right .month{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:13.5px;margin-bottom:12px;}
+  .cal-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;}
+  .cal-grid div{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:10.5px;color:var(--gray-500);border-radius:7px;}
+  .cal-grid div.avail{background:var(--gray-50);color:var(--ink);}
+  .cal-grid div.sel{background:var(--ink);color:#fff;font-weight:700;}
+
+  /* section shells */
+  section{padding:60px 0;}
+  section.gray{background:var(--gray-50);position:relative;}
+  .corner{position:absolute;width:14px;height:14px;color:var(--gray-200);font-size:16px;line-height:14px;}
+  .corner::before{content:"+";}
+  section.gray .corner.tl{top:16px;left:16px;}
+  section.gray .corner.tr{top:16px;right:16px;}
+  section.gray .corner.bl{bottom:16px;left:16px;}
+  section.gray .corner.br{bottom:16px;right:16px;}
+
+  .strip{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;}
+  .strip p{font-size:13px;color:var(--gray-500);max-width:200px;margin:0;}
+  .strip .tags{display:flex;gap:26px;flex-wrap:wrap;}
+  .strip .tags span{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:15px;color:var(--gray-400);}
+
+  .section-head{max-width:600px;margin:0 auto 42px;text-align:center;}
+  .section-head h2{font-size:32px;margin-bottom:10px;}
+  .section-head p{color:var(--gray-500);font-size:15px;margin:0;}
+
+  .grid6{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .icard{background:var(--white);border:1px solid var(--gray-100);border-radius:16px;padding:22px 20px;transition:transform .18s ease, box-shadow .18s ease;}
+  .icard:hover{transform:translateY(-3px);box-shadow:0 14px 26px -18px rgba(17,17,16,.2);}
+  .icard h3{font-size:15px;font-weight:700;margin-bottom:6px;}
+  .icard p{font-size:13px;color:var(--gray-500);margin:0;line-height:1.5;}
+
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .step{background:var(--white);border:1px solid var(--gray-100);border-radius:var(--radius);padding:26px 22px;}
+  .step .num{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:9px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:12.5px;margin-bottom:16px;}
+  .step h4{font-size:16px;margin-bottom:8px;}
+  .step p{font-size:13px;color:var(--gray-500);margin:0;line-height:1.5;}
+
+  .cta{background:var(--ink);color:#fff;border-radius:28px;margin:0 32px;padding:56px 40px;text-align:center;}
+  .cta h2{color:#fff;font-size:30px;margin-bottom:12px;}
+  .cta p{color:#B9B9B4;font-size:15px;margin-bottom:26px;}
+  .cta .hero-ctas{justify-content:center;}
+  .btn.white{background:#fff;color:var(--ink);}
+  .btn.white:hover{background:#eee;}
+  .btn.ghost{background:transparent;color:#fff;border-color:#3a3a37;}
+  .btn.ghost:hover{background:#1c1c1a;}
+
+  footer{padding:34px 0;}
+  footer .wrap{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--gray-500);}
+  footer nav a:hover{color:var(--ink);}
+
+  @media (max-width:860px){
+    .hero{grid-template-columns:1fr;padding-top:44px;}
+    h1{font-size:34px;}
+    nav{display:none;}
+    .grid6{grid-template-columns:1fr;}
+    .steps{grid-template-columns:1fr;}
+    .strip{flex-direction:column;align-items:flex-start;}
+    .cta{margin:0 16px;padding:40px 24px;}
+    .widget{grid-template-columns:1fr;}
+    .widget-left{border-right:none;border-bottom:1px solid var(--gray-100);}
+    footer .wrap{flex-direction:column;gap:12px;align-items:flex-start;}
+    footer nav{display:flex;gap:16px;flex-wrap:wrap;}
+  }
+</style>
+</head>
+<body>
+
+<div class="banner">Opción B — línea Cal.com pura: blanco / negro / gris, sin pixel-art</div>
+
+<div class="wrap">
+  <header>
+    <a class="brand" href="#">Interforma</a>
+    <nav>
+      <a href="#">Inicio</a><a href="#">Problemas</a><a href="#">Método</a><a href="#">Contacto</a>
+    </nav>
+    <a class="btn dark" href="#">Hablar por WhatsApp</a>
+  </header>
+
+  <section class="hero">
+    <div>
+      <div class="pill"><span class="dot">→</span> Nuevo: Método Interforma v2</div>
+      <h1>La mejor manera de diagnosticar tu empresa</h1>
+      <p class="lede">Un método de transformación digital totalmente adaptado a procesos reales — para equipos que ya probaron la tecnología genérica y no funcionó.</p>
+      <div class="hero-ctas">
+        <a class="btn dark" href="#">Iniciar diagnóstico gratuito</a>
+        <a class="btn light" href="#">Ver el método</a>
+      </div>
+      <div class="trust-row"><span class="stars">★★★★★</span> Basado en diagnósticos ya realizados en Chile</div>
+    </div>
+
+    <div class="widget">
+      <div class="widget-left">
+        <div class="avatar">IF</div>
+        <div class="name">Equipo Interforma</div>
+        <div class="title">Diagnóstico exprés</div>
+        <div class="desc">Una conversación para mapear tus procesos reales y detectar el cuello de botella principal.</div>
+        <div class="durations">
+          <span>15m</span><span class="on">30m</span><span>45m</span>
+        </div>
+        <div class="meta">◷ &nbsp;Videollamada</div>
+        <div class="meta">◎ &nbsp;Chile · remoto</div>
+      </div>
+      <div class="widget-right">
+        <div class="month">Agosto 2026</div>
+        <div class="cal-grid">
+          <div>10</div><div>11</div><div class="avail">12</div><div class="avail">13</div><div>14</div>
+          <div>17</div><div class="sel">18</div><div class="avail">19</div><div class="avail">20</div><div>21</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="gray">
+  <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+  <div class="wrap strip">
+    <p>Pensado para equipos de operaciones y tecnología que ya intentaron digitalizar sin resultado.</p>
+    <div class="tags">
+      <span>Retail</span><span>Manufactura</span><span>Salud</span><span>Logística</span><span>Servicios</span>
+    </div>
+  </div>
+</section>
+
+<section class="gray">
+  <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>¿Le suena familiar?</h2>
+      <p>Los seis patrones que vemos con más frecuencia — y que el Método Interforma está diseñado para resolver.</p>
+    </div>
+    <div class="grid6">
+      <div class="icard">
+        <div class="badge"><span class="d3"></span><span class="d4"></span>
+          <svg class="ico" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="11" rx="2"/><path d="M9 20h6M12 16v4"/></svg>
+        </div>
+        <h3>Tecnología que nadie usa</h3>
+        <p>Se instalan sistemas costosos que el equipo evita. La herramienta queda, el proceso no cambia.</p>
+      </div>
+      <div class="icard">
+        <div class="badge"><span class="d3"></span><span class="d4"></span>
+          <svg class="ico" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.2"/><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="12" r="2.2"/><path d="M8 6.8 16 11M8 17.2 16 13"/></svg>
+        </div>
+        <h3>Procesos sin mapear</h3>
+        <p>Se digitalizan flujos mal definidos. El software amplifica el caos en vez de resolverlo.</p>
+      </div>
+      <div class="icard">
+        <div class="badge"><span class="d3"></span><span class="d4"></span>
+          <svg class="ico" viewBox="0 0 24 24"><circle cx="9" cy="8" r="2.6"/><circle cx="16" cy="9" r="2.1"/><path d="M4 19c0-2.8 2.2-5 5-5s5 2.2 5 5M14.5 14.2c2.2.4 3.5 2.1 3.5 4.3"/></svg>
+        </div>
+        <h3>Equipos que no adoptan</h3>
+        <p>Sin acompañamiento al cambio, el equipo vuelve al Excel. La inversión no genera retorno real.</p>
+      </div>
+      <div class="icard">
+        <div class="badge"><span class="d3"></span><span class="d4"></span>
+          <svg class="ico" viewBox="0 0 24 24"><path d="M4 20V10l4-2 4 2 4-2 4 2v10z"/><path d="M8 8v12M16 8v12"/></svg>
+        </div>
+        <h3>Sin resultados medibles</h3>
+        <p>Meses de implementación sin métricas claras. No se sabe si la inversión valió la pena.</p>
+      </div>
+      <div class="icard">
+        <div class="badge"><span class="d3"></span><span class="d4"></span>
+          <svg class="ico" viewBox="0 0 24 24"><path d="M9 4h3v3.5a1.5 1.5 0 0 0 3 0V4h3v3h-3.5a1.5 1.5 0 0 0 0 3H18v3h-3v3.5a1.5 1.5 0 0 1-3 0V16H8.5a1.5 1.5 0 0 1 0-3H12V9H9z"/></svg>
+        </div>
+        <h3>Proveedores sin contexto</h3>
+        <p>Soluciones genéricas que no consideran la realidad operativa ni la cultura de la empresa.</p>
+      </div>
+      <div class="icard">
+        <div class="badge"><span class="d3"></span><span class="d4"></span>
+          <svg class="ico" viewBox="0 0 24 24"><rect x="3" y="9" width="7" height="7" rx="1.5"/><rect x="14" y="9" width="7" height="7" rx="1.5"/><path d="M10 12h4" stroke-dasharray="2 2"/></svg>
+        </div>
+        <h3>Sistemas que no se integran</h3>
+        <p>Cada área trabaja en silos digitales. La información no fluye y los errores se multiplican.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Con nosotros, el diagnóstico es simple</h2>
+      <p>Tres pasos, sin promesas vagas ni plazos imposibles.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="num">01</div><h4>Diagnóstico</h4><p>Mapeamos los procesos reales de la empresa — no los ideales — con entrevistas al equipo.</p></div>
+      <div class="step"><div class="num">02</div><h4>Diseño</h4><p>Diseñamos el nuevo flujo de trabajo antes de tocar ninguna tecnología. El proceso manda.</p></div>
+      <div class="step"><div class="num">03</div><h4>Implementación</h4><p>Ejecutamos por etapas, con entregables concretos en cada sprint.</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0;">
+  <div class="cta">
+    <h2>Hablemos sin compromiso</h2>
+    <p>No vendemos tecnología. Diagnosticamos procesos y diseñamos soluciones adaptadas a su empresa.</p>
+    <div class="hero-ctas">
+      <a class="btn white" href="#">Escribir por WhatsApp</a>
+      <a class="btn ghost" href="#">Ver el método completo</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="brand" style="font-size:16px;">Interforma</span>
+    <nav style="display:flex;gap:22px;">
+      <a href="#">Inicio</a><a href="#">Problemas</a><a href="#">Método</a><a href="#">Contacto</a>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>

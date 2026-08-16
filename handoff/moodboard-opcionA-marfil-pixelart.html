@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interforma — Dirección visual (moodboard)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FAF6EC;
+    --paper:#FFFDF8;
+    --ink:#221F1B;
+    --ink-soft:#6B6357;
+    --line:#E4DCC9;
+    --terracotta:#C4562A;
+    --terracotta-soft:#E9C9B4;
+    --navy:#28384A;
+    --terminal:#1C1A17;
+    --terminal-text:#F3E7D6;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+  a{color:inherit;}
+
+  /* label banner */
+  .banner{
+    background:var(--navy);
+    color:var(--terminal-text);
+    text-align:center;
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    letter-spacing:.08em;
+    padding:9px 12px;
+    text-transform:uppercase;
+  }
+
+  /* pixel icon */
+  .pixel{
+    display:inline-grid;
+    grid-template-columns:repeat(7,3px);
+    grid-template-rows:repeat(7,3px);
+    gap:1px;
+    vertical-align:middle;
+  }
+  .pixel div{width:3px;height:3px;}
+  .pixel .on{background:currentColor;}
+  .pixel .off{background:transparent;}
+
+  /* header */
+  header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:26px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-weight:600;font-size:21px;color:var(--ink);text-decoration:none;}
+  .brand .pixel{color:var(--terracotta);}
+  nav{display:flex;gap:34px;font-size:14px;color:var(--ink-soft);}
+  nav a{text-decoration:none;}
+  nav a:hover{color:var(--ink);}
+  .btn{
+    font-family:'Space Mono',monospace;
+    font-size:13px;
+    letter-spacing:.02em;
+    display:inline-flex;align-items:center;gap:8px;
+    padding:11px 20px;
+    border:1.5px solid var(--ink);
+    border-radius:9px;
+    color:var(--ink);
+    text-decoration:none;
+    background:transparent;
+    position:relative;
+    transition:all .18s ease;
+  }
+  .btn:hover{background:var(--ink);color:var(--paper);}
+  .btn.solid{background:var(--terracotta);border-color:var(--terracotta);color:var(--paper);}
+  .btn.solid:hover{background:#a8461d;border-color:#a8461d;}
+
+  /* hero */
+  .hero{padding:76px 0 60px;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;}
+  .eyebrow{
+    font-family:'Space Mono',monospace;
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--terracotta);
+    display:flex;align-items:center;gap:10px;margin-bottom:18px;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:44px;
+    line-height:1.16;
+    letter-spacing:-.01em;
+    margin:0 0 22px;
+  }
+  h1 em{font-style:italic;color:var(--terracotta);font-weight:500;}
+  .lede{font-size:16.5px;color:var(--ink-soft);max-width:440px;margin:0 0 30px;}
+  .hero-ctas{display:flex;align-items:center;gap:18px;}
+  .hero-note{font-family:'Space Mono',monospace;font-size:11.5px;color:var(--ink-soft);}
+
+  /* terminal card */
+  .terminal{
+    background:var(--terminal);
+    border-radius:16px;
+    padding:0;
+    overflow:hidden;
+    box-shadow:0 18px 40px -14px rgba(28,26,23,.35);
+  }
+  .terminal-bar{
+    display:flex;align-items:center;gap:8px;
+    padding:11px 14px;
+    background:#141210;
+    border-bottom:1px solid #2c2823;
+  }
+  .terminal-bar .dot{width:8px;height:8px;background:#4a443c;}
+  .terminal-bar .title{
+    font-family:'Space Mono',monospace;font-size:11px;color:#8f8577;margin-left:6px;
+  }
+  .terminal-body{
+    padding:22px 20px 26px;
+    font-family:'Space Mono',monospace;
+    font-size:13px;
+    color:var(--terminal-text);
+    min-height:190px;
+  }
+  .terminal-body .muted{color:#8f8577;}
+  .terminal-body .ok{color:#9FCB8C;}
+  .terminal-body .accent{color:#E39C74;}
+  .cursor{display:inline-block;width:7px;height:14px;background:var(--terminal-text);vertical-align:text-bottom;animation:blink 1s steps(1) infinite;}
+  @keyframes blink{50%{opacity:0;}}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(3px);}to{opacity:1;transform:translateY(0);}}
+  #termLines div{margin-bottom:7px;opacity:0;animation:fadeIn .3s ease forwards;}
+
+  /* section shared */
+  section{padding:64px 0;}
+  .section-head{max-width:560px;margin-bottom:40px;}
+  .section-head .eyebrow{margin-bottom:14px;}
+  h2{font-family:'Fraunces',serif;font-weight:500;font-size:30px;margin:0 0 12px;letter-spacing:-.01em;}
+  .section-head p{color:var(--ink-soft);font-size:15px;margin:0;}
+
+  /* palette + type strip */
+  .moodstrip{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:36px 40px;display:grid;grid-template-columns:1fr 1fr;gap:40px;}
+  .swatches{display:flex;flex-wrap:wrap;gap:14px;}
+  .swatch{width:96px;}
+  .swatch .chip{height:56px;border-radius:3px;border:1px solid rgba(0,0,0,.06);margin-bottom:8px;}
+  .swatch .name{font-family:'Space Mono',monospace;font-size:10.5px;color:var(--ink);}
+  .swatch .hex{font-family:'Space Mono',monospace;font-size:10px;color:var(--ink-soft);}
+  .type-row{display:flex;align-items:baseline;gap:16px;padding:10px 0;border-bottom:1px solid var(--line);}
+  .type-row:last-child{border-bottom:none;}
+  .type-row .sample{font-size:30px;line-height:1;}
+  .type-row.serif .sample{font-family:'Fraunces',serif;font-weight:500;}
+  .type-row.mono .sample{font-family:'Space Mono',monospace;font-size:22px;}
+  .type-row.sans .sample{font-family:'Inter',sans-serif;font-weight:500;}
+  .type-row .label{font-family:'Space Mono',monospace;font-size:10.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em;}
+
+  /* cards — v2, closer to Cal.com's card language */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .card{
+    background:var(--paper);
+    border:1px solid rgba(34,31,27,.06);
+    border-radius:20px;
+    padding:26px 24px 28px;
+    box-shadow:0 1px 2px rgba(34,31,27,.04), 0 14px 28px -20px rgba(34,31,27,.16);
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 4px 10px rgba(34,31,27,.06), 0 22px 34px -18px rgba(34,31,27,.22);
+  }
+  .card-icon{
+    width:40px;height:40px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:18px;
+    transition:transform .2s ease;
+  }
+  .card:hover .card-icon{transform:scale(1.06);}
+  .card-icon.terracotta{background:var(--terracotta);}
+  .card-icon.navy{background:var(--navy);}
+  .card-icon .pixel{color:#fff;}
+  .card h3{font-family:'Inter',sans-serif;font-weight:600;font-size:16.5px;margin:0 0 8px;letter-spacing:-.005em;}
+  .card p{font-size:13.5px;color:var(--ink-soft);margin:0;}
+
+  /* mini product widget inside a card — the "peek at the real product" trick */
+  .mini-widget{
+    margin-top:18px;border:1px solid var(--line);border-radius:12px;
+    background:var(--cream);padding:13px 14px 12px;
+  }
+  .mini-widget .row{display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:9.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;margin-bottom:9px;}
+  .mini-widget .bars{display:flex;align-items:flex-end;gap:6px;height:38px;}
+  .mini-widget .bar{flex:1;border-radius:4px 4px 2px 2px;background:var(--terracotta-soft);}
+  .mini-widget .bar.up{background:var(--terracotta);}
+
+  /* timeline */
+  .timeline{display:flex;justify-content:space-between;position:relative;padding-top:8px;}
+  .timeline::before{
+    content:"";position:absolute;top:14px;left:6%;right:6%;height:1px;
+    background-image:linear-gradient(to right, var(--line) 60%, transparent 0%);
+    background-size:8px 1px;background-repeat:repeat-x;
+  }
+  .tstep{flex:1;text-align:center;position:relative;z-index:1;}
+  .tstep .mark{
+    width:12px;height:12px;background:var(--paper);border:2px solid var(--terracotta);
+    margin:0 auto 14px;transition:background .2s ease;
+  }
+  .tstep:hover .mark{background:var(--terracotta);}
+  .tstep .num{font-family:'Space Mono',monospace;font-size:11px;color:var(--terracotta);margin-bottom:6px;}
+  .tstep h4{font-family:'Fraunces',serif;font-weight:500;font-size:16px;margin:0 0 6px;}
+  .tstep p{font-size:12.5px;color:var(--ink-soft);max-width:170px;margin:0 auto;}
+
+  /* footer */
+  footer{background:var(--navy);color:var(--terminal-text);padding:30px 0;margin-top:20px;}
+  footer .wrap{display:flex;align-items:center;justify-content:space-between;}
+  footer .brand{color:var(--terminal-text);}
+  footer .brand .pixel{color:#E39C74;}
+  footer nav{color:#B9C2CC;}
+  footer nav a:hover{color:var(--terminal-text);}
+
+  @media (max-width:840px){
+    .hero{grid-template-columns:1fr;}
+    .moodstrip{grid-template-columns:1fr;}
+    .cards{grid-template-columns:1fr;}
+    nav{display:none;}
+    h1{font-size:34px;}
+    .timeline{flex-direction:column;gap:26px;}
+    .timeline::before{display:none;}
+    footer .wrap{flex-direction:column;gap:14px;text-align:center;}
+  }
+</style>
+</head>
+<body>
+
+<div class="banner">Moodboard — dirección visual exploratoria, no el sitio final</div>
+
+<div class="wrap">
+  <header>
+    <a class="brand" href="#"><span class="pixel" id="iconBrand"></span>Interforma</a>
+    <nav>
+      <a href="#">Inicio</a>
+      <a href="#">Problemas</a>
+      <a href="#">Método</a>
+      <a href="#">Contacto</a>
+    </nav>
+    <a class="btn" href="#">Hablar por WhatsApp</a>
+  </header>
+
+  <section class="hero" style="padding-bottom:0;">
+    <div>
+      <div class="eyebrow"><span class="pixel" id="iconEyebrow"></span>Próximo paso</div>
+      <h1>Entendamos primero el <em>verdadero</em> problema de su empresa</h1>
+      <p class="lede">Una conversación de 30 minutos puede revelar más que meses de implementación sin diagnóstico previo.</p>
+      <div class="hero-ctas">
+        <a class="btn solid" href="#">Iniciar diagnóstico</a>
+        <span class="hero-note">Sin compromiso · 24&nbsp;h</span>
+      </div>
+    </div>
+
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="title">diagnostico.sh</div>
+      </div>
+      <div class="terminal-body" id="termLines"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div class="eyebrow"><span class="pixel" id="iconEyebrow2"></span>Paleta &amp; tipografía</div>
+      <h2>Sistema visual propuesto</h2>
+      <p>Base marfil en vez de negro, un acento terracota que hace de "pixel" de marca, y tipografía con carácter antes que con tamaño.</p>
+    </div>
+    <div class="moodstrip">
+      <div class="swatches">
+        <div class="swatch"><div class="chip" style="background:#FAF6EC;"></div><div class="name">Marfil</div><div class="hex">#FAF6EC</div></div>
+        <div class="swatch"><div class="chip" style="background:#221F1B;"></div><div class="name">Tinta</div><div class="hex">#221F1B</div></div>
+        <div class="swatch"><div class="chip" style="background:#C4562A;"></div><div class="name">Terracota</div><div class="hex">#C4562A</div></div>
+        <div class="swatch"><div class="chip" style="background:#28384A;"></div><div class="name">Navy vintage</div><div class="hex">#28384A</div></div>
+        <div class="swatch"><div class="chip" style="background:#E4DCC9;"></div><div class="name">Línea</div><div class="hex">#E4DCC9</div></div>
+      </div>
+      <div class="typespec">
+        <div class="type-row serif"><div class="sample">Aa</div><div class="label">Fraunces — títulos</div></div>
+        <div class="type-row mono"><div class="sample">Aa 01</div><div class="label">Space Mono — labels / terminal</div></div>
+        <div class="type-row sans"><div class="sample">Aa</div><div class="label">Inter — cuerpo de texto</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div class="eyebrow"><span class="pixel" id="iconEyebrow3"></span>El problema de fondo</div>
+      <h2>¿Le suena familiar?</h2>
+      <p>Mismo contenido que hoy, con tarjetas más silenciosas y una micro-animación al pasar el cursor — inspirado en Cal.com.</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon terracotta"><span class="pixel" id="iconCard1"></span></div>
+        <h3>Tecnología que nadie usa</h3>
+        <p>Se instalan sistemas costosos que el equipo evita. La herramienta queda, el proceso no cambia.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon navy"><span class="pixel" id="iconCard2"></span></div>
+        <h3>Procesos sin mapear</h3>
+        <p>Se digitalizan flujos mal definidos. El software amplifica el caos en vez de resolverlo.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon terracotta"><span class="pixel" id="iconCard3"></span></div>
+        <h3>Sin resultados medibles</h3>
+        <p>Meses de implementación sin métricas claras. No se sabe si la inversión valió la pena.</p>
+        <div class="mini-widget">
+          <div class="row"><span>Antes</span><span>Después</span></div>
+          <div class="bars">
+            <div class="bar" style="height:35%;"></div>
+            <div class="bar" style="height:22%;"></div>
+            <div class="bar up" style="height:70%;"></div>
+            <div class="bar up" style="height:88%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div class="eyebrow"><span class="pixel" id="iconEyebrow4"></span>Método</div>
+      <h2>Un proceso, no una promesa</h2>
+    </div>
+    <div class="timeline">
+      <div class="tstep"><div class="mark"></div><div class="num">01</div><h4>Diagnóstico</h4><p>Mapeamos procesos reales, no ideales.</p></div>
+      <div class="tstep"><div class="mark"></div><div class="num">02</div><h4>Diseño</h4><p>El proceso manda, la herramienta sirve.</p></div>
+      <div class="tstep"><div class="mark"></div><div class="num">03</div><h4>Implementación</h4><p>Entregables concretos, sin promesas vagas.</p></div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#"><span class="pixel" id="iconBrand2"></span>Interforma</a>
+    <nav style="display:flex;gap:26px;font-size:13px;">
+      <a href="#">Inicio</a><a href="#">Problemas</a><a href="#">Método</a><a href="#">Contacto</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  // 7x7 pixel "asterisk" motif — reused everywhere as the single pixel-art brand mark
+  const STAR = [
+    "0001000",
+    "0101010",
+    "0001000",
+    "1111111",
+    "0001000",
+    "0101010",
+    "0001000",
+  ];
+  function renderPixel(el, matrix){
+    if(!el) return;
+    matrix.join("").split("").forEach(bit=>{
+      const d = document.createElement("div");
+      d.className = bit === "1" ? "on" : "off";
+      el.appendChild(d);
+    });
+  }
+  ["iconBrand","iconEyebrow","iconEyebrow2","iconEyebrow3","iconEyebrow4","iconCard1","iconCard2","iconCard3","iconBrand2"]
+    .forEach(id => renderPixel(document.getElementById(id), STAR));
+
+  // terminal typewriter
+  const lines = [
+    {text:"$ interforma diagnostico --run", cls:"muted"},
+    {text:"analizando procesos...", cls:""},
+    {text:"✓ 3 cuellos de botella detectados", cls:"ok"},
+    {text:"✓ hoja de ruta generada", cls:"ok"},
+    {text:"→ listo para revisión en 30 min", cls:"accent"},
+  ];
+  const container = document.getElementById("termLines");
+  let delay = 300;
+  lines.forEach((line, i) => {
+    const row = document.createElement("div");
+    row.className = line.cls;
+    row.style.animationDelay = delay + "ms";
+    row.textContent = line.text;
+    container.appendChild(row);
+    delay += 550;
+  });
+  setTimeout(()=>{
+    const cur = document.createElement("div");
+    cur.style.opacity = 1;
+    cur.innerHTML = '<span class="cursor"></span>';
+    container.appendChild(cur);
+  }, delay + 200);
+</script>
+
+</body>
+</html>

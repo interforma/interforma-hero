@@ -42,3 +42,7 @@ pnpm-debug.log*
 # ── Knowledge base — datos privados de clientes ───
 knowledge/clients/
 .vercel
+
+# ── Herramientas de AI ────────────────────────────
+.claude/
+.impeccable/

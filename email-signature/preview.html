@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preview — Firma Interforma</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #F2F2F0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      color: #111110;
+      padding: 40px 20px 80px;
+    }
+
+    .page-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #A5A5A0;
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    /* ── Simulador de correo ─────────────────────────── */
+
+    .email-shell {
+      max-width: 640px;
+      margin: 0 auto 56px;
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06);
+      overflow: hidden;
+    }
+
+    .email-header {
+      background: #F9F9F8;
+      border-bottom: 1px solid #E8E8E5;
+      padding: 18px 24px;
+    }
+
+    .email-header-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      font-size: 12px;
+      color: #737370;
+      margin-bottom: 4px;
+    }
+
+    .email-header-row:last-child { margin-bottom: 0; }
+
+    .email-header-label {
+      font-weight: 500;
+      min-width: 34px;
+      color: #A5A5A0;
+    }
+
+    .email-subject {
+      font-size: 14px;
+      font-weight: 600;
+      color: #111110;
+      padding: 16px 24px 0;
+    }
+
+    .email-body {
+      padding: 20px 24px 24px;
+    }
+
+    .email-body-text {
+      font-size: 13px;
+      color: #3D3D3B;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .email-divider {
+      border: none;
+      border-top: 1px solid #E8E8E5;
+      margin: 0 0 24px;
+    }
+
+    /* ── Sección de copia ────────────────────────────── */
+
+    .copy-section {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .copy-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #A5A5A0;
+      margin-bottom: 10px;
+    }
+
+    .copy-instructions {
+      background: #ffffff;
+      border: 1px solid #E8E8E5;
+      border-radius: 8px;
+      margin-bottom: 2px;
+      overflow: hidden;
+    }
+
+    .copy-instructions-header {
+      padding: 14px 18px;
+      border-bottom: 1px solid #E8E8E5;
+      font-size: 12px;
+      color: #737370;
+      line-height: 1.6;
+    }
+
+    .copy-instructions-header strong {
+      color: #111110;
+      font-weight: 600;
+    }
+
+    .copy-instructions-steps {
+      padding: 14px 18px;
+      font-size: 11.5px;
+      color: #737370;
+      line-height: 1.8;
+    }
+
+    .copy-instructions-steps ol {
+      padding-left: 16px;
+    }
+
+    .copy-instructions-steps code {
+      background: #F2F2F0;
+      border-radius: 3px;
+      padding: 0 4px;
+      font-size: 11px;
+      font-family: 'SF Mono', 'Fira Mono', 'Courier New', monospace;
+      color: #3D3D3B;
+    }
+
+    /* ── Área seleccionable ──────────────────────────── */
+
+    .selectable-wrapper {
+      max-width: 640px;
+      margin: 16px auto 0;
+    }
+
+    .selectable-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #2655E8;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .selectable-label::before,
+    .selectable-label::after {
+      content: '';
+      flex: 1;
+      border-top: 1px dashed #D5DFFB;
+    }
+
+    .selectable-area {
+      background: #ffffff;
+      border: 1.5px dashed #2655E8;
+      border-radius: 8px;
+      padding: 24px;
+      cursor: text;
+      user-select: text;
+    }
+
+    .selectable-note {
+      text-align: center;
+      font-size: 10px;
+      color: #A5A5A0;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 480px) {
+      .email-header,
+      .email-body { padding-left: 16px; padding-right: 16px; }
+      .email-subject { padding-left: 16px; padding-right: 16px; }
+      .selectable-area { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <p class="page-title">Preview · Firma corporativa Interforma</p>
+
+  <!-- ── Simulador de correo ──────────────────────────────── -->
+
+  <div class="email-shell">
+    <div class="email-header">
+      <div class="email-header-row">
+        <span class="email-header-label">De:</span>
+        <span>Sergio Valenzuela &lt;hola@interforma.digital&gt;</span>
+      </div>
+      <div class="email-header-row">
+        <span class="email-header-label">Para:</span>
+        <span>cliente@empresa.com</span>
+      </div>
+    </div>
+
+    <div class="email-subject">Propuesta de proyecto — Fase inicial</div>
+
+    <div class="email-body">
+      <div class="email-body-text">
+        Hola,<br><br>
+        Adjunto encontrarás la propuesta que comentamos la semana pasada.
+        Quedo disponible para resolver cualquier duda.<br><br>
+        Saludos,
+      </div>
+
+      <hr class="email-divider">
+
+      <!-- FIRMA (igual que interforma-signature.html) -->
+      <table
+        width="100%"
+        cellpadding="0"
+        cellspacing="0"
+        border="0"
+        role="presentation"
+        style="max-width:440px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color:#111110; line-height:1;"
+      >
+        <tr>
+          <td style="padding:0; vertical-align:top;">
+
+            <table cellpadding="0" cellspacing="0" border="0" role="presentation">
+              <tr>
+                <td
+                  width="22"
+                  height="22"
+                  style="width:22px;height:22px;background:#2655E8;border-radius:5px;text-align:center;vertical-align:middle;font-size:13px;font-weight:700;color:#ffffff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;line-height:22px;padding:0;mso-line-height-rule:exactly;"
+                >i</td>
+                <td style="padding-left:7px; vertical-align:middle;">
+                  <span style="font-size:15px;font-weight:700;color:#111110;letter-spacing:-0.3px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">interforma</span>
+                </td>
+              </tr>
+            </table>
+
+            <p style="margin:7px 0 0 0;padding:0;font-size:11.5px;color:#737370;line-height:1.45;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">Ideas que conectan. Sistemas que funcionan.</p>
+
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation" style="margin:13px 0 12px 0;">
+              <tr>
+                <td style="border-top:1px solid #E8E8E5;height:0;line-height:0;font-size:0;padding:0;">&nbsp;</td>
+              </tr>
+            </table>
+
+            <p style="margin:0;padding:0;font-size:13px;font-weight:600;color:#111110;line-height:1.4;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">Sergio Valenzuela</p>
+            <p style="margin:2px 0 0 0;padding:0;font-size:12px;color:#737370;line-height:1.4;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">Interforma</p>
+
+            <p style="margin:10px 0 0 0;padding:0;line-height:1;">
+              <a href="mailto:hola@interforma.digital" style="font-size:12px;color:#2655E8;text-decoration:none;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">hola@interforma.digital</a>
+            </p>
+            <p style="margin:4px 0 0 0;padding:0;line-height:1;">
+              <a href="https://interforma.digital" style="font-size:12px;color:#2655E8;text-decoration:none;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">interforma.digital</a>
+            </p>
+
+          </td>
+        </tr>
+      </table>
+      <!-- FIN FIRMA -->
+
+    </div>
+  </div>
+
+  <!-- ── Instrucciones de instalación ─────────────────────── -->
+
+  <div class="copy-section">
+    <div class="copy-label">Instalación en Gmail</div>
+    <div class="copy-instructions">
+      <div class="copy-instructions-header">
+        <strong>Cómo instalar la firma en Gmail</strong> — sin editar código.
+      </div>
+      <div class="copy-instructions-steps">
+        <ol>
+          <li>Selecciona toda la firma del área delimitada de abajo (arrastra o <code>Cmd+A</code> dentro del área).</li>
+          <li>Copia con <code>Cmd+C</code>.</li>
+          <li>Abre Gmail → <strong>Configuración</strong> (⚙) → <strong>Ver toda la configuración</strong>.</li>
+          <li>Ve a la pestaña <strong>General</strong> → sección <strong>Firma</strong>.</li>
+          <li>Crea una firma nueva o edita la de <code>hola@interforma.digital</code>.</li>
+          <li>Haz clic dentro del editor de firma y pega con <code>Cmd+V</code>.</li>
+          <li>Haz clic en <strong>Guardar cambios</strong> al final de la página.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Área seleccionable ────────────────────────────────── -->
+
+  <div class="selectable-wrapper">
+    <div class="selectable-label">FIRMA — SELECCIONAR Y COPIAR</div>
+
+    <!--
+      Esta área contiene ÚNICAMENTE la firma final.
+      Selecciona todo su contenido y copia con Cmd+C / Ctrl+C.
+      No hay botones ni elementos adicionales dentro del área seleccionable.
+    -->
+    <div class="selectable-area">
+
+      <table
+        width="100%"
+        cellpadding="0"
+        cellspacing="0"
+        border="0"
+        role="presentation"
+        style="max-width:440px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color:#111110; line-height:1;"
+      >
+        <tr>
+          <td style="padding:0; vertical-align:top;">
+
+            <table cellpadding="0" cellspacing="0" border="0" role="presentation">
+              <tr>
+                <td
+                  width="22"
+                  height="22"
+                  style="width:22px;height:22px;background:#2655E8;border-radius:5px;text-align:center;vertical-align:middle;font-size:13px;font-weight:700;color:#ffffff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;line-height:22px;padding:0;mso-line-height-rule:exactly;"
+                >i</td>
+                <td style="padding-left:7px; vertical-align:middle;">
+                  <span style="font-size:15px;font-weight:700;color:#111110;letter-spacing:-0.3px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">interforma</span>
+                </td>
+              </tr>
+            </table>
+
+            <p style="margin:7px 0 0 0;padding:0;font-size:11.5px;color:#737370;line-height:1.45;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">Ideas que conectan. Sistemas que funcionan.</p>
+
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation" style="margin:13px 0 12px 0;">
+              <tr>
+                <td style="border-top:1px solid #E8E8E5;height:0;line-height:0;font-size:0;padding:0;">&nbsp;</td>
+              </tr>
+            </table>
+
+            <p style="margin:0;padding:0;font-size:13px;font-weight:600;color:#111110;line-height:1.4;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">Sergio Valenzuela</p>
+            <p style="margin:2px 0 0 0;padding:0;font-size:12px;color:#737370;line-height:1.4;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">Interforma</p>
+
+            <p style="margin:10px 0 0 0;padding:0;line-height:1;">
+              <a href="mailto:hola@interforma.digital" style="font-size:12px;color:#2655E8;text-decoration:none;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">hola@interforma.digital</a>
+            </p>
+            <p style="margin:4px 0 0 0;padding:0;line-height:1;">
+              <a href="https://interforma.digital" style="font-size:12px;color:#2655E8;text-decoration:none;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">interforma.digital</a>
+            </p>
+
+          </td>
+        </tr>
+      </table>
+
+    </div>
+    <p class="selectable-note">Selecciona desde el primer elemento hasta el último enlace · Solo la firma, nada más</p>
+  </div>
+
+</body>
+</html>
