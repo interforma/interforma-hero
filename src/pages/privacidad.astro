@@ -9,7 +9,7 @@ const description = 'Política de privacidad y tratamiento de datos personales d
 <Base
   title={title}
   description={description}
-  canonical={`${site.url}/privacidad`}
+  canonical={new URL('privacidad', site.url).href}
 >
   <article class="privacy container" aria-labelledby="privacy-title">
 
