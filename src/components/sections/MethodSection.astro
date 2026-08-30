@@ -256,9 +256,11 @@ import { methodSteps, methodCopy } from '@config/content';
     }
 
     function updateProgress() {
-      const r     = methodEl.getBoundingClientRect();
-      const total = methodEl.offsetHeight - innerHeight;
-      progress = clamp(-r.top / Math.max(1, total), 0, 1);
+      const r = methodEl.getBoundingClientRect();
+      // Start: section top at viewport bottom (canvas first enters view)
+      // End:   section bottom at viewport bottom (step 06 exits)
+      // Range = offsetHeight (160svh) → each of the 6 steps covers ~26.7svh of scroll
+      progress = clamp((innerHeight - r.top) / methodEl.offsetHeight, 0, 1);
 
       const s = Math.min(5, Math.floor(progress * 6));
       if (s !== current) {
@@ -275,9 +277,10 @@ import { methodSteps, methodCopy } from '@config/content';
       for (let i = 0; i < lineCount; i++) {
         const u        = i / (lineCount - 1);
         const targetX  = MW * (0.09 + u * 0.82);
-        const chaos    = (1 - smooth(0, 0.95, progress)) * MW * 0.085;
-        const organize = smooth(0.10, 0.78, progress);
-        const clarity  = smooth(0.62, 1,    progress);
+        // Spread across full [0→1] range so step 03 ≈ 50% organized, step 06 = fully structured
+        const chaos    = (1 - smooth(0,    1,   progress)) * MW * 0.085;
+        const organize = smooth(0,    0.8, progress); // 50% at p≈0.42 (step 03 midpoint)
+        const clarity  = smooth(0.5,  1,   progress); // starts at step 03, done at step 06
 
         ctx.beginPath();
         for (let j = 0; j <= 90; j++) {
@@ -300,7 +303,7 @@ import { methodSteps, methodCopy } from '@config/content';
         ctx.stroke();
       }
 
-      const rv = smooth(0.56, 1, progress);
+      const rv = smooth(0.67, 1, progress); // grid appears step 04→06
       if (rv > 0.001) {
         const x = MW * 0.31, y = MH * 0.27, w = MW * 0.38, h = MH * 0.46;
         ctx.strokeStyle = `rgba(233,225,210,${(0.08 + rv * 0.55).toFixed(3)})`;
