@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gatica Property — Panel del cliente</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Karla:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --marine:#123c46; --ochre:#c98a2b; --eucalipto:#5b7a66; --arena:#efe8d8;
+    --surface:#fbf8f1; --ink:#1b2420; --ink-soft:#4b564f; --line:rgba(18,60,70,.15);
+    --bg:var(--arena);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0e2229; --surface:#16323b; --ink:#ece7d9; --ink-soft:#b9c4bc; --line:rgba(236,231,217,.14); --ochre:#dda24b; --eucalipto:#86ab97; }
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:'Karla',ui-sans-serif,system-ui,sans-serif;
+    min-height:100vh; display:flex; align-items:center; justify-content:center; padding:40px 20px; }
+  .wrap{ max-width:760px; width:100%; }
+  .brand{ display:flex; align-items:center; gap:10px; font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:1.1rem; margin-bottom:6px; }
+  .tag{ font-family:'IBM Plex Mono',monospace; font-size:.75rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ochre); margin-bottom:28px; display:block; }
+  h1{ font-family:'Bricolage Grotesque',sans-serif; font-size:2rem; margin:0 0 10px; }
+  p.lede{ color:var(--ink-soft); max-width:56ch; margin:0 0 34px; }
+  .cards{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  @media (max-width:640px){ .cards{ grid-template-columns:1fr; } }
+  a.card{ display:block; text-decoration:none; color:var(--ink); background:var(--surface); border:1px solid var(--line);
+    border-radius:16px; padding:26px 24px; box-shadow:0 1px 2px rgba(27,36,32,.06), 0 8px 24px -12px rgba(27,36,32,.18);
+    transition:transform .15s ease; }
+  a.card:hover{ transform:translateY(-3px); }
+  a.card .k{ font-family:'IBM Plex Mono',monospace; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--eucalipto); }
+  a.card h2{ font-family:'Bricolage Grotesque',sans-serif; font-size:1.25rem; margin:8px 0 8px; }
+  a.card p{ margin:0; font-size:.9rem; color:var(--ink-soft); }
+  a.card .go{ margin-top:14px; font-size:.85rem; font-weight:700; color:var(--ochre); }
+  footer{ margin-top:32px; font-size:.78rem; color:var(--ink-soft); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="brand">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 13 L12 5 L21 13" stroke="#c98a2b" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 12 V20 H19 V12" stroke="#123c46" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      GATICA PROPERTY
+    </div>
+    <span class="tag">Panel del cliente · Interforma Marketing</span>
+    <h1>Todo lo pensado para septiembre, en un solo lugar</h1>
+    <p class="lede">Dos piezas para revisar: el plan de marketing completo y el prototipo de landing page de la propiedad de Alto Hospicio.</p>
+    <div class="cards">
+      <a class="card" href="./plan.html">
+        <span class="k">Estrategia</span>
+        <h2>Plan de marketing</h2>
+        <p>Diagnóstico, mensajes por segmento, calendario de septiembre y KPIs.</p>
+        <div class="go">Ver el plan →</div>
+      </a>
+      <a class="card" href="./las-rocas.html">
+        <span class="k">Propiedad</span>
+        <h2>Alto Hospicio — Las Rocas</h2>
+        <p>Landing con fotos, precio y contacto directo por WhatsApp.</p>
+        <div class="go">Ver la landing →</div>
+      </a>
+    </div>
+    <footer>Gatica Property · preparado por Interforma Marketing · 31 de agosto de 2026</footer>
+  </div>
+</body>
+</html>
