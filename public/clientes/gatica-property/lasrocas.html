@@ -131,9 +131,10 @@
   .sticky-cta .btn-wa{ padding:11px 18px; font-size:.88rem; }
 
   /* ---------- Footer ---------- */
-  footer{ border-top:1px solid var(--line); padding:30px 0 40px; }
-  footer .wrap{ display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; font-size:.78rem; color:var(--ink-soft); }
-  footer b{ color:var(--ink); }
+  footer{ border-top:1px solid var(--line); padding:28px 20px 36px; text-align:center; }
+  footer .addr-link{ display:inline-flex; align-items:center; gap:7px; font-size:.8rem; color:var(--ink-soft); text-decoration:none; letter-spacing:.01em; transition:color .15s; }
+  footer .addr-link:hover,footer .addr-link:focus-visible{ color:var(--ink); }
+  footer .addr-link svg{ flex-shrink:0; opacity:.5; }
 
   /* ---------- Lightbox ---------- */
   .lightbox{ position:fixed; inset:0; background:rgba(11,20,17,.92); display:none; align-items:center; justify-content:center; z-index:50; padding:40px; }
@@ -246,10 +247,10 @@
 </div>
 
 <footer>
-  <div class="wrap">
-    <div><b>Gatica Property</b> — Andrea Gatica · Calle Santa Rosa 3979, Edificio Las Rocas, Alto Hospicio</div>
-    <div>Comisión 2% · Metros aproximados, informados por el propietario · Prototipo de landing page — plantilla reutilizable para futuras propiedades</div>
-  </div>
+  <a class="addr-link" href="https://maps.google.com/?q=Calle+Santa+Rosa+3979,+Alto+Hospicio" target="_blank" rel="noopener noreferrer">
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    Calle Santa Rosa 3979, Edificio Las Rocas, Alto Hospicio
+  </a>
 </footer>
 
 <div class="sticky-cta">
