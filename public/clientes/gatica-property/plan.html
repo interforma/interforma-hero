@@ -277,9 +277,9 @@
         <table>
           <thead><tr><th>Canal</th><th>Rol</th><th>Frecuencia</th><th>Esfuerzo</th></tr></thead>
           <tbody>
-            <tr><td><span class="pill pill-ig">Instagram</span></td><td>Marca y descubrimiento</td><td>3 posts/sem + historias diarias</td><td>Medio</td></tr>
-            <tr><td><span class="pill pill-fb">Facebook</span></td><td>Alcance local, público 35+</td><td>2-3 posts/sem + grupos</td><td>Medio</td></tr>
-            <tr><td><span class="pill pill-wa">WhatsApp</span></td><td>Motor de conversión</td><td>Diario + 1 difusión/sem</td><td>Bajo-medio</td></tr>
+            <tr><td><span class="pill pill-ig">Instagram</span></td><td>Marca y descubrimiento</td><td>2 publicaciones/sem (parte de las 3 totales)</td><td>Medio</td></tr>
+            <tr><td><span class="pill pill-fb">Facebook</span></td><td>Alcance local, público 35+</td><td>1 publicación/sem (parte de las 3 totales) + grupos</td><td>Medio</td></tr>
+            <tr><td><span class="pill pill-wa">WhatsApp</span></td><td>Motor de conversión</td><td>Respuesta a consultas + 1 difusión puntual/mes</td><td>Bajo</td></tr>
             <tr><td><span class="pill pill-otro">Portales</span></td><td>Visibilidad de búsqueda activa</td><td>Renovar 1 vez/sem</td><td>Bajo</td></tr>
             <tr><td><span class="pill pill-otro">Google Business</span></td><td>SEO local</td><td>Configurar + mensual</td><td>Bajo</td></tr>
             <tr><td><span class="pill pill-otro">Meta Ads</span></td><td>Amplificar lo mejor orgánico</td><td>Continuo (opcional)</td><td>Medio</td></tr>
@@ -291,7 +291,7 @@
     <section id="calendario">
       <span class="kicker">06 — Calendario</span>
       <h2>Septiembre 2026, semana a semana</h2>
-      <p class="lede">Toca un día con contenido para ver el detalle: formato, mensaje clave, CTA y hora sugerida.</p>
+      <p class="lede">Ritmo real de 3 publicaciones por semana (miércoles, viernes y domingo), partiendo el miércoles 2 de septiembre. Toca un día con contenido para ver el detalle: formato, mensaje clave, CTA y hora sugerida.</p>
       <div id="cal-root"></div>
       <div class="cal-legend">
         <span class="pill pill-ig">Instagram</span><span class="pill pill-fb">Facebook</span><span class="pill pill-wa">WhatsApp</span><span class="pill pill-otro">Portales / otros</span>
@@ -443,33 +443,25 @@ const PILARES = [
 
 // date, weekday label auto-computed is not needed - week grouping provided
 const CAL = [
-  {date:"2026-09-01", label:"Mar 1", ch:"ig", fmt:"Reel", pilar:"Vitrina", msg:"Relanzamiento: tour completo del depto Las Rocas — living, cocina, dormitorios, terraza (guion ya escrito, con datos corregidos).", cta:"Agenda tu visita por WhatsApp", hora:"20:00", week:1},
-  {date:"2026-09-02", label:"Mié 2", ch:"fb", fmt:"Publicación + link", pilar:"Vitrina", msg:"Relanzamiento con ficha corregida (gasto común y m² unificados) y brochure regenerado.", cta:"Escríbenos por Messenger o WhatsApp", hora:"10:00", week:1},
-  {date:"2026-09-03", label:"Jue 3", ch:"ig", fmt:"Carrusel", pilar:"Vitrina", msg:"Galería de fotos por ambiente + specs (3D/2B, estacionamiento, bodega) con plantilla nueva.", cta:"Guarda este post y compártelo", hora:"09:30", week:1},
-  {date:"2026-09-04", label:"Vie 4", ch:"fb", fmt:"Grupos + Marketplace", pilar:"Vitrina", msg:"Versión corta ya redactada, publicada en 3-4 grupos de compra/venta de Alto Hospicio e Iquique.", cta:"Escríbenos por WhatsApp", hora:"09:00", week:1},
-  {date:"2026-09-05", label:"Sáb 5", ch:"ig", fmt:"Historia (encuesta)", pilar:"Marca", msg:"Encuesta \"¿Buscas para vivir o para invertir?\" — segmenta a quien responde.", cta:"Responde la encuesta", hora:"12:00", week:1},
+  {date:"2026-09-02", label:"Mié 2", ch:"ig", fmt:"Reel", pilar:"Vitrina", msg:"Relanzamiento: tour completo del depto Las Rocas — living, cocina, dormitorios y terraza (guion ya escrito, con datos corregidos).", cta:"Agenda tu visita por WhatsApp", hora:"20:00", week:1},
+  {date:"2026-09-04", label:"Vie 4", ch:"fb", fmt:"Publicación + link", pilar:"Vitrina", msg:"Relanzamiento con ficha corregida (gasto común y m² unificados) y brochure regenerado.", cta:"Escríbenos por Messenger o WhatsApp", hora:"10:00", week:1},
+  {date:"2026-09-06", label:"Dom 6", ch:"ig", fmt:"Carrusel", pilar:"Vitrina", msg:"Galería de fotos por ambiente + specs (3D/2B, estacionamiento, bodega) con plantilla nueva.", cta:"Guarda este post y compártelo", hora:"11:00", week:1},
 
-  {date:"2026-09-08", label:"Mar 8", ch:"ig", fmt:"Reel", pilar:"Zona y estilo de vida", msg:"\"Por qué Alto Hospicio está creciendo\": nuevo hospital (1.400 funcionarios), nuevos servicios, plusvalía.", cta:"Conoce el depto cerca del hospital", hora:"20:00", week:2},
-  {date:"2026-09-09", label:"Mié 9", ch:"fb", fmt:"Publicación educativa", pilar:"Educación", msg:"Cómo funciona un crédito hipotecario o subsidio DS19 para comprar en Alto Hospicio, en simple.", cta:"Escríbenos tus dudas", hora:"10:00", week:2},
-  {date:"2026-09-10", label:"Jue 10", ch:"ig", fmt:"Carrusel", pilar:"Zona y estilo de vida", msg:"\"5 razones para invertir cerca del nuevo hospital de Alto Hospicio\".", cta:"Pide la ficha de rentabilidad", hora:"09:30", week:2},
-  {date:"2026-09-11", label:"Vie 11", ch:"wa", fmt:"Difusión", pilar:"Vitrina", msg:"Envío a base de contactos: fotos nuevas + invitación a agendar visita este fin de semana.", cta:"Responde para agendar", hora:"11:00", week:2},
-  {date:"2026-09-12", label:"Sáb 12", ch:"ig", fmt:"Historia (Q&A)", pilar:"Marca", msg:"Preguntas y respuestas en vivo sobre el proceso de compra/arriendo con Andrea.", cta:"Envía tu pregunta", hora:"12:00", week:2},
+  {date:"2026-09-09", label:"Mié 9", ch:"ig", fmt:"Reel", pilar:"Zona y estilo de vida", msg:"\"Por qué Alto Hospicio está creciendo\": nuevo hospital (1.400 funcionarios), nuevos servicios, plusvalía.", cta:"Conoce el depto cerca del hospital", hora:"20:00", week:2},
+  {date:"2026-09-11", label:"Vie 11", ch:"fb", fmt:"Grupos + Marketplace", pilar:"Captación y urgencia", msg:"Precio bajo el promedio de otras unidades del edificio — depto piso 13, 3D/2B, piscina y quinchos.", cta:"Escríbenos por WhatsApp", hora:"09:00", week:2},
+  {date:"2026-09-13", label:"Dom 13", ch:"ig", fmt:"Historia (encuesta)", pilar:"Marca", msg:"Encuesta \"¿Buscas para vivir o para invertir?\" — segmenta a quien responde.", cta:"Responde la encuesta", hora:"12:00", week:2},
 
-  {date:"2026-09-14", label:"Lun 14", ch:"fb", fmt:"Publicación", pilar:"Vitrina", msg:"\"Prepara tu 18 en tu propio quincho\": los 2 quinchos panorámicos como diferencial de Fiestas Patrias.", cta:"Ven a verlo antes del 18", hora:"09:00", week:3},
-  {date:"2026-09-15", label:"Mar 15", ch:"ig", fmt:"Reel", pilar:"Vitrina", msg:"Fiestas Patrias en Las Rocas: ambientación de asado/empanadas en el quincho panorámico.", cta:"Agenda tu visita esta semana", hora:"20:00", week:3},
-  {date:"2026-09-16", label:"Mié 16", ch:"ig", fmt:"Carrusel", pilar:"Captación y urgencia", msg:"Última semana antes del 18: disponibilidad y precio bajo el promedio del edificio.", cta:"Escríbenos antes de fin de mes", hora:"09:30", week:3},
+  {date:"2026-09-16", label:"Mié 16", ch:"ig", fmt:"Reel + publicación", pilar:"Vitrina", msg:"Prepara tu 18 en tu propio quincho: los 2 quinchos panorámicos como diferencial de Fiestas Patrias.", cta:"Agenda tu visita esta semana", hora:"19:00", week:3},
   {date:"2026-09-17", label:"Jue 17", ch:"wa", fmt:"Historia / saludo", pilar:"Marca", msg:"Saludo de Fiestas Patrias de la marca Gatica Property — sin venta dura.", cta:"—", hora:"12:00", week:3},
-  {date:"2026-09-18", label:"Vie 18", ch:"otro", fmt:"Feriado", pilar:"—", msg:"Feriado nacional (Fiestas Patrias). Solo saludo programado, sin publicaciones de venta.", cta:"—", hora:"—", week:3, holiday:true},
+  {date:"2026-09-18", label:"Vie 18", ch:"otro", fmt:"Feriado", pilar:"—", msg:"Feriado nacional (Fiestas Patrias). Sin publicaciones de venta.", cta:"—", hora:"—", week:3, holiday:true},
   {date:"2026-09-19", label:"Sáb 19", ch:"otro", fmt:"Feriado", pilar:"—", msg:"Feriado nacional (Glorias del Ejército). Sin publicaciones de venta.", cta:"—", hora:"—", week:3, holiday:true},
-  {date:"2026-09-20", label:"Dom 20", ch:"ig", fmt:"Historia", pilar:"Marca", msg:"Resumen del fin de semana largo y reactivación suave de la conversación.", cta:"Escríbenos si quedaste pensando en tu casa nueva", hora:"18:00", week:3},
+  {date:"2026-09-20", label:"Dom 20", ch:"ig", fmt:"Historia", pilar:"Captación y urgencia", msg:"Resumen del fin de semana largo + recordatorio: precio bajo el promedio del edificio, agenda antes de fin de mes.", cta:"Escríbenos si quedaste pensando en tu casa nueva", hora:"18:00", week:3},
 
-  {date:"2026-09-22", label:"Mar 22", ch:"ig", fmt:"Reel", pilar:"Marca y confianza", msg:"Detrás de cámara con Andrea Gatica: quién es, cómo trabaja, por qué confiar en un corredor.", cta:"Conversemos por WhatsApp", hora:"20:00", week:4},
-  {date:"2026-09-23", label:"Mié 23", ch:"fb", fmt:"Publicación con datos", pilar:"Zona y estilo de vida", msg:"\"Plusvalía en Alto Hospicio 2026\": cifras del hospital nuevo y del déficit habitacional.", cta:"Pide más información", hora:"10:00", week:4},
-  {date:"2026-09-24", label:"Jue 24", ch:"ig", fmt:"Carrusel", pilar:"Educación", msg:"Arriendo vs. compra: comparativo simple de rentabilidad para quien evalúa invertir.", cta:"Solicita el comparativo completo", hora:"09:30", week:4},
-  {date:"2026-09-25", label:"Vie 25", ch:"otro", fmt:"Actualización", pilar:"Vitrina", msg:"Renovar ficha en Portal Inmobiliario/Yapo/TocToc y repostear en grupos de Facebook.", cta:"Contáctanos por el portal o WhatsApp", hora:"09:00", week:4},
-  {date:"2026-09-28", label:"Lun 28", ch:"wa", fmt:"Difusión", pilar:"Captación y urgencia", msg:"Cierre de mes: \"agenda tu visita esta semana\" a toda la base de contactos activa.", cta:"Responde para agendar", hora:"11:00", week:4},
-  {date:"2026-09-29", label:"Mar 29", ch:"ig", fmt:"Reel", pilar:"Marca", msg:"Recap del mes + adelanto de una próxima propiedad en captación.", cta:"Síguenos para no perderte la próxima", hora:"20:00", week:4},
-  {date:"2026-09-30", label:"Mié 30", ch:"fb", fmt:"Publicación", pilar:"Captación y urgencia", msg:"Balance del mes + llamado abierto a propietarios que quieran vender o arrendar en octubre.", cta:"Escríbenos si quieres vender o arrendar", hora:"10:00", week:4}
+  {date:"2026-09-23", label:"Mié 23", ch:"ig", fmt:"Reel", pilar:"Marca y confianza", msg:"Detrás de cámara con Andrea Gatica: quién es, cómo trabaja, por qué confiar en un corredor.", cta:"Conversemos por WhatsApp", hora:"20:00", week:4},
+  {date:"2026-09-25", label:"Vie 25", ch:"fb", fmt:"Carrusel", pilar:"Educación", msg:"Plusvalía en Alto Hospicio 2026 y arriendo vs. compra: comparativo simple de rentabilidad.", cta:"Solicita el comparativo completo", hora:"10:00", week:4},
+  {date:"2026-09-27", label:"Dom 27", ch:"otro", fmt:"Actualización", pilar:"Vitrina", msg:"Renovar ficha en Portal Inmobiliario/Yapo/TocToc y repostear en grupos de Facebook.", cta:"Contáctanos por el portal o WhatsApp", hora:"09:00", week:4},
+
+  {date:"2026-09-30", label:"Mié 30", ch:"wa", fmt:"Difusión + recap", pilar:"Captación y urgencia", msg:"Cierre de mes: \"agenda tu visita esta semana\" a la base de contactos + balance del mes y llamado abierto a propietarios que quieran vender o arrendar en octubre.", cta:"Responde para agendar / Escríbenos si quieres vender o arrendar", hora:"11:00", week:5}
 ];
 
 const CH_LABEL = {ig:"Instagram", fb:"Facebook", wa:"WhatsApp", otro:"Portales / otros"};
