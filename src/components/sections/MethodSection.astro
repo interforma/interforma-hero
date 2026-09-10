@@ -3,35 +3,34 @@ import { methodSteps, methodCopy } from '@config/content';
 ---
 
 <section id="metodo" class="method" aria-labelledby="method-headline">
-  <div class="container">
+  <div class="container method__grid">
 
-    <p class="method__definition">
-      Interforma es una consultora digital chilena especializada en transformación empresarial mediante estrategia, procesos, tecnología, automatización e inteligencia artificial.
-    </p>
-
-    <div class="method__header">
-      <p class="eyebrow method__eyebrow">{methodCopy.eyebrow}</p>
-      <h2 id="method-headline" class="method__headline">{methodCopy.headline}</h2>
-      <p class="method__subheadline">{methodCopy.subheadline}</p>
+    <!-- ── Columna izquierda: copy (sticky en desktop) ────────── -->
+    <div class="method__copy">
+      <div class="method__copy-top">
+        <p class="method__definition">
+          Interforma es una consultora digital chilena especializada en transformación empresarial mediante estrategia, procesos, tecnología, automatización e inteligencia artificial.
+        </p>
+        <p class="eyebrow method__eyebrow">{methodCopy.eyebrow}</p>
+        <h2 id="method-headline" class="method__headline">{methodCopy.headline}</h2>
+        <p class="method__subheadline">{methodCopy.subheadline}</p>
+      </div>
+      <p class="method__foot">El proceso manda. La herramienta sirve.</p>
     </div>
 
-    <div class="method__steps-outer">
-      <!-- Progress track (left of steps) -->
-      <div class="method__progress-track" aria-hidden="true">
-        <div class="method__progress-fill"></div>
-      </div>
-      <ol class="method__steps" role="list">
+    <!-- ── Columna derecha: stage sticky (canvas + steps) ─────── -->
+    <div class="method__stage">
+      <canvas class="method__canvas" id="methodCanvas" aria-hidden="true"></canvas>
+      <ol
+        class="method__steps-overlay"
+        role="list"
+        aria-label="Etapas del Método Interforma"
+      >
         {methodSteps.map((step) => (
-          <li class="method-step">
-            <div class="method-step__num-col" aria-hidden="true">
-              <span class="method-step__indicator" aria-hidden="true"></span>
-              <span class="method-step__num">{step.number}</span>
-            </div>
-            <div class="method-step__content">
-              <h3 class="method-step__name">{step.name}</h3>
-              <p class="method-step__desc">{step.description}</p>
-              <p class="method-step__output">→ {step.output}</p>
-            </div>
+          <li class="method-step" data-step={step.id - 1}>
+            <span class="method-step__idx" aria-hidden="true">{step.number}</span>
+            <strong class="method-step__name">{step.name}</strong>
+            <span class="method-step__outcome">{step.output}</span>
           </li>
         ))}
       </ol>
@@ -41,26 +40,36 @@ import { methodSteps, methodCopy } from '@config/content';
 </section>
 
 <style>
-  /* ── Entity definition (GEO/AI) ──────────────────────────── */
+  /* ── Section ──────────────────────────────────────────────── */
+  .method {
+    min-height: 160svh;
+    background: var(--color-bg-dark-refined);
+    color: var(--color-text-on-dark-primary);
+    scroll-margin-top: var(--header-height);
+  }
+
+  .method__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-8);
+    align-items: start;
+    padding-block: var(--spacing-20) var(--spacing-12);
+  }
+
+  /* ── Left column ──────────────────────────────────────────── */
+  .method__copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--spacing-8);
+  }
+
   .method__definition {
     font-size: var(--font-size-body-sm);
     color: rgba(255, 255, 255, 0.45);
     max-width: 72ch;
     margin-bottom: var(--spacing-10);
     line-height: var(--line-height-body-lg);
-  }
-
-  /* ── Section ──────────────────────────────────────────────── */
-  .method {
-    background: var(--color-bg-dark-refined);
-    color: var(--color-text-on-dark-primary);
-    padding-block: 0 var(--spacing-20);
-    scroll-margin-top: var(--header-height);
-  }
-
-  .method__header {
-    max-width: 640px;
-    margin-bottom: var(--spacing-12);
   }
 
   .method__eyebrow {
@@ -81,186 +90,136 @@ import { methodSteps, methodCopy } from '@config/content';
     font-size: var(--font-size-body-lg);
     line-height: var(--line-height-body-lg);
     color: rgba(255, 255, 255, 0.65);
-    max-width: 52ch;
+    max-width: 38ch;
   }
 
-  /* ── Steps outer layout with progress track ───────────────── */
-  .method__steps-outer {
-    position: relative;
-    display: grid;
-    grid-template-columns: 3px 1fr;
-    gap: var(--spacing-6);
-  }
-
-  .method__progress-track {
-    position: relative;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: var(--radius-full);
-    overflow: hidden;
-    align-self: stretch;
-    min-height: 100%;
-  }
-
-  .method__progress-fill {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.55);
-    transform: scaleY(0);
-    transform-origin: top;
-    border-radius: var(--radius-full);
-    will-change: transform;
-  }
-
-  /* ── Steps list ───────────────────────────────────────────── */
-  .method__steps {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.13);
-  }
-
-  /* ── Single step ──────────────────────────────────────────── */
-  .method-step {
-    display: grid;
-    grid-template-columns: 56px 1fr;
-    gap: var(--spacing-6);
-    padding-block: var(--spacing-8);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.13);
-    align-items: start;
-    /* Inactive: legible pero sin énfasis completo */
-    opacity: 0.6;
-    transition: opacity var(--duration-motion-normal) var(--ease-standard);
-  }
-
-  /* Active: full emphasis */
-  .method-step.is-active {
-    opacity: 1;
-  }
-
-  .method-step__num-col {
-    padding-top: var(--spacing-1);
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--spacing-2);
-  }
-
-  /* Status indicator dot */
-  .method-step__indicator {
-    display: block;
-    width: 6px;
-    height: 6px;
-    border-radius: var(--radius-full);
-    background: rgba(255, 255, 255, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    flex-shrink: 0;
-    transition:
-      background  var(--duration-motion-fast) var(--ease-standard),
-      border-color var(--duration-motion-fast) var(--ease-standard),
-      box-shadow  var(--duration-motion-fast) var(--ease-standard);
-  }
-
-  .method-step.is-active .method-step__indicator {
-    background: rgba(255, 255, 255, 0.85);
-    border-color: rgba(255, 255, 255, 0.85);
-    box-shadow: 0 0 6px rgba(255, 255, 255, 0.25);
-  }
-
-  .method-step__num {
-    font-size: var(--font-size-heading-lg);
-    font-weight: var(--font-weight-bold);
+  .method__foot {
+    font-size: var(--font-size-body-sm);
     color: rgba(255, 255, 255, 0.45);
-    line-height: 1;
-    letter-spacing: -0.04em;
-  }
-
-  .method-step.is-active .method-step__num {
-    color: rgba(255, 255, 255, 0.85);
-  }
-
-  .method-step__name {
-    font-size: var(--font-size-heading-xl);
-    font-weight: var(--font-weight-semibold);
-    line-height: var(--line-height-heading-xl);
-    color: var(--color-neutral-0);
-    margin-bottom: var(--spacing-3);
-  }
-
-  .method-step__desc {
-    font-size: var(--font-size-body-lg);
-    line-height: var(--line-height-body-lg);
-    color: rgba(255, 255, 255, 0.72);
-    margin-bottom: var(--spacing-4);
-    max-width: 52ch;
-  }
-
-  .method-step__output {
-    font-size: var(--font-size-body-md);
-    font-weight: var(--font-weight-medium);
-    color: rgba(255, 255, 255, 0.65);
+    border-top: 1px solid rgba(255, 255, 255, 0.13);
+    padding-top: var(--spacing-3);
     letter-spacing: 0.01em;
   }
 
-  /* ── Responsive ───────────────────────────────────────────── */
-  @media (max-width: 767px) {
-    .method__steps-outer {
-      grid-template-columns: 1fr;
-    }
-    .method__progress-track {
-      display: none;
-    }
+  /* ── Right column: canvas stage ──────────────────────────── */
+  .method__stage {
+    position: relative;
+    height: calc(100svh - var(--header-height) - var(--spacing-12));
+    border: 1px solid rgba(233, 225, 210, 0.15);
+    background: #131310;
+    overflow: hidden;
+    border-radius: var(--radius-sm);
   }
 
-  @media (min-width: 768px) {
+  .method__canvas {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── Steps overlay ────────────────────────────────────────── */
+  .method__steps-overlay {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-rows: repeat(6, 1fr);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .method-step {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    align-items: end;
+    gap: var(--spacing-2);
+    padding: var(--spacing-3) var(--spacing-4);
+    border-bottom: 1px solid rgba(233, 225, 210, 0.08);
+  }
+
+  .method-step:last-child {
+    border-bottom: 0;
+  }
+
+  .method-step__idx,
+  .method-step__name,
+  .method-step__outcome {
+    font-size: 9px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .method-step__idx {
+    color: rgba(233, 225, 210, 0.45);
+  }
+
+  .method-step__name {
+    font-weight: 500;
+    color: var(--color-text-on-dark-primary);
+    opacity: 0.17;
+    transition: opacity 0.32s ease;
+  }
+
+  .method-step__outcome {
+    display: none;
+    color: rgba(233, 225, 210, 0.36);
+    opacity: 0.28;
+    transition: opacity 0.32s ease;
+    text-align: right;
+  }
+
+  .method-step.is-active .method-step__name {
+    opacity: 1;
+  }
+
+  .method-step.is-active .method-step__outcome {
+    opacity: 0.88;
+  }
+
+  /* ── Desktop: sticky two-column layout ───────────────────── */
+  @media (min-width: 1024px) {
+    .method__grid {
+      grid-template-columns: minmax(260px, 0.64fr) minmax(0, 1.36fr);
+      gap: var(--spacing-8);
+      padding-block: var(--spacing-24) var(--spacing-12);
+    }
+
+    .method__copy {
+      position: sticky;
+      top: calc(var(--header-height) + var(--spacing-6));
+      height: calc(100svh - var(--header-height) - var(--spacing-12));
+    }
+
+    .method__stage {
+      position: sticky;
+      top: calc(var(--header-height) + var(--spacing-4));
+    }
+
     .method__headline {
       font-size: var(--font-size-display-lg);
       line-height: var(--line-height-display-lg);
     }
 
     .method-step {
-      grid-template-columns: 72px 1fr;
-      gap: var(--spacing-8);
-      padding-block: var(--spacing-10);
+      grid-template-columns: 44px 1fr auto;
     }
 
-    .method-step__num {
-      font-size: var(--font-size-heading-xl);
+    .method-step__outcome {
+      display: block;
     }
   }
 
-  @media (min-width: 1024px) {
-    .method {
-      padding-block: 0 var(--spacing-24);
-    }
-
-    .method-step {
-      grid-template-columns: 96px 1fr;
-      gap: var(--spacing-10);
-      padding-block: var(--spacing-12);
-    }
-
-    .method-step__num {
-      font-size: var(--font-size-heading-xl);
-    }
-
-    .method-step__name {
-      font-size: var(--font-size-display-md);
-      line-height: var(--line-height-display-md);
-    }
-
-    .method-step__desc {
-      font-size: var(--font-size-body-xl);
-      line-height: var(--line-height-body-xl);
-    }
-  }
-
-  /* prefers-reduced-motion: all steps fully visible immediately */
+  /* ── prefers-reduced-motion ──────────────────────────────── */
   @media (prefers-reduced-motion: reduce) {
-    .method-step {
+    .method__stage {
+      display: none;
+    }
+    .method-step__name,
+    .method-step__outcome {
       opacity: 1;
       transition: none;
     }
@@ -268,43 +227,114 @@ import { methodSteps, methodCopy } from '@config/content';
 </style>
 
 <script>
-  import { animate, inView, scroll } from 'motion';
-  import { prefersReducedMotion } from '@lib/motion';
+  // ── Method canvas: caos → estructura (scroll-driven) ──────────
+  (() => {
+    const methodEl = document.querySelector('.method');
+    const canvas   = document.getElementById('methodCanvas');
+    if (!canvas || !methodEl) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  const methodSection = document.querySelector<HTMLElement>('.method');
-  const steps = document.querySelectorAll<HTMLElement>('.method-step');
-  const progressFill = document.querySelector<HTMLElement>('.method__progress-fill');
+    const ctx = canvas.getContext('2d');
+    let MW = 1, MH = 1, MD = 1, progress = 0, current = -1;
 
-  // ── Scroll-linked progress fill ────────────────────────────────
-  if (methodSection && progressFill && !prefersReducedMotion()) {
-    scroll(
-      animate(progressFill, { scaleY: [0, 1] }, { duration: 1 }),
-      { target: methodSection, offset: ['start 75%', 'end 25%'] }
-    );
-  }
+    const clamp  = (v, a, b) => Math.max(a, Math.min(b, v));
+    const smooth = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+    const noise  = (x, y, t = 0) =>
+      Math.sin(x * 1.71 + y * 0.73 + t) +
+      Math.sin(x * 0.51 - y * 1.21 - t * 0.43) * 0.55 +
+      Math.cos(y * 0.31 + x * 0.24 + t * 0.19) * 0.31;
 
-  // ── Per-step activation via inView ────────────────────────────
-  steps.forEach((step) => {
-    if (prefersReducedMotion()) {
-      step.classList.add('is-active');
-      return;
+    const steps = [...document.querySelectorAll('.method-step')];
+
+    function sizeCanvas() {
+      const r = canvas.getBoundingClientRect();
+      MD = Math.min(devicePixelRatio || 1, 2);
+      MW = Math.max(1, Math.floor(r.width  * MD));
+      MH = Math.max(1, Math.floor(r.height * MD));
+      canvas.width  = MW;
+      canvas.height = MH;
     }
 
-    inView(step, (element) => {
-      element.classList.add('is-active');
+    function updateProgress() {
+      const r = methodEl.getBoundingClientRect();
+      // Start: section top at viewport bottom (canvas first enters view)
+      // End:   section bottom at viewport bottom (step 06 exits)
+      // Range = offsetHeight (160svh) → each of the 6 steps covers ~26.7svh of scroll
+      progress = clamp((innerHeight - r.top) / methodEl.offsetHeight, 0, 1);
 
-      return () => {
-        // When step leaves viewport (scroll back up), deactivate
-        element.classList.remove('is-active');
-      };
-    }, { margin: '-30% 0px -30% 0px', amount: 0.3 });
-  });
-
-  // ── prefers-reduced-motion: show all immediately ───────────────
-  if (prefersReducedMotion()) {
-    steps.forEach((step) => step.classList.add('is-active'));
-    if (progressFill) {
-      progressFill.style.transform = 'scaleY(1)';
+      const s = Math.min(5, Math.floor(progress * 6));
+      if (s !== current) {
+        current = s;
+        steps.forEach((el, i) => el.classList.toggle('is-active', i === s));
+      }
     }
-  }
+
+    function draw(t) {
+      ctx.fillStyle = '#131310';
+      ctx.fillRect(0, 0, MW, MH);
+
+      const lineCount = 68, top = MH * 0.06, bottom = MH * 0.94;
+      for (let i = 0; i < lineCount; i++) {
+        const u        = i / (lineCount - 1);
+        const targetX  = MW * (0.09 + u * 0.82);
+        // Spread across full [0→1] range so step 03 ≈ 50% organized, step 06 = fully structured
+        const chaos    = (1 - smooth(0,    1,   progress)) * MW * 0.085;
+        const organize = smooth(0,    0.8, progress); // 50% at p≈0.42 (step 03 midpoint)
+        const clarity  = smooth(0.5,  1,   progress); // starts at step 03, done at step 06
+
+        ctx.beginPath();
+        for (let j = 0; j <= 90; j++) {
+          const v = j / 90;
+          const y = top + v * (bottom - top);
+          let x = targetX
+            + noise(u * 9, v * 7, t * 0.00017 + i * 0.02) * chaos * (0.55 + 0.45 * Math.sin(v * Math.PI));
+          x += Math.sin(v * 8 + t * 0.00044 + i * 0.12) * MW * 0.006 * (1 - clarity);
+          x += Math.sin((u - 0.5) * Math.PI) * Math.sin(v * Math.PI) * MW * 0.038 * (1 - organize);
+
+          if (clarity > 0.01) {
+            const lx   = MW * 0.31, rx = MW * 0.69;
+            const pull = clarity * Math.exp(-Math.pow((u - (u < 0.5 ? 0.36 : 0.64)) / 0.14, 2)) * 0.32;
+            x = x * (1 - pull) + (u < 0.5 ? lx : rx) * pull;
+          }
+          j === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = `rgba(233,225,210,${(0.10 + organize * 0.16 + clarity * 0.18).toFixed(3)})`;
+        ctx.lineWidth   = Math.max(0.55 * MD, (0.6 + clarity * 0.35) * MD);
+        ctx.stroke();
+      }
+
+      const rv = smooth(0.67, 1, progress); // grid appears step 04→06
+      if (rv > 0.001) {
+        const x = MW * 0.31, y = MH * 0.27, w = MW * 0.38, h = MH * 0.46;
+        ctx.strokeStyle = `rgba(233,225,210,${(0.08 + rv * 0.55).toFixed(3)})`;
+        ctx.lineWidth   = MD;
+        ctx.strokeRect(x, y, w, h);
+
+        for (let i = 1; i < 5; i++) {
+          ctx.beginPath();
+          ctx.moveTo(x + w * i / 5, y);
+          ctx.lineTo(x + w * i / 5, y + h);
+          ctx.strokeStyle = `rgba(233,225,210,${(0.03 + rv * 0.12).toFixed(3)})`;
+          ctx.stroke();
+        }
+        for (let i = 1; i < 4; i++) {
+          ctx.beginPath();
+          ctx.moveTo(x, y + h * i / 4);
+          ctx.lineTo(x + w, y + h * i / 4);
+          ctx.stroke();
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    const ro = new ResizeObserver(sizeCanvas);
+    ro.observe(canvas.parentElement);
+    window.addEventListener('scroll',  updateProgress, { passive: true });
+    window.addEventListener('resize',  updateProgress);
+
+    sizeCanvas();
+    updateProgress();
+    requestAnimationFrame(draw);
+  })();
 </script>

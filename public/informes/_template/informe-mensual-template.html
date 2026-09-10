@@ -1,0 +1,788 @@
+<!--
+  PLANTILLA INFORME MENSUAL — Interforma Digital
+  ================================================
+  Uso: duplicar este archivo, renombrarlo con el formato
+  [cliente]/[mes-año].html y buscar todos los
+  <!-- COMPLETAR: ... --> para reemplazar con datos reales.
+
+  Secciones:
+  1. Resumen ejecutivo
+  2. Meta Ads
+  3. CRM Twenty
+  4. Canal WhatsApp
+  5. Redes Sociales
+  6. Estado de entregables
+  7. Próximos pasos
+  8. Expansión / propuesta
+  9. Facturación
+-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- COMPLETAR: título con cliente y período -->
+<title>Informe <!-- COMPLETAR: nombre cliente --> — <!-- COMPLETAR: período del informe --></title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0D1F3C;--blue:#1A6FD4;--blue-m:#3B8FED;--blue-l:#E8F1FC;
+  --teal:#0A9688;--teal-l:#E0F4F2;--amber:#D97010;--amber-l:#FEF3E4;
+  --green:#1E8C50;--green-l:#E4F4EC;--red:#C8353A;--red-l:#FAEAEA;
+  --ink:#0D1F3C;--muted:#6B7FA3;--border:#D8E3F0;--bg:#F2F6FC;--white:#fff;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6}
+
+/* TOOLTIP */
+.tip{position:relative;display:inline-block;border-bottom:1px dashed var(--blue);color:var(--blue);cursor:help;font-size:inherit}
+.tip::after{
+  content:attr(data-tip);
+  position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
+  background:var(--navy);color:#fff;font-size:11px;line-height:1.4;font-family:'Inter',sans-serif;
+  padding:8px 12px;border-radius:6px;white-space:normal;width:220px;text-align:left;
+  pointer-events:none;opacity:0;transition:opacity .2s;z-index:999;font-style:normal;
+  box-shadow:0 4px 12px rgba(0,0,0,0.2)
+}
+.tip::before{
+  content:'';position:absolute;bottom:calc(100% + 2px);left:50%;transform:translateX(-50%);
+  border:5px solid transparent;border-top-color:var(--navy);
+  pointer-events:none;opacity:0;transition:opacity .2s;z-index:999
+}
+.tip:hover::after,.tip:hover::before{opacity:1}
+
+/* HEADER */
+.hdr{background:var(--navy);padding:44px 56px 40px;position:relative;overflow:hidden}
+.hdr::after{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(26,111,212,.14);pointer-events:none}
+.hdr-eyebrow{font-size:11px;font-weight:500;color:var(--blue-m);letter-spacing:.08em;margin-bottom:10px}
+.hdr-title{font-size:34px;font-weight:700;color:#fff;line-height:1.15;margin-bottom:6px}
+.hdr-title span{color:var(--blue-m)}
+.hdr-period{font-size:14px;color:rgba(255,255,255,.5);margin-bottom:30px}
+.hdr-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.hkpi{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:14px 18px}
+.hkpi-val{font-size:26px;font-weight:700;color:#fff;font-family:'DM Mono',monospace;line-height:1;margin-bottom:4px}
+.hkpi-val.up{color:#5BDBA5}.hkpi-val.amber{color:#FFBE5C}
+.hkpi-lbl{font-size:11px;color:rgba(255,255,255,.45)}
+.hkpi-delta{font-size:11px;font-family:'DM Mono',monospace;color:#5BDBA5;margin-top:3px}
+
+/* LAYOUT */
+.main{max-width:980px;margin:0 auto;padding:32px 24px 72px}
+
+/* ── SECTION BASE ─────────────────────────────────── */
+.sec{margin-bottom:28px}
+.sec-eyebrow{font-size:10px;font-weight:600;letter-spacing:.1em;color:var(--blue);text-transform:uppercase;margin-bottom:5px}
+.sec-title{font-size:19px;font-weight:700;color:var(--navy);margin-bottom:16px;padding-bottom:12px;border-bottom:1.5px solid var(--border)}
+
+/* ── MAJOR SECTIONS — reporting content ───────────── */
+.sec.major{margin-bottom:48px}
+.sec.major .sec-eyebrow{color:var(--navy)}
+.sec.major .sec-title{font-size:22px;letter-spacing:-0.01em}
+
+/* ── CHAPTER BREAK ────────────────────────────────── */
+.chapter-break{border:none;border-top:1px solid var(--border);margin:12px 0}
+
+/* ── CALLOUT ──────────────────────────────────────── */
+.callout{border-left:2px solid var(--blue);border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:var(--navy);margin-bottom:18px;line-height:1.55}
+.callout{background:var(--blue-l)}.callout strong{color:var(--blue)}
+.callout.green{background:var(--green-l);border-color:var(--green)}.callout.green strong{color:var(--green)}
+.callout.amber{background:var(--amber-l);border-color:var(--amber);border-left-width:3px;font-size:13.5px}.callout.amber strong{color:var(--amber)}
+.callout.red{background:var(--red-l);border-color:var(--red);border-left-width:3px;font-size:13.5px}.callout.red strong{color:var(--red)}
+
+/* CALLOUT HITO — hallazgo más importante del bloque */
+.callout.hito{
+  border-left:4px solid var(--green);background:var(--green-l);
+  border-radius:0 10px 10px 0;
+  padding:18px 22px;font-size:14px;line-height:1.6;
+  display:flex;gap:14px;align-items:flex-start;
+  margin-bottom:20px
+}
+.callout.hito strong{color:var(--green)}
+.callout.hito .hito-icon{flex-shrink:0;margin-top:2px}
+
+/* ── STAT GRID ────────────────────────────────────── */
+.sg{display:grid;gap:11px;margin-bottom:18px}
+.sg-4{grid-template-columns:repeat(4,1fr)}.sg-3{grid-template-columns:repeat(3,1fr)}.sg-2{grid-template-columns:repeat(2,1fr)}
+.sc{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.sc.bl{border-top:3px solid var(--blue)}.sc.tl{border-top:3px solid var(--teal)}
+.sc.gr{border-top:3px solid var(--green)}.sc.am{border-top:3px solid var(--amber)}
+.sc.rd{border-top:3px solid var(--red)}
+.sv{font-size:26px;font-weight:700;font-family:'DM Mono',monospace;color:var(--navy);line-height:1;margin-bottom:3px}
+.sl{font-size:11px;color:var(--muted);margin-bottom:3px}
+.sd{font-size:11px;font-family:'DM Mono',monospace;font-weight:500}
+.sd.up{color:var(--green)}.sd.dn{color:var(--red)}.sd.nu{color:var(--muted)}
+
+/* ── TABLA ────────────────────────────────────────── */
+.tw{overflow-x:auto;margin-bottom:18px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:8px 11px;font-size:10px;font-weight:600;color:var(--muted);background:var(--bg);border-bottom:1px solid var(--border);letter-spacing:.03em}
+td{padding:8px 11px;border-bottom:1px solid var(--border);color:var(--ink)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--blue-l)}
+.tn{font-family:'DM Mono',monospace;text-align:right}
+.badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px}
+.bu{background:var(--green-l);color:var(--green)}.bd{background:var(--red-l);color:var(--red)}.bn{background:var(--bg);color:var(--muted)}.bam{background:var(--amber-l);color:var(--amber)}
+.pill{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;margin-right:2px}
+
+/* ── PIPELINE ─────────────────────────────────────── */
+.pipeline{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap}
+.pipe-stage{flex:1;min-width:100px;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:10px 12px;text-align:center}
+.pipe-stage-name{font-size:10px;font-weight:600;color:var(--muted);margin-bottom:4px}
+.pipe-stage-dot{width:8px;height:8px;border-radius:50%;margin:0 auto 4px}
+
+/* ── CHAT ROW ─────────────────────────────────────── */
+.chat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:16px}
+.chat-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px 16px;text-align:center}
+.chat-card .num{font-size:30px;font-weight:700;font-family:'DM Mono',monospace;color:var(--teal);display:block}
+.chat-card .lbl{font-size:11px;color:var(--muted);margin-top:4px}
+
+/* ── ADS GRID ─────────────────────────────────────── */
+.ads-g{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:18px}
+.ads-c{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:16px 18px}
+.ads-c .al{font-size:11px;color:var(--muted);margin-bottom:3px}
+.ads-c .av{font-size:24px;font-weight:700;font-family:'DM Mono',monospace;color:var(--navy)}
+.ads-c .av.gr{color:var(--green)}.ads-c .av.bl{color:var(--blue)}
+.ads-c .as{font-size:11px;color:var(--muted)}
+
+/* ── BILLING ──────────────────────────────────────── */
+.billing-section-hdr{background:var(--navy);padding:22px 24px;border-radius:10px 10px 0 0}
+.billing-section-hdr .lbl{font-size:10px;font-weight:600;letter-spacing:.1em;color:var(--blue-m);text-transform:uppercase;margin-bottom:6px}
+.billing-section-hdr .ttl{font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.01em}
+.billing{background:var(--white);border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;overflow:hidden;margin-bottom:10px}
+.billing table th{background:var(--bg);padding:10px 14px}
+.billing table td{padding:10px 14px}
+.billing .total-row td{font-weight:700;background:var(--navy);color:#fff;border-top:2px solid var(--navy)}
+.billing .total-row .tn{font-size:20px;font-family:'DM Mono',monospace}
+.billing .sub-row td{font-weight:600;background:var(--blue-l);color:var(--navy)}
+.billing-note{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:0}
+
+/* ── STEPS ────────────────────────────────────────── */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+.step-col{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.step-title{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:10px}
+.step-item{font-size:12px;color:var(--muted);padding:5px 0;border-bottom:1px dashed var(--border);line-height:1.4}
+.step-item:last-child{border-bottom:none}
+.step-item strong{color:var(--ink)}
+.step-item.priority{border-left:2px solid var(--amber);padding-left:7px}
+
+/* ── CHART WRAPPER ────────────────────────────────── */
+.chart-wrap{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:18px}
+.chart-legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:12px;font-size:12px;color:var(--muted)}
+.chart-legend span{display:flex;align-items:center;gap:5px}
+.chart-legend .sq{width:10px;height:10px;border-radius:2px;display:inline-block}
+
+/* ── FLOW DIAGRAM ─────────────────────────────────── */
+.flow{display:flex;align-items:center;gap:6px;margin-bottom:18px;flex-wrap:wrap;padding:16px;background:var(--white);border:1px solid var(--border);border-radius:10px}
+.flow-node{background:var(--blue-l);border:1px solid var(--border);border-radius:6px;padding:7px 12px;font-size:12px;font-weight:500;color:var(--navy);white-space:nowrap}
+.flow-node.green{background:var(--green-l)}
+.flow-node.teal{background:var(--teal-l)}
+.flow-node.amber{background:var(--amber-l)}
+.flow-arr{color:var(--muted);font-size:16px}
+
+/* ── PROPOSAL SECTION ─────────────────────────────── */
+.sec.proposal{
+  background:linear-gradient(135deg,rgba(13,31,60,0.04) 0%,rgba(26,111,212,0.05) 100%);
+  border-top:2px solid var(--blue);
+  border-radius:8px;
+  padding:28px 24px 32px;
+  margin-bottom:48px
+}
+.sec.proposal .sec-eyebrow{color:var(--blue);font-size:11px;letter-spacing:.1em}
+.sec.proposal .sec-title{font-size:22px;letter-spacing:-0.01em;border-bottom-color:rgba(13,31,60,0.14)}
+
+/* ── FOOTER ───────────────────────────────────────── */
+.ftr{background:var(--navy);padding:22px 56px;display:flex;align-items:center;justify-content:space-between}
+.ftr-brand{font-size:13px;font-weight:600;color:rgba(255,255,255,.65)}
+.ftr-brand span{color:var(--blue-m)}
+.ftr-note{font-size:11px;color:rgba(255,255,255,.3)}
+
+/* ── NAV ──────────────────────────────────────────── */
+.nav{
+  position:sticky;top:0;z-index:200;
+  background:rgba(13,31,60,0.97);backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  padding:0 32px;height:48px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-links{display:flex;align-items:center;gap:4px;list-style:none}
+.nav-links a{
+  font-size:11px;font-weight:500;color:rgba(255,255,255,0.55);
+  text-decoration:none;padding:5px 10px;border-radius:6px;
+  transition:color .15s,background .15s;white-space:nowrap;
+}
+.nav-links a:hover{color:#fff;background:rgba(255,255,255,0.08)}
+.nav-links a.active{color:#fff;background:rgba(59,143,237,0.25);border:1px solid rgba(59,143,237,0.3)}
+.nav-logo{font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);letter-spacing:.04em;white-space:nowrap}
+.nav-logo span{color:var(--blue-m)}
+.nav-burger{
+  display:none;background:none;border:1px solid rgba(255,255,255,0.2);
+  border-radius:6px;padding:6px 10px;cursor:pointer;color:#fff;font-size:18px;line-height:1;
+}
+.nav-drawer{
+  display:none;position:fixed;top:48px;left:0;right:0;z-index:199;
+  background:rgba(13,31,60,0.98);backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  padding:12px 20px 16px;
+}
+.nav-drawer.open{display:block}
+.nav-drawer a{
+  display:block;font-size:13px;font-weight:500;color:rgba(255,255,255,0.7);
+  text-decoration:none;padding:10px 12px;border-radius:8px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.nav-drawer a:last-child{border-bottom:none}
+.nav-drawer a:hover,.nav-drawer a.active{color:#fff;background:rgba(59,143,237,0.2)}
+.sec{scroll-margin-top:60px}
+
+@media(max-width:680px){
+  .hdr{padding:28px 18px 24px}.hdr-kpis{grid-template-columns:repeat(2,1fr)}
+  .hdr-title{font-size:24px}.sg-4{grid-template-columns:repeat(2,1fr)}
+  .ads-g{grid-template-columns:repeat(2,1fr)}.chat-row{grid-template-columns:repeat(2,1fr)}
+  .steps{grid-template-columns:1fr}.ftr{flex-direction:column;gap:6px;padding:18px}
+  .pipeline{flex-direction:column}.pipe-stage{min-width:unset}
+  .nav{padding:0 16px}.nav-links{display:none}.nav-burger{display:block}
+  .sv{font-size:22px}
+  .sl{font-size:12px}
+  .sec.major{margin-bottom:36px}
+  .sec.proposal{padding:20px 16px 24px}
+  .billing-section-hdr{padding:16px 18px}
+  .billing-section-hdr .ttl{font-size:18px}
+  .billing table th,.billing table td{padding:8px 10px;font-size:12px}
+  .billing .total-row .tn{font-size:16px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV STICKY -->
+<nav class="nav">
+  <div class="nav-logo">Interforma <span>Digital</span></div>
+  <ul class="nav-links">
+    <li><a href="#sec-resumen">Resumen</a></li>
+    <li><a href="#sec-ads">Meta Ads</a></li>
+    <li><a href="#sec-crm">CRM</a></li>
+    <li><a href="#sec-whatsapp">WhatsApp</a></li>
+    <li><a href="#sec-rrss">Redes Sociales</a></li>
+    <li><a href="#sec-entregables">Entregables</a></li>
+    <li><a href="#sec-pasos">Próximos pasos</a></li>
+    <li><a href="#sec-expansion"><!-- COMPLETAR: nombre sección propuesta --></a></li>
+    <li><a href="#sec-facturacion">Facturación</a></li>
+  </ul>
+  <button class="nav-burger" id="burgerBtn" aria-label="Abrir menú">☰</button>
+</nav>
+
+<!-- DRAWER MÓVIL -->
+<div class="nav-drawer" id="navDrawer">
+  <a href="#sec-resumen">Resumen ejecutivo</a>
+  <a href="#sec-ads">Meta Ads</a>
+  <a href="#sec-crm">CRM Twenty</a>
+  <a href="#sec-whatsapp">Canal WhatsApp</a>
+  <a href="#sec-rrss">Redes Sociales</a>
+  <a href="#sec-entregables">Entregables</a>
+  <a href="#sec-pasos">Próximos pasos</a>
+  <a href="#sec-expansion"><!-- COMPLETAR: nombre sección propuesta --></a>
+  <a href="#sec-facturacion">Facturación</a>
+</div>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-eyebrow">Interforma Digital · Informe Mensual de Servicios</div>
+  <!-- COMPLETAR: nombre cliente principal / nombre holding -->
+  <div class="hdr-title"><!-- COMPLETAR: nombre cliente --> <span>/ <!-- COMPLETAR: nombre holding --></span></div>
+  <!-- COMPLETAR: período del informe y fecha de corte -->
+  <div class="hdr-period"><!-- COMPLETAR: fecha inicio --> — <!-- COMPLETAR: fecha fin --> &nbsp;·&nbsp; Corte al <!-- COMPLETAR: fecha corte --></div>
+  <div class="hdr-kpis">
+    <!-- COMPLETAR: 4 KPIs principales del período. Clases disponibles en .hkpi-val: up (verde), amber (amarillo), default (blanco) -->
+    <div class="hkpi">
+      <div class="hkpi-val up"><!-- COMPLETAR: valor KPI 1 --></div>
+      <div class="hkpi-lbl"><!-- COMPLETAR: label KPI 1 --></div>
+      <div class="hkpi-delta"><!-- COMPLETAR: delta o nota KPI 1 --></div>
+    </div>
+    <div class="hkpi">
+      <div class="hkpi-val up"><!-- COMPLETAR: valor KPI 2 --></div>
+      <div class="hkpi-lbl"><!-- COMPLETAR: label KPI 2 --></div>
+      <div class="hkpi-delta"><!-- COMPLETAR: delta o nota KPI 2 --></div>
+    </div>
+    <div class="hkpi">
+      <div class="hkpi-val up"><!-- COMPLETAR: valor KPI 3 --></div>
+      <div class="hkpi-lbl"><!-- COMPLETAR: label KPI 3 --></div>
+      <div class="hkpi-delta"><!-- COMPLETAR: delta o nota KPI 3 --></div>
+    </div>
+    <div class="hkpi">
+      <div class="hkpi-val amber"><!-- COMPLETAR: valor KPI 4 --></div>
+      <div class="hkpi-lbl"><!-- COMPLETAR: label KPI 4 --></div>
+      <div class="hkpi-delta"><!-- COMPLETAR: delta o nota KPI 4 --></div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- 1. RESUMEN -->
+  <div class="sec major" id="sec-resumen">
+    <div class="sec-eyebrow">Resumen ejecutivo</div>
+    <!-- COMPLETAR: headline del mes -->
+    <div class="sec-title"><!-- COMPLETAR: titular del mes --></div>
+    <div class="callout hito">
+      <svg class="hito-icon" width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+        <circle cx="11" cy="11" r="10" stroke="#1E8C50" stroke-width="1.6"/>
+        <path d="M7 11l3 3 5.5-5.5" stroke="#1E8C50" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <!-- COMPLETAR: análisis del período — hito principal, resultados más relevantes del mes -->
+        <strong>Hito del período:</strong> <!-- COMPLETAR: análisis del período -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. META ADS -->
+  <div class="sec major" id="sec-ads">
+    <div class="sec-eyebrow">Campañas pagas</div>
+    <!-- COMPLETAR: título con nombre de campaña o foco del período -->
+    <div class="sec-title">Meta Ads — <!-- COMPLETAR: estado o nombre campaña principal --></div>
+    <div class="callout">
+      <!-- COMPLETAR: nombre campaña --> · Objetivo: <!-- COMPLETAR: objetivo campaña --> · Activa desde <!-- COMPLETAR: fecha inicio campaña --> · <!-- COMPLETAR: estado o nota de campaña -->
+    </div>
+    <div class="ads-g">
+      <!-- COMPLETAR: métricas de la campaña (6 métricas en grid 3x2) -->
+      <div class="ads-c"><div class="al">Impresiones</div><div class="av bl"><!-- COMPLETAR: número --></div><div class="as">Alcance: <!-- COMPLETAR: número --> personas</div></div>
+      <div class="ads-c"><div class="al">Conversaciones WA generadas</div><div class="av gr"><!-- COMPLETAR: número --></div><div class="as">Costo por resultado: $<!-- COMPLETAR: número --> CLP</div></div>
+      <div class="ads-c"><div class="al">Clics en el enlace</div><div class="av"><!-- COMPLETAR: número --></div><div class="as">CTR: <!-- COMPLETAR: porcentaje -->%</div></div>
+      <div class="ads-c"><div class="al">CPC promedio</div><div class="av">$<!-- COMPLETAR: número --></div><div class="as">CPM: $<!-- COMPLETAR: número --> CLP</div></div>
+      <div class="ads-c"><div class="al">Gasto total (pauta)</div><div class="av">$<!-- COMPLETAR: número --></div><div class="as">CLP · facturado por separado</div></div>
+      <div class="ads-c"><div class="al">Estado del canal</div><div class="av" style="font-size:16px;color:var(--green)"><!-- COMPLETAR: estado --></div><div class="as"><!-- COMPLETAR: nota de estado --></div></div>
+    </div>
+    <div class="callout green">
+      <!-- COMPLETAR: análisis del período — conclusión de campaña, costo por lead en contexto, siguiente paso -->
+      <strong><!-- COMPLETAR: título del insight -->:</strong> <!-- COMPLETAR: análisis del período -->
+    </div>
+  </div>
+
+  <!-- 3. CRM -->
+  <div class="sec major" id="sec-crm">
+    <div class="sec-eyebrow">CRM · Automatizaciones · Cotizaciones</div>
+    <div class="sec-title">Twenty CRM — <!-- COMPLETAR: estado del flujo este período --></div>
+
+    <div class="sg sg-4" style="margin-bottom:18px">
+      <!-- COMPLETAR: 4 stats clave del CRM -->
+      <div class="sc tl"><div class="sl">Oportunidades en pipeline</div><div class="sv"><!-- COMPLETAR: número --></div><div class="sd up"><!-- COMPLETAR: nota --></div></div>
+      <div class="sc bl"><div class="sl">Miembros del equipo en CRM</div><div class="sv"><!-- COMPLETAR: número --></div><div class="sd nu"><!-- COMPLETAR: plan y costo --></div></div>
+      <div class="sc gr"><div class="sl"><!-- COMPLETAR: métrica 3 --></div><div class="sv"><!-- COMPLETAR: valor --></div><div class="sd up"><!-- COMPLETAR: nota --></div></div>
+      <div class="sc am"><div class="sl"><!-- COMPLETAR: métrica 4 --></div><div class="sv" style="font-size:16px;color:var(--green)"><!-- COMPLETAR: valor --></div><div class="sd nu"><!-- COMPLETAR: nota --></div></div>
+    </div>
+
+    <!-- Flujo técnico -->
+    <p style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px;margin-top:28px;text-transform:uppercase;letter-spacing:.05em">Flujo técnico completo</p>
+    <!-- COMPLETAR: nodos del flujo técnico activo este período -->
+    <div class="flow">
+      <div class="flow-node">CRM Twenty</div>
+      <div class="flow-arr">→</div>
+      <div class="flow-node"><span class="tip" data-tip="n8n: herramienta de automatización que conecta sistemas entre sí.">n8n</span></div>
+      <div class="flow-arr">→</div>
+      <div class="flow-node"><!-- COMPLETAR: siguiente nodo --></div>
+      <div class="flow-arr">→</div>
+      <div class="flow-node teal"><!-- COMPLETAR: siguiente nodo --></div>
+      <div class="flow-arr">→</div>
+      <div class="flow-node green"><!-- COMPLETAR: nodo final --></div>
+    </div>
+
+    <!-- Pipeline stages -->
+    <p style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px;margin-top:28px;text-transform:uppercase;letter-spacing:.05em">Etapas del pipeline (<!-- COMPLETAR: número --> oportunidades)</p>
+    <!-- COMPLETAR: etapas del pipeline de este cliente. Colores por etapa definidos inline en pipe-stage-dot -->
+    <div class="pipeline">
+      <div class="pipe-stage"><div class="pipe-stage-dot" style="background:#3B8FED"></div><div class="pipe-stage-name"><!-- COMPLETAR: etapa 1 --></div></div>
+      <div class="pipe-stage"><div class="pipe-stage-dot" style="background:#F59E0B"></div><div class="pipe-stage-name"><!-- COMPLETAR: etapa 2 --></div></div>
+      <div class="pipe-stage"><div class="pipe-stage-dot" style="background:#10B981"></div><div class="pipe-stage-name"><!-- COMPLETAR: etapa 3 --></div></div>
+      <div class="pipe-stage"><div class="pipe-stage-dot" style="background:#8B5CF6"></div><div class="pipe-stage-name"><!-- COMPLETAR: etapa 4 --></div></div>
+      <div class="pipe-stage"><div class="pipe-stage-dot" style="background:#1E8C50"></div><div class="pipe-stage-name">Ganada</div></div>
+      <div class="pipe-stage"><div class="pipe-stage-dot" style="background:#C8353A"></div><div class="pipe-stage-name">Perdida</div></div>
+    </div>
+
+    <!-- Estado componentes -->
+    <p style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px;margin-top:28px;text-transform:uppercase;letter-spacing:.05em">Estado de componentes</p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Componente</th><th>Rol</th><th>Estado</th></tr></thead>
+        <tbody>
+          <!-- COMPLETAR: filas por componente activo. Badges: bu=ok, bam=advertencia, bd=bloqueado, bn=pendiente -->
+          <tr><td>Twenty CRM</td><td><!-- COMPLETAR: rol --></td><td><span class="badge bu">✅ <!-- COMPLETAR: estado --></span></td></tr>
+          <tr><td><span class="tip" data-tip="n8n: herramienta de automatización de flujos de trabajo.">n8n</span></td><td><!-- COMPLETAR: rol --></td><td><span class="badge bu">✅ <!-- COMPLETAR: estado --></span></td></tr>
+          <!-- COMPLETAR: agregar más filas según componentes activos del cliente -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- COMPLETAR: callout de pendiente o alerta si corresponde -->
+    <div class="callout amber">
+      <strong><!-- COMPLETAR: título pendiente -->:</strong> <!-- COMPLETAR: análisis del período — descripción del pendiente y acción requerida -->
+    </div>
+
+    <!-- Pruebas / validaciones -->
+    <p style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px;margin-top:28px;text-transform:uppercase;letter-spacing:.05em">Validación funcional — <!-- COMPLETAR: mes y año --></p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Fecha</th><th>Actividad</th><th>Resultado</th></tr></thead>
+        <tbody>
+          <!-- COMPLETAR: filas de actividades de validación realizadas en el período -->
+          <tr><td><!-- COMPLETAR: fecha --></td><td><!-- COMPLETAR: actividad --></td><td><span class="badge bu"><!-- COMPLETAR: resultado --></span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 4. WHATSAPP -->
+  <div class="sec" id="sec-whatsapp">
+    <div class="sec-eyebrow">Agente IA · <span class="tip" data-tip="Chatwoot: plataforma de bandeja de entrada centralizada donde se gestionan todas las conversaciones de WhatsApp.">Chatwoot</span></div>
+    <!-- COMPLETAR: período de medición del canal WhatsApp -->
+    <div class="sec-title">Canal WhatsApp — <!-- COMPLETAR: período de medición --></div>
+    <div class="chat-row">
+      <!-- COMPLETAR: 3 métricas principales de WhatsApp -->
+      <div class="chat-card"><span class="num"><!-- COMPLETAR: número --></span><div class="lbl">Conversaciones recibidas</div></div>
+      <div class="chat-card"><span class="num"><!-- COMPLETAR: número --></span><div class="lbl">Mensajes entrantes</div></div>
+      <div class="chat-card"><span class="num"><!-- COMPLETAR: número --></span><div class="lbl">Mensajes enviados</div></div>
+    </div>
+    <!-- COMPLETAR: callout de punto de mejora o alerta relevante del canal -->
+    <div class="callout amber">
+      <strong><!-- COMPLETAR: título del punto de mejora -->:</strong> <!-- COMPLETAR: análisis del período -->
+    </div>
+  </div>
+
+  <!-- 5. RRSS COMPARATIVA -->
+  <div class="sec major" id="sec-rrss">
+    <div class="sec-eyebrow">Redes sociales</div>
+    <!-- COMPLETAR: titular descriptivo del período en RRSS -->
+    <div class="sec-title"><!-- COMPLETAR: titular comparativa RRSS --></div>
+
+    <div class="callout">
+      <!-- COMPLETAR: resumen de publicaciones por canal y período -->
+      <!-- COMPLETAR: número --> publicaciones emitidas · Facebook: <!-- COMPLETAR: número --> · Instagram: <!-- COMPLETAR: número --> · LinkedIn: <!-- COMPLETAR: número --> · Período: <!-- COMPLETAR: período del informe -->
+    </div>
+
+    <!-- Gráfico comparativo RRSS -->
+    <div class="chart-wrap">
+      <div class="chart-legend">
+        <!-- COMPLETAR: etiquetas de los dos períodos comparados -->
+        <span><span class="sq" style="background:#1A6FD4"></span><!-- COMPLETAR: período anterior --></span>
+        <span><span class="sq" style="background:#0A9688"></span><!-- COMPLETAR: período actual --></span>
+      </div>
+      <div style="position:relative;width:100%;height:260px">
+        <canvas id="chartRRSS" role="img" aria-label="Gráfico comparativo de métricas RRSS">
+          <!-- COMPLETAR: descripción accesible de los datos del gráfico -->
+        </canvas>
+      </div>
+    </div>
+
+    <!-- Stats destacadas RRSS -->
+    <div class="sg sg-3">
+      <!-- COMPLETAR: 6 stats de RRSS (impresiones, interacciones, seguidores, engagement IG, engagement LI, guardados) -->
+      <div class="sc bl"><div class="sl">Impresiones totales</div><div class="sv"><!-- COMPLETAR: número --></div><div class="sd up"><!-- COMPLETAR: delta --></div></div>
+      <div class="sc tl"><div class="sl">Interacciones totales</div><div class="sv"><!-- COMPLETAR: número --></div><div class="sd up"><!-- COMPLETAR: delta por canal --></div></div>
+      <div class="sc gr"><div class="sl">Seguidores totales</div><div class="sv"><!-- COMPLETAR: número --></div><div class="sd up"><!-- COMPLETAR: delta --></div></div>
+      <div class="sc am"><div class="sl">Engagement Instagram</div><div class="sv"><!-- COMPLETAR: número --></div><div class="sd up"><!-- COMPLETAR: delta --></div></div>
+      <div class="sc bl"><div class="sl">Engagement LinkedIn</div><div class="sv"><!-- COMPLETAR: número --></div><div class="sd up"><!-- COMPLETAR: delta --></div></div>
+      <div class="sc gr"><div class="sl"><!-- COMPLETAR: métrica destacada --></div><div class="sv"><!-- COMPLETAR: número --></div><div class="sd up"><!-- COMPLETAR: delta --></div></div>
+    </div>
+
+    <!-- Gráfico tráfico web -->
+    <div class="chart-wrap">
+      <!-- COMPLETAR: URL del sitio a reportar -->
+      <p style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em">Tráfico web <!-- COMPLETAR: URL sitio --> — comparativa</p>
+      <div class="chart-legend">
+        <span><span class="sq" style="background:#1A6FD4"></span><!-- COMPLETAR: período anterior --></span>
+        <span><span class="sq" style="background:#0A9688"></span><!-- COMPLETAR: período actual --></span>
+      </div>
+      <div style="position:relative;width:100%;height:200px">
+        <canvas id="chartWeb" role="img" aria-label="Gráfico de tráfico web comparativo">
+          <!-- COMPLETAR: descripción accesible de los datos del gráfico -->
+        </canvas>
+      </div>
+    </div>
+
+    <!-- Top posts -->
+    <p style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:10px;margin-top:28px;text-transform:uppercase;letter-spacing:.05em">Top contenidos por impresiones</p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Contenido</th><th>Canal</th><th class="tn">Imp.</th><th class="tn">Int.</th></tr></thead>
+        <tbody>
+          <!-- COMPLETAR: filas con los top 5-6 posts del período. Pills de canal: Instagram (FCE4F0/B5006B), LinkedIn (E1EDF8/0A66C2), Facebook (E7F3FF/1877F2) -->
+          <tr><td><!-- COMPLETAR: extracto del contenido --></td><td><span class="pill" style="background:#FCE4F0;color:#B5006B">Instagram</span></td><td class="tn"><!-- COMPLETAR: número --></td><td class="tn"><!-- COMPLETAR: número --></td></tr>
+          <tr><td><!-- COMPLETAR: extracto del contenido --></td><td><span class="pill" style="background:#E1EDF8;color:#0A66C2">LinkedIn</span></td><td class="tn"><!-- COMPLETAR: número --></td><td class="tn"><!-- COMPLETAR: número --></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">
+      <!-- COMPLETAR: análisis del período — insight sobre el contenido de mayor rendimiento y eje temático a sostener -->
+      <strong>Insight:</strong> <!-- COMPLETAR: análisis del período -->
+    </div>
+
+    <!-- Fuentes de tráfico web -->
+    <div class="chart-wrap">
+      <p style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em">Fuentes de tráfico web — <!-- COMPLETAR: período del informe --></p>
+      <div class="chart-legend">
+        <!-- COMPLETAR: porcentajes reales de fuentes de tráfico -->
+        <span><span class="sq" style="background:#1A6FD4"></span>Directo <!-- COMPLETAR: porcentaje -->%</span>
+        <span><span class="sq" style="background:#0A9688"></span>Google <!-- COMPLETAR: porcentaje -->%</span>
+        <span><span class="sq" style="background:#D97010"></span><!-- COMPLETAR: fuente 3 --> <!-- COMPLETAR: porcentaje -->%</span>
+        <span><span class="sq" style="background:#8B5CF6"></span>Otros <!-- COMPLETAR: porcentaje -->%</span>
+      </div>
+      <div style="position:relative;width:100%;height:200px">
+        <canvas id="chartFuentes" role="img" aria-label="Gráfico de fuentes de tráfico web">
+          <!-- COMPLETAR: descripción accesible de las fuentes y porcentajes -->
+        </canvas>
+      </div>
+      <div class="callout green" style="margin-top:14px;margin-bottom:0">
+        <!-- COMPLETAR: análisis del período — hito orgánico o insight de tráfico relevante -->
+        <strong><!-- COMPLETAR: título insight -->:</strong> <!-- COMPLETAR: análisis del período -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. ESTADO ENTREGABLES -->
+  <div class="sec" id="sec-entregables">
+    <div class="sec-eyebrow">Estado del proyecto</div>
+    <!-- COMPLETAR: fecha de corte -->
+    <div class="sec-title">Entregables al <!-- COMPLETAR: fecha de corte --></div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Entregable</th><th>Estado</th><th>Detalle</th></tr></thead>
+        <tbody>
+          <!-- COMPLETAR: filas con todos los entregables del cliente y su estado actual -->
+          <!-- Badges disponibles: bu=completado/activo, bd=pendiente/bloqueado, bam=advertencia, bn=en espera -->
+          <tr><td><!-- COMPLETAR: entregable --></td><td><span class="badge bu">✅ <!-- COMPLETAR: estado --></span></td><td><!-- COMPLETAR: detalle --></td></tr>
+          <tr><td><!-- COMPLETAR: entregable --></td><td><span class="badge bam">⚠️ <!-- COMPLETAR: estado --></span></td><td><!-- COMPLETAR: detalle --></td></tr>
+          <tr><td><!-- COMPLETAR: entregable --></td><td><span class="badge bn">⏳ <!-- COMPLETAR: estado --></span></td><td><!-- COMPLETAR: detalle --></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 7. PRÓXIMOS PASOS -->
+  <div class="sec" id="sec-pasos">
+    <div class="sec-eyebrow">Hoja de ruta</div>
+    <div class="sec-title">Próximos pasos</div>
+    <div class="steps">
+      <!-- COMPLETAR: 3 columnas de próximos pasos. Títulos con emoji opcional -->
+      <div class="step-col">
+        <div class="step-title"><!-- COMPLETAR: título columna 1 --></div>
+        <!-- COMPLETAR: items de próximos pasos. Añadir class="priority" a items de alta prioridad -->
+        <div class="step-item"><strong><!-- COMPLETAR: acción --></strong> — <!-- COMPLETAR: descripción --></div>
+        <div class="step-item priority"><strong><!-- COMPLETAR: acción prioritaria --></strong> — <!-- COMPLETAR: descripción --></div>
+      </div>
+      <div class="step-col">
+        <div class="step-title"><!-- COMPLETAR: título columna 2 --></div>
+        <div class="step-item"><strong><!-- COMPLETAR: acción --></strong> — <!-- COMPLETAR: descripción --></div>
+      </div>
+      <div class="step-col">
+        <div class="step-title"><!-- COMPLETAR: título columna 3 --></div>
+        <div class="step-item"><strong><!-- COMPLETAR: acción --></strong> — <!-- COMPLETAR: descripción --></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. EXPANSIÓN / PROPUESTA -->
+  <hr class="chapter-break">
+  <div class="sec proposal" id="sec-expansion">
+    <div class="sec-eyebrow">Propuesta estratégica</div>
+    <!-- COMPLETAR: título de la propuesta o expansión -->
+    <div class="sec-title"><!-- COMPLETAR: título de la propuesta --></div>
+
+    <div class="callout hito">
+      <svg class="hito-icon" width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+        <circle cx="11" cy="11" r="10" stroke="#1E8C50" stroke-width="1.6"/>
+        <path d="M7 11l3 3 5.5-5.5" stroke="#1E8C50" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <!-- COMPLETAR: análisis del período — argumento principal de la propuesta, por qué es el momento -->
+        <!-- COMPLETAR: análisis del período -->
+      </div>
+    </div>
+
+    <!-- Actividades propuestas -->
+    <p style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:10px;margin-top:28px;text-transform:uppercase;letter-spacing:.05em">Actividades que se incorporan</p>
+    <div class="sg sg-2" style="margin-bottom:20px">
+      <!-- COMPLETAR: 4 cards con las actividades de la propuesta. Clases: bl, gr, am, tl -->
+      <div class="sc bl">
+        <div class="sl"><!-- COMPLETAR: nombre actividad --></div>
+        <div style="font-size:13px;color:var(--ink);margin-top:4px;line-height:1.5"><!-- COMPLETAR: descripción de la actividad --></div>
+      </div>
+      <div class="sc gr">
+        <div class="sl"><!-- COMPLETAR: nombre actividad --></div>
+        <div style="font-size:13px;color:var(--ink);margin-top:4px;line-height:1.5"><!-- COMPLETAR: descripción de la actividad --></div>
+      </div>
+      <div class="sc am">
+        <div class="sl"><!-- COMPLETAR: nombre actividad --></div>
+        <div style="font-size:13px;color:var(--ink);margin-top:4px;line-height:1.5"><!-- COMPLETAR: descripción de la actividad --></div>
+      </div>
+      <div class="sc tl">
+        <div class="sl"><!-- COMPLETAR: nombre actividad --></div>
+        <div style="font-size:13px;color:var(--ink);margin-top:4px;line-height:1.5"><!-- COMPLETAR: descripción de la actividad --></div>
+      </div>
+    </div>
+
+    <!-- Por qué ahora -->
+    <p style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:10px;margin-top:28px;text-transform:uppercase;letter-spacing:.05em">¿Por qué es el momento?</p>
+    <div class="sg sg-3" style="margin-bottom:0">
+      <!-- COMPLETAR: 3 argumentos de timing de la propuesta -->
+      <div class="sc bl">
+        <div class="sl"><!-- COMPLETAR: argumento 1 --></div>
+        <div style="font-size:13px;color:var(--ink);margin-top:4px;line-height:1.5"><!-- COMPLETAR: descripción --></div>
+      </div>
+      <div class="sc am">
+        <div class="sl"><!-- COMPLETAR: argumento 2 --></div>
+        <div style="font-size:13px;color:var(--ink);margin-top:4px;line-height:1.5"><!-- COMPLETAR: descripción --></div>
+      </div>
+      <div class="sc gr">
+        <div class="sl"><!-- COMPLETAR: argumento 3 --></div>
+        <div style="font-size:13px;color:var(--ink);margin-top:4px;line-height:1.5"><!-- COMPLETAR: descripción --></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. FACTURACIÓN -->
+  <hr class="chapter-break">
+  <div class="sec" id="sec-facturacion">
+    <div class="billing-section-hdr">
+      <div class="lbl">Facturación</div>
+      <!-- COMPLETAR: período de facturación -->
+      <div class="ttl">Detalle de costos — <!-- COMPLETAR: período del informe --></div>
+    </div>
+    <div class="billing">
+      <table>
+        <thead><tr><th>Concepto</th><th>Detalle</th><th class="tn">Monto (CLP)</th></tr></thead>
+        <tbody>
+          <!-- COMPLETAR: filas de conceptos facturados. Añadir sub-row para subtotales e IVA -->
+          <tr><td>Fee mensual Interforma</td><td><!-- COMPLETAR: descripción de servicios incluidos --></td><td class="tn">$<!-- COMPLETAR: monto --></td></tr>
+          <tr><td><!-- COMPLETAR: concepto 2 --></td><td><!-- COMPLETAR: detalle --></td><td class="tn">$<!-- COMPLETAR: monto --></td></tr>
+          <tr><td><!-- COMPLETAR: concepto 3 (herramientas, plataformas) --></td><td><!-- COMPLETAR: detalle con tipo de cambio si aplica --></td><td class="tn">$<!-- COMPLETAR: monto --></td></tr>
+          <tr class="sub-row"><td colspan="2"><strong>Subtotal neto</strong></td><td class="tn"><strong>$<!-- COMPLETAR: subtotal --></strong></td></tr>
+          <tr class="sub-row"><td colspan="2">IVA (19%)</td><td class="tn">$<!-- COMPLETAR: IVA --></td></tr>
+          <tr class="total-row"><td colspan="2"><strong>Total a pagar</strong></td><td class="tn"><strong>$<!-- COMPLETAR: total --></strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- COMPLETAR: nota sobre ítems que se facturan por separado (pauta, etc.) -->
+    <p class="billing-note"><!-- COMPLETAR: nota de facturación separada y tipo de cambio si corresponde --></p>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="ftr">
+  <div class="ftr-brand">Interforma <span>Digital</span> · interforma.digital</div>
+  <!-- COMPLETAR: mes/año y ciudad -->
+  <div class="ftr-note">Informe confidencial · <!-- COMPLETAR: período del informe --> · Viña del Mar, Chile</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const blue='#1A6FD4',teal='#0A9688',amber='#D97010',violet='#8B5CF6';
+const gridC='#D8E3F0',lblC='#6B7FA3';
+
+// Gráfico comparativo RRSS
+// COMPLETAR: reemplazar los arrays data con los valores reales del período
+// labels: métricas a comparar (ej: Impresiones, Interacciones, Publicaciones, Seguidores)
+// datasets[0].data: valores del período anterior
+// datasets[1].data: valores del período actual
+new Chart(document.getElementById('chartRRSS'),{
+  type:'bar',
+  data:{
+    labels:['Impresiones','Interacciones','Publicaciones','Seguidores'],
+    datasets:[
+      {label:'Período anterior',data:[0,0,0,0],backgroundColor:blue+'99',borderColor:blue,borderWidth:1.5,borderRadius:4},
+      {label:'Período actual',data:[0,0,0,0],backgroundColor:teal+'99',borderColor:teal,borderWidth:1.5,borderRadius:4}
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y.toLocaleString('es-CL')}}},
+    scales:{
+      x:{grid:{display:false},ticks:{color:lblC,font:{size:11}}},
+      y:{grid:{color:gridC},ticks:{color:lblC,font:{size:11},callback:v=>v>=1000?Math.round(v/1000)+'K':v}}
+    }
+  }
+});
+
+// Gráfico tráfico web
+// COMPLETAR: reemplazar los arrays data con los valores reales del período
+// labels: métricas web (ej: Visualizaciones, Visitas, Visitantes únicos)
+// min en el eje Y: ajustar al mínimo real para que las diferencias sean visibles
+new Chart(document.getElementById('chartWeb'),{
+  type:'bar',
+  data:{
+    labels:['Visualizaciones','Visitas','Visitantes únicos'],
+    datasets:[
+      {label:'Período anterior',data:[0,0,0],backgroundColor:blue+'99',borderColor:blue,borderWidth:1.5,borderRadius:4},
+      {label:'Período actual',data:[0,0,0],backgroundColor:teal+'99',borderColor:teal,borderWidth:1.5,borderRadius:4}
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y}}},
+    scales:{
+      x:{grid:{display:false},ticks:{color:lblC,font:{size:11}}},
+      // COMPLETAR: ajustar min al mínimo real de los datos para mejor visualización
+      y:{grid:{color:gridC},ticks:{color:lblC,font:{size:11}},min:0}
+    }
+  }
+});
+
+// Gráfico fuentes de tráfico (donut)
+// COMPLETAR: reemplazar los arrays data con los porcentajes reales de fuentes
+// labels y data deben coincidir en orden
+new Chart(document.getElementById('chartFuentes'),{
+  type:'doughnut',
+  data:{
+    labels:['Directo','Google','Otra fuente','Otros'],
+    datasets:[{
+      // COMPLETAR: porcentajes reales [directo, google, fuente3, otros]
+      data:[0,0,0,0],
+      backgroundColor:[blue,teal,amber,violet],borderWidth:2,borderColor:'#F2F6FC'
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,cutout:'65%',
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.label}}}
+  }
+});
+</script>
+<script>
+// Hamburguesa
+const burger = document.getElementById('burgerBtn');
+const drawer = document.getElementById('navDrawer');
+burger.addEventListener('click', () => {
+  drawer.classList.toggle('open');
+  burger.textContent = drawer.classList.contains('open') ? '✕' : '☰';
+});
+// Cerrar drawer al hacer clic en un link
+drawer.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    drawer.classList.remove('open');
+    burger.textContent = '☰';
+  });
+});
+// Active link por scroll (IntersectionObserver)
+const sections = document.querySelectorAll('.sec[id]');
+const navLinks = document.querySelectorAll('.nav-links a, .nav-drawer a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = '#' + entry.target.id;
+      navLinks.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === id);
+      });
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(sec => observer.observe(sec));
+// Scroll suave
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+</script>
+</body>
+</html>

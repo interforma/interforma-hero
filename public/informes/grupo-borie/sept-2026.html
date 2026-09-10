@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informe First Cargo / Grupo Borie — Agosto–Septiembre 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0D1F3C;--blue:#1A6FD4;--blue-m:#3B8FED;--blue-l:#E8F1FC;
+  --teal:#0A9688;--teal-l:#E0F4F2;--amber:#D97010;--amber-l:#FEF3E4;
+  --green:#1E8C50;--green-l:#E4F4EC;--red:#C8353A;--red-l:#FAEAEA;
+  --ink:#0D1F3C;--muted:#6B7FA3;--border:#D8E3F0;--bg:#F2F6FC;--white:#fff;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6}
+
+/* TOOLTIP */
+.tip{position:relative;display:inline-block;border-bottom:1px dashed var(--blue);color:var(--blue);cursor:help;font-size:inherit}
+.tip::after{
+  content:attr(data-tip);
+  position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
+  background:var(--navy);color:#fff;font-size:11px;line-height:1.4;font-family:'Inter',sans-serif;
+  padding:8px 12px;border-radius:6px;white-space:normal;width:220px;text-align:left;
+  pointer-events:none;opacity:0;transition:opacity .2s;z-index:999;font-style:normal;
+  box-shadow:0 4px 12px rgba(0,0,0,0.2)
+}
+.tip::before{
+  content:'';position:absolute;bottom:calc(100% + 2px);left:50%;transform:translateX(-50%);
+  border:5px solid transparent;border-top-color:var(--navy);
+  pointer-events:none;opacity:0;transition:opacity .2s;z-index:999
+}
+.tip:hover::after,.tip:hover::before{opacity:1}
+
+/* HEADER */
+.hdr{background:var(--navy);padding:44px 56px 40px;position:relative;overflow:hidden}
+.hdr::after{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(26,111,212,.14);pointer-events:none}
+.hdr-eyebrow{font-size:11px;font-weight:500;color:var(--blue-m);letter-spacing:.08em;margin-bottom:10px}
+.hdr-title{font-size:34px;font-weight:700;color:#fff;line-height:1.15;margin-bottom:6px}
+.hdr-title span{color:var(--blue-m)}
+.hdr-period{font-size:14px;color:rgba(255,255,255,.5);margin-bottom:30px}
+.hdr-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.hkpi{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:14px 18px}
+.hkpi-val{font-size:26px;font-weight:700;color:#fff;font-family:'DM Mono',monospace;line-height:1;margin-bottom:4px}
+.hkpi-val.up{color:#5BDBA5}.hkpi-val.amber{color:#FFBE5C}
+.hkpi-lbl{font-size:11px;color:rgba(255,255,255,.45)}
+.hkpi-delta{font-size:11px;font-family:'DM Mono',monospace;color:#5BDBA5;margin-top:3px}
+
+/* LAYOUT */
+.main{max-width:980px;margin:0 auto;padding:32px 24px 72px}
+
+/* ── SECTION BASE ─────────────────────────────────── */
+.sec{margin-bottom:28px}
+.sec-eyebrow{font-size:10px;font-weight:600;letter-spacing:.1em;color:var(--blue);text-transform:uppercase;margin-bottom:5px}
+.sec-title{font-size:19px;font-weight:700;color:var(--navy);margin-bottom:16px;padding-bottom:12px;border-bottom:1.5px solid var(--border)}
+
+/* ── MAJOR SECTIONS — reporting content ───────────── */
+.sec.major{margin-bottom:48px}
+.sec.major .sec-eyebrow{color:var(--navy)}
+.sec.major .sec-title{font-size:22px;letter-spacing:-0.01em}
+
+/* ── CHAPTER BREAK ────────────────────────────────── */
+.chapter-break{border:none;border-top:1px solid var(--border);margin:12px 0}
+
+/* ── CALLOUT ──────────────────────────────────────── */
+.callout{border-left:2px solid var(--blue);border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:var(--navy);margin-bottom:18px;line-height:1.55}
+.callout{background:var(--blue-l)}.callout strong{color:var(--blue)}
+.callout.green{background:var(--green-l);border-color:var(--green)}.callout.green strong{color:var(--green)}
+.callout.amber{background:var(--amber-l);border-color:var(--amber);border-left-width:3px;font-size:13.5px}.callout.amber strong{color:var(--amber)}
+.callout.red{background:var(--red-l);border-color:var(--red);border-left-width:3px;font-size:13.5px}.callout.red strong{color:var(--red)}
+
+/* CALLOUT HITO — documento más importante del bloque */
+.callout.hito{
+  border-left:4px solid var(--green);background:var(--green-l);
+  border-radius:0 10px 10px 0;
+  padding:18px 22px;font-size:14px;line-height:1.6;
+  display:flex;gap:14px;align-items:flex-start;
+  margin-bottom:20px
+}
+.callout.hito strong{color:var(--green)}
+.callout.hito .hito-icon{flex-shrink:0;margin-top:2px}
+
+/* ── STAT GRID ────────────────────────────────────── */
+.sg{display:grid;gap:11px;margin-bottom:18px}
+.sg-4{grid-template-columns:repeat(4,1fr)}.sg-3{grid-template-columns:repeat(3,1fr)}.sg-2{grid-template-columns:repeat(2,1fr)}
+.sc{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.sc.bl{border-top:3px solid var(--blue)}.sc.tl{border-top:3px solid var(--teal)}
+.sc.gr{border-top:3px solid var(--green)}.sc.am{border-top:3px solid var(--amber)}
+.sc.rd{border-top:3px solid var(--red)}
+.sv{font-size:26px;font-weight:700;font-family:'DM Mono',monospace;color:var(--navy);line-height:1;margin-bottom:3px}
+.sl{font-size:11px;color:var(--muted);margin-bottom:3px}
+.sd{font-size:11px;font-family:'DM Mono',monospace;font-weight:500}
+.sd.up{color:var(--green)}.sd.dn{color:var(--red)}.sd.nu{color:var(--muted)}
+
+/* ── TABLA ────────────────────────────────────────── */
+.tw{overflow-x:auto;margin-bottom:18px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:8px 11px;font-size:10px;font-weight:600;color:var(--muted);background:var(--bg);border-bottom:1px solid var(--border);letter-spacing:.03em}
+td{padding:8px 11px;border-bottom:1px solid var(--border);color:var(--ink)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--blue-l)}
+.tn{font-family:'DM Mono',monospace;text-align:right}
+.badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px}
+.bu{background:var(--green-l);color:var(--green)}.bd{background:var(--red-l);color:var(--red)}.bn{background:var(--bg);color:var(--muted)}.bam{background:var(--amber-l);color:var(--amber)}
+.pill{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;margin-right:2px}
+
+/* ── PIPELINE ─────────────────────────────────────── */
+.pipeline{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap}
+.pipe-stage{flex:1;min-width:100px;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:10px 12px;text-align:center}
+.pipe-stage-name{font-size:10px;font-weight:600;color:var(--muted);margin-bottom:4px}
+.pipe-stage-dot{width:8px;height:8px;border-radius:50%;margin:0 auto 4px}
+
+/* ── CHAT ROW ─────────────────────────────────────── */
+.chat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:16px}
+.chat-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px 16px;text-align:center}
+.chat-card .num{font-size:30px;font-weight:700;font-family:'DM Mono',monospace;color:var(--teal);display:block}
+.chat-card .lbl{font-size:11px;color:var(--muted);margin-top:4px}
+
+/* ── ADS GRID ─────────────────────────────────────── */
+.ads-g{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:18px}
+.ads-c{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:16px 18px}
+.ads-c .al{font-size:11px;color:var(--muted);margin-bottom:3px}
+.ads-c .av{font-size:24px;font-weight:700;font-family:'DM Mono',monospace;color:var(--navy)}
+.ads-c .av.gr{color:var(--green)}.ads-c .av.bl{color:var(--blue)}
+.ads-c .as{font-size:11px;color:var(--muted)}
+
+/* ── BILLING ──────────────────────────────────────── */
+.billing-section-hdr{background:var(--navy);padding:22px 24px;border-radius:10px 10px 0 0}
+.billing-section-hdr .lbl{font-size:10px;font-weight:600;letter-spacing:.1em;color:var(--blue-m);text-transform:uppercase;margin-bottom:6px}
+.billing-section-hdr .ttl{font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.01em}
+.billing{background:var(--white);border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;overflow:hidden;margin-bottom:10px}
+.billing table th{background:var(--bg);padding:10px 14px}
+.billing table td{padding:10px 14px}
+.billing .total-row td{font-weight:700;background:var(--navy);color:#fff;border-top:2px solid var(--navy)}
+.billing .total-row .tn{font-size:20px;font-family:'DM Mono',monospace}
+.billing .sub-row td{font-weight:600;background:var(--blue-l);color:var(--navy)}
+.billing-note{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:0}
+
+/* ── STEPS ────────────────────────────────────────── */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+.step-col{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.step-title{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:10px}
+.step-item{font-size:12px;color:var(--muted);padding:5px 0;border-bottom:1px dashed var(--border);line-height:1.4}
+.step-item:last-child{border-bottom:none}
+.step-item strong{color:var(--ink)}
+.step-item.priority{border-left:2px solid var(--amber);padding-left:7px}
+
+/* ── CHART WRAPPER ────────────────────────────────── */
+.chart-wrap{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:18px}
+.chart-legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:12px;font-size:12px;color:var(--muted)}
+.chart-legend span{display:flex;align-items:center;gap:5px}
+.chart-legend .sq{width:10px;height:10px;border-radius:2px;display:inline-block}
+
+/* ── FLOW DIAGRAM ─────────────────────────────────── */
+.flow{display:flex;align-items:center;gap:6px;margin-bottom:18px;flex-wrap:wrap;padding:16px;background:var(--white);border:1px solid var(--border);border-radius:10px}
+.flow-node{background:var(--blue-l);border:1px solid var(--border);border-radius:6px;padding:7px 12px;font-size:12px;font-weight:500;color:var(--navy);white-space:nowrap}
+.flow-node.green{background:var(--green-l)}
+.flow-node.teal{background:var(--teal-l)}
+.flow-node.amber{background:var(--amber-l)}
+.flow-arr{color:var(--muted);font-size:16px}
+
+/* ── PROPOSAL SECTION (Agencia Borie) ─────────────── */
+.sec.proposal{
+  background:linear-gradient(135deg,rgba(13,31,60,0.04) 0%,rgba(26,111,212,0.05) 100%);
+  border-top:2px solid var(--blue);
+  border-radius:8px;
+  padding:28px 24px 32px;
+  margin-bottom:48px
+}
+.sec.proposal .sec-eyebrow{color:var(--blue);font-size:11px;letter-spacing:.1em}
+.sec.proposal .sec-title{font-size:22px;letter-spacing:-0.01em;border-bottom-color:rgba(13,31,60,0.14)}
+
+/* ── FOOTER ───────────────────────────────────────── */
+.ftr{background:var(--navy);padding:22px 56px;display:flex;align-items:center;justify-content:space-between}
+.ftr-brand{font-size:13px;font-weight:600;color:rgba(255,255,255,.65)}
+.ftr-brand span{color:var(--blue-m)}
+.ftr-note{font-size:11px;color:rgba(255,255,255,.3)}
+
+/* ── NAV ──────────────────────────────────────────── */
+.nav{
+  position:sticky;top:0;z-index:200;
+  background:rgba(13,31,60,0.97);backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  padding:0 32px;height:48px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-links{display:flex;align-items:center;gap:4px;list-style:none}
+.nav-links a{
+  font-size:11px;font-weight:500;color:rgba(255,255,255,0.55);
+  text-decoration:none;padding:5px 10px;border-radius:6px;
+  transition:color .15s,background .15s;white-space:nowrap;
+}
+.nav-links a:hover{color:#fff;background:rgba(255,255,255,0.08)}
+.nav-links a.active{color:#fff;background:rgba(59,143,237,0.25);border:1px solid rgba(59,143,237,0.3)}
+.nav-logo{font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);letter-spacing:.04em;white-space:nowrap}
+.nav-logo span{color:var(--blue-m)}
+.nav-burger{
+  display:none;background:none;border:1px solid rgba(255,255,255,0.2);
+  border-radius:6px;padding:6px 10px;cursor:pointer;color:#fff;font-size:18px;line-height:1;
+}
+.nav-drawer{
+  display:none;position:fixed;top:48px;left:0;right:0;z-index:199;
+  background:rgba(13,31,60,0.98);backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  padding:12px 20px 16px;
+}
+.nav-drawer.open{display:block}
+.nav-drawer a{
+  display:block;font-size:13px;font-weight:500;color:rgba(255,255,255,0.7);
+  text-decoration:none;padding:10px 12px;border-radius:8px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.nav-drawer a:last-child{border-bottom:none}
+.nav-drawer a:hover,.nav-drawer a.active{color:#fff;background:rgba(59,143,237,0.2)}
+.sec{scroll-margin-top:60px}
+
+@media(max-width:680px){
+  .hdr{padding:28px 18px 24px}.hdr-kpis{grid-template-columns:repeat(2,1fr)}
+  .hdr-title{font-size:24px}.sg-4{grid-template-columns:repeat(2,1fr)}
+  .ads-g{grid-template-columns:repeat(2,1fr)}.chat-row{grid-template-columns:repeat(2,1fr)}
+  .steps{grid-template-columns:1fr}.ftr{flex-direction:column;gap:6px;padding:18px}
+  .pipeline{flex-direction:column}.pipe-stage{min-width:unset}
+  .nav{padding:0 16px}.nav-links{display:none}.nav-burger{display:block}
+  .sv{font-size:22px}
+  .sl{font-size:12px}
+  .sec.major{margin-bottom:36px}
+  .sec.proposal{padding:20px 16px 24px}
+  .billing-section-hdr{padding:16px 18px}
+  .billing-section-hdr .ttl{font-size:18px}
+  .billing table th,.billing table td{padding:8px 10px;font-size:12px}
+  .billing .total-row .tn{font-size:16px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV STICKY -->
+<nav class="nav">
+  <div class="nav-logo">Interforma <span>Digital</span></div>
+  <ul class="nav-links">
+    <li><a href="#sec-resumen">Resumen</a></li>
+    <li><a href="#sec-ads">Meta Ads</a></li>
+    <li><a href="#sec-crm">CRM</a></li>
+    <li><a href="#sec-whatsapp">WhatsApp</a></li>
+    <li><a href="#sec-rrss">Redes Sociales</a></li>
+    <li><a href="#sec-entregables">Entregables</a></li>
+    <li><a href="#sec-pasos">Próximos pasos</a></li>
+    <li><a href="#sec-expansion">Agencia Borie</a></li>
+    <li><a href="#sec-facturacion">Facturación</a></li>
+  </ul>
+  <button class="nav-burger" id="burgerBtn" aria-label="Abrir menú">☰</button>
+</nav>
+
+<!-- DRAWER MÓVIL -->
+<div class="nav-drawer" id="navDrawer">
+  <a href="#sec-resumen">Resumen ejecutivo</a>
+  <a href="#sec-ads">Meta Ads</a>
+  <a href="#sec-crm">CRM Twenty</a>
+  <a href="#sec-whatsapp">Canal WhatsApp</a>
+  <a href="#sec-rrss">Redes Sociales</a>
+  <a href="#sec-entregables">Entregables</a>
+  <a href="#sec-pasos">Próximos pasos</a>
+  <a href="#sec-expansion">Agencia Borie</a>
+  <a href="#sec-facturacion">Facturación</a>
+</div>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-eyebrow">Interforma Digital · Informe Mensual de Servicios</div>
+  <div class="hdr-title">First Cargo <span>/ Grupo Borie</span></div>
+  <div class="hdr-period">01 Agosto — 08 Septiembre 2026 &nbsp;·&nbsp; Corte al 9 de septiembre</div>
+  <div class="hdr-kpis">
+    <div class="hkpi">
+      <div class="hkpi-val up">5.957</div>
+      <div class="hkpi-lbl">Impresiones RRSS</div>
+      <div class="hkpi-delta">↑ +1.032% vs mes anterior</div>
+    </div>
+    <div class="hkpi">
+      <div class="hkpi-val up">103</div>
+      <div class="hkpi-lbl">Oportunidades en CRM</div>
+      <div class="hkpi-delta">↑ Pipeline activo en producción</div>
+    </div>
+    <div class="hkpi">
+      <div class="hkpi-val up">37</div>
+      <div class="hkpi-lbl">Conversaciones WhatsApp</div>
+      <div class="hkpi-delta">↑ Canal operativo</div>
+    </div>
+    <div class="hkpi">
+      <div class="hkpi-val amber">$1.801</div>
+      <div class="hkpi-lbl">CLP por lead Meta Ads</div>
+      <div class="hkpi-delta">14 conversaciones generadas</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- 1. RESUMEN -->
+  <div class="sec major" id="sec-resumen">
+    <div class="sec-eyebrow">Resumen ejecutivo</div>
+    <div class="sec-title">El mejor mes desde el inicio del servicio</div>
+    <div class="callout hito">
+      <svg class="hito-icon" width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+        <circle cx="11" cy="11" r="10" stroke="#1E8C50" stroke-width="1.6"/>
+        <path d="M7 11l3 3 5.5-5.5" stroke="#1E8C50" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <strong>Hito del período:</strong> El embudo comercial completo quedó validado y operativo — anuncio Meta Ads → clic → WhatsApp → <span class="tip" data-tip="Agente de inteligencia artificial que atiende automáticamente consultas por WhatsApp, califica leads y los registra en el CRM.">agente IA</span> → <span class="tip" data-tip="Twenty CRM: plataforma de gestión de clientes y oportunidades donde se registran y hacen seguimiento de todos los prospectos del grupo.">CRM Twenty</span> → cotización en PDF. El pipeline acumula 103 oportunidades, el equipo opera el CRM de forma autónoma, las impresiones crecieron +1.032% y el tráfico web alcanzó su máximo histórico. FirstCargo fue verificada por Meta como organización legal en Chile el 8 de septiembre.
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. META ADS -->
+  <div class="sec major" id="sec-ads">
+    <div class="sec-eyebrow">Campañas pagas</div>
+    <div class="sec-title">Meta Ads — Primera campaña activa</div>
+    <div class="callout">
+      Campaña <strong>FC_CotizaAhora_Test_Ago26</strong> · Objetivo: conversación iniciada en WhatsApp · Activa desde 3 sept 2026 · Validación de canal completada.
+    </div>
+    <div class="ads-g">
+      <div class="ads-c"><div class="al">Impresiones</div><div class="av bl">5.055</div><div class="as">Alcance: 3.299 personas</div></div>
+      <div class="ads-c"><div class="al">Conversaciones WA generadas</div><div class="av gr">14</div><div class="as">Costo por resultado: $1.801 CLP</div></div>
+      <div class="ads-c"><div class="al">Clics en el enlace</div><div class="av">42</div><div class="as">CTR: 1,44%</div></div>
+      <div class="ads-c"><div class="al">CPC promedio</div><div class="av">$345</div><div class="as">CPM: $4.987 CLP</div></div>
+      <div class="ads-c"><div class="al">Gasto total (pauta)</div><div class="av">$25.209</div><div class="as">CLP · facturado por separado</div></div>
+      <div class="ads-c"><div class="al">Estado del canal</div><div class="av" style="font-size:16px;color:var(--green)">✓ Validado</div><div class="as">Listo para escalar presupuesto</div></div>
+    </div>
+    <div class="callout green">
+      <strong>Validación del embudo:</strong> 14 conversaciones a $1.801 CLP c/u es un costo altamente competitivo para el sector B2B logístico. El siguiente paso es aumentar el presupuesto y refinar la segmentación de audiencia.
+    </div>
+  </div>
+
+  <!-- 3. CRM -->
+  <div class="sec major" id="sec-crm">
+    <div class="sec-eyebrow">CRM · Automatizaciones · Cotizaciones</div>
+    <div class="sec-title">Twenty CRM — Flujo de cotizaciones operativo</div>
+
+    <div class="sg sg-4" style="margin-bottom:18px">
+      <div class="sc tl"><div class="sl">Oportunidades en pipeline</div><div class="sv">103</div><div class="sd up">↑ Activo en producción</div></div>
+      <div class="sc bl"><div class="sl">Miembros del equipo en CRM</div><div class="sv">8</div><div class="sd nu">Plan Pro · $96 USD/mes</div></div>
+      <div class="sc gr"><div class="sl">Folio inicial cotizaciones</div><div class="sv">FC-11000</div><div class="sd up">↑ Correlativo activo</div></div>
+      <div class="sc am"><div class="sl">Verificación Meta</div><div class="sv" style="font-size:16px;color:var(--green)">✓ Activa</div><div class="sd nu">FirstCargo · 8 sept 2026</div></div>
+    </div>
+
+    <!-- Flujo técnico -->
+    <p style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px;margin-top:28px;text-transform:uppercase;letter-spacing:.05em">Flujo técnico completo</p>
+    <div class="flow">
+      <div class="flow-node"><span class="tip" data-tip="Twenty CRM: plataforma donde el equipo de Grupo Borie registra y gestiona todas las oportunidades comerciales y cotizaciones.">CRM Twenty</span></div>
+      <div class="flow-arr">→</div>
+      <div class="flow-node"><span class="tip" data-tip="n8n: herramienta de automatización que conecta sistemas entre sí. Actúa como el 'cerebro' que coordina la generación del PDF, el registro en Drive y el envío por Gmail.">n8n</span></div>
+      <div class="flow-arr">→</div>
+      <div class="flow-node">PDF Cotización</div>
+      <div class="flow-arr">→</div>
+      <div class="flow-node teal"><span class="tip" data-tip="Google Drive: almacenamiento en la nube donde se guardan todos los PDFs de cotizaciones, organizados por operación para fácil consulta.">Google Drive</span></div>
+      <div class="flow-arr">→</div>
+      <div class="flow-node teal"><span class="tip" data-tip="Google Sheets: planilla global que registra automáticamente cada cotización enviada como historial comercial del grupo.">Google Sheets</span></div>
+      <div class="flow-arr">→</div>
+      <div class="flow-node green">Gmail corporativo</div>
+      <div class="flow-arr">→</div>
+      <div class="flow-node green">Estados automáticos</div>
+    </div>
+
+    <!-- Pipeline stages -->
+    <p style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px;margin-top:28px;text-transform:uppercase;letter-spacing:.05em">Etapas del pipeline (103 oportunidades)</p>
+    <div class="pipeline">
+      <div class="pipe-stage"><div class="pipe-stage-dot" style="background:#3B8FED"></div><div class="pipe-stage-name">Lead captado</div></div>
+      <div class="pipe-stage"><div class="pipe-stage-dot" style="background:#F59E0B"></div><div class="pipe-stage-name">Cotización en trámite</div></div>
+      <div class="pipe-stage"><div class="pipe-stage-dot" style="background:#10B981"></div><div class="pipe-stage-name">Cotización enviada</div></div>
+      <div class="pipe-stage"><div class="pipe-stage-dot" style="background:#8B5CF6"></div><div class="pipe-stage-name">Recordatorio 24 hrs</div></div>
+      <div class="pipe-stage"><div class="pipe-stage-dot" style="background:#EC4899"></div><div class="pipe-stage-name">Recordatorio llamada 48 hrs</div></div>
+      <div class="pipe-stage"><div class="pipe-stage-dot" style="background:#1E8C50"></div><div class="pipe-stage-name">Ganada</div></div>
+      <div class="pipe-stage"><div class="pipe-stage-dot" style="background:#C8353A"></div><div class="pipe-stage-name">Perdida</div></div>
+    </div>
+
+    <!-- Estado componentes -->
+    <p style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px;margin-top:28px;text-transform:uppercase;letter-spacing:.05em">Estado de componentes</p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Componente</th><th>Rol</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tip" data-tip="Twenty CRM: plataforma de gestión comercial open-source donde se administra el pipeline de oportunidades y el módulo de cotizaciones.">Twenty CRM</span></td><td>Pipeline, módulo Cotizaciones, estados automáticos</td><td><span class="badge bu">✅ Operativo</span></td></tr>
+          <tr><td><span class="tip" data-tip="n8n: herramienta de automatización de flujos de trabajo. Funciona como un conector inteligente entre el CRM, Google Drive, Sheets y Gmail.">n8n</span></td><td>Orquestación, normalización de datos, folio, generación PDF</td><td><span class="badge bu">✅ Operativo</span></td></tr>
+          <tr><td>Google Drive</td><td>Almacenamiento de PDFs por operación</td><td><span class="badge bu">✅ Reconectado</span></td></tr>
+          <tr><td>Google Sheets</td><td>Planilla global de cotizaciones (historial)</td><td><span class="badge bu">✅ Operativo</span></td></tr>
+          <tr><td>Gmail corporativo</td><td>Envío único con control anti-duplicados</td><td><span class="badge bu">✅ Reconectado</span></td></tr>
+          <tr><td><span class="tip" data-tip="OAuth: protocolo de autenticación que permite a la aplicación conectarse a Google de forma segura. Actualmente en modo 'Testing', lo que causó interrupciones. Debe migrarse a 'Producción' para estabilizar la operación.">OAuth Google Cloud</span></td><td>Autenticación de la aplicación con Google</td><td><span class="badge bam">⚠️ Testing → Producción pendiente</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout amber">
+      <strong>Pendiente prioritario — <span class="tip" data-tip="OAuth: sistema de autenticación de Google que permite a la aplicación acceder a Drive, Sheets y Gmail. En modo 'Testing' expira con frecuencia y puede causar interrupciones en el envío de cotizaciones.">OAuth</span>:</strong> La aplicación Google Cloud debe pasar de modo Testing a Producción y consolidar Gmail, Drive y Sheets bajo la cuenta corporativa notificaciones@bmgroup.cl. Actualmente Sheets opera con interformamktg@gmail.com, lo que genera cruces de credenciales y es la principal causa de interrupciones.
+    </div>
+
+    <!-- Pruebas agosto -->
+    <p style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px;margin-top:28px;text-transform:uppercase;letter-spacing:.05em">Validación funcional — agosto 2026</p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Fecha</th><th>Actividad</th><th>Resultado</th></tr></thead>
+        <tbody>
+          <tr><td>24 ago</td><td>Pruebas de generación y envío con datos de transporte, seguro y cargos CLP</td><td><span class="badge bu">Validado</span></td></tr>
+          <tr><td>25 ago</td><td>Registro desde oportunidad, respaldo Drive y módulo Cotizaciones</td><td><span class="badge bu">Validado</span></td></tr>
+          <tr><td>26 ago</td><td>Corrección de validación de campos y credenciales; prueba real reenviada</td><td><span class="badge bu">Resuelto</span></td></tr>
+          <tr><td>27 ago</td><td>Validación final BORRADOR → ENVIADA, seguimiento automático y tablero reorganizado</td><td><span class="badge bu">Completado</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 4. WHATSAPP -->
+  <div class="sec" id="sec-whatsapp">
+    <div class="sec-eyebrow">Agente IA · <span class="tip" data-tip="Chatwoot: plataforma de bandeja de entrada centralizada donde se gestionan todas las conversaciones de WhatsApp. Permite al equipo humano tomar control cuando el bot lo requiere.">Chatwoot</span></div>
+    <div class="sec-title">Canal WhatsApp — 11 agosto al 10 septiembre</div>
+    <div class="chat-row">
+      <div class="chat-card"><span class="num">37</span><div class="lbl">Conversaciones recibidas</div></div>
+      <div class="chat-card"><span class="num">182</span><div class="lbl">Mensajes entrantes</div></div>
+      <div class="chat-card"><span class="num">168</span><div class="lbl">Mensajes enviados</div></div>
+    </div>
+    <div class="callout amber">
+      <strong>Punto de mejora:</strong> El tiempo promedio de resolución de casos escalados a agente humano fue de 6 días 16 horas. Se recomienda establecer un protocolo de respuesta comercial con meta inferior a 4 horas para oportunidades activas.
+    </div>
+  </div>
+
+  <!-- 5. RRSS COMPARATIVA -->
+  <div class="sec major" id="sec-rrss">
+    <div class="sec-eyebrow">Redes sociales</div>
+    <div class="sec-title">Comparativa de períodos — Agosto fue el mejor mes</div>
+
+    <div class="callout">
+      34 publicaciones emitidas · Facebook: 11 · Instagram: 14 · LinkedIn: 9 · Período: 01 agosto – 08 septiembre 2026
+    </div>
+
+    <!-- Gráfico comparativo interactivo -->
+    <div class="chart-wrap">
+      <div class="chart-legend">
+        <span><span class="sq" style="background:#1A6FD4"></span>Jul–Ago 2026</span>
+        <span><span class="sq" style="background:#0A9688"></span>Ago–Sept 2026</span>
+      </div>
+      <div style="position:relative;width:100%;height:260px">
+        <canvas id="chartRRSS" role="img" aria-label="Gráfico comparativo de métricas RRSS entre Jul-Ago y Ago-Sept 2026">
+          Comparativa: Impresiones pasaron de 435 a 5957; Interacciones de 57 a 160; Publicaciones de 18 a 34; Seguidores de 455 a 466.
+        </canvas>
+      </div>
+    </div>
+
+    <!-- Stats destacadas -->
+    <div class="sg sg-3">
+      <div class="sc bl"><div class="sl">Impresiones totales</div><div class="sv">5.957</div><div class="sd up">↑ +1.032% vs mes anterior</div></div>
+      <div class="sc tl"><div class="sl">Interacciones totales</div><div class="sv">160</div><div class="sd up">↑ +240% — FB:13 · IG:96 · LI:51</div></div>
+      <div class="sc gr"><div class="sl">Seguidores totales</div><div class="sv">466</div><div class="sd up">↑ +2.64% — IG: +5.00%</div></div>
+      <div class="sc am"><div class="sl">Engagement Instagram</div><div class="sv">37.94</div><div class="sd up">↑ +31.35%</div></div>
+      <div class="sc bl"><div class="sl">Engagement LinkedIn</div><div class="sv">31.68</div><div class="sd up">↑ +214.66%</div></div>
+      <div class="sc gr"><div class="sl">Guardados Instagram</div><div class="sv">11</div><div class="sd up">↑ +266.67% — contenido de valor</div></div>
+    </div>
+
+    <!-- Gráfico web -->
+    <div class="chart-wrap">
+      <p style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em">Tráfico web firstcargo.cl — comparativa</p>
+      <div class="chart-legend">
+        <span><span class="sq" style="background:#1A6FD4"></span>Jul–Ago 2026</span>
+        <span><span class="sq" style="background:#0A9688"></span>Ago–Sept 2026</span>
+      </div>
+      <div style="position:relative;width:100%;height:200px">
+        <canvas id="chartWeb" role="img" aria-label="Gráfico de tráfico web firstcargo.cl comparando Jul-Ago vs Ago-Sept 2026">
+          Visualizaciones: 250 vs 306. Visitas: 202 vs 263. Visitantes únicos: 190 vs 255.
+        </canvas>
+      </div>
+    </div>
+
+    <!-- Top posts -->
+    <p style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:10px;margin-top:28px;text-transform:uppercase;letter-spacing:.05em">Top contenidos por impresiones</p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Contenido</th><th>Canal</th><th class="tn">Imp.</th><th class="tn">Int.</th></tr></thead>
+        <tbody>
+          <tr><td>Una de las dudas más comunes en carga marítima. FCL...</td><td><span class="pill" style="background:#FCE4F0;color:#B5006B">Instagram</span></td><td class="tn">66</td><td class="tn">9</td></tr>
+          <tr><td>¿Cuánto cuesta realmente importar a Chile? El desglose...</td><td><span class="pill" style="background:#E1EDF8;color:#0A66C2">LinkedIn</span></td><td class="tn">51</td><td class="tn"><strong>19</strong></td></tr>
+          <tr><td>¿Cuánto cuesta realmente importar a Chile? El desglose...</td><td><span class="pill" style="background:#FCE4F0;color:#B5006B">Instagram</span></td><td class="tn">54</td><td class="tn">10</td></tr>
+          <tr><td>¿Tu carga no llena un contenedor completo? No tienes que pagar...</td><td><span class="pill" style="background:#FCE4F0;color:#B5006B">Instagram</span></td><td class="tn">51</td><td class="tn">6</td></tr>
+          <tr><td>Repuestos críticos. Muestras de producto. Carga urgente...</td><td><span class="pill" style="background:#FCE4F0;color:#B5006B">Instagram</span></td><td class="tn">40</td><td class="tn">8</td></tr>
+          <tr><td>Tu carga llega al puerto. ¿Y después? En First Cargo...</td><td><span class="pill" style="background:#FCE4F0;color:#B5006B">Instagram</span></td><td class="tn">34</td><td class="tn">9</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">
+      <strong>Insight:</strong> El contenido educativo con datos concretos (costos de importación, tipos de carga, rutas) genera el mayor engagement. El post sobre costos fue el más compartido en LinkedIn (19 interacciones), confirmando que ese eje temático debe sostenerse.
+    </div>
+
+    <!-- Fuentes de tráfico web -->
+    <div class="chart-wrap">
+      <p style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em">Fuentes de tráfico web — Ago–Sept 2026</p>
+      <div class="chart-legend">
+        <span><span class="sq" style="background:#1A6FD4"></span>Directo 51%</span>
+        <span><span class="sq" style="background:#0A9688"></span>Google 35%</span>
+        <span><span class="sq" style="background:#D97010"></span>Facebook 7%</span>
+        <span><span class="sq" style="background:#8B5CF6"></span>Otros 7%</span>
+      </div>
+      <div style="position:relative;width:100%;height:200px">
+        <canvas id="chartFuentes" role="img" aria-label="Gráfico de fuentes de tráfico web: Directo 51%, Google 35%, Facebook 7%, Otros 7%">
+          Fuentes: Directo 51%, Google 35%, Facebook 7%, Otros 7%.
+        </canvas>
+      </div>
+      <div class="callout green" style="margin-top:14px;margin-bottom:0">
+        <strong>Hito orgánico:</strong> Google ya representa el 35% del tráfico (vs. 18% en el período anterior), señal de que el posicionamiento orgánico está ganando tracción de forma independiente a la pauta.
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. ESTADO ENTREGABLES -->
+  <div class="sec" id="sec-entregables">
+    <div class="sec-eyebrow">Estado del proyecto</div>
+    <div class="sec-title">Entregables al 9 de septiembre</div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Entregable</th><th>Estado</th><th>Detalle</th></tr></thead>
+        <tbody>
+          <tr><td>Sitio First Cargo</td><td><span class="badge bu">✅ Activo</span></td><td>Cloudflare Pages · sin cambios este período</td></tr>
+          <tr><td>Sitio BM Transport</td><td><span class="badge bu">✅ Activo</span></td><td>Sin cambios este período</td></tr>
+          <tr><td>Sitio BM Group corporativo</td><td><span class="badge bd">🔄 Pendiente</span></td><td>Pendiente aprobación cliente para dominio definitivo</td></tr>
+          <tr><td>Agente WhatsApp IA</td><td><span class="badge bu">✅ Activo</span></td><td>37 conversaciones en el período</td></tr>
+          <tr><td>CRM Twenty — flujo cotizaciones</td><td><span class="badge bu">✅ Operativo</span></td><td>103 oportunidades · 8 usuarios · PDF + Drive + Sheets + Gmail</td></tr>
+          <tr><td>OAuth Google Cloud</td><td><span class="badge bam">⚠️ Pendiente</span></td><td>Pasar de Testing a Producción · prioridad alta</td></tr>
+          <tr><td>Meta Ads — primera campaña</td><td><span class="badge bu">✅ Ejecutada</span></td><td>14 conversaciones WA a $1.801 CLP c/u · canal validado</td></tr>
+          <tr><td>FirstCargo verificada en Meta</td><td><span class="badge bu">✅ Completado</span></td><td>Verificación como organización legal · 8 sept 2026</td></tr>
+          <tr><td>Plantillas WhatsApp corporativas</td><td><span class="badge bd">⚠️ Pendiente</span></td><td>Aprobación pendiente con el cliente</td></tr>
+          <tr><td>Microsoft Clarity</td><td><span class="badge bn">⏳ Pendiente</span></td><td>Por implementar en firstcargo.cl</td></tr>
+          <tr><td>Dashboard Looker Studio</td><td><span class="badge bn">⏳ Pendiente</span></td><td>Unificar RRSS + web + CRM + Ads</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 7. PRÓXIMOS PASOS -->
+  <div class="sec" id="sec-pasos">
+    <div class="sec-eyebrow">Hoja de ruta</div>
+    <div class="sec-title">Próximos pasos</div>
+    <div class="steps">
+      <div class="step-col">
+        <div class="step-title">🚀 Campañas pagas</div>
+        <div class="step-item"><strong>Escalar Meta Ads</strong> — Aumentar presupuesto con segmentación refinada</div>
+        <div class="step-item"><strong>Reactivación base histórica</strong> — Email/WhatsApp a contactos anteriores del grupo con nuevos servicios</div>
+        <div class="step-item"><strong>LinkedIn Ads</strong> — Lead Gen Form B2B conectado al CRM</div>
+        <div class="step-item"><strong>Nurturing post-cotización</strong> — Seguimiento a leads sin respuesta (7/14/30 días)</div>
+      </div>
+      <div class="step-col">
+        <div class="step-title">⚙️ Técnico y operativo</div>
+        <div class="step-item priority"><strong>OAuth Google — alta prioridad</strong> — Pasar de Testing a Producción y consolidar cuentas bajo notificaciones@bmgroup.cl</div>
+        <div class="step-item priority"><strong>Prueba de regresión post-OAuth</strong> — Flujo completo: vista previa, folio, PDF, Drive, Sheets, Gmail, estados</div>
+        <div class="step-item"><strong>Vista Historial CRM</strong> — Concentrar Ganadas y Perdidas sin saturar el tablero diario</div>
+        <div class="step-item"><strong>Handoff bot→humano</strong> — Meta: respuesta en menos de 4 horas</div>
+        <div class="step-item"><strong>Firmas Outlook/Mac</strong> — Agencia Borie y FirstCargo pendiente implementación</div>
+        <div class="step-item"><strong>Licencias Twenty</strong> — Revisar plazas activas vs. usuarios con uso real</div>
+      </div>
+      <div class="step-col">
+        <div class="step-title">📱 Contenido y presencia</div>
+        <div class="step-item"><strong>LinkedIn</strong> — Mantener 9+ posts/mes; foco en costos e importación práctica</div>
+        <div class="step-item"><strong>Instagram Reels</strong> — Incorporar video corto educativo</div>
+        <div class="step-item"><strong>Co-branded</strong> — Primera pieza visual First Cargo + Agencia Borie</div>
+        <div class="step-item"><strong>Plantillas WhatsApp</strong> — Aprobación corporativa pendiente</div>
+        <div class="step-item"><strong>Dashboard Looker Studio</strong> — Unificar RRSS + web + CRM + Ads</div>
+        <div class="step-item"><strong>BM Group</strong> — Aprobación diseño y migración a dominio definitivo</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. EXPANSIÓN AGENCIA BORIE -->
+  <hr class="chapter-break">
+  <div class="sec proposal" id="sec-expansion">
+    <div class="sec-eyebrow">Propuesta estratégica</div>
+    <div class="sec-title">Expansión del servicio — Agencia Borie se suma al ecosistema digital</div>
+
+    <div class="callout hito">
+      <svg class="hito-icon" width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+        <circle cx="11" cy="11" r="10" stroke="#1E8C50" stroke-width="1.6"/>
+        <path d="M7 11l3 3 5.5-5.5" stroke="#1E8C50" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        Con el flujo de First Cargo validado en producción, el momento es ideal para activar el mismo ecosistema en <strong>Agencia Borie (agenciaborie.cl)</strong>. La infraestructura ya existe, el equipo ya opera el CRM, y los aprendizajes de este primer período reducen el tiempo de puesta en marcha de forma significativa.
+      </div>
+    </div>
+
+    <!-- Actividades -->
+    <p style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:10px;margin-top:28px;text-transform:uppercase;letter-spacing:.05em">Actividades que se incorporan</p>
+    <div class="sg sg-2" style="margin-bottom:20px">
+      <div class="sc bl">
+        <div class="sl">Redes sociales y SEO orgánico</div>
+        <div style="font-size:13px;color:var(--ink);margin-top:4px;line-height:1.5">Gestión mensual de contenido orientado al perfil de cliente de Agencia Borie, contribuyendo directamente al posicionamiento orgánico en Google</div>
+      </div>
+      <div class="sc gr">
+        <div class="sl">Sitio web y Google Business Profile</div>
+        <div style="font-size:13px;color:var(--ink);margin-top:4px;line-height:1.5">Optimización de agenciaborie.cl y activación del <span class="tip" data-tip="Google Business Profile: ficha de empresa en Google que aparece en búsquedas locales y en Google Maps. Es la palanca más directa para ganar visibilidad cuando alguien busca servicios de aduana en Santiago.">Google Business Profile</span> — la palanca más directa para aparecer en búsquedas locales del sector</div>
+      </div>
+      <div class="sc am">
+        <div class="sl">Campañas pagas</div>
+        <div style="font-size:13px;color:var(--ink);margin-top:4px;line-height:1.5">Meta Ads y LinkedIn Ads con entrada al funnel vía WhatsApp y CRM, aplicando la segmentación ya validada con First Cargo</div>
+      </div>
+      <div class="sc tl">
+        <div class="sl">WhatsApp IA + CRM + Cotizaciones</div>
+        <div style="font-size:13px;color:var(--ink);margin-top:4px;line-height:1.5">Agente WhatsApp con perfil diferenciado, pipeline en <span class="tip" data-tip="El mismo CRM Twenty donde ya opera el equipo de Grupo BM. Los leads de Agencia Borie caen en el mismo pipeline con etapas y flujo de cotización adaptados a su formato.">CRM Twenty</span> y flujo de cotización adaptado al formato de Agencia Borie</div>
+      </div>
+    </div>
+
+    <!-- Sinergia -->
+    <p style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:10px;margin-top:28px;text-transform:uppercase;letter-spacing:.05em">Sinergia con First Cargo</p>
+    <div class="flow" style="margin-bottom:20px">
+      <div class="flow-node">Agencia Borie<br><span style="font-size:10px;color:var(--muted)">Aduana · Importación · Exportación</span></div>
+      <div class="flow-arr">⇄</div>
+      <div class="flow-node" style="background:var(--teal-l)">CRM Twenty<br><span style="font-size:10px;color:var(--muted)">Cross-referral automático</span></div>
+      <div class="flow-arr">⇄</div>
+      <div class="flow-node" style="background:var(--green-l)">First Cargo<br><span style="font-size:10px;color:var(--muted)">Flete · Logística internacional</span></div>
+    </div>
+    <div class="callout">
+      Ambas marcas se complementan en el ciclo completo del comercio exterior. El contenido co-branded y el cross-referral en el CRM permiten presentar a Grupo BM como el socio integral — desde la aduana hasta la bodega. La presencia activa de ambas marcas además se refuerza mutuamente en Google: los enlaces cruzados entre sitios y la coherencia de marca del grupo contribuyen al posicionamiento de cada dominio.
+    </div>
+
+    <!-- Por qué ahora -->
+    <p style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:10px;margin-top:28px;text-transform:uppercase;letter-spacing:.05em">¿Por qué es el momento?</p>
+    <div class="sg sg-3" style="margin-bottom:0">
+      <div class="sc bl">
+        <div class="sl">Flujo probado</div>
+        <div style="font-size:13px;color:var(--ink);margin-top:4px;line-height:1.5">El sistema está validado en producción. Los costos de implementación para Agencia Borie son marginales sobre lo ya construido.</div>
+      </div>
+      <div class="sc am">
+        <div class="sl">Ventana competitiva</div>
+        <div style="font-size:13px;color:var(--ink);margin-top:4px;line-height:1.5">Cada mes sin presencia activa es terreno que los competidores consolidan en Google. La autoridad de dominio se acumula con el tiempo.</div>
+      </div>
+      <div class="sc gr">
+        <div class="sl">Buenas prácticas desde el día 1</div>
+        <div style="font-size:13px;color:var(--ink);margin-top:4px;line-height:1.5">Agencia Borie arranca aplicando lo que tomó meses aprender con First Cargo — sin curva de aprendizaje.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. FACTURACIÓN -->
+  <hr class="chapter-break">
+  <div class="sec" id="sec-facturacion">
+    <div class="billing-section-hdr">
+      <div class="lbl">Facturación</div>
+      <div class="ttl">Detalle de costos — Septiembre 2026</div>
+    </div>
+    <div class="billing">
+      <table>
+        <thead><tr><th>Concepto</th><th>Detalle</th><th class="tn">Monto (CLP)</th></tr></thead>
+        <tbody>
+          <tr><td>Fee mensual Interforma</td><td>Gestión digital, RRSS, agente WhatsApp, CRM</td><td class="tn">$700.000</td></tr>
+          <tr><td><span class="tip" data-tip="Chatwoot Cloud: plataforma que centraliza las conversaciones de WhatsApp y permite al equipo gestionar los chats del agente IA y tomar control cuando es necesario.">Chatwoot Cloud</span></td><td>1 usuario agente — bandeja centralizada WhatsApp</td><td class="tn">$17.860</td></tr>
+          <tr><td><span class="tip" data-tip="Twenty CRM Pro: plataforma de gestión comercial que usa el equipo de Grupo Borie. Pasó a Plan Pro con 8 plazas para todo el equipo (Gabriel, Hans, Carlos, Francisco, Juan Alberto, Rosa, Juan José + Interforma).">Twenty CRM Pro</span></td><td>8 plazas × $12 USD = $96 USD/mes (tipo de cambio $940)</td><td class="tn">$90.240</td></tr>
+          <tr class="sub-row"><td colspan="2"><strong>Subtotal neto</strong></td><td class="tn"><strong>$808.100</strong></td></tr>
+          <tr class="sub-row"><td colspan="2">IVA (19%)</td><td class="tn">$153.539</td></tr>
+          <tr class="total-row"><td colspan="2"><strong>Total a pagar</strong></td><td class="tn"><strong>$961.639</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="billing-note">Presupuesto de pauta Meta Ads ($25.209 CLP) se factura por separado según consumo real de la plataforma. Tipo de cambio referencial USD 1 = CLP $940.</p>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="ftr">
+  <div class="ftr-brand">Interforma <span>Digital</span> · interforma.digital</div>
+  <div class="ftr-note">Informe confidencial · Septiembre 2026 · Viña del Mar, Chile</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const blue='#1A6FD4',teal='#0A9688',amber='#D97010',violet='#8B5CF6';
+const gridC='#D8E3F0',lblC='#6B7FA3';
+
+// Gráfico comparativo RRSS
+new Chart(document.getElementById('chartRRSS'),{
+  type:'bar',
+  data:{
+    labels:['Impresiones','Interacciones','Publicaciones','Seguidores'],
+    datasets:[
+      {label:'Jul–Ago 2026',data:[435,57,18,455],backgroundColor:blue+'99',borderColor:blue,borderWidth:1.5,borderRadius:4},
+      {label:'Ago–Sept 2026',data:[5957,160,34,466],backgroundColor:teal+'99',borderColor:teal,borderWidth:1.5,borderRadius:4}
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y.toLocaleString('es-CL')}}},
+    scales:{
+      x:{grid:{display:false},ticks:{color:lblC,font:{size:11}}},
+      y:{grid:{color:gridC},ticks:{color:lblC,font:{size:11},callback:v=>v>=1000?Math.round(v/1000)+'K':v}}
+    }
+  }
+});
+
+// Gráfico tráfico web
+new Chart(document.getElementById('chartWeb'),{
+  type:'bar',
+  data:{
+    labels:['Visualizaciones','Visitas','Visitantes únicos'],
+    datasets:[
+      {label:'Jul–Ago 2026',data:[250,202,190],backgroundColor:blue+'99',borderColor:blue,borderWidth:1.5,borderRadius:4},
+      {label:'Ago–Sept 2026',data:[306,263,255],backgroundColor:teal+'99',borderColor:teal,borderWidth:1.5,borderRadius:4}
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y}}},
+    scales:{
+      x:{grid:{display:false},ticks:{color:lblC,font:{size:11}}},
+      y:{grid:{color:gridC},ticks:{color:lblC,font:{size:11}},min:150}
+    }
+  }
+});
+
+// Gráfico fuentes de tráfico (donut)
+new Chart(document.getElementById('chartFuentes'),{
+  type:'doughnut',
+  data:{
+    labels:['Directo (51%)','Google (35%)','Facebook (7%)','Otros (7%)'],
+    datasets:[{data:[51,35,7,7],backgroundColor:[blue,teal,amber,violet],borderWidth:2,borderColor:'#F2F6FC'}]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,cutout:'65%',
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.label}}}
+  }
+});
+</script>
+<script>
+// Hamburguesa
+const burger = document.getElementById('burgerBtn');
+const drawer = document.getElementById('navDrawer');
+burger.addEventListener('click', () => {
+  drawer.classList.toggle('open');
+  burger.textContent = drawer.classList.contains('open') ? '✕' : '☰';
+});
+// Cerrar drawer al hacer clic en un link
+drawer.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    drawer.classList.remove('open');
+    burger.textContent = '☰';
+  });
+});
+// Active link por scroll (IntersectionObserver)
+const sections = document.querySelectorAll('.sec[id]');
+const navLinks = document.querySelectorAll('.nav-links a, .nav-drawer a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = '#' + entry.target.id;
+      navLinks.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === id);
+      });
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(sec => observer.observe(sec));
+// Scroll suave
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+</script>
+</body>
+</html>
