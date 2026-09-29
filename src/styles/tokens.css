@@ -29,6 +29,23 @@
 :root {
 
   /* ----------------------------------------------------------
+     REDISEÑO E — Escala naranja Interforma Agents (tokens.json §agents)
+     Reglas de uso:
+       --agents-500 solo sobre fondos oscuros
+       --agents-600 botones/fondos con texto blanco
+       --agents-700 texto pequeño sobre blanco
+     ---------------------------------------------------------- */
+
+  --agents-50:      #FFF2EF;
+  --agents-100:     #FFE0D9;
+  --agents-400:     #FF9783;
+  --agents-500:     #FF563C;
+  --agents-600:     #DD2B0F;
+  --agents-accent:  #EC3013;
+  --agents-700:     #AE1800;
+  --agents-800:     #7C1405;
+
+  /* ----------------------------------------------------------
      REDISEÑO D — Aliases cortos (tokens.json §color)
      Usados por las secciones del rediseño D.
      ---------------------------------------------------------- */
