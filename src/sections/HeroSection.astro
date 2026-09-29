@@ -1,0 +1,178 @@
+---
+---
+<section id="inicio" class="hero">
+  <!-- Eyebrow badge -->
+  <div class="hero__badge" aria-hidden="false">
+    <span class="hero__badge-dot"></span>
+    Transformación digital con método · Chile
+  </div>
+
+  <!-- H1 -->
+  <h1 class="hero__heading" data-animate data-delay="100">
+    Transformamos la forma en que su empresa trabaja.
+  </h1>
+
+  <!-- Subheading -->
+  <p class="hero__sub" data-animate data-delay="250">
+    Estrategia, procesos, tecnología, automatización e IA para empresas medianas.
+    Primero entendemos el problema; después elegimos la herramienta.
+  </p>
+
+  <!-- CTAs -->
+  <div class="hero__ctas" data-animate data-delay="400">
+    <a href="https://wa.me/56985408771" class="hero__btn hero__btn--primary">
+      Agendar diagnóstico gratuito
+    </a>
+    <a href="#metodo" class="hero__btn hero__btn--outline">
+      Ver el método →
+    </a>
+  </div>
+
+  <!-- Trust note -->
+  <p class="hero__note">Diagnóstico gratuito · 30 min · Sin compromiso</p>
+</section>
+
+<style>
+  .hero {
+    padding: clamp(64px, 8vw, 112px) clamp(20px, 5.5vw, 80px) 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    text-align: center;
+    background: var(--white);
+  }
+
+  /* ── Badge ───────────────────────────────────────────── */
+  .hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-badge);
+    font-family: var(--font-family-ui);
+    font-size: var(--font-size-label-md);
+    color: var(--gray-700);
+  }
+
+  .hero__badge-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: var(--radius-full);
+    background: var(--primary-500);
+    animation: pulse 2s ease-out infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(38, 85, 232, .45); }
+    70%  { box-shadow: 0 0 0 8px rgba(38, 85, 232, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(38, 85, 232, 0); }
+  }
+
+  /* ── H1 ──────────────────────────────────────────────── */
+  .hero__heading {
+    margin: 0;
+    font-family: var(--font-family-heading);
+    font-size: clamp(2.5rem, 6.5vw, 5.25rem); /* 40px → 84px */
+    line-height: 1.02;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    max-width: 1100px;
+    text-wrap: balance;
+  }
+
+  /* ── Sub ─────────────────────────────────────────────── */
+  .hero__sub {
+    margin: 0;
+    font-size: clamp(var(--font-size-body-lg), 1.8vw, var(--font-size-body-xl));
+    line-height: 1.55;
+    color: var(--gray-700);
+    max-width: 720px;
+  }
+
+  /* ── CTAs ────────────────────────────────────────────── */
+  .hero__ctas {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hero__btn {
+    display: inline-flex;
+    align-items: center;
+    height: 56px;
+    padding: 0 28px;
+    border-radius: var(--radius-cta);
+    font-size: var(--font-size-body-md);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    transition: background 150ms, color 150ms, border-color 150ms;
+  }
+
+  .hero__btn--primary {
+    background: var(--ink);
+    color: var(--white);
+    border: 1px solid transparent;
+  }
+
+  .hero__btn--primary:hover { background: #1a1a18; color: var(--white); }
+
+  .hero__btn--outline {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--color-neutral-300);
+  }
+
+  .hero__btn--outline:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  .hero__btn:focus-visible {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 3px;
+  }
+
+  /* ── Note ────────────────────────────────────────────── */
+  .hero__note {
+    margin: 0;
+    font-family: var(--font-family-ui);
+    font-size: var(--font-size-label-md);
+    color: var(--gray-500);
+    line-height: 1.4;
+  }
+
+  /* ── Animate ─────────────────────────────────────────── */
+  [data-animate] {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity .7s var(--ease-default),
+      transform .7s var(--ease-default);
+  }
+
+  [data-animate].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-animate] { transform: none; }
+    .hero__badge-dot { animation: none; }
+  }
+
+  /* ── Responsive ──────────────────────────────────────── */
+  @media (max-width: 640px) {
+    .hero__ctas { flex-direction: column; align-items: stretch; }
+    .hero__btn  { justify-content: center; }
+  }
+</style>
+
+<script>
+  import { initAnimations } from '@lib/animations/intersectionObserver';
+  initAnimations();
+</script>
