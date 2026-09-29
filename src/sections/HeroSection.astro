@@ -147,7 +147,7 @@
   }
 
   /* ── Animate ─────────────────────────────────────────── */
-  [data-animate] {
+  body.animations-ready [data-animate]:not(.is-visible) {
     opacity: 0;
     transform: translateY(14px);
     transition:
