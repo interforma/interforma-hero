@@ -1,0 +1,174 @@
+---
+import Eyebrow from '@components/base/Eyebrow.astro';
+import SectionHeading from '@components/base/SectionHeading.astro';
+
+const problems = [
+  {
+    num: '01',
+    title: 'Tecnología que nadie usa',
+    body: 'Se instalan sistemas costosos que el equipo evita. La herramienta queda; el proceso no cambia.',
+  },
+  {
+    num: '02',
+    title: 'Procesos sin mapear',
+    body: 'Se digitalizan flujos mal definidos y el software amplifica el caos.',
+  },
+  {
+    num: '03',
+    title: 'Equipos que no adoptan',
+    body: 'Sin acompañamiento, el equipo vuelve al Excel.',
+  },
+  {
+    num: '04',
+    title: 'Sin resultados medibles',
+    body: 'Meses de implementación sin métricas claras.',
+  },
+  {
+    num: '05',
+    title: 'Proveedores sin contexto',
+    body: 'Soluciones genéricas que ignoran la operación real.',
+  },
+  {
+    num: '06',
+    title: 'Sistemas que no se integran',
+    body: 'Cada área trabaja en su silo y la información no fluye.',
+  },
+];
+---
+
+<section id="problemas" class="problems">
+  <!-- Header -->
+  <div class="problems__header">
+    <div class="problems__lead">
+      <Eyebrow>El problema de fondo</Eyebrow>
+      <SectionHeading size="xl">¿Le suena familiar?</SectionHeading>
+    </div>
+    <p class="problems__intro">
+      La mayoría de los proyectos de transformación digital no fracasan por la
+      tecnología, sino por lo que ocurre alrededor de ella.
+    </p>
+  </div>
+
+  <!-- Cards grid -->
+  <ul class="problems__grid" role="list">
+    {problems.map((p, i) => (
+      <li class="problems__card" data-animate data-delay={String(i * 60)}>
+        <span class="problems__num">{p.num}</span>
+        <b class="problems__title">{p.title}</b>
+        <span class="problems__body">{p.body}</span>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .problems {
+    padding: clamp(64px, 8vw, 120px) clamp(20px, 5.5vw, 80px);
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  /* ── Header ──────────────────────────────────────────── */
+  .problems__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .problems__lead {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 700px;
+  }
+
+  .problems__intro {
+    margin: 0;
+    font-size: var(--font-size-body-lg);
+    line-height: 1.6;
+    color: var(--gray-700);
+    max-width: 460px;
+  }
+
+  /* ── Grid ────────────────────────────────────────────── */
+  .problems__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  /* ── Card ────────────────────────────────────────────── */
+  .problems__card {
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-card-lg);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 180px;
+    justify-content: flex-end;
+    transition: transform .25s var(--ease-default), box-shadow .25s, border-color .25s;
+  }
+
+  .problems__card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-100);
+  }
+
+  .problems__num {
+    font-family: var(--font-family-ui);
+    font-size: var(--font-size-label-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--primary-500);
+  }
+
+  .problems__title {
+    font-family: var(--font-family-heading);
+    font-size: var(--font-size-heading-lg); /* 24px */
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+  .problems__body {
+    font-size: var(--font-size-body-sm);
+    line-height: var(--line-height-body-sm);
+    color: var(--gray-700);
+  }
+
+  /* ── Animate ─────────────────────────────────────────── */
+  [data-animate] {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity .7s var(--ease-default), transform .7s var(--ease-default);
+  }
+
+  [data-animate].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-animate]      { transform: none; }
+    .problems__card:hover { transform: none; }
+  }
+
+  /* ── Responsive ──────────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .problems__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 640px) {
+    .problems__grid   { grid-template-columns: 1fr; }
+    .problems__header { flex-direction: column; align-items: flex-start; }
+    .problems__intro  { max-width: none; }
+  }
+</style>
