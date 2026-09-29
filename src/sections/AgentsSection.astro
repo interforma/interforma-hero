@@ -1,78 +1,158 @@
 ---
-import Eyebrow from '@components/base/Eyebrow.astro';
-import SectionHeading from '@components/base/SectionHeading.astro';
+// AgentsSection.astro — Rediseño E — hitos + demo operador
+// Hitos + demo animada del operador (JS puro, IO pause, prefers-reduced-motion)
 ---
 
 <div class="agents-wrap" data-animate>
   <section id="agentes" class="agents" aria-labelledby="agents-heading">
 
-    <!-- Left column -->
-    <div class="agents__copy">
-      <div class="agents__eyebrow-row">
-        <span class="agents__pulse" aria-hidden="true"></span>
-        <Eyebrow variant="dark-accent">Interforma Agents</Eyebrow>
+    <!-- ── Header ─────────────────────────────────────────── -->
+    <div class="agents__header">
+      <div class="agents__copy">
+        <div class="agents__eyebrow" aria-hidden="true">
+          <span class="agents__or-dot"></span>
+          <span>Interforma Agents</span>
+        </div>
+        <h2 id="agents-heading" class="agents__h2">
+          Agentes de IA que atienden como su mejor ejecutivo.
+          <span class="agents__accent">Con una persona al mando.</span>
+        </h2>
       </div>
-
-      <SectionHeading size="xl" variant="inverse" id="agents-heading">
-        Agentes de IA que atienden como su mejor ejecutivo.
-      </SectionHeading>
-
-      <p class="agents__body">
-        Responden consultas frecuentes, recogen los datos clave y derivan a una persona
-        cuando corresponde. Se adaptan a las herramientas que ya usa y cumplen la
-        normativa chilena de protección de datos.
-      </p>
-
-      <a href="https://wa.me/56985408771" class="agents__cta">Conocer los agentes</a>
+      <div class="agents__aside">
+        <p class="agents__body">
+          Responden consultas frecuentes, recogen los datos clave y derivan a una persona
+          cuando corresponde. Nada sensible llega al cliente sin aprobación humana.
+        </p>
+        <a href="https://claude.ai/artifact/EsFG7fYxQeCN3pBo8e4og1"
+           class="agents__cta" target="_blank" rel="noopener noreferrer">
+          Ver Interforma Agents <span class="agents__cta-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
     </div>
 
-    <!-- Right column: animated chat -->
-    <div class="agents__chat" aria-label="Conversación de ejemplo con un agente de IA">
-      <!-- Chat header -->
-      <div class="chat-header">
-        <span class="chat-header__label">Conversación de ejemplo</span>
-        <span class="chat-header__status">
-          <span class="chat-header__dot" aria-hidden="true"></span>
-          Agente en línea
-        </span>
+    <!-- ── Hitos ──────────────────────────────────────────── -->
+    <dl class="hitos">
+      <div class="hito">
+        <dt class="hito__num">30</dt>
+        <dd class="hito__label">Días de piloto</dd>
+      </div>
+      <div class="hito">
+        <dt class="hito__num">1·1·1</dt>
+        <dd class="hito__label">Agente · canal · KPI</dd>
+      </div>
+      <div class="hito">
+        <dt class="hito__num">5 min</dt>
+        <dd class="hito__label">Derivación a una persona</dd>
+      </div>
+      <div class="hito">
+        <dt class="hito__num">100%</dt>
+        <dd class="hito__label">Acciones sensibles aprobadas</dd>
+      </div>
+    </dl>
+
+    <!-- ── Demo ───────────────────────────────────────────── -->
+    <div class="demo" id="agentesDemo">
+
+      <!-- Steps (left) -->
+      <div class="demo__left">
+        <p class="demo__eyebrow" aria-hidden="true">Demo · app del operador</p>
+        <h3 class="demo__title">Un turno, en treinta segundos.</h3>
+
+        <ol class="demo__steps" id="demoStepsList" aria-label="Pasos de la demostración">
+          <li class="demo__step" data-start="0" data-end="10">
+            <button type="button" class="demo__step-btn" data-goto="0"
+                    aria-label="Ir al paso 1: El agente atiende">
+              <span class="demo__snum">01</span>
+              <span class="demo__scontent">
+                <span class="demo__stitle">El agente atiende</span>
+                <span class="demo__sdesc">Responde por WhatsApp y recoge los datos de la cotización.</span>
+              </span>
+              <span class="demo__sbar" aria-hidden="true">
+                <span class="demo__sbar-fill"></span>
+              </span>
+            </button>
+          </li>
+          <li class="demo__step" data-start="10" data-end="16">
+            <button type="button" class="demo__step-btn" data-goto="10"
+                    aria-label="Ir al paso 2: Pide ayuda">
+              <span class="demo__snum">02</span>
+              <span class="demo__scontent">
+                <span class="demo__stitle">Pide ayuda</span>
+                <span class="demo__sdesc">Detecta un descuento fuera de política y deriva con todo el contexto.</span>
+              </span>
+              <span class="demo__sbar" aria-hidden="true">
+                <span class="demo__sbar-fill"></span>
+              </span>
+            </button>
+          </li>
+          <li class="demo__step" data-start="16" data-end="22">
+            <button type="button" class="demo__step-btn" data-goto="16"
+                    aria-label="Ir al paso 3: Usted toma la conversación">
+              <span class="demo__snum">03</span>
+              <span class="demo__scontent">
+                <span class="demo__stitle">Usted toma la conversación</span>
+                <span class="demo__sdesc">El agente queda en pausa; responde sin volver a preguntar.</span>
+              </span>
+              <span class="demo__sbar" aria-hidden="true">
+                <span class="demo__sbar-fill"></span>
+              </span>
+            </button>
+          </li>
+          <li class="demo__step" data-start="22" data-end="29">
+            <button type="button" class="demo__step-btn" data-goto="22"
+                    aria-label="Ir al paso 4: Aprueba la cotización">
+              <span class="demo__snum">04</span>
+              <span class="demo__scontent">
+                <span class="demo__stitle">Aprueba la cotización</span>
+                <span class="demo__sdesc">Nada llega al cliente sin su visto bueno.</span>
+              </span>
+              <span class="demo__sbar" aria-hidden="true">
+                <span class="demo__sbar-fill"></span>
+              </span>
+            </button>
+          </li>
+          <li class="demo__step" data-start="29" data-end="35">
+            <button type="button" class="demo__step-btn" data-goto="29"
+                    aria-label="Ir al paso 5: Mide el piloto">
+              <span class="demo__snum">05</span>
+              <span class="demo__scontent">
+                <span class="demo__stitle">Mide el piloto</span>
+                <span class="demo__sdesc">El KPI acordado, día a día, hasta la decisión del día 30.</span>
+              </span>
+              <span class="demo__sbar" aria-hidden="true">
+                <span class="demo__sbar-fill"></span>
+              </span>
+            </button>
+          </li>
+        </ol>
+
+        <button type="button" class="demo__playpause" id="demoPlayPause" aria-label="Pausar demo">
+          <svg class="demo__icon-pause" width="14" height="14" viewBox="0 0 24 24"
+               fill="currentColor" aria-hidden="true">
+            <rect x="6" y="4" width="4" height="16"/>
+            <rect x="14" y="4" width="4" height="16"/>
+          </svg>
+          <svg class="demo__icon-play" width="14" height="14" viewBox="0 0 24 24"
+               fill="currentColor" aria-hidden="true" style="display:none">
+            <path d="M6 4l14 8-14 8z"/>
+          </svg>
+          <span class="demo__pp-label">Pausar demo</span>
+        </button>
       </div>
 
-      <!-- Bubble 1: user -->
-      <div class="chat-b chat-b1 chat-b--user" role="log" aria-live="polite">
-        Hola, necesito cotizar un servicio para mi empresa.
+      <!-- Phone (right) -->
+      <div class="demo__right">
+        <div class="phone" id="demoPhone" role="img"
+             aria-label="Simulación de la aplicación del operador">
+          <div class="phone__notch" aria-hidden="true"></div>
+          <div class="phone__status" aria-hidden="true">9:41</div>
+          <div class="phone__screen" id="phoneScreen"
+               aria-live="polite" aria-atomic="true"></div>
+          <div class="phone__home-bar" aria-hidden="true"></div>
+        </div>
+        <p class="demo__disclaimer">Demostración con datos de ejemplo.</p>
       </div>
 
-      <!-- Bubble 2: agent (typing → text) -->
-      <div class="chat-b chat-b2 chat-b--agent">
-        <span class="chat-typing" aria-hidden="true">
-          <i></i><i></i><i></i>
-        </span>
-        <span class="chat-txt">
-          ¡Hola! Con gusto. ¿Me cuenta qué servicio necesita y en qué ciudad está su empresa?
-        </span>
-      </div>
-
-      <!-- Bubble 3: user placeholder — bracket content, not published -->
-      <div class="chat-b chat-b3 chat-b--user" aria-hidden="true">
-        <!-- bracket content omitted per brief -->
-        <span class="chat-b3__placeholder">…</span>
-      </div>
-
-      <!-- Bubble 4: agent (typing → text) -->
-      <div class="chat-b chat-b4 chat-b--agent">
-        <span class="chat-typing" aria-hidden="true">
-          <i></i><i></i><i></i>
-        </span>
-        <span class="chat-txt">
-          Perfecto. Registré su solicitud y un ejecutivo le enviará la cotización hoy.
-        </span>
-      </div>
-
-      <!-- Chips -->
-      <div class="chat-chips">
-        <span class="chat-chip">✓ Lead creado en CRM</span>
-        <span class="chat-chip">✓ Ejecutivo notificado</span>
-      </div>
     </div>
 
   </section>
@@ -88,44 +168,65 @@ import SectionHeading from '@components/base/SectionHeading.astro';
     background: var(--ink);
     color: var(--white);
     border-radius: 24px;
-    padding: clamp(40px, 5vw, 72px);
+    padding: clamp(24px, 4vw, 72px);
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  /* ── Header ──────────────────────────────────────────── */
+  .agents__header {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     column-gap: 24px;
-    align-items: center;
-    row-gap: 48px;
+    align-items: end;
   }
 
-  /* ── Copy ────────────────────────────────────────────── */
-  .agents__copy {
-    grid-column: 1 / span 6;
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
-  }
+  .agents__copy  { grid-column: 1 / span 7; display: flex; flex-direction: column; gap: 22px; }
+  .agents__aside { grid-column: 9 / span 4; display: flex; flex-direction: column; gap: 20px; }
 
-  .agents__eyebrow-row {
+  /* Eyebrow */
+  .agents__eyebrow {
     display: flex;
     align-items: center;
     gap: 10px;
+    font-family: var(--font-family-ui);
+    font-size: var(--font-size-label-lg);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--agents-500);
   }
 
-  .agents__pulse {
+  .agents__or-dot {
     display: block;
     width: 8px;
     height: 8px;
-    border-radius: var(--radius-full);
-    background: var(--dark-accent);
-    animation: pulse 2s ease-out infinite;
+    background: var(--agents-500);
     flex-shrink: 0;
+    animation: orPulse 2s ease-out infinite;
   }
 
-  @keyframes pulse {
-    0%   { box-shadow: 0 0 0 0 rgba(123,163,255,.45); }
-    70%  { box-shadow: 0 0 0 8px rgba(123,163,255,0); }
-    100% { box-shadow: 0 0 0 0 rgba(123,163,255,0); }
+  @keyframes orPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(255, 86, 60, 0.5); }
+    70%  { box-shadow: 0 0 0 8px rgba(255, 86, 60, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 86, 60, 0); }
   }
 
+  /* Headline */
+  .agents__h2 {
+    margin: 0;
+    font-family: var(--font-family-heading);
+    font-size: clamp(2rem, 3.5vw, 3.25rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+    color: var(--white);
+  }
+
+  .agents__accent { color: var(--agents-500); }
+
+  /* Aside */
   .agents__body {
     margin: 0;
     font-size: var(--font-size-body-lg);
@@ -137,6 +238,7 @@ import SectionHeading from '@components/base/SectionHeading.astro';
     align-self: flex-start;
     display: inline-flex;
     align-items: center;
+    gap: 10px;
     height: 52px;
     padding: 0 26px;
     background: var(--white);
@@ -148,7 +250,7 @@ import SectionHeading from '@components/base/SectionHeading.astro';
     transition: background 150ms;
   }
 
-  .agents__cta:hover { background: var(--paper); color: var(--ink); }
+  .agents__cta:hover { background: var(--paper); }
 
   .agents__cta:focus-visible {
     outline: 2px solid var(--white);
@@ -156,155 +258,316 @@ import SectionHeading from '@components/base/SectionHeading.astro';
     border-radius: var(--radius-cta);
   }
 
-  /* ── Chat widget ─────────────────────────────────────── */
-  .agents__chat {
-    grid-column: 8 / span 5;
-    background: #252523;
-    border: 1px solid #3D3D3B;
-    border-radius: var(--radius-card-lg);
+  .agents__cta-arrow { color: var(--agents-600); }
+
+  /* ── Hitos ───────────────────────────────────────────── */
+  .hitos {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: 1px solid var(--gray-700);
+    border-bottom: 1px solid var(--gray-700);
+    margin: 0;
+    padding: 0;
+  }
+
+  .hito {
     padding: 24px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    min-height: 380px;
+    gap: 8px;
   }
 
-  /* ── Chat header ─────────────────────────────────────── */
-  .chat-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .hito:not(:last-child) { border-right: 1px solid var(--gray-700); }
+  .hito:first-child      { padding-left: 0; }
+  .hito:last-child       { padding-right: 0; }
+
+  .hito__num {
+    font-family: var(--font-family-heading);
+    font-size: clamp(2rem, 3.5vw, 2.75rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--agents-500);
+    margin: 0;
+  }
+
+  .hito__label {
     font-family: var(--font-family-ui);
     font-size: var(--font-size-label-md);
-    color: var(--gray-400);
-    padding-bottom: 8px;
-    border-bottom: 1px solid #3D3D3B;
-  }
-
-  .chat-header__status {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     color: #C8C8C3;
+    margin: 0;
   }
 
-  .chat-header__dot {
-    display: block;
-    width: 7px;
-    height: 7px;
-    border-radius: var(--radius-full);
-    background: var(--color-success-500);
-    animation: pulse 2s ease-out infinite;
+  /* ── Demo layout ─────────────────────────────────────── */
+  .demo {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 24px;
+    align-items: center;
   }
 
-  /* ── Bubbles ─────────────────────────────────────────── */
-  .chat-b {
-    max-width: 85%;
-    border-radius: 14px;
-    padding: 12px 14px;
-    font-size: var(--font-size-body-sm);
-    line-height: 1.45;
+  .demo__left  { grid-column: 1 / span 6; display: flex; flex-direction: column; gap: 22px; }
+  .demo__right { grid-column: 8 / span 5; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+
+  /* ── Demo left ───────────────────────────────────────── */
+  .demo__eyebrow {
+    margin: 0;
+    font-family: var(--font-family-ui);
+    font-size: var(--font-size-label-lg);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--agents-500);
+  }
+
+  .demo__title {
+    margin: 0;
+    font-family: var(--font-family-heading);
+    font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--white);
+  }
+
+  /* Steps */
+  .demo__steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--gray-700);
+  }
+
+  .demo__step { border-bottom: 1px solid var(--gray-700); }
+
+  .demo__step-btn {
+    all: unset;
+    box-sizing: border-box;
+    width: 100%;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 12px;
+    padding: 16px 0;
     position: relative;
   }
 
-  .chat-b--user {
-    align-self: flex-end;
-    background: var(--primary-500);
-    color: var(--white);
-    border-radius: 14px 14px 4px 14px;
-    max-width: 80%;
+  .demo__step-btn:focus-visible {
+    outline: 2px solid var(--agents-500);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
   }
 
-  .chat-b--agent {
-    align-self: flex-start;
-    background: #3D3D3B;
-    color: var(--white);
-    border-radius: 14px 14px 14px 4px;
+  .demo__snum {
+    font-family: var(--font-family-ui);
+    font-weight: 700;
+    font-size: var(--font-size-body-sm);
+    line-height: 24px;
+    color: var(--gray-400);
+    transition: color 200ms;
   }
 
-  /* ── Typing indicator ────────────────────────────────── */
-  .chat-typing {
+  .demo__step.is-active .demo__snum { color: var(--agents-500); }
+  .demo__step.is-done   .demo__snum { color: var(--gray-400); }
+
+  .demo__scontent { display: flex; flex-direction: column; gap: 6px; }
+
+  .demo__stitle {
+    font-family: var(--font-family-heading);
+    font-weight: 700;
+    font-size: 19px;
+    line-height: 24px;
+    letter-spacing: -0.01em;
+    color: var(--gray-400);
+    transition: color 200ms;
+  }
+
+  .demo__step.is-active .demo__stitle,
+  .demo__step.is-done   .demo__stitle { color: var(--white); }
+
+  .demo__sdesc {
+    display: none;
+    font-size: var(--font-size-body-md);
+    line-height: 1.5;
+    color: #C8C8C3;
+  }
+
+  .demo__step.is-active .demo__sdesc { display: block; }
+
+  /* Progress bar */
+  .demo__sbar {
     position: absolute;
-    left: 14px;
-    top: 50%;
-    margin-top: -4px;
-    display: flex;
-    gap: 4px;
+    left: 0;
+    bottom: -1px;
+    height: 2px;
+    width: 100%;
+    background: transparent;
   }
 
-  .chat-typing i {
+  .demo__sbar-fill {
     display: block;
-    width: 7px;
-    height: 7px;
-    border-radius: var(--radius-full);
-    background: #C8C8C3;
-    animation: dotBounce 1s infinite;
+    height: 100%;
+    width: 0;
+    background: var(--agents-500);
+    transition: none;
   }
 
-  .chat-typing i:nth-child(2) { animation-delay: .15s; }
-  .chat-typing i:nth-child(3) { animation-delay: .30s; }
+  /* Play/pause button */
+  .demo__playpause {
+    align-self: flex-start;
+    display: inline-flex;
+    gap: 10px;
+    align-items: center;
+    height: 44px;
+    padding: 0 18px;
+    background: transparent;
+    color: var(--white);
+    border: 1px solid var(--gray-700);
+    border-radius: 22px;
+    font-family: var(--font-family-ui);
+    font-size: var(--font-size-body-sm);
+    font-weight: var(--font-weight-semibold);
+    cursor: pointer;
+    transition: border-color 150ms, background 150ms;
+  }
 
-  @keyframes dotBounce {
-    0%, 60%, 100% { transform: translateY(0);    opacity: .5; }
+  .demo__playpause:hover {
+    border-color: var(--gray-500);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .demo__playpause:focus-visible {
+    outline: 2px solid var(--agents-500);
+    outline-offset: 3px;
+    border-radius: 22px;
+  }
+
+  .demo__icon-pause,
+  .demo__icon-play { color: var(--agents-500); }
+
+  /* ── Phone shell ─────────────────────────────────────── */
+  .phone {
+    width: 340px;
+    height: 720px;
+    border-radius: 48px;
+    background: var(--paper);
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 10px var(--gray-800),
+      0 0 0 11px var(--gray-700),
+      0 40px 80px rgba(0, 0, 0, 0.5);
+    color: var(--ink);
+    font-family: var(--font-family-heading);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+  }
+
+  .phone__notch {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    margin-left: -56px;
+    width: 112px;
+    height: 32px;
+    border-radius: 20px;
+    background: #000;
+    z-index: 50;
+  }
+
+  .phone__status {
+    position: absolute;
+    top: 18px;
+    left: 32px;
+    font-family: var(--font-family-ui);
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 40;
+    pointer-events: none;
+  }
+
+  .phone__screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .phone__home-bar {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    margin-left: -60px;
+    width: 120px;
+    height: 5px;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.25);
+    z-index: 60;
+  }
+
+  /* ── Phone animation keyframes ───────────────────────── */
+  @keyframes msgIn {
+    from { opacity: 0; transform: translateY(10px) scale(0.98); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @keyframes screenIn {
+    from { opacity: 0; transform: translateX(18px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @keyframes bannerIn {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @keyframes caretBlink { 50% { opacity: 0; } }
+
+  @keyframes tapRing {
+    from { transform: scale(0.6); opacity: 1; }
+    to   { transform: scale(1.6); opacity: 0; }
+  }
+
+  @keyframes typingDot {
+    0%, 60%, 100% { transform: translateY(0);    opacity: 0.5; }
     30%            { transform: translateY(-4px); opacity: 1; }
   }
 
-  /* ── Chat sequence animations (14 s loop) ────────────── */
-  .chat-b1  { animation: chatB1  14s infinite; }
-  .chat-b2  { animation: chatB2  14s infinite; }
-  .chat-b3  { animation: chatB3  14s infinite; }
-  .chat-b4  { animation: chatB4  14s infinite; }
-  .chat-chips { animation: chatChips 14s infinite; }
+  .phone-msg  { animation: msgIn    0.35s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .phone-screen { animation: screenIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .phone-banner { animation: bannerIn 0.4s  cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .caret        { animation: caretBlink 1s steps(1) infinite; }
+  .tap          { animation: tapRing 0.7s ease-out infinite; }
 
-  @keyframes chatB1 {
-    0%,3%{opacity:0;transform:translateY(8px)} 6%,90%{opacity:1;transform:none} 96%,100%{opacity:0}
+  .typing-inline { display: inline-flex; gap: 3px; }
+  .typing-inline i {
+    display: block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--gray-500);
+    animation: typingDot 1s infinite;
   }
-  @keyframes chatB2 {
-    0%,12%{opacity:0;transform:translateY(8px)} 15%,90%{opacity:1;transform:none} 96%,100%{opacity:0}
-  }
-  @keyframes chatB3 {
-    0%,38%{opacity:0;transform:translateY(8px)} 41%,90%{opacity:1;transform:none} 96%,100%{opacity:0}
-  }
-  @keyframes chatB4 {
-    0%,50%{opacity:0;transform:translateY(8px)} 53%,90%{opacity:1;transform:none} 96%,100%{opacity:0}
-  }
-  @keyframes chatChips {
-    0%,72%{opacity:0;transform:translateY(6px)} 76%,90%{opacity:1;transform:none} 96%,100%{opacity:0}
-  }
+  .typing-inline i:nth-child(2) { animation-delay: 0.15s; }
+  .typing-inline i:nth-child(3) { animation-delay: 0.3s; }
 
-  /* Typing → text transitions */
-  .chat-b2 .chat-typing { animation: typing2 14s infinite; }
-  .chat-b2 .chat-txt    { animation: text2   14s infinite; }
-  .chat-b4 .chat-typing { animation: typing4 14s infinite; }
-  .chat-b4 .chat-txt    { animation: text4   14s infinite; }
-
-  @keyframes typing2 { 0%,15%{opacity:1} 24%,100%{opacity:0} }
-  @keyframes text2   { 0%,23%{opacity:0} 27%,100%{opacity:1} }
-  @keyframes typing4 { 0%,53%{opacity:1} 64%,100%{opacity:0} }
-  @keyframes text4   { 0%,63%{opacity:0} 67%,100%{opacity:1} }
-
-  /* ── Chips ───────────────────────────────────────────── */
-  .chat-chips {
-    display: flex;
-    gap: 8px;
-    padding-top: 4px;
-    flex-wrap: wrap;
-  }
-
-  .chat-chip {
+  .demo__disclaimer {
     font-family: var(--font-family-ui);
-    font-size: 11px;
-    padding: 4px 10px;
-    border-radius: var(--radius-badge);
-    background: var(--primary-900);
-    color: var(--primary-100);
+    font-size: var(--font-size-label-md);
+    color: var(--gray-400);
+    margin: 0;
+    text-align: center;
   }
 
   /* ── Section entrance ────────────────────────────────── */
   body.animations-ready [data-animate]:not(.is-visible) {
     opacity: 0;
     transform: translateY(14px);
-    transition: opacity .7s var(--ease-default), transform .7s var(--ease-default);
+    transition: opacity 0.7s var(--ease-default), transform 0.7s var(--ease-default);
   }
 
   [data-animate].is-visible {
@@ -312,32 +575,269 @@ import SectionHeading from '@components/base/SectionHeading.astro';
     transform: none;
   }
 
+  /* ── prefers-reduced-motion ──────────────────────────── */
   @media (prefers-reduced-motion: reduce) {
     [data-animate] { transform: none; }
-    .agents__pulse,
-    .chat-header__dot { animation: none; }
-    .chat-b1, .chat-b2, .chat-b3, .chat-b4, .chat-chips,
-    .chat-b2 .chat-typing, .chat-b2 .chat-txt,
-    .chat-b4 .chat-typing, .chat-b4 .chat-txt {
-      animation: none;
-      opacity: 1;
-      transform: none;
-    }
-    .chat-typing { display: none; }
+    .agents__or-dot { animation: none; }
+    .phone-msg, .phone-screen, .phone-banner,
+    .caret, .tap { animation: none; }
+    .typing-inline i { animation: none; }
   }
 
-  /* ── Responsive ──────────────────────────────────────── */
+  /* ── Tablet ──────────────────────────────────────────── */
   @media (max-width: 1024px) {
-    .agents {
+    .agents__header {
       grid-template-columns: 1fr;
-      row-gap: 40px;
     }
-
     .agents__copy  { grid-column: 1; }
-    .agents__chat  { grid-column: 1; }
+    .agents__aside { grid-column: 1; }
+
+    .hitos { grid-template-columns: repeat(2, 1fr); }
+    .hito:nth-child(2) { border-right: none; }
+    .hito:nth-child(3) { border-right: 1px solid var(--gray-700); }
+    .hito:nth-child(3),
+    .hito:nth-child(4) { border-top: 1px solid var(--gray-700); padding-top: 24px; }
+    .hito:first-child  { padding-left: 0; }
+    .hito:last-child   { padding-right: 0; }
+
+    .demo { grid-template-columns: 1fr; }
+    .demo__left  { grid-column: 1; }
+    .demo__right { grid-column: 1; }
   }
 
-  @media (max-width: 640px) {
+  /* ── Mobile ──────────────────────────────────────────── */
+  @media (max-width: 639px) {
     .agents-wrap { margin: 0 var(--spacing-5) 64px; }
+    .agents { gap: 36px; }
+
+    .hitos { grid-template-columns: repeat(2, 1fr); }
+    .hito:nth-child(1) { padding-left: 0; }
+    .hito:nth-child(2) { border-right: none; padding-right: 0; }
+    .hito:nth-child(3) { padding-left: 0; border-right: 1px solid var(--gray-700); }
+    .hito:nth-child(4) { padding-right: 0; border-right: none; }
+
+    .phone {
+      /* scale to fit narrow screens */
+      zoom: 0.82;
+    }
   }
 </style>
+
+<script>
+  (() => {
+    const LEN  = 35;
+    const TICK = 750;
+    const REPLY = 'Hola María José, soy Carla. Puedo ofrecerte 10% + implementación sin costo. ¿Te preparo la cotización?';
+
+    const STEPS = [
+      { start: 0,  end: 10 },
+      { start: 10, end: 16 },
+      { start: 16, end: 22 },
+      { start: 22, end: 29 },
+      { start: 29, end: 35 },
+    ];
+
+    const MSGS = [
+      { t: 1,  from: 'cliente',  text: 'Hola, necesito cotizar el plan mensual para 3 sucursales.' },
+      { t: 3,  from: 'agente',   text: '¡Claro! ¿Cuántos usuarios en total y por cuánto tiempo?' },
+      { t: 5,  from: 'cliente',  text: '40 usuarios, 12 meses. ¿Me pueden dar 20% de descuento?' },
+      { t: 7,  from: 'agente',   text: 'Déjame consultarlo con el equipo. Te respondo en unos minutos.' },
+      { t: 8,  from: 'sistema',  text: 'Derivada a una persona · descuento fuera de política' },
+      { t: 16, from: 'sistema',  text: 'Carla tomó la conversación · agente en pausa' },
+      { t: 20, from: 'operador', text: REPLY },
+    ];
+
+    // Read CSS-variable colors once (avoids literal hex values in generated HTML)
+    const cs = getComputedStyle(document.documentElement);
+    const cv = (name, fb) => cs.getPropertyValue(name).trim() || fb;
+    const C = {
+      ink:  cv('--ink',   '#111110'),
+      wht:  cv('--white', '#FFFFFF'),
+      ppr:  cv('--paper', '#F6F6F5'),
+      g200: cv('--gray-200', '#E3E3E0'),
+      g300: cv('--color-neutral-300', '#D1D1CD'),
+      g400: cv('--gray-400', '#9C9C97'),
+      g500: cv('--gray-500', '#6E6E68'),
+      g700: cv('--gray-700', '#3D3D3B'),
+      a100: cv('--agents-100', '#FFE0D9'),
+      a400: cv('--agents-400', '#FF9783'),
+      a500: cv('--agents-500', '#FF563C'),
+      a600: cv('--agents-600', '#DD2B0F'),
+      a700: cv('--agents-700', '#AE1800'),
+      a800: cv('--agents-800', '#7C1405'),
+    };
+
+    const MS = {
+      cliente:  { align: 'flex-start', bg: C.g200, fg: C.ink,  bd: 'none',                   who: '',          radius: '12px 12px 12px 4px' },
+      agente:   { align: 'flex-end',   bg: C.ink,  fg: C.wht,  bd: 'none',                   who: 'Agente IA', radius: '12px 12px 4px 12px' },
+      operador: { align: 'flex-end',   bg: C.a700, fg: C.wht,  bd: 'none',                   who: 'Carla',     radius: '12px 12px 4px 12px' },
+      sistema:  { align: 'center',     bg: 'transparent', fg: C.g500, bd: `1px solid ${C.g300}`, who: '',     radius: '8px' },
+    };
+
+    // DOM
+    const stepItems  = Array.from(document.querySelectorAll('#demoStepsList .demo__step'));
+    const stepFills  = stepItems.map(li => li.querySelector('.demo__sbar-fill'));
+    const phoneEl    = document.getElementById('phoneScreen');
+    const ppBtn      = document.getElementById('demoPlayPause');
+    const ppLabel    = ppBtn?.querySelector('.demo__pp-label');
+    const ppPause    = ppBtn?.querySelector('.demo__icon-pause');
+    const ppPlay     = ppBtn?.querySelector('.demo__icon-play');
+    const sectionEl  = document.getElementById('agentesDemo');
+
+    let tick = 0, playing = true, iv = null;
+
+    // ── Reduced motion: static aprob at t=25, no timer ──
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ── Helpers ──────────────────────────────────────────
+    function buildMsg(m, animate) {
+      const s = MS[m.from];
+      const cls = animate ? 'phone-msg' : '';
+      const who = s.who ? `<span style="font-family:var(--font-family-ui);font-size:9.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;opacity:0.8;">${s.who}</span>` : '';
+      const fs   = m.from === 'sistema' ? '11.5px' : '13px';
+      const maxw = m.from === 'sistema' ? '100%' : '84%';
+      return `<div class="${cls}" style="align-self:${s.align};max-width:${maxw};background:${s.bg};color:${s.fg};border:${s.bd};border-radius:${s.radius};padding:9px 11px;font-size:${fs};line-height:1.4;display:flex;flex-direction:column;gap:3px;">${who}<span>${m.text}</span></div>`;
+    }
+
+    function buildChatScreen(t) {
+      const opPhase = t >= 16;
+      const tag = !opPhase
+        ? (t >= 8 ? { label: 'Espera persona', bg: C.a600, fg: C.wht }
+                  : { label: 'Agente IA',       bg: C.g200, fg: C.g700 })
+        : { label: 'Atiende usted', bg: C.a100, fg: C.a800 };
+
+      const msgsHtml = MSGS.filter(m => t >= m.t)
+        .map(m => buildMsg(m, m.t === t)).join('');
+
+      const typingHtml = (t === 2 || t === 6)
+        ? `<div style="align-self:flex-end;display:flex;align-items:center;gap:8px;background:${C.g200};color:${C.g700};border-radius:12px;padding:9px 11px;font-size:12.5px;"><span class="typing-inline"><i></i><i></i><i></i></span>Agente IA escribiendo</div>`
+        : '';
+
+      const bannerHtml = (t === 10 || t === 11)
+        ? `<div class="phone-banner" style="position:absolute;top:50px;left:10px;right:10px;z-index:30;background:${C.ink};color:${C.wht};border-radius:14px;padding:13px 15px;box-shadow:0 12px 32px rgba(0,0,0,0.3);display:flex;flex-direction:column;gap:4px;"><span style="font-family:var(--font-family-ui);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:${C.a400};">Interforma Agents · ahora</span><span style="font-family:var(--font-family-heading);font-weight:800;font-size:14px;">María José espera a una persona</span><span style="font-size:12.5px;line-height:1.4;color:${C.g200};">Pide 20% de descuento. Política: máximo 10%.</span></div>`
+        : '';
+
+      const draft = (t >= 17 && t < 20) ? REPLY.slice(0, Math.round(REPLY.length * (t - 16) / 3.4)) : '';
+      const agentStatus = t >= 8 ? 'Agente en pausa · esperando a una persona' : 'El agente está atendiendo';
+
+      const bottomHtml = opPhase
+        ? `<div style="display:flex;gap:8px;"><div style="flex:1;border:1px solid ${C.g300};border-radius:10px;background:${C.wht};padding:9px 11px;font-size:13px;line-height:1.35;min-height:18px;">${draft}<span class="caret" style="display:inline-block;width:2px;height:15px;background:${C.a600};vertical-align:-3px;margin-left:1px;"></span></div><div style="width:42px;border-radius:10px;background:${C.a600};color:${C.wht};display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>`
+        : `<div style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:${C.g700};"><span style="width:8px;height:8px;background:${C.a600};display:block;flex-shrink:0;"></span>${agentStatus}</div>`;
+
+      return `<div style="padding:56px 16px 12px;border-bottom:1px solid ${C.g300};display:flex;align-items:center;gap:10px;"><div style="flex:1;display:flex;flex-direction:column;gap:2px;"><span style="font-family:var(--font-family-heading);font-weight:800;font-size:16px;">María José Pérez</span><span style="font-size:12px;color:${C.g500};">WhatsApp · Cotización</span></div><span style="font-family:var(--font-family-ui);font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:5px 8px;border-radius:4px;white-space:nowrap;background:${tag.bg};color:${tag.fg};">${tag.label}</span></div><div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;padding:14px;overflow:hidden;">${msgsHtml}${typingHtml}</div><div style="border-top:1px solid ${C.g300};padding:12px 14px 30px;">${bottomHtml}</div>${bannerHtml}`;
+    }
+
+    function buildHandoffScreen(t) {
+      const tapHtml = (t === 14 || t === 15)
+        ? `<span class="tap" style="position:absolute;left:50%;top:50%;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;border:2px solid ${C.wht};background:rgba(255,255,255,0.3);"></span>` : '';
+      const takeBg = t === 15 ? C.a700 : C.a600;
+      return `<div class="phone-screen" style="display:flex;flex-direction:column;flex:1;"><div style="background:${C.a600};color:${C.wht};padding:58px 18px 16px;display:flex;flex-direction:column;gap:8px;"><span style="font-family:var(--font-family-ui);font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;">Espera a una persona · 6 min</span><span style="font-family:var(--font-family-heading);font-size:26px;font-weight:800;line-height:1.05;letter-spacing:-0.02em;">María José Pérez</span></div><div style="flex:1;padding:16px 18px;display:flex;flex-direction:column;gap:16px;"><div style="display:flex;flex-direction:column;gap:5px;"><span style="font-family:var(--font-family-ui);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:${C.a700};">Por qué pidió ayuda</span><span style="font-size:15px;line-height:1.45;font-weight:600;">Pide 20% de descuento; la política permite máximo 10%.</span></div><div style="display:flex;flex-direction:column;"><span style="font-family:var(--font-family-ui);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:${C.g500};padding-bottom:6px;">Lo que aprendió el agente</span><div style="border-top:1px solid ${C.ink};font-size:13px;"><div style="display:grid;grid-template-columns:88px 1fr;gap:8px;padding:9px 0;border-bottom:1px solid ${C.g200};"><span style="color:${C.g500};">Intención</span><span style="font-weight:600;">Cotización · plan mensual</span></div><div style="display:grid;grid-template-columns:88px 1fr;gap:8px;padding:9px 0;border-bottom:1px solid ${C.g200};"><span style="color:${C.g500};">Datos</span><span style="font-weight:600;">3 sucursales · 40 usuarios · 12 meses</span></div><div style="display:grid;grid-template-columns:88px 1fr;gap:8px;padding:9px 0;border-bottom:1px solid ${C.g200};"><span style="color:${C.g500};">CRM</span><span style="font-weight:600;">Lead nuevo, sin historial</span></div><div style="display:grid;grid-template-columns:88px 1fr;gap:8px;padding:9px 0;border-bottom:1px solid ${C.g200};"><span style="color:${C.g500};">Sugerencia</span><span style="font-weight:600;">10% + implementación sin costo</span></div><div style="display:grid;grid-template-columns:88px 1fr;gap:8px;padding:9px 0;border-bottom:1px solid ${C.g200};"><span style="color:${C.g500};">Confianza</span><span style="font-weight:600;">54%</span></div></div></div></div><div style="padding:12px 14px 30px;border-top:1px solid ${C.g300};"><div style="position:relative;display:flex;justify-content:space-between;align-items:center;background:${takeBg};color:${C.wht};border-radius:12px;padding:15px;font-weight:700;font-size:15px;"><span>Tomar conversación</span><span>→</span>${tapHtml}</div></div></div>`;
+    }
+
+    function buildAprobScreen(t) {
+      const tapHtml = (t === 25 || t === 26)
+        ? `<span class="tap" style="position:absolute;left:50%;top:50%;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;border:2px solid ${C.wht};background:rgba(255,255,255,0.3);"></span>` : '';
+      const approveBg = t === 26 ? C.a700 : C.a600;
+      const aprobCount = t >= 27 ? '2' : '3';
+      const bottomHtml = t < 27
+        ? `<div style="display:grid;grid-template-columns:1fr 1.4fr;gap:8px;"><div style="border:1px solid ${C.ink};border-radius:12px;padding:14px;font-weight:700;font-size:14px;text-align:center;">Rechazar</div><div style="position:relative;display:flex;justify-content:space-between;align-items:center;background:${approveBg};color:${C.wht};border-radius:12px;padding:14px;font-weight:700;font-size:14px;"><span>Aprobar y enviar</span><span>✓</span>${tapHtml}</div></div>`
+        : `<div class="phone-msg" style="display:flex;align-items:center;gap:10px;background:${C.ink};color:${C.wht};border-radius:12px;padding:15px;font-weight:700;font-size:14px;"><span style="color:${C.a500};">✓</span><span>Aprobada · enviada a María José</span></div>`;
+      return `<div class="phone-screen" style="display:flex;flex-direction:column;flex:1;"><div style="padding:58px 18px 12px;border-bottom:1px solid ${C.g300};display:flex;justify-content:space-between;align-items:baseline;"><span style="font-family:var(--font-family-heading);font-size:26px;font-weight:800;letter-spacing:-0.02em;">Aprobaciones</span><span style="font-family:var(--font-family-heading);font-size:20px;font-weight:800;color:${C.a600};">${aprobCount}</span></div><div style="flex:1;padding:16px 18px;display:flex;flex-direction:column;gap:12px;overflow:hidden;"><span style="font-family:var(--font-family-ui);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:${C.a700};">Cotización · propuesta por el agente</span><span style="font-family:var(--font-family-heading);font-size:20px;font-weight:800;line-height:1.15;letter-spacing:-0.01em;">Plan mensual · 40 usuarios · María José Pérez</span><div style="border-top:1px solid ${C.ink};font-size:13px;"><div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid ${C.g200};"><span style="color:${C.g500};">Precio lista</span><span style="font-weight:600;">US$ 2.400 / mes</span></div><div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid ${C.g200};"><span style="color:${C.g500};">Descuento</span><span style="font-weight:600;">10% · dentro de política</span></div><div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid ${C.g200};"><span style="color:${C.g500};">Implementación</span><span style="font-weight:600;">Sin costo</span></div><div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid ${C.ink};font-size:15px;font-weight:800;"><span>Total mensual</span><span>US$ 2.160</span></div></div></div><div style="padding:12px 14px 30px;border-top:1px solid ${C.g300};">${bottomHtml}</div></div>`;
+    }
+
+    function buildHomeScreen(t) {
+      const homeT = t - 29;
+      const kpiVal = homeT >= 2 ? '42 s' : '18 min';
+      const barsH = [100, 92, 70, 48, 30, 18, 12, 9, 7, 6, 5, 4];
+      const barsHtml = barsH.map((h, i) => {
+        const ht = homeT >= 1 ? `${h}%` : '2%';
+        const bg = i < 2 ? '#BAB6B6' : C.a600;
+        return `<span style="flex:1;height:${ht};background:${bg};border-radius:2px 2px 0 0;transition:height .5s;"></span>`;
+      }).join('');
+      return `<div class="phone-screen" style="padding:58px 18px 0;display:flex;flex-direction:column;flex:1;"><div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid ${C.g300};padding-bottom:10px;"><span style="font-size:13px;color:${C.g500};">Hola, Carla</span><span style="font-family:var(--font-family-ui);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:${C.a700};">Piloto · Día 12 de 30</span></div><div style="font-family:var(--font-family-heading);font-size:26px;font-weight:800;line-height:1.05;letter-spacing:-0.02em;margin:14px 0 16px;">Cotizaciones</div><div style="border-top:1px solid ${C.ink};border-bottom:1px solid ${C.ink};padding:14px 0;display:flex;flex-direction:column;gap:8px;"><span style="font-family:var(--font-family-ui);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:${C.g500};">KPI del piloto · Tiempo de respuesta</span><div style="display:flex;align-items:baseline;gap:10px;"><span style="font-family:var(--font-family-heading);font-size:52px;font-weight:800;line-height:1;letter-spacing:-0.04em;">${kpiVal}</span><span style="font-family:var(--font-family-heading);font-size:18px;font-weight:800;color:${C.a600};">−96%</span></div><div style="display:flex;align-items:flex-end;gap:4px;height:56px;margin-top:4px;">${barsHtml}</div><div style="display:flex;justify-content:space-between;font-size:12px;color:${C.g500};"><span>Línea base 18 min</span><span>Meta −50%</span></div></div><div style="font-family:var(--font-family-ui);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:${C.g500};margin:16px 0 6px;">Requiere tu atención</div><div style="border-top:1px solid ${C.ink};"><div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid ${C.g200};"><span style="font-family:var(--font-family-heading);font-size:22px;font-weight:800;min-width:28px;color:${C.a600};">1</span><span style="font-size:13px;font-weight:600;">Conversación espera a una persona</span></div><div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid ${C.g200};"><span style="font-family:var(--font-family-heading);font-size:22px;font-weight:800;min-width:28px;color:${C.a600};">2</span><span style="font-size:13px;font-weight:600;">Acciones por aprobar</span></div></div></div>`;
+    }
+
+    // ── Render ────────────────────────────────────────────
+    function render(t) {
+      // Steps
+      stepItems.forEach((li, i) => {
+        const s = STEPS[i];
+        const active = t >= s.start && t < s.end;
+        const done   = t >= s.end;
+        li.classList.toggle('is-active', active);
+        li.classList.toggle('is-done',   done);
+        const pct = active
+          ? `${((t - s.start + 1) / (s.end - s.start)) * 100}%`
+          : (done ? '100%' : '0%');
+        if (stepFills[i]) {
+          stepFills[i].style.transition = active ? 'width 0.75s linear' : 'none';
+          stepFills[i].style.width = pct;
+        }
+      });
+
+      // Phone
+      if (!phoneEl) return;
+      const view = t < 12 ? 'chat' : t < 16 ? 'handoff' : t < 22 ? 'chat' : t < 29 ? 'aprob' : 'home';
+      if      (view === 'chat')    phoneEl.innerHTML = buildChatScreen(t);
+      else if (view === 'handoff') phoneEl.innerHTML = buildHandoffScreen(t);
+      else if (view === 'aprob')   phoneEl.innerHTML = buildAprobScreen(t);
+      else                         phoneEl.innerHTML = buildHomeScreen(t);
+    }
+
+    // ── prefers-reduced-motion: static aprob at t=25 ──────
+    if (reduced) {
+      render(25);
+      if (ppBtn) ppBtn.style.display = 'none';
+      return;
+    }
+
+    // ── Play/pause ────────────────────────────────────────
+    function syncPPBtn() {
+      if (ppLabel)  ppLabel.textContent = playing ? 'Pausar demo' : 'Reproducir demo';
+      if (ppBtn)    ppBtn.setAttribute('aria-label', playing ? 'Pausar demo' : 'Reproducir demo');
+      if (ppPause)  ppPause.style.display = playing ? '' : 'none';
+      if (ppPlay)   ppPlay.style.display  = playing ? 'none' : '';
+    }
+
+    ppBtn?.addEventListener('click', () => {
+      playing = !playing;
+      syncPPBtn();
+    });
+
+    // ── Step jump buttons ─────────────────────────────────
+    document.querySelectorAll('#demoStepsList .demo__step-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const goto = parseInt((btn as HTMLElement).dataset.goto ?? '', 10);
+        if (!isNaN(goto)) { tick = goto; render(tick); }
+      });
+    });
+
+    // ── Timer ─────────────────────────────────────────────
+    function startTimer() {
+      if (iv) return;
+      iv = setInterval(() => {
+        if (!playing) return;
+        tick = (tick + 1) % LEN;
+        render(tick);
+      }, TICK);
+    }
+
+    function stopTimer() {
+      if (iv) { clearInterval(iv); iv = null; }
+    }
+
+    // ── Intersection Observer ─────────────────────────────
+    if (sectionEl && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        entries => entries.forEach(e => e.isIntersecting ? startTimer() : stopTimer()),
+        { threshold: 0.1 }
+      );
+      io.observe(sectionEl);
+    } else {
+      startTimer();
+    }
+
+    // Initial render
+    render(tick);
+  })();
+</script>
