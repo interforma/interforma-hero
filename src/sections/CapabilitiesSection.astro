@@ -1,0 +1,200 @@
+---
+const capabilities = [
+  { num: '01', label: 'Estrategia',             dark: false },
+  { num: '02', label: 'Procesos',               dark: false },
+  { num: '03', label: 'Tecnología',             dark: true  },
+  { num: '04', label: 'Automatización',         dark: false },
+  { num: '05', label: 'Inteligencia artificial',dark: false },
+];
+---
+
+<div class="cap-wrap" data-animate>
+  <section class="cap" aria-labelledby="cap-heading">
+    <!-- Header row -->
+    <div class="cap__header">
+      <span class="cap__label" id="cap-heading">Cinco capacidades · un solo sistema</span>
+      <span class="cap__sub">Se combinan según la etapa de su empresa</span>
+    </div>
+
+    <!-- Flow -->
+    <div class="cap__flow" role="list">
+      {capabilities.map((c, i) => (
+        <>
+          <div
+            class={`cap__card${c.dark ? ' cap__card--dark' : ''}`}
+            role="listitem"
+          >
+            <span class="cap__num">{c.num}</span>
+            <b class="cap__name">{c.label}</b>
+          </div>
+          {i < capabilities.length - 1 && (
+            <div class="cap__link" aria-hidden="true">
+              <span class="cap__dot"></span>
+            </div>
+          )}
+        </>
+      ))}
+    </div>
+  </section>
+</div>
+
+<style>
+  /* ── Wrapper (full-bleed margins) ────────────────────── */
+  .cap-wrap {
+    margin: 0 clamp(20px, 5.5vw, 80px);
+  }
+
+  .cap {
+    background: var(--paper);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-card-lg);
+    padding: clamp(28px, 4vw, 48px);
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  /* ── Header row ──────────────────────────────────────── */
+  .cap__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .cap__label,
+  .cap__sub {
+    font-family: var(--font-family-ui);
+    font-size: var(--font-size-label-md);
+    color: var(--gray-500);
+  }
+
+  .cap__label {
+    font-weight: var(--font-weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── Flow ────────────────────────────────────────────── */
+  .cap__flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  /* ── Card ────────────────────────────────────────────── */
+  .cap__card {
+    flex: 1;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-card);
+    padding: 22px;
+    min-height: 104px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 8px;
+    transition: transform .25s var(--ease-default), box-shadow .25s, border-color .25s;
+  }
+
+  .cap__card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-100);
+  }
+
+  .cap__card--dark {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--white);
+  }
+
+  .cap__card--dark:hover {
+    border-color: var(--ink);
+  }
+
+  .cap__num {
+    font-family: var(--font-family-ui);
+    font-size: var(--font-size-label-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--primary-500);
+    line-height: 1;
+  }
+
+  .cap__card--dark .cap__num { color: var(--dark-accent); }
+
+  .cap__name {
+    font-family: var(--font-family-heading);
+    font-size: var(--font-size-heading-md); /* 20px */
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  /* ── Connector line + animated dot ──────────────────── */
+  .cap__link {
+    position: relative;
+    width: 36px;
+    height: 2px;
+    background: var(--primary-100);
+    flex-shrink: 0;
+    overflow: visible;
+  }
+
+  .cap__dot {
+    position: absolute;
+    top: -3px;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-full);
+    background: var(--primary-500);
+    animation: travel 2.4s ease-in-out infinite;
+  }
+
+  @keyframes travel {
+    0%   { left: -4px; opacity: 0; }
+    15%  { opacity: 1; }
+    85%  { opacity: 1; }
+    100% { left: calc(100% - 4px); opacity: 0; }
+  }
+
+  /* ── Section entrance ────────────────────────────────── */
+  [data-animate] {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity .7s var(--ease-default), transform .7s var(--ease-default);
+  }
+
+  [data-animate].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-animate]    { transform: none; }
+    .cap__dot         { animation: none; }
+    .cap__card:hover  { transform: none; }
+  }
+
+  /* ── Responsive ──────────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .cap__link { width: 20px; }
+  }
+
+  @media (max-width: 640px) {
+    .cap-wrap { margin: 0 var(--spacing-5); }
+
+    .cap__flow {
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--spacing-3);
+    }
+
+    .cap__link { display: none; }
+
+    .cap__card { min-height: auto; }
+  }
+</style>
