@@ -1,13 +1,14 @@
 ---
 import Base from '@layouts/Base.astro';
-import HeroSection from '@components/sections/HeroSection.astro';
-import ProblemsSection from '@components/sections/ProblemsSection.astro';
-import MethodSection from '@components/sections/MethodSection.astro';
-import BridgeSection from '@components/sections/BridgeSection.astro';
-import CTASection from '@components/sections/CTASection.astro';
-import ContactSection from '@components/sections/ContactSection.astro';
 import JsonLd from '@components/utility/JsonLd.astro';
-import { site } from '@config/site';
+import HeroSection from '../sections/HeroSection.astro';
+import CapabilitiesSection from '../sections/CapabilitiesSection.astro';
+import ProblemsSection from '../sections/ProblemsSection.astro';
+import MethodSection from '../sections/MethodSection.astro';
+import ServicesSection from '../sections/ServicesSection.astro';
+import AgentsSection from '../sections/AgentsSection.astro';
+import SectorsSection from '../sections/SectorsSection.astro';
+import CtaSection from '../sections/CtaSection.astro';
 
 const organization = {
   '@context': 'https://schema.org',
@@ -16,7 +17,7 @@ const organization = {
   name: 'Interforma',
   url: 'https://interforma.digital/',
   description:
-    'Interforma es una consultora digital chilena especializada en transformación empresarial mediante estrategia, procesos, tecnología, automatización e inteligencia artificial.',
+    'Interforma es una consultora digital chilena especializada en transformación empresarial mediante estrategia, procesos, tecnología, automatización e inteligencia artificial para empresas medianas.',
   areaServed: 'Chile',
   logo: {
     '@type': 'ImageObject',
@@ -35,19 +36,38 @@ const organization = {
     availableLanguage: 'Spanish',
     url: 'https://wa.me/56985408771',
   },
+  sameAs: ['https://wa.me/56985408771'],
 };
 
 const professionalService = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
   '@id': 'https://interforma.digital/#service',
-  name: 'Interforma',
+  name: 'Interforma — Transformación digital con método',
   url: 'https://interforma.digital/',
   description:
-    'Interforma es una consultora digital chilena especializada en transformación empresarial mediante estrategia, procesos, tecnología, automatización e inteligencia artificial.',
+    'Consultoría de transformación digital para empresas medianas en Chile. Estrategia, procesos, tecnología, automatización e IA.',
   areaServed: 'Chile',
+  address: {
+    '@type': 'PostalAddress',
+    addressCountry: 'CL',
+    addressRegion: 'Región Metropolitana',
+  },
+  telephone: '+56985408771',
   provider: {
     '@id': 'https://interforma.digital/#organization',
+  },
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Módulos de transformación digital',
+    itemListElement: [
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Web y SEO' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Marketing y crecimiento' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'CRM y automatización' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Analítica y datos' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Tecnología TI' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Agentes de IA' } },
+    ],
   },
 };
 
@@ -57,24 +77,26 @@ const webSite = {
   '@id': 'https://interforma.digital/#website',
   name: 'Interforma',
   url: 'https://interforma.digital/',
-  publisher: {
-    '@id': 'https://interforma.digital/#organization',
-  },
+  publisher: { '@id': 'https://interforma.digital/#organization' },
+  inLanguage: 'es-CL',
 };
 ---
 
 <Base
-  title={site.defaultTitle}
-  description={site.defaultDescription}
-  canonical={site.url}
+  title="Interforma — Transformación digital para empresas medianas en Chile"
+  description="Estrategia, procesos, tecnología, automatización e IA para empresas medianas. Primero entendemos el problema; después elegimos la herramienta. Diagnóstico gratuito."
+  canonical="https://interforma.digital/"
 >
   <JsonLd schema={organization} />
   <JsonLd schema={professionalService} />
   <JsonLd schema={webSite} />
+
   <HeroSection />
+  <CapabilitiesSection />
   <ProblemsSection />
-  <BridgeSection />
   <MethodSection />
-  <CTASection />
-  <ContactSection />
+  <ServicesSection />
+  <AgentsSection />
+  <SectorsSection />
+  <CtaSection />
 </Base>

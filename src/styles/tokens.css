@@ -29,6 +29,45 @@
 :root {
 
   /* ----------------------------------------------------------
+     REDISEÑO E — Escala naranja Interforma Agents (tokens.json §agents)
+     Reglas de uso:
+       --agents-500 solo sobre fondos oscuros
+       --agents-600 botones/fondos con texto blanco
+       --agents-700 texto pequeño sobre blanco
+     ---------------------------------------------------------- */
+
+  --agents-50:      #FFF2EF;
+  --agents-100:     #FFE0D9;
+  --agents-400:     #FF9783;
+  --agents-500:     #FF563C;
+  --agents-600:     #DD2B0F;
+  --agents-accent:  #EC3013;
+  --agents-700:     #AE1800;
+  --agents-800:     #7C1405;
+
+  /* ----------------------------------------------------------
+     REDISEÑO D — Aliases cortos (tokens.json §color)
+     Usados por las secciones del rediseño D.
+     ---------------------------------------------------------- */
+
+  --ink:          #111110;
+  --paper:        #F6F6F5;
+  --white:        #FFFFFF;
+  --primary-50:   #EEF2FD;
+  --primary-100:  #D5DFFB;
+  --primary-500:  #2655E8;
+  --primary-600:  #1A44C9;
+  --primary-700:  #1236A8;
+  --primary-900:  #0B2060;
+  --dark-accent:  #7BA3FF;
+  --gray-100:     #EFEFED;
+  --gray-200:     #E3E3E0;
+  --gray-400:     #9C9C97;
+  --gray-500:     #6E6E68;
+  --gray-700:     #3D3D3B;
+  --gray-800:     #252523;
+
+  /* ----------------------------------------------------------
      REDISEÑO v2 — Paleta Cal.com (blanco / negro / gris)
      Referencia: handoff/DESIGN_BRIEF_interforma.md §2
      ---------------------------------------------------------- */

@@ -1,0 +1,60 @@
+---
+export interface Props {
+  size?: 'sm' | 'md';
+  href?: string;
+}
+const { size = 'md', href = '/#inicio' } = Astro.props;
+---
+<a href={href} class={`wordmark wordmark--${size}`} aria-label="interforma — ir al inicio">
+  <span class="wordmark__dash" aria-hidden="true"></span>
+  <span class="wordmark__text">interforma</span>
+</a>
+
+<style>
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--ink);
+  }
+
+  .wordmark:focus-visible {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 4px;
+    border-radius: var(--radius-sm);
+  }
+
+  .wordmark__dash {
+    display: block;
+    background: var(--primary-500);
+  }
+
+  .wordmark--md .wordmark__dash {
+    width: 18px;
+    height: 4px;
+    margin-bottom: 6px;
+  }
+
+  .wordmark--md .wordmark__text {
+    font-family: var(--font-family-heading);
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .wordmark--sm .wordmark__dash {
+    width: 14px;
+    height: 3px;
+    margin-bottom: 5px;
+  }
+
+  .wordmark--sm .wordmark__text {
+    font-family: var(--font-family-heading);
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+</style>

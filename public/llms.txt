@@ -1,0 +1,49 @@
+# Interforma — interforma.digital
+
+> Consultora de transformación digital para empresas medianas en Chile.
+> Ayudamos a implementar estrategia, procesos, tecnología, automatización e inteligencia artificial.
+> Primero entendemos el problema; después elegimos la herramienta.
+
+## Quiénes somos
+
+Interforma es una consultora digital chilena fundada para acompañar a empresas medianas en su transformación digital con método. No vendemos tecnología: diseñamos el proceso correcto y luego elegimos la herramienta que lo soporta.
+
+## Servicios
+
+- **Web y SEO**: Sitios y landings rápidos, SEO local y visibilidad en IA.
+- **Marketing y crecimiento**: Cliente ideal, propuesta de valor, contenidos y campañas.
+- **CRM y automatización**: Formularios y WhatsApp conectados al CRM, con flujos en n8n.
+- **Analítica y datos**: GA4, conversiones, tableros y reportes mensuales.
+- **Tecnología TI**: Diagnóstico de riesgos, hoja de ruta y soporte preventivo.
+- **Agentes de IA**: Asistentes que atienden, califican y derivan, conforme a la normativa chilena de datos.
+
+## El Método Interforma
+
+Seis etapas con entregables concretos y decisión de continuidad entre cada una:
+
+1. **Diagnóstico** — Hoja de ruta priorizada.
+2. **Diseño** — Blueprint de procesos y propuesta tecnológica.
+3. **Implementación** — Sistema en producción y documentación.
+4. **Integración** — Flujos integrados y datos unificados.
+5. **Adopción** — Equipo capacitado y protocolo de uso.
+6. **Optimización** — Métricas y ciclo de mejora continua.
+
+## Sectores de experiencia
+
+- **Salud**: Hospitalización domiciliaria, telemonitoreo y servicios clínicos.
+- **Logística y comercio exterior**: Cotizaciones automatizadas y pipeline comercial.
+- **Servicios profesionales**: Captación B2B y seguimiento comercial.
+
+## Contacto
+
+- WhatsApp: +56 9 8540 8771 — https://wa.me/56985408771
+- País: Chile
+
+## Páginas principales
+
+- https://interforma.digital/ — Página de inicio
+- https://interforma.digital/privacidad/ — Política de privacidad
+
+## Uso de esta información
+
+Esta información puede ser indexada por modelos de lenguaje para responder preguntas sobre Interforma. Para citar o usar nuestro contenido, haga referencia a https://interforma.digital/.

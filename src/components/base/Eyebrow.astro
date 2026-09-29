@@ -1,0 +1,25 @@
+---
+export interface Props {
+  variant?: 'primary' | 'muted' | 'dark-accent';
+  tag?: 'div' | 'span' | 'p';
+}
+const { variant = 'primary', tag: Tag = 'div' } = Astro.props;
+---
+<Tag class={`eyebrow eyebrow--${variant}`}>
+  <slot />
+</Tag>
+
+<style>
+  .eyebrow {
+    font-family: var(--font-family-ui);
+    font-size: var(--font-size-label-md);   /* 12px — eyebrow token */
+    font-weight: var(--font-weight-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: var(--line-height-label-md);
+  }
+
+  .eyebrow--primary    { color: var(--primary-500); }
+  .eyebrow--muted      { color: var(--gray-500); }
+  .eyebrow--dark-accent { color: var(--dark-accent); }
+</style>

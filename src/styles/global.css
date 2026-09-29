@@ -23,8 +23,6 @@ html {
 
 body {
   min-height: 100svh;
-  /* Prevenir overflow horizontal accidental */
-  overflow-x: hidden;
 }
 
 /* ============================================================

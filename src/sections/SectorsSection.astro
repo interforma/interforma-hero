@@ -1,0 +1,146 @@
+---
+import Eyebrow from '@components/base/Eyebrow.astro';
+import SectionHeading from '@components/base/SectionHeading.astro';
+
+const sectors = [
+  {
+    title: 'Salud',
+    body: 'Hospitalización domiciliaria, telemonitoreo y servicios clínicos: captación de pacientes, agentes de WhatsApp y CRM.',
+  },
+  {
+    title: 'Logística y comercio exterior',
+    body: 'Cotizaciones automatizadas, pipeline comercial y reportería para equipos de operación.',
+  },
+  {
+    title: 'Servicios profesionales',
+    body: 'Captación B2B, LinkedIn y seguimiento comercial para estudios y consultoras.',
+  },
+];
+---
+
+<div class="sectors-wrap" data-animate>
+  <section id="sectores" class="sectors" aria-labelledby="sectors-heading">
+
+    <!-- Header -->
+    <div class="sectors__header">
+      <div class="sectors__lead">
+        <Eyebrow>Sectores</Eyebrow>
+        <SectionHeading size="lg" id="sectors-heading">
+          Experiencia donde el proceso importa.
+        </SectionHeading>
+      </div>
+    </div>
+
+    <!-- Cards -->
+    <ul class="sectors__grid" role="list">
+      {sectors.map((s, i) => (
+        <li class="sectors__card" data-animate data-delay={String(i * 80)}>
+          <b class="sectors__title">{s.title}</b>
+          <span class="sectors__body">{s.body}</span>
+        </li>
+      ))}
+    </ul>
+
+  </section>
+</div>
+
+<style>
+  /* ── Wrapper ─────────────────────────────────────────── */
+  .sectors-wrap {
+    margin: 0 clamp(20px, 5.5vw, 80px);
+  }
+
+  .sectors {
+    background: var(--paper);
+    border: 1px solid var(--gray-200);
+    border-radius: 24px;
+    padding: clamp(32px, 4.5vw, 64px);
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  /* ── Header ──────────────────────────────────────────── */
+  .sectors__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 40px;
+  }
+
+  .sectors__lead {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* ── Grid ────────────────────────────────────────────── */
+  .sectors__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  /* ── Card ────────────────────────────────────────────── */
+  .sectors__card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-card);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: transform .25s var(--ease-default), box-shadow .25s, border-color .25s;
+  }
+
+  .sectors__card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-100);
+  }
+
+  .sectors__title {
+    font-family: var(--font-family-heading);
+    font-size: var(--font-size-heading-md); /* 20px → matches diseno-D 22px approx */
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+  .sectors__body {
+    font-size: var(--font-size-body-sm);
+    line-height: var(--line-height-body-sm);
+    color: var(--gray-700);
+  }
+
+  /* ── Animate ─────────────────────────────────────────── */
+  body.animations-ready [data-animate]:not(.is-visible) {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity .7s var(--ease-default), transform .7s var(--ease-default);
+  }
+
+  [data-animate].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-animate]        { transform: none; }
+    .sectors__card:hover  { transform: none; }
+  }
+
+  /* ── Responsive ──────────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .sectors__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 640px) {
+    .sectors-wrap  { margin: 0 var(--spacing-5); }
+    .sectors__grid { grid-template-columns: 1fr; }
+  }
+</style>

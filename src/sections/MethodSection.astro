@@ -1,0 +1,225 @@
+---
+import Eyebrow from '@components/base/Eyebrow.astro';
+import SectionHeading from '@components/base/SectionHeading.astro';
+
+const steps = [
+  { num: '01', title: 'Diagnóstico',    deliverable: 'Hoja de ruta priorizada',                      delay: '0',   barColor: '#7BA3FF', barDelay: '0s'   },
+  { num: '02', title: 'Diseño',         deliverable: 'Blueprint de procesos y propuesta tecnológica', delay: '60',  barColor: '#6B92F5', barDelay: '0.9s' },
+  { num: '03', title: 'Implementación', deliverable: 'Sistema en producción y documentación',          delay: '120', barColor: '#4F79EE', barDelay: '1.8s' },
+  { num: '04', title: 'Integración',    deliverable: 'Flujos integrados y datos unificados',           delay: '180', barColor: '#2655E8', barDelay: '2.7s' },
+  { num: '05', title: 'Adopción',       deliverable: 'Equipo capacitado y protocolo de uso',           delay: '240', barColor: '#1A44C9', barDelay: '3.6s' },
+  { num: '06', title: 'Optimización',   deliverable: 'Métricas y ciclo de mejora continua',            delay: '300', barColor: '#1236A8', barDelay: '4.5s' },
+];
+---
+
+<div class="method-wrap" data-animate>
+  <section id="metodo" class="method" aria-labelledby="method-heading">
+
+    <!-- Header -->
+    <div class="method__header">
+      <div class="method__lead">
+        <Eyebrow variant="dark-accent">Nuestro proceso</Eyebrow>
+        <SectionHeading size="xl" variant="inverse" id="method-heading">
+          El Método Interforma
+        </SectionHeading>
+        <p class="method__sub">
+          Seis etapas, cada una con un entregable concreto y una decisión antes de pasar a la siguiente.
+        </p>
+      </div>
+      <p class="method__tagline" aria-hidden="true">
+        El proceso manda.<br /><span class="method__tagline-accent">La herramienta sirve.</span>
+      </p>
+    </div>
+
+    <!-- Progress bars + step cards -->
+    <div class="method__stages">
+      <!-- Bars -->
+      <div class="method__bars" aria-hidden="true">
+        {steps.map((s) => (
+          <div class="method__bar">
+            <span style={`background:${s.barColor};animation-delay:${s.barDelay}`}></span>
+          </div>
+        ))}
+      </div>
+
+      <!-- Cards -->
+      <ul class="method__cards" role="list">
+        {steps.map((s) => (
+          <li class="method__card" data-animate data-delay={s.delay}>
+            <span class="method__card-num">{s.num}</span>
+            <b class="method__card-title">{s.title}</b>
+            <span class="method__card-del">{s.deliverable}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+  </section>
+</div>
+
+<style>
+  /* ── Wrapper ─────────────────────────────────────────── */
+  .method-wrap {
+    margin: 0 clamp(20px, 5.5vw, 80px);
+  }
+
+  .method {
+    background: var(--ink);
+    color: var(--white);
+    border-radius: 24px;
+    padding: clamp(40px, 5vw, 72px);
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+
+  /* ── Header ──────────────────────────────────────────── */
+  .method__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .method__lead {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-width: 720px;
+  }
+
+  .method__sub {
+    margin: 0;
+    font-size: var(--font-size-body-lg);
+    line-height: 1.6;
+    color: #C8C8C3;
+  }
+
+  .method__tagline {
+    margin: 0;
+    font-family: var(--font-family-heading);
+    font-size: var(--font-size-heading-lg); /* 24px */
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-align: right;
+    line-height: 1.3;
+    flex-shrink: 0;
+  }
+
+  .method__tagline-accent { color: var(--dark-accent); }
+
+  /* ── Stages wrapper ──────────────────────────────────── */
+  .method__stages {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* ── Progress bars ───────────────────────────────────── */
+  .method__bars {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .method__bar {
+    position: relative;
+    height: 6px;
+    border-radius: 3px;
+    background: #3D3D3B;
+    overflow: hidden;
+  }
+
+  .method__bar span {
+    position: absolute;
+    inset: 0;
+    border-radius: 3px;
+    transform-origin: left;
+    transform: scaleX(0);
+    animation: barFill 9s ease-in-out infinite;
+  }
+
+  @keyframes barFill {
+    0%   { transform: scaleX(0); }
+    12%  { transform: scaleX(1); }
+    88%  { transform: scaleX(1); opacity: 1; }
+    100% { transform: scaleX(1); opacity: .35; }
+  }
+
+  /* ── Step cards ──────────────────────────────────────── */
+  .method__cards {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .method__card {
+    background: #252523;
+    border: 1px solid #3D3D3B;
+    border-radius: var(--radius-card);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .method__card-num {
+    font-family: var(--font-family-ui);
+    font-size: var(--font-size-label-md); /* 12px → eyebrow */
+    font-weight: var(--font-weight-semibold);
+    color: var(--dark-accent);
+  }
+
+  .method__card-title {
+    font-family: var(--font-family-heading);
+    font-size: var(--font-size-heading-md); /* 20px */
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    line-height: 1.2;
+  }
+
+  .method__card-del {
+    font-size: var(--font-size-body-sm);
+    line-height: 1.5;
+    color: #C8C8C3;
+  }
+
+  /* ── Animate ─────────────────────────────────────────── */
+  body.animations-ready [data-animate]:not(.is-visible) {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity .7s var(--ease-default), transform .7s var(--ease-default);
+  }
+
+  [data-animate].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-animate]      { transform: none; }
+    .method__bar span   { animation: none; transform: scaleX(1); opacity: 1; }
+  }
+
+  /* ── Responsive ──────────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .method__bars,
+    .method__cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .method__tagline { text-align: left; }
+  }
+
+  @media (max-width: 640px) {
+    .method-wrap { margin: 0 var(--spacing-5); }
+
+    .method__bars,
+    .method__cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    .method__header { flex-direction: column; align-items: flex-start; }
+  }
+</style>

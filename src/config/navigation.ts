@@ -5,8 +5,8 @@ export interface NavItem {
 }
 
 export const navigation: NavItem[] = [
-  { label: 'Inicio',    href: '#inicio',    trackEvent: 'nav_click_inicio' },
-  { label: 'Problemas', href: '#problemas', trackEvent: 'nav_click_problemas' },
   { label: 'Método',    href: '#metodo',    trackEvent: 'nav_click_metodo' },
+  { label: 'Servicios', href: '#servicios', trackEvent: 'nav_click_servicios' },
+  { label: 'Sectores',  href: '#sectores',  trackEvent: 'nav_click_sectores' },
   { label: 'Contacto',  href: '#contacto',  trackEvent: 'nav_click_contacto' },
 ];
