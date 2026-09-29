@@ -1,0 +1,343 @@
+---
+import Eyebrow from '@components/base/Eyebrow.astro';
+import SectionHeading from '@components/base/SectionHeading.astro';
+---
+
+<div class="agents-wrap" data-animate>
+  <section id="agentes" class="agents" aria-labelledby="agents-heading">
+
+    <!-- Left column -->
+    <div class="agents__copy">
+      <div class="agents__eyebrow-row">
+        <span class="agents__pulse" aria-hidden="true"></span>
+        <Eyebrow variant="dark-accent">Interforma Agents</Eyebrow>
+      </div>
+
+      <SectionHeading size="xl" variant="inverse" id="agents-heading">
+        Agentes de IA que atienden como su mejor ejecutivo.
+      </SectionHeading>
+
+      <p class="agents__body">
+        Responden consultas frecuentes, recogen los datos clave y derivan a una persona
+        cuando corresponde. Se adaptan a las herramientas que ya usa y cumplen la
+        normativa chilena de protección de datos.
+      </p>
+
+      <a href="https://wa.me/56985408771" class="agents__cta">Conocer los agentes</a>
+    </div>
+
+    <!-- Right column: animated chat -->
+    <div class="agents__chat" aria-label="Conversación de ejemplo con un agente de IA">
+      <!-- Chat header -->
+      <div class="chat-header">
+        <span class="chat-header__label">Conversación de ejemplo</span>
+        <span class="chat-header__status">
+          <span class="chat-header__dot" aria-hidden="true"></span>
+          Agente en línea
+        </span>
+      </div>
+
+      <!-- Bubble 1: user -->
+      <div class="chat-b chat-b1 chat-b--user" role="log" aria-live="polite">
+        Hola, necesito cotizar un servicio para mi empresa.
+      </div>
+
+      <!-- Bubble 2: agent (typing → text) -->
+      <div class="chat-b chat-b2 chat-b--agent">
+        <span class="chat-typing" aria-hidden="true">
+          <i></i><i></i><i></i>
+        </span>
+        <span class="chat-txt">
+          ¡Hola! Con gusto. ¿Me cuenta qué servicio necesita y en qué ciudad está su empresa?
+        </span>
+      </div>
+
+      <!-- Bubble 3: user placeholder — bracket content, not published -->
+      <div class="chat-b chat-b3 chat-b--user" aria-hidden="true">
+        <!-- bracket content omitted per brief -->
+        <span class="chat-b3__placeholder">…</span>
+      </div>
+
+      <!-- Bubble 4: agent (typing → text) -->
+      <div class="chat-b chat-b4 chat-b--agent">
+        <span class="chat-typing" aria-hidden="true">
+          <i></i><i></i><i></i>
+        </span>
+        <span class="chat-txt">
+          Perfecto. Registré su solicitud y un ejecutivo le enviará la cotización hoy.
+        </span>
+      </div>
+
+      <!-- Chips -->
+      <div class="chat-chips">
+        <span class="chat-chip">✓ Lead creado en CRM</span>
+        <span class="chat-chip">✓ Ejecutivo notificado</span>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+<style>
+  /* ── Wrapper ─────────────────────────────────────────── */
+  .agents-wrap {
+    margin: 0 clamp(20px, 5.5vw, 80px) 96px;
+  }
+
+  .agents {
+    background: var(--ink);
+    color: var(--white);
+    border-radius: 24px;
+    padding: clamp(40px, 5vw, 72px);
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 24px;
+    align-items: center;
+    row-gap: 48px;
+  }
+
+  /* ── Copy ────────────────────────────────────────────── */
+  .agents__copy {
+    grid-column: 1 / span 6;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .agents__eyebrow-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .agents__pulse {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-full);
+    background: var(--dark-accent);
+    animation: pulse 2s ease-out infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(123,163,255,.45); }
+    70%  { box-shadow: 0 0 0 8px rgba(123,163,255,0); }
+    100% { box-shadow: 0 0 0 0 rgba(123,163,255,0); }
+  }
+
+  .agents__body {
+    margin: 0;
+    font-size: var(--font-size-body-lg);
+    line-height: 1.6;
+    color: #C8C8C3;
+  }
+
+  .agents__cta {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    height: 52px;
+    padding: 0 26px;
+    background: var(--white);
+    color: var(--ink);
+    border-radius: var(--radius-cta);
+    font-size: var(--font-size-body-sm);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    transition: background 150ms;
+  }
+
+  .agents__cta:hover { background: var(--paper); color: var(--ink); }
+
+  .agents__cta:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 3px;
+    border-radius: var(--radius-cta);
+  }
+
+  /* ── Chat widget ─────────────────────────────────────── */
+  .agents__chat {
+    grid-column: 8 / span 5;
+    background: #252523;
+    border: 1px solid #3D3D3B;
+    border-radius: var(--radius-card-lg);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 380px;
+  }
+
+  /* ── Chat header ─────────────────────────────────────── */
+  .chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-family-ui);
+    font-size: var(--font-size-label-md);
+    color: var(--gray-400);
+    padding-bottom: 8px;
+    border-bottom: 1px solid #3D3D3B;
+  }
+
+  .chat-header__status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #C8C8C3;
+  }
+
+  .chat-header__dot {
+    display: block;
+    width: 7px;
+    height: 7px;
+    border-radius: var(--radius-full);
+    background: var(--color-success-500);
+    animation: pulse 2s ease-out infinite;
+  }
+
+  /* ── Bubbles ─────────────────────────────────────────── */
+  .chat-b {
+    max-width: 85%;
+    border-radius: 14px;
+    padding: 12px 14px;
+    font-size: var(--font-size-body-sm);
+    line-height: 1.45;
+    position: relative;
+  }
+
+  .chat-b--user {
+    align-self: flex-end;
+    background: var(--primary-500);
+    color: var(--white);
+    border-radius: 14px 14px 4px 14px;
+    max-width: 80%;
+  }
+
+  .chat-b--agent {
+    align-self: flex-start;
+    background: #3D3D3B;
+    color: var(--white);
+    border-radius: 14px 14px 14px 4px;
+  }
+
+  /* ── Typing indicator ────────────────────────────────── */
+  .chat-typing {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    margin-top: -4px;
+    display: flex;
+    gap: 4px;
+  }
+
+  .chat-typing i {
+    display: block;
+    width: 7px;
+    height: 7px;
+    border-radius: var(--radius-full);
+    background: #C8C8C3;
+    animation: dotBounce 1s infinite;
+  }
+
+  .chat-typing i:nth-child(2) { animation-delay: .15s; }
+  .chat-typing i:nth-child(3) { animation-delay: .30s; }
+
+  @keyframes dotBounce {
+    0%, 60%, 100% { transform: translateY(0);    opacity: .5; }
+    30%            { transform: translateY(-4px); opacity: 1; }
+  }
+
+  /* ── Chat sequence animations (14 s loop) ────────────── */
+  .chat-b1  { animation: chatB1  14s infinite; }
+  .chat-b2  { animation: chatB2  14s infinite; }
+  .chat-b3  { animation: chatB3  14s infinite; }
+  .chat-b4  { animation: chatB4  14s infinite; }
+  .chat-chips { animation: chatChips 14s infinite; }
+
+  @keyframes chatB1 {
+    0%,3%{opacity:0;transform:translateY(8px)} 6%,90%{opacity:1;transform:none} 96%,100%{opacity:0}
+  }
+  @keyframes chatB2 {
+    0%,12%{opacity:0;transform:translateY(8px)} 15%,90%{opacity:1;transform:none} 96%,100%{opacity:0}
+  }
+  @keyframes chatB3 {
+    0%,38%{opacity:0;transform:translateY(8px)} 41%,90%{opacity:1;transform:none} 96%,100%{opacity:0}
+  }
+  @keyframes chatB4 {
+    0%,50%{opacity:0;transform:translateY(8px)} 53%,90%{opacity:1;transform:none} 96%,100%{opacity:0}
+  }
+  @keyframes chatChips {
+    0%,72%{opacity:0;transform:translateY(6px)} 76%,90%{opacity:1;transform:none} 96%,100%{opacity:0}
+  }
+
+  /* Typing → text transitions */
+  .chat-b2 .chat-typing { animation: typing2 14s infinite; }
+  .chat-b2 .chat-txt    { animation: text2   14s infinite; }
+  .chat-b4 .chat-typing { animation: typing4 14s infinite; }
+  .chat-b4 .chat-txt    { animation: text4   14s infinite; }
+
+  @keyframes typing2 { 0%,15%{opacity:1} 24%,100%{opacity:0} }
+  @keyframes text2   { 0%,23%{opacity:0} 27%,100%{opacity:1} }
+  @keyframes typing4 { 0%,53%{opacity:1} 64%,100%{opacity:0} }
+  @keyframes text4   { 0%,63%{opacity:0} 67%,100%{opacity:1} }
+
+  /* ── Chips ───────────────────────────────────────────── */
+  .chat-chips {
+    display: flex;
+    gap: 8px;
+    padding-top: 4px;
+    flex-wrap: wrap;
+  }
+
+  .chat-chip {
+    font-family: var(--font-family-ui);
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: var(--radius-badge);
+    background: var(--primary-900);
+    color: var(--primary-100);
+  }
+
+  /* ── Section entrance ────────────────────────────────── */
+  [data-animate] {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity .7s var(--ease-default), transform .7s var(--ease-default);
+  }
+
+  [data-animate].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-animate] { transform: none; }
+    .agents__pulse,
+    .chat-header__dot { animation: none; }
+    .chat-b1, .chat-b2, .chat-b3, .chat-b4, .chat-chips,
+    .chat-b2 .chat-typing, .chat-b2 .chat-txt,
+    .chat-b4 .chat-typing, .chat-b4 .chat-txt {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+    .chat-typing { display: none; }
+  }
+
+  /* ── Responsive ──────────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .agents {
+      grid-template-columns: 1fr;
+      row-gap: 40px;
+    }
+
+    .agents__copy  { grid-column: 1; }
+    .agents__chat  { grid-column: 1; }
+  }
+
+  @media (max-width: 640px) {
+    .agents-wrap { margin: 0 var(--spacing-5) 64px; }
+  }
+</style>
