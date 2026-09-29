@@ -1,0 +1,294 @@
+---
+import Eyebrow from '@components/base/Eyebrow.astro';
+import SectionHeading from '@components/base/SectionHeading.astro';
+
+const cards = [
+  {
+    span: 2,
+    bg: 'primary-50',
+    eyebrow: 'WEB Y SEO',
+    title: 'Sitios que convierten',
+    body: 'Sitios y landings rápidos, SEO local y visibilidad en IA.',
+    titleSize: 'lg',
+  },
+  {
+    span: 1,
+    bg: 'white',
+    eyebrow: 'MARKETING Y CRECIMIENTO',
+    title: 'Estrategia y captación',
+    body: 'Cliente ideal, propuesta de valor, contenidos y campañas.',
+    titleSize: 'md',
+  },
+  {
+    span: 1,
+    bg: 'white',
+    eyebrow: 'CRM Y AUTOMATIZACIÓN',
+    title: 'Seguimiento sin traspasos',
+    body: 'Formularios y WhatsApp conectados al CRM, con flujos en n8n.',
+    titleSize: 'md',
+  },
+  {
+    span: 1,
+    bg: 'white',
+    eyebrow: 'ANALÍTICA Y DATOS',
+    title: 'Decidir con evidencia',
+    body: 'GA4, conversiones, tableros y reportes mensuales.',
+    titleSize: 'md',
+  },
+  {
+    span: 1,
+    bg: 'white',
+    eyebrow: 'TECNOLOGÍA TI',
+    title: 'Arquitectura y soporte',
+    body: 'Diagnóstico de riesgos, hoja de ruta y soporte preventivo.',
+    titleSize: 'md',
+  },
+];
+---
+
+<section id="servicios" class="services">
+  <!-- Header -->
+  <div class="services__header">
+    <div class="services__lead">
+      <Eyebrow>Servicios</Eyebrow>
+      <SectionHeading size="xl">Módulos que se combinan según su etapa.</SectionHeading>
+    </div>
+    <p class="services__intro">
+      Cada módulo declara sus entregables, plazos y límites.
+      Se contrata solo lo que la evidencia justifica.
+    </p>
+  </div>
+
+  <!-- Grid -->
+  <ul class="services__grid" role="list">
+    {cards.map((c, i) => (
+      <li
+        class={`svc-card svc-card--${c.bg} svc-card--span-${c.span}`}
+        data-animate
+        data-delay={String(i * 60)}
+      >
+        <span class="svc-card__eyebrow">{c.eyebrow}</span>
+        <b class={`svc-card__title svc-card__title--${c.titleSize}`}>{c.title}</b>
+        <span class="svc-card__body">{c.body}</span>
+      </li>
+    ))}
+
+    <!-- AI agents full-width strip -->
+    <li class="svc-card svc-card--dark svc-card--span-3 svc-strip" data-animate data-delay="300">
+      <div class="svc-strip__content">
+        <span class="svc-strip__eyebrow">IA Y CONOCIMIENTO</span>
+        <b class="svc-strip__title">Agentes de IA</b>
+        <span class="svc-strip__body">
+          Asistentes que atienden, califican y derivan, conforme a la normativa chilena de datos.
+        </span>
+      </div>
+      <a href="#agentes" class="svc-strip__cta">Ver un agente en acción ↓</a>
+    </li>
+  </ul>
+</section>
+
+<style>
+  .services {
+    padding: clamp(64px, 8vw, 120px) clamp(20px, 5.5vw, 80px);
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  /* ── Header ──────────────────────────────────────────── */
+  .services__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .services__lead {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 760px;
+  }
+
+  .services__intro {
+    margin: 0;
+    font-size: var(--font-size-body-md);
+    line-height: 1.6;
+    color: var(--gray-700);
+    max-width: 420px;
+  }
+
+  /* ── Grid ────────────────────────────────────────────── */
+  .services__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  /* ── Card base ───────────────────────────────────────── */
+  .svc-card {
+    border-radius: var(--radius-card-lg);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    justify-content: flex-end;
+    min-height: 220px;
+    transition: transform .25s var(--ease-default), box-shadow .25s, border-color .25s;
+  }
+
+  .svc-card--white {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+  }
+
+  .svc-card--primary-50 {
+    background: var(--primary-50);
+    border: none;
+    min-height: 240px;
+  }
+
+  .svc-card--dark {
+    background: var(--ink);
+    color: var(--white);
+  }
+
+  .svc-card--white:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-100);
+  }
+
+  /* Span columns */
+  .svc-card--span-2 { grid-column: span 2; padding: 40px; }
+  .svc-card--span-3 { grid-column: span 3; }
+
+  /* ── Eyebrow ─────────────────────────────────────────── */
+  .svc-card__eyebrow {
+    font-family: var(--font-family-ui);
+    font-size: var(--font-size-label-md);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.04em;
+    color: var(--primary-600);
+  }
+
+  /* ── Title sizes ─────────────────────────────────────── */
+  .svc-card__title {
+    font-family: var(--font-family-heading);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    line-height: 1.15;
+  }
+
+  .svc-card__title--lg { font-size: var(--font-size-display-md); /* 40px */ }
+  .svc-card__title--md { font-size: var(--font-size-heading-lg); /* 24px */ }
+
+  .svc-card__body {
+    font-size: var(--font-size-body-md);
+    line-height: var(--line-height-body-sm);
+    color: var(--gray-700);
+    max-width: 560px;
+  }
+
+  /* ── AI strip ────────────────────────────────────────── */
+  .svc-strip {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 40px;
+    min-height: auto;
+  }
+
+  .svc-strip__content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 720px;
+  }
+
+  .svc-strip__eyebrow {
+    font-family: var(--font-family-ui);
+    font-size: var(--font-size-label-md);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.04em;
+    color: var(--dark-accent);
+  }
+
+  .svc-strip__title {
+    font-family: var(--font-family-heading);
+    font-size: var(--font-size-display-md); /* 40px */
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    line-height: 1.15;
+  }
+
+  .svc-strip__body {
+    font-size: var(--font-size-body-md);
+    line-height: var(--line-height-body-sm);
+    color: #C8C8C3;
+    max-width: 560px;
+  }
+
+  .svc-strip__cta {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    height: 52px;
+    padding: 0 26px;
+    background: var(--white);
+    color: var(--ink);
+    border-radius: var(--radius-cta);
+    font-size: var(--font-size-body-sm);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 150ms, color 150ms;
+  }
+
+  .svc-strip__cta:hover { background: var(--paper); color: var(--ink); }
+
+  .svc-strip__cta:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 3px;
+    border-radius: var(--radius-cta);
+  }
+
+  /* ── Animate ─────────────────────────────────────────── */
+  [data-animate] {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity .7s var(--ease-default), transform .7s var(--ease-default);
+  }
+
+  [data-animate].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-animate]     { transform: none; }
+    .svc-card--white:hover { transform: none; }
+  }
+
+  /* ── Responsive ──────────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .services__grid      { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .svc-card--span-2    { grid-column: span 2; }
+    .svc-card--span-3    { grid-column: span 2; }
+    .svc-strip           { flex-direction: column; align-items: flex-start; gap: 24px; }
+  }
+
+  @media (max-width: 640px) {
+    .services__grid      { grid-template-columns: 1fr; }
+    .svc-card--span-2,
+    .svc-card--span-3    { grid-column: span 1; }
+    .services__header    { flex-direction: column; align-items: flex-start; }
+    .services__intro     { max-width: none; }
+  }
+</style>
