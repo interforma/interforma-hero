@@ -1,0 +1,113 @@
+---
+import Eyebrow from '@components/base/Eyebrow.astro';
+import SectionHeading from '@components/base/SectionHeading.astro';
+---
+
+<div class="cta-wrap" data-animate>
+  <section id="contacto" class="cta" aria-labelledby="cta-heading">
+    <div class="cta__copy">
+      <Eyebrow variant="dark-accent" tag="div">Próximo paso</Eyebrow>
+      <SectionHeading size="lg" variant="inverse" id="cta-heading">
+        Entendamos primero el verdadero problema de su empresa.
+      </SectionHeading>
+      <p class="cta__body">
+        Una conversación de 30 minutos puede revelar más que meses de implementación
+        sin diagnóstico previo. Sin compromiso · Respuesta en menos de 24 horas hábiles.
+      </p>
+    </div>
+
+    <a href="https://wa.me/56985408771" class="cta__btn">
+      Iniciar diagnóstico gratuito
+    </a>
+  </section>
+</div>
+
+<style>
+  /* ── Wrapper ─────────────────────────────────────────── */
+  .cta-wrap {
+    margin: 96px clamp(20px, 5.5vw, 80px);
+  }
+
+  .cta {
+    background: var(--primary-500);
+    color: var(--white);
+    border-radius: 24px;
+    padding: clamp(40px, 4.5vw, 64px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  /* ── Copy ────────────────────────────────────────────── */
+  .cta__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 800px;
+  }
+
+  /* Override eyebrow color inside blue bg */
+  .cta__copy :global(.eyebrow--dark-accent) {
+    color: var(--primary-100);
+  }
+
+  .cta__body {
+    margin: 0;
+    font-size: var(--font-size-body-md);
+    line-height: 1.6;
+    color: var(--primary-50);
+  }
+
+  /* ── Button ──────────────────────────────────────────── */
+  .cta__btn {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    height: 60px;
+    padding: 0 32px;
+    background: var(--white);
+    color: var(--ink);
+    border-radius: var(--radius-cta);
+    font-size: var(--font-size-body-md);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 150ms, color 150ms;
+  }
+
+  .cta__btn:hover { background: var(--paper); color: var(--ink); }
+
+  .cta__btn:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 3px;
+    border-radius: var(--radius-cta);
+  }
+
+  /* ── Animate ─────────────────────────────────────────── */
+  [data-animate] {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity .7s var(--ease-default), transform .7s var(--ease-default);
+  }
+
+  [data-animate].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-animate] { transform: none; }
+  }
+
+  /* ── Responsive ──────────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .cta { flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (max-width: 640px) {
+    .cta-wrap { margin: 64px var(--spacing-5); }
+    .cta__btn { width: 100%; justify-content: center; }
+  }
+</style>
