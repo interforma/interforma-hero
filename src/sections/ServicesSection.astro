@@ -42,6 +42,7 @@ const cards = [
     title: 'Arquitectura y soporte',
     body: 'Diagnóstico de riesgos, hoja de ruta y soporte preventivo.',
     titleSize: 'md',
+    inset: true,
   },
 ];
 ---
@@ -63,7 +64,7 @@ const cards = [
   <ul class="services__grid" role="list">
     {cards.map((c, i) => (
       <li
-        class={`svc-card svc-card--${c.bg} svc-card--span-${c.span}`}
+        class={`svc-card svc-card--${c.bg} svc-card--span-${c.span}${c.inset ? ' svc-card--inset' : ''}`}
         data-animate
         data-delay={String(i * 60)}
       >
@@ -76,7 +77,7 @@ const cards = [
     <!-- AI agents full-width strip -->
     <li class="svc-card svc-card--dark svc-card--span-3 svc-strip" data-animate data-delay="300">
       <div class="svc-strip__content">
-        <span class="svc-strip__eyebrow">IA Y CONOCIMIENTO</span>
+        <span class="svc-strip__eyebrow">IA Y CONOCIMIENTO · INTERFORMA AGENTS</span>
         <b class="svc-strip__title">Agentes de IA</b>
         <span class="svc-strip__body">
           Asistentes que atienden, califican y derivan, conforme a la normativa chilena de datos.
@@ -115,7 +116,7 @@ const cards = [
     margin: 0;
     font-size: var(--font-size-body-md);
     line-height: 1.6;
-    color: var(--gray-700);
+    color: var(--gray-500);
     max-width: 420px;
   }
 
@@ -211,12 +212,16 @@ const cards = [
     max-width: 720px;
   }
 
+  .svc-card--inset {
+    box-shadow: inset 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
+  }
+
   .svc-strip__eyebrow {
     font-family: var(--font-family-ui);
     font-size: var(--font-size-label-md);
     font-weight: var(--font-weight-semibold);
     letter-spacing: 0.04em;
-    color: var(--dark-accent);
+    color: var(--agents-500);
   }
 
   .svc-strip__title {
