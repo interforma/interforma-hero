@@ -1,97 +1,63 @@
 ---
-import NavLink from '@components/composite/NavLink.astro';
-import WhatsAppButton from '@components/composite/WhatsAppButton.astro';
+import Wordmark from '@components/base/Wordmark.astro';
 import { navigation } from '@config/navigation';
 ---
 
-<!-- Global header height token (used by sections for scroll offset) -->
+<!-- Global header height token -->
 <style is:global>
   :root {
-    --header-height: 56px;
+    --header-height: 60px;
   }
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     :root {
-      --header-height: 64px;
+      --header-height: 76px;
     }
   }
 </style>
 
-<header
-  id="site-header"
-  class="header"
-  data-scrolled="false"
->
-  <div class="container header__inner">
+<header id="site-header" class="header" data-scrolled="false">
+  <div class="header__inner">
 
-    <!-- Logo -->
-    <a href="/#inicio" class="header__logo" aria-label="Interforma — ir al inicio">
-      <span class="header__logo-text">Interforma</span>
-    </a>
+    <Wordmark />
 
-    <!-- Desktop navigation -->
+    <!-- Desktop pill nav -->
     <nav class="header__nav" aria-label="Navegación principal">
       <ul class="header__nav-list" role="list">
         {navigation.map((item) => (
           <li>
-            <NavLink href={item.href} trackEvent={item.trackEvent} class="header__nav-link">
+            <a href={item.href} class="header__nav-link" data-track-event={item.trackEvent}>
               {item.label}
-            </NavLink>
+            </a>
           </li>
         ))}
       </ul>
     </nav>
 
-    <!-- Desktop CTA + Mobile toggle -->
-    <div class="header__actions">
-      <WhatsAppButton
-        label="Hablar por WhatsApp"
-        size="md"
-        class="header__wa-cta"
-      />
+    <!-- Desktop CTA -->
+    <a
+      href="https://wa.me/56985408771"
+      class="header__cta"
+      data-track-event="click_whatsapp"
+    >
+      Hablar por WhatsApp
+    </a>
 
-      <button
-        id="mobile-menu-toggle"
-        class="header__toggle"
-        aria-expanded="false"
-        aria-controls="mobile-menu"
-        aria-label="Abrir menú de navegación"
-        type="button"
-      >
-        <!-- Menu icon (visible when closed) -->
-        <svg
-          class="header__toggle-icon header__toggle-icon--menu"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          aria-hidden="true"
-        >
-          <line x1="3" y1="6" x2="21" y2="6"/>
-          <line x1="3" y1="12" x2="21" y2="12"/>
-          <line x1="3" y1="18" x2="21" y2="18"/>
-        </svg>
-        <!-- Close icon (visible when open) -->
-        <svg
-          class="header__toggle-icon header__toggle-icon--close"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          aria-hidden="true"
-        >
-          <line x1="18" y1="6" x2="6" y2="18"/>
-          <line x1="6" y1="6" x2="18" y2="18"/>
-        </svg>
-      </button>
-    </div>
+    <!-- Mobile toggle -->
+    <button
+      id="mobile-menu-toggle"
+      class="header__toggle"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Abrir menú de navegación"
+      type="button"
+    >
+      <svg class="icon icon--menu" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg class="icon icon--close" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
   </div>
 </header>
 
@@ -107,104 +73,118 @@ import { navigation } from '@config/navigation';
   <nav class="mobile-overlay__nav" aria-label="Menú principal">
     <ul class="mobile-overlay__list" role="list">
       {navigation.map((item) => (
-        <li class="mobile-overlay__item">
-          <a
-            href={item.href}
-            class="mobile-overlay__link"
-            data-track-event={item.trackEvent}
-          >
+        <li>
+          <a href={item.href} class="mobile-overlay__link" data-track-event={item.trackEvent}>
             {item.label}
           </a>
         </li>
       ))}
     </ul>
   </nav>
-
   <div class="mobile-overlay__footer">
-    <WhatsAppButton label="Hablar por WhatsApp" size="lg" class="mobile-overlay__wa-cta" />
+    <a href="https://wa.me/56985408771" class="mobile-overlay__cta">
+      Hablar por WhatsApp
+    </a>
   </div>
 </div>
 
 <style>
-  /* ── Header shell ─────────────────────────────────────────────── */
+  /* ── Shell ───────────────────────────────────────────── */
   .header {
     position: sticky;
     top: 0;
     z-index: 100;
     height: var(--header-height);
-    background: var(--color-bg-page);
-    border-bottom: 1px solid transparent;
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-100);
     transition:
-      border-color var(--duration-fast) var(--easing-default),
-      box-shadow var(--duration-fast) var(--easing-default),
-      background var(--duration-fast) var(--easing-default);
+      box-shadow 200ms var(--ease-default),
+      border-color 200ms var(--ease-default);
   }
 
   .header[data-scrolled="true"] {
-    background: var(--color-bg-surface);
-    border-bottom-color: var(--color-border-subtle);
     box-shadow: var(--shadow-sm);
+    border-bottom-color: var(--gray-200);
   }
 
   .header__inner {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 5.5vw, 80px);
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 100%;
     gap: var(--spacing-6);
   }
 
-  /* ── Logo ─────────────────────────────────────────────────────── */
-  .header__logo {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    flex-shrink: 0;
-  }
-
-  .header__logo-text {
-    font-size: var(--font-size-heading-lg);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-text-primary);
-    letter-spacing: -0.02em;
-    line-height: 1;
-  }
-
-  .header__logo:focus-visible {
-    outline: 2px solid var(--color-interactive-default);
-    outline-offset: 4px;
-    border-radius: var(--radius-sm);
-  }
-
-  /* ── Desktop nav ──────────────────────────────────────────────── */
+  /* ── Pill nav ────────────────────────────────────────── */
   .header__nav {
     display: none;
-    flex: 1;
-    justify-content: center;
+    background: var(--paper);
+    border-radius: var(--radius-cta);
+    padding: 6px;
   }
 
   .header__nav-list {
     display: flex;
-    align-items: center;
-    gap: var(--spacing-2);
+    gap: 0;
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
-  /* ── Actions ──────────────────────────────────────────────────── */
-  .header__actions {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-3);
-    flex-shrink: 0;
+  .header__nav-link {
+    display: block;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: var(--font-weight-medium);
+    color: var(--gray-700);
+    text-decoration: none;
+    transition: background 150ms, color 150ms;
   }
 
-  .header__wa-cta {
+  .header__nav-link:hover,
+  .header__nav-link.is-active {
+    background: var(--white);
+    color: var(--ink);
+  }
+
+  .header__nav-link:focus-visible {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
+    border-radius: 20px;
+  }
+
+  /* ── Desktop CTA ─────────────────────────────────────── */
+  .header__cta {
     display: none;
+    align-items: center;
+    height: 44px;
+    padding: 0 20px;
+    background: var(--primary-500);
+    color: var(--white);
+    border-radius: var(--radius-btn);
+    font-size: var(--font-size-body-sm);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    flex-shrink: 0;
+    transition: background 150ms;
   }
 
-  /* ── Mobile toggle ────────────────────────────────────────────── */
+  .header__cta:hover {
+    background: var(--primary-600);
+    color: var(--white);
+  }
+
+  .header__cta:focus-visible {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 3px;
+    border-radius: var(--radius-btn);
+  }
+
+  /* ── Mobile toggle ───────────────────────────────────── */
   .header__toggle {
     display: flex;
     align-items: center;
@@ -215,58 +195,47 @@ import { navigation } from '@config/navigation';
     background: transparent;
     border: none;
     border-radius: var(--radius-md);
-    color: var(--color-text-primary);
+    color: var(--ink);
     cursor: pointer;
-    transition: background var(--duration-fast) var(--easing-default);
+    transition: background 150ms;
   }
 
-  .header__toggle:hover {
-    background: var(--color-neutral-100);
-  }
+  .header__toggle:hover { background: var(--paper); }
 
   .header__toggle:focus-visible {
-    outline: 2px solid var(--color-interactive-default);
+    outline: 2px solid var(--primary-500);
     outline-offset: 2px;
   }
 
-  /* Toggle icon swap via aria-expanded */
-  .header__toggle-icon--close {
-    display: none;
-  }
+  .icon--close { display: none; }
+  .header__toggle[aria-expanded="true"] .icon--menu  { display: none; }
+  .header__toggle[aria-expanded="true"] .icon--close { display: block; }
 
-  .header__toggle[aria-expanded="true"] .header__toggle-icon--menu {
-    display: none;
-  }
-
-  .header__toggle[aria-expanded="true"] .header__toggle-icon--close {
-    display: block;
-  }
-
-  /* ── Mobile overlay ───────────────────────────────────────────── */
+  /* ── Mobile overlay ──────────────────────────────────── */
   .mobile-overlay {
     position: fixed;
     inset: 0;
     top: var(--header-height);
     z-index: 99;
-    background: var(--color-bg-surface);
+    background: var(--white);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: var(--spacing-8) var(--spacing-6) var(--spacing-10);
+    border-top: 1px solid var(--gray-200);
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-8px);
+    transform: translateY(-6px);
     transition:
-      opacity var(--duration-normal) var(--easing-default),
-      visibility var(--duration-normal) var(--easing-default),
-      transform var(--duration-normal) var(--easing-default);
-    border-top: 1px solid var(--color-border-subtle);
+      opacity 200ms var(--ease-default),
+      visibility 200ms,
+      transform 200ms var(--ease-default);
   }
 
   .mobile-overlay[aria-hidden="false"] {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
+    transform: none;
   }
 
   .mobile-overlay__list {
@@ -282,248 +251,144 @@ import { navigation } from '@config/navigation';
     display: block;
     font-size: var(--font-size-heading-md);
     font-weight: var(--font-weight-semibold);
-    color: var(--color-text-primary);
+    color: var(--ink);
     text-decoration: none;
     padding: var(--spacing-3) var(--spacing-2);
     border-radius: var(--radius-md);
-    transition: color var(--duration-fast) var(--easing-default),
-                background var(--duration-fast) var(--easing-default);
+    transition: background 150ms, color 150ms;
   }
 
-  .mobile-overlay__link:hover {
-    color: var(--color-interactive-default);
-    background: var(--cj-gray-50);
-  }
+  .mobile-overlay__link:hover { background: var(--paper); }
 
   .mobile-overlay__link:focus-visible {
-    outline: 2px solid var(--color-interactive-default);
+    outline: 2px solid var(--primary-500);
     outline-offset: 2px;
-    color: var(--color-interactive-default);
   }
 
   .mobile-overlay__footer {
     padding-top: var(--spacing-8);
-    border-top: 1px solid var(--color-border-subtle);
+    border-top: 1px solid var(--gray-200);
   }
 
-  .mobile-overlay__wa-cta {
-    width: 100%;
+  .mobile-overlay__cta {
+    display: flex;
+    align-items: center;
     justify-content: center;
+    width: 100%;
+    height: 52px;
+    background: var(--primary-500);
+    color: var(--white);
+    border-radius: var(--radius-cta);
+    font-size: var(--font-size-body-md);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    transition: background 150ms;
   }
 
-  /* ── Tablet / Desktop breakpoints ────────────────────────────── */
-  @media (min-width: 768px) {
-    .header__nav {
-      display: flex;
-    }
+  .mobile-overlay__cta:hover { background: var(--primary-600); }
 
-    .header__wa-cta {
-      display: inline-flex;
-    }
+  /* ── Desktop breakpoint ──────────────────────────────── */
+  @media (min-width: 1024px) {
+    .header__nav  { display: flex; }
+    .header__cta  { display: inline-flex; }
+    .header__toggle { display: none; }
+    .mobile-overlay { display: none; }
+  }
 
-    .header__toggle {
-      display: none;
-    }
-
-    .mobile-overlay {
-      display: none;
-    }
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-overlay { transition: none; }
   }
 </style>
 
 <script>
   import { track } from '@lib/analytics/track';
 
-  const header = document.getElementById('site-header') as HTMLElement;
-  const toggle = document.getElementById('mobile-menu-toggle') as HTMLButtonElement;
+  const header  = document.getElementById('site-header') as HTMLElement;
+  const toggle  = document.getElementById('mobile-menu-toggle') as HTMLButtonElement;
   const overlay = document.getElementById('mobile-menu') as HTMLElement;
 
-  if (!header || !toggle || !overlay) {
-    console.warn('[Header] Required elements not found');
-  } else {
-    // ── Scroll state ─────────────────────────────────────────────
-    function updateScrollState() {
-      header.dataset.scrolled = (window.scrollY > 10).toString();
-    }
-    updateScrollState();
-    window.addEventListener('scroll', updateScrollState, { passive: true });
+  // ── Scroll state ──────────────────────────────────────
+  function updateScrolled() {
+    header.dataset.scrolled = (window.scrollY > 10).toString();
+  }
+  updateScrolled();
+  window.addEventListener('scroll', updateScrolled, { passive: true });
 
-    // ── Focus trap ───────────────────────────────────────────────
-    function getFocusable(container: HTMLElement): HTMLElement[] {
-      return Array.from(
-        container.querySelectorAll<HTMLElement>(
-          'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
-        )
-      );
-    }
-
-    let trapHandler: ((e: KeyboardEvent) => void) | null = null;
-
-    function activateTrap() {
-      const els = getFocusable(overlay);
-      const first = els[0];
-      const last = els[els.length - 1];
-
-      trapHandler = (e: KeyboardEvent) => {
-        if (e.key !== 'Tab') return;
-        if (e.shiftKey) {
-          if (document.activeElement === first) {
-            e.preventDefault();
-            last?.focus();
-          }
-        } else {
-          if (document.activeElement === last) {
-            e.preventDefault();
-            first?.focus();
-          }
-        }
-      };
-
-      overlay.addEventListener('keydown', trapHandler);
-      first?.focus();
-    }
-
-    function deactivateTrap() {
-      if (trapHandler) {
-        overlay.removeEventListener('keydown', trapHandler);
-        trapHandler = null;
-      }
-    }
-
-    // ── Open / close ─────────────────────────────────────────────
+  if (toggle && overlay) {
     let isOpen = false;
 
     function openMenu() {
       isOpen = true;
       toggle.setAttribute('aria-expanded', 'true');
-      toggle.setAttribute('aria-label', 'Cerrar menú de navegación');
+      toggle.setAttribute('aria-label', 'Cerrar menú');
       overlay.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
-      activateTrap();
-      track({ name: 'menu_open', properties: { placement: 'header' } });
     }
 
-    function closeMenu(returnFocus = true) {
+    function closeMenu() {
       isOpen = false;
       toggle.setAttribute('aria-expanded', 'false');
       toggle.setAttribute('aria-label', 'Abrir menú de navegación');
       overlay.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
-      deactivateTrap();
-      if (returnFocus) toggle.focus();
+      toggle.focus();
     }
 
-    // ── Toggle button ─────────────────────────────────────────────
-    toggle.addEventListener('click', () => {
-      isOpen ? closeMenu() : openMenu();
-    });
+    toggle.addEventListener('click', () => isOpen ? closeMenu() : openMenu());
 
-    // ── Escape key ────────────────────────────────────────────────
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && isOpen) closeMenu();
     });
 
-    // ── Mobile nav links: close on click ─────────────────────────
     overlay.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((link) => {
       link.addEventListener('click', () => {
-        closeMenu(false);
-        track({
-          name: 'nav_click',
-          properties: {
-            destination: link.getAttribute('href'),
-            placement: 'mobile_menu',
-            event: link.dataset.trackEvent,
-          },
-        });
+        closeMenu();
+        track({ name: 'nav_click', properties: { destination: link.getAttribute('href'), placement: 'mobile_menu' } });
       });
     });
-
-    // ── Desktop nav links: track clicks ──────────────────────────
-    header.querySelectorAll<HTMLAnchorElement>('.header__nav-link a').forEach((link) => {
-      link.addEventListener('click', () => {
-        track({
-          name: 'nav_click',
-          properties: {
-            destination: link.getAttribute('href'),
-            placement: 'header_desktop',
-            event: link.dataset.trackEvent,
-          },
-        });
-      });
-    });
-
-    // ── WhatsApp CTA tracking (scoped to header to avoid double-fire) ─
-    header.querySelectorAll<HTMLAnchorElement>('[data-track-event="click_whatsapp"]').forEach((el) => {
-      el.addEventListener('click', () => {
-        track({ name: 'click_whatsapp', properties: { placement: 'header' } });
-      });
-    });
-
-    // ── Scroll-spy: active nav link via IntersectionObserver ──────
-    const navLinks = Array.from(
-      header.querySelectorAll<HTMLAnchorElement>('.nav-link[href^="#"]')
-    );
-
-    const sectionIds = navLinks
-      .map((a) => a.getAttribute('href')?.slice(1))
-      .filter(Boolean) as string[];
-
-    const intersecting = new Set<string>();
-
-    function updateActiveLink() {
-      // Pick the section nearest the top of the viewport among those intersecting
-      let activeId: string | null = null;
-      let minTop = Infinity;
-
-      for (const id of intersecting) {
-        const el = document.getElementById(id);
-        if (!el) continue;
-        const top = Math.abs(el.getBoundingClientRect().top);
-        if (top < minTop) {
-          minTop = top;
-          activeId = id;
-        }
-      }
-
-      // If nothing is intersecting, fall back to section before scroll position
-      if (!activeId) {
-        for (let i = sectionIds.length - 1; i >= 0; i--) {
-          const el = document.getElementById(sectionIds[i]);
-          if (el && el.getBoundingClientRect().top <= 80) {
-            activeId = sectionIds[i];
-            break;
-          }
-        }
-      }
-
-      navLinks.forEach((a) => {
-        const matches = a.getAttribute('href') === `#${activeId}`;
-        a.classList.toggle('is-active', matches);
-        a.setAttribute('aria-current', matches ? 'true' : 'false');
-      });
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          const id = entry.target.id;
-          if (entry.isIntersecting) {
-            intersecting.add(id);
-          } else {
-            intersecting.delete(id);
-          }
-        }
-        updateActiveLink();
-      },
-      { rootMargin: '-10% 0px -50% 0px', threshold: 0 }
-    );
-
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
-    // Initial pass for page load with hash or pre-scrolled state
-    updateActiveLink();
   }
+
+  // ── Scroll-spy ────────────────────────────────────────
+  const navLinks = Array.from(header.querySelectorAll<HTMLAnchorElement>('.header__nav-link'));
+  const sectionIds = navLinks.map(a => a.getAttribute('href')?.slice(1)).filter(Boolean) as string[];
+  const intersecting = new Set<string>();
+
+  function updateActiveLink() {
+    let activeId: string | null = null;
+    let minTop = Infinity;
+    for (const id of intersecting) {
+      const el = document.getElementById(id);
+      if (!el) continue;
+      const top = Math.abs(el.getBoundingClientRect().top);
+      if (top < minTop) { minTop = top; activeId = id; }
+    }
+    if (!activeId) {
+      for (let i = sectionIds.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sectionIds[i]);
+        if (el && el.getBoundingClientRect().top <= 80) { activeId = sectionIds[i]; break; }
+      }
+    }
+    navLinks.forEach(a => {
+      const matches = a.getAttribute('href') === `#${activeId}`;
+      a.classList.toggle('is-active', matches);
+    });
+  }
+
+  const spy = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        entry.isIntersecting ? intersecting.add(entry.target.id) : intersecting.delete(entry.target.id);
+      }
+      updateActiveLink();
+    },
+    { rootMargin: '-10% 0px -50% 0px', threshold: 0 }
+  );
+
+  sectionIds.forEach(id => { const el = document.getElementById(id); if (el) spy.observe(el); });
+  updateActiveLink();
+
+  // ── Analytics ─────────────────────────────────────────
+  header.querySelectorAll<HTMLAnchorElement>('[data-track-event="click_whatsapp"]').forEach(el => {
+    el.addEventListener('click', () => track({ name: 'click_whatsapp', properties: { placement: 'header' } }));
+  });
 </script>

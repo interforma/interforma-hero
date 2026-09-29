@@ -1,0 +1,33 @@
+---
+export interface Props {
+  size?: 'xl' | 'lg';
+  variant?: 'default' | 'inverse';
+}
+const { size = 'lg', variant = 'default' } = Astro.props;
+---
+<h2 class={`section-heading section-heading--${size} section-heading--${variant}`}>
+  <slot />
+</h2>
+
+<style>
+  .section-heading {
+    margin: 0;
+    font-family: var(--font-family-heading);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+
+  .section-heading--xl {
+    font-size: clamp(2rem, 4vw, 3.25rem); /* 32px → 52px */
+    line-height: 1.05;
+  }
+
+  .section-heading--lg {
+    font-size: clamp(1.75rem, 3.2vw, 2.75rem); /* 28px → 44px */
+    line-height: 1.08;
+  }
+
+  .section-heading--default { color: var(--ink); }
+  .section-heading--inverse  { color: var(--white); }
+</style>
