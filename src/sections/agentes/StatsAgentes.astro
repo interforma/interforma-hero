@@ -1,0 +1,80 @@
+---
+// StatsAgentes.astro — Barra de 4 stats de la página /agentes
+---
+
+<div class="stats-wrap">
+  <dl class="stats" role="list">
+    <div class="stat" role="listitem">
+      <dt class="stat__num">30</dt>
+      <dd class="stat__label">Días de piloto</dd>
+    </div>
+    <div class="stat" role="listitem">
+      <dt class="stat__num">1·1·1</dt>
+      <dd class="stat__label">Agente · canal · KPI</dd>
+    </div>
+    <div class="stat" role="listitem">
+      <dt class="stat__num">5 min</dt>
+      <dd class="stat__label">SLA de derivación a humano</dd>
+    </div>
+    <div class="stat" role="listitem">
+      <dt class="stat__num">100%</dt>
+      <dd class="stat__label">Acciones sensibles aprobadas</dd>
+    </div>
+  </dl>
+</div>
+
+<style>
+  .stats-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 5vw, 72px);
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    border-top: 2px solid var(--color-border-default);
+    border-bottom: 2px solid var(--color-border-default);
+    margin: 0;
+    padding: 0;
+  }
+
+  .stat {
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-left: 2px solid var(--color-border-default);
+  }
+
+  .stat__num {
+    margin: 0;
+    font-family: var(--font-family-host-grotesk);
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--agents-accent);
+  }
+
+  .stat__label {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+  }
+
+  /* ── Responsive ──────────────────────────────────────── */
+  @media (max-width: 640px) {
+    .stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stat__num {
+      font-size: 36px;
+    }
+  }
+</style>

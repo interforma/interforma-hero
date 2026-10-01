@@ -1,0 +1,122 @@
+---
+// Dia30.astro — Sección "Puerta de decisión · día 30" de /agentes
+---
+
+<section id="dia30" class="dia30" aria-labelledby="dia30-heading">
+  <div class="dia30__container">
+    <div class="dia30__header">
+      <p class="dia30__eyebrow" aria-hidden="true">Puerta de decisión · día 30</p>
+      <h2 id="dia30-heading" class="dia30__h2">
+        Escalar solo si el KPI mejora y el control humano se sostiene.
+      </h2>
+    </div>
+
+    <dl class="dia30__grid">
+      <div class="dia30__option">
+        <dt class="dia30__dt dia30__dt--accent">Escalar</dt>
+        <dd class="dia30__dd">Meta cumplida. Sumamos canales o un segundo proceso.</dd>
+      </div>
+      <div class="dia30__option">
+        <dt class="dia30__dt">Ajustar</dt>
+        <dd class="dia30__dd">Mejora parcial. Afinamos límites y extendemos 15 días.</dd>
+      </div>
+      <div class="dia30__option">
+        <dt class="dia30__dt">Detener</dt>
+        <dd class="dia30__dd">Sin mejora. Cerramos el piloto con un informe de aprendizajes.</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<style>
+  .dia30 {
+    padding: 72px 0 96px;
+    border-top: 2px solid var(--color-border-default);
+  }
+
+  .dia30__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 5vw, 72px);
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .dia30__header {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .dia30__eyebrow {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--agents-700);
+  }
+
+  .dia30__h2 {
+    margin: 0;
+    font-family: var(--font-family-host-grotesk);
+    font-size: clamp(28px, 3.2vw, 44px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    color: var(--color-text-primary);
+    max-width: 24ch;
+  }
+
+  /* ── Grid ─────────────────────────────────────────────── */
+  .dia30__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    border-top: 2px solid var(--color-border-default);
+    border-bottom: 2px solid var(--color-border-default);
+    margin: 0;
+    padding: 0;
+  }
+
+  .dia30__option {
+    padding: 28px 24px;
+    border-left: 2px solid var(--color-border-default);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .dia30__dt {
+    font-family: var(--font-family-host-grotesk);
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+  }
+
+  .dia30__dt--accent {
+    color: var(--agents-accent);
+  }
+
+  .dia30__dd {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  /* ── Responsive ───────────────────────────────────────── */
+  @media (max-width: 640px) {
+    .dia30__grid {
+      border: none;
+    }
+
+    .dia30__option {
+      border-left: none;
+      border-top: 2px solid var(--color-border-default);
+      padding: 24px 0;
+    }
+  }
+</style>

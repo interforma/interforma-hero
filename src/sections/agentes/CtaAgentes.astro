@@ -1,0 +1,123 @@
+---
+// CtaAgentes.astro — Sección CTA final de /agentes
+---
+
+<section id="empezar" class="cta-ag" aria-labelledby="cta-ag-heading">
+  <div class="cta-ag__container">
+    <h2 id="cta-ag-heading" class="cta-ag__h2">
+      <span class="cta-ag__line">Empieza con un proceso.</span>
+      <span class="cta-ag__line">Mide en 30 días.</span>
+    </h2>
+
+    <div class="cta-ag__actions">
+      <a href="mailto:hola@interforma.ai" class="cta-ag__btn cta-ag__btn--primary">
+        <span>Agendar piloto</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="square" aria-hidden="true">
+          <path d="M5 12h14"/>
+          <path d="m12 5 7 7-7 7"/>
+        </svg>
+      </a>
+      <a href="mailto:hola@interforma.ai" class="cta-ag__btn cta-ag__btn--ghost">
+        Hablar con ventas
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-ag {
+    background: var(--agents-accent);
+    color: #fff;
+    padding: 80px 0;
+  }
+
+  .cta-ag__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 5vw, 72px);
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: flex-start;
+  }
+
+  .cta-ag__h2 {
+    margin: 0;
+    font-family: var(--font-family-host-grotesk);
+    font-size: clamp(36px, 4.6vw, 60px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 0.04em;
+  }
+
+  .cta-ag__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .cta-ag__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    font-family: var(--font-family-host-grotesk);
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: opacity 150ms;
+    border-radius: var(--radius-none);
+  }
+
+  .cta-ag__btn--primary {
+    background: #fff;
+    color: var(--color-text-primary);
+    padding: 16px 20px;
+    min-width: 240px;
+    justify-content: space-between;
+    border: none;
+  }
+
+  .cta-ag__btn--primary:hover {
+    opacity: 0.92;
+  }
+
+  .cta-ag__btn--primary:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+  }
+
+  .cta-ag__btn--ghost {
+    background: transparent;
+    color: #fff;
+    padding: 14px 20px;
+    border: 2px solid #fff;
+  }
+
+  .cta-ag__btn--ghost:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .cta-ag__btn--ghost:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+  }
+
+  /* ── Responsive ───────────────────────────────────────── */
+  @media (max-width: 640px) {
+    .cta-ag__actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .cta-ag__btn--primary {
+      min-width: unset;
+    }
+  }
+</style>
