@@ -1,4 +1,11 @@
 {
+  "redirects": [
+    {
+      "source": "/agentes/",
+      "destination": "/agentes",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
