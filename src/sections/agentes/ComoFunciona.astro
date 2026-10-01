@@ -1,0 +1,157 @@
+---
+// ComoFunciona.astro — Sección "Cómo funciona" de la página /agentes
+---
+
+<section id="como" class="como" aria-labelledby="como-heading">
+  <div class="como__container">
+    <div class="como__header">
+      <p class="como__eyebrow" aria-hidden="true">Cómo funciona</p>
+      <h2 id="como-heading" class="como__h2">
+        Un proceso, un canal, una métrica. Nada más para empezar.
+      </h2>
+    </div>
+
+    <div class="como__grid">
+      <div class="como__card">
+        <span class="como__num">
+          <span class="como__dot" aria-hidden="true"></span>
+          01
+        </span>
+        <h3 class="como__h3">Elige el proceso</h3>
+        <p class="como__p">
+          Cotizaciones, reservas o soporte: uno con volumen repetitivo y una acción
+          concreta al final.
+        </p>
+      </div>
+
+      <div class="como__card">
+        <span class="como__num">
+          <span class="como__dot" aria-hidden="true"></span>
+          02
+        </span>
+        <h3 class="como__h3">Conecta el canal</h3>
+        <p class="como__p">
+          WhatsApp Business, chat web o Instagram. El agente responde donde ya te
+          escriben tus clientes.
+        </p>
+      </div>
+
+      <div class="como__card">
+        <span class="como__num">
+          <span class="como__dot" aria-hidden="true"></span>
+          03
+        </span>
+        <h3 class="como__h3">Fija KPI y límites</h3>
+        <p class="como__p">
+          Tiempo de respuesta, resolución o conversión. Y los límites: qué aprueba
+          siempre una persona.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .como {
+    padding: 96px 0 72px;
+    border-top: 2px solid var(--color-border-default);
+  }
+
+  .como__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 5vw, 72px);
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+
+  .como__header {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .como__eyebrow {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--agents-700);
+  }
+
+  .como__h2 {
+    margin: 0;
+    font-family: var(--font-family-host-grotesk);
+    font-size: clamp(28px, 3.2vw, 44px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    color: var(--color-text-primary);
+    max-width: 22ch;
+  }
+
+  /* ── Cards grid ───────────────────────────────────────── */
+  .como__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 0;
+  }
+
+  .como__card {
+    padding: 28px;
+    border-left: 2px solid var(--color-border-default);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .como__num {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--color-text-secondary);
+  }
+
+  .como__dot {
+    display: block;
+    width: 8px;
+    height: 8px;
+    background: var(--agents-accent);
+    flex-shrink: 0;
+  }
+
+  .como__h3 {
+    margin: 0;
+    font-family: var(--font-family-host-grotesk);
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+  }
+
+  .como__p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  /* ── Responsive ───────────────────────────────────────── */
+  @media (max-width: 640px) {
+    .como__card {
+      border-left: none;
+      border-top: 2px solid var(--color-border-default);
+      padding: 24px 0;
+    }
+
+    .como__card:first-child {
+      border-top: none;
+    }
+  }
+</style>

@@ -1,0 +1,171 @@
+---
+// AppOperador.astro — Sección "App del operador" de /agentes
+---
+
+<section id="app" class="app-op" aria-labelledby="app-op-heading">
+  <div class="app-op__container">
+    <div class="app-op__grid">
+
+      <!-- Izquierda: copy -->
+      <div class="app-op__left">
+        <p class="app-op__eyebrow" aria-hidden="true">App del operador · iOS</p>
+        <h2 id="app-op-heading" class="app-op__h2">
+          El agente trabaja. Tu equipo decide.
+        </h2>
+        <p class="app-op__intro">
+          La app del operador pone en tu mano cada derivación, aprobación y alerta.
+          Sin apps nuevas que aprender: notificaciones directas, contexto completo y
+          una decisión por toque.
+        </p>
+      </div>
+
+      <!-- Derecha: features -->
+      <div class="app-op__right">
+        <div class="feature">
+          <svg class="feature__icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+               stroke="var(--agents-accent)" stroke-width="2" stroke-linecap="square"
+               aria-hidden="true">
+            <path d="M16 3h5v5"/>
+            <path d="M8 3H3v5"/>
+            <path d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3"/>
+            <path d="m15 9 6-6"/>
+          </svg>
+          <div class="feature__content">
+            <h3 class="feature__h3">Derivaciones con contexto</h3>
+            <p class="feature__p">
+              Qué aprendió el agente y por qué pidió ayuda. Tomas la conversación sin
+              preguntar de nuevo; el agente queda en pausa.
+            </p>
+          </div>
+        </div>
+
+        <div class="feature">
+          <svg class="feature__icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+               stroke="var(--agents-accent)" stroke-width="2" stroke-linecap="square"
+               aria-hidden="true">
+            <path d="M20 6 9 17l-5-5"/>
+          </svg>
+          <div class="feature__content">
+            <h3 class="feature__h3">Aprobaciones en un toque</h3>
+            <p class="feature__p">
+              Cotizaciones, reservas y descuentos propuestos por el agente esperan tu
+              visto bueno antes de llegar al cliente.
+            </p>
+          </div>
+        </div>
+
+        <div class="feature">
+          <svg class="feature__icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+               stroke="var(--agents-accent)" stroke-width="2" stroke-linecap="square"
+               aria-hidden="true">
+            <path d="M10.268 21a2 2 0 0 0 3.464 0"/>
+            <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/>
+          </svg>
+          <div class="feature__content">
+            <h3 class="feature__h3">Alertas que importan</h3>
+            <p class="feature__p">
+              SLA en riesgo, integraciones caídas, acciones pendientes. Sin ruido: solo
+              lo que requiere a una persona.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .app-op {
+    padding: 72px 0;
+    border-top: 2px solid var(--color-border-default);
+  }
+
+  .app-op__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 5vw, 72px);
+  }
+
+  .app-op__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: 48px;
+    align-items: start;
+  }
+
+  /* ── Left ─────────────────────────────────────────────── */
+  .app-op__left {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .app-op__eyebrow {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--agents-700);
+  }
+
+  .app-op__h2 {
+    margin: 0;
+    font-family: var(--font-family-host-grotesk);
+    font-size: clamp(28px, 3.2vw, 44px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    color: var(--color-text-primary);
+  }
+
+  .app-op__intro {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+  }
+
+  /* ── Right: features ──────────────────────────────────── */
+  .app-op__right {
+    border-top: 2px solid var(--color-border-default);
+  }
+
+  .feature {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 16px;
+    padding: 24px 0;
+    border-bottom: 2px solid var(--color-border-default);
+    align-items: start;
+  }
+
+  .feature__icon {
+    display: block;
+    flex-shrink: 0;
+  }
+
+  .feature__content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .feature__h3 {
+    margin: 0;
+    font-family: var(--font-family-host-grotesk);
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    color: var(--color-text-primary);
+  }
+
+  .feature__p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+</style>

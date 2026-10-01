@@ -1,0 +1,132 @@
+---
+// IntegracionSeguridad.astro — Sección integración y seguridad de /agentes
+---
+
+<section id="confianza" class="integ" aria-labelledby="integ-heading">
+  <div class="integ__container">
+    <div class="integ__header">
+      <p class="integ__eyebrow" aria-hidden="true">Integración y seguridad</p>
+      <h2 id="integ-heading" class="integ__h2">
+        Se adapta a tu tecnología. Protege a tus clientes.
+      </h2>
+    </div>
+
+    <div class="integ__grid">
+      <div class="integ__card">
+        <p class="integ__kicker">Agnóstico</p>
+        <h3 class="integ__h3">Funciona con lo que ya usas</h3>
+        <p class="integ__p">
+          Interforma Agents se integra vía API con tu CRM, ERP, sistema de reservas o
+          planillas actuales. Sin cambiar de herramientas ni migrar datos: el agente se
+          adapta a tu stack, no al revés.
+        </p>
+      </div>
+
+      <div class="integ__card">
+        <p class="integ__kicker">Datos protegidos</p>
+        <h3 class="integ__h3">Pensado para la normativa chilena</h3>
+        <p class="integ__p">
+          Diseñado para cumplir con la Ley 19.628 y la nueva Ley 21.719 de protección de
+          datos personales: tratamiento con finalidad definida, trazabilidad de cada
+          acción del agente y acceso controlado a la información de tus clientes.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .integ {
+    padding: 72px 0;
+    border-top: 2px solid var(--color-border-default);
+  }
+
+  .integ__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 5vw, 72px);
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .integ__header {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .integ__eyebrow {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--agents-700);
+  }
+
+  .integ__h2 {
+    margin: 0;
+    font-family: var(--font-family-host-grotesk);
+    font-size: clamp(28px, 3.2vw, 44px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    color: var(--color-text-primary);
+    max-width: 22ch;
+  }
+
+  /* ── Grid ─────────────────────────────────────────────── */
+  .integ__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: 0;
+  }
+
+  .integ__card {
+    padding: 32px;
+    border-left: 2px solid var(--color-border-default);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .integ__kicker {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--agents-700);
+  }
+
+  .integ__h3 {
+    margin: 0;
+    font-family: var(--font-family-host-grotesk);
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+  }
+
+  .integ__p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+  }
+
+  /* ── Responsive ───────────────────────────────────────── */
+  @media (max-width: 640px) {
+    .integ__card {
+      border-left: none;
+      border-top: 2px solid var(--color-border-default);
+      padding: 24px 0;
+    }
+
+    .integ__card:first-child {
+      border-top: none;
+    }
+  }
+</style>
