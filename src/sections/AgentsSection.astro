@@ -649,7 +649,7 @@
 
     // Read CSS-variable colors once (avoids literal hex values in generated HTML)
     const cs = getComputedStyle(document.documentElement);
-    const cv = (name, fb) => cs.getPropertyValue(name).trim() || fb;
+    const cv = (name: string, fb: string) => cs.getPropertyValue(name).trim() || fb;
     const C = {
       ink:  cv('--ink',   '#111110'),
       wht:  cv('--white', '#FFFFFF'),
@@ -676,22 +676,23 @@
 
     // DOM
     const stepItems  = Array.from(document.querySelectorAll('#demoStepsList .demo__step'));
-    const stepFills  = stepItems.map(li => li.querySelector('.demo__sbar-fill'));
+    const stepFills  = stepItems.map(li => li.querySelector<HTMLElement>('.demo__sbar-fill'));
     const phoneEl    = document.getElementById('phoneScreen');
     const ppBtn      = document.getElementById('demoPlayPause');
     const ppLabel    = ppBtn?.querySelector('.demo__pp-label');
-    const ppPause    = ppBtn?.querySelector('.demo__icon-pause');
-    const ppPlay     = ppBtn?.querySelector('.demo__icon-play');
+    const ppPause    = ppBtn?.querySelector<SVGElement>('.demo__icon-pause');
+    const ppPlay     = ppBtn?.querySelector<SVGElement>('.demo__icon-play');
     const sectionEl  = document.getElementById('agentesDemo');
 
-    let tick = 0, playing = true, iv = null;
+    let tick = 0, playing = true;
+    let iv: ReturnType<typeof setInterval> | null = null;
 
     // ── Reduced motion: static aprob at t=25, no timer ──
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // ── Helpers ──────────────────────────────────────────
-    function buildMsg(m, animate) {
-      const s = MS[m.from];
+    function buildMsg(m: (typeof MSGS)[number], animate: boolean) {
+      const s = MS[m.from as keyof typeof MS];
       const cls = animate ? 'phone-msg' : '';
       const who = s.who ? `<span style="font-family:var(--font-family-ui);font-size:9.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;opacity:0.8;">${s.who}</span>` : '';
       const fs   = m.from === 'sistema' ? '11.5px' : '13px';
@@ -699,7 +700,7 @@
       return `<div class="${cls}" style="align-self:${s.align};max-width:${maxw};background:${s.bg};color:${s.fg};border:${s.bd};border-radius:${s.radius};padding:9px 11px;font-size:${fs};line-height:1.4;display:flex;flex-direction:column;gap:3px;">${who}<span>${m.text}</span></div>`;
     }
 
-    function buildChatScreen(t) {
+    function buildChatScreen(t: number) {
       const opPhase = t >= 16;
       const tag = !opPhase
         ? (t >= 8 ? { label: 'Espera persona', bg: C.a600, fg: C.wht }
@@ -727,14 +728,14 @@
       return `<div style="padding:56px 16px 12px;border-bottom:1px solid ${C.g300};display:flex;align-items:center;gap:10px;"><div style="flex:1;display:flex;flex-direction:column;gap:2px;"><span style="font-family:var(--font-family-heading);font-weight:800;font-size:16px;">María José Pérez</span><span style="font-size:12px;color:${C.g500};">WhatsApp · Cotización</span></div><span style="font-family:var(--font-family-ui);font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:5px 8px;border-radius:4px;white-space:nowrap;background:${tag.bg};color:${tag.fg};">${tag.label}</span></div><div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;padding:14px;overflow:hidden;">${msgsHtml}${typingHtml}</div><div style="border-top:1px solid ${C.g300};padding:12px 14px 30px;">${bottomHtml}</div>${bannerHtml}`;
     }
 
-    function buildHandoffScreen(t) {
+    function buildHandoffScreen(t: number) {
       const tapHtml = (t === 14 || t === 15)
         ? `<span class="tap" style="position:absolute;left:50%;top:50%;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;border:2px solid ${C.wht};background:rgba(255,255,255,0.3);"></span>` : '';
       const takeBg = t === 15 ? C.a700 : C.a600;
       return `<div class="phone-screen" style="display:flex;flex-direction:column;flex:1;"><div style="background:${C.a600};color:${C.wht};padding:58px 18px 16px;display:flex;flex-direction:column;gap:8px;"><span style="font-family:var(--font-family-ui);font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;">Espera a una persona · 6 min</span><span style="font-family:var(--font-family-heading);font-size:26px;font-weight:800;line-height:1.05;letter-spacing:-0.02em;">María José Pérez</span></div><div style="flex:1;padding:16px 18px;display:flex;flex-direction:column;gap:16px;"><div style="display:flex;flex-direction:column;gap:5px;"><span style="font-family:var(--font-family-ui);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:${C.a700};">Por qué pidió ayuda</span><span style="font-size:15px;line-height:1.45;font-weight:600;">Pide 20% de descuento; la política permite máximo 10%.</span></div><div style="display:flex;flex-direction:column;"><span style="font-family:var(--font-family-ui);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:${C.g500};padding-bottom:6px;">Lo que aprendió el agente</span><div style="border-top:1px solid ${C.ink};font-size:13px;"><div style="display:grid;grid-template-columns:88px 1fr;gap:8px;padding:9px 0;border-bottom:1px solid ${C.g200};"><span style="color:${C.g500};">Intención</span><span style="font-weight:600;">Cotización · plan mensual</span></div><div style="display:grid;grid-template-columns:88px 1fr;gap:8px;padding:9px 0;border-bottom:1px solid ${C.g200};"><span style="color:${C.g500};">Datos</span><span style="font-weight:600;">3 sucursales · 40 usuarios · 12 meses</span></div><div style="display:grid;grid-template-columns:88px 1fr;gap:8px;padding:9px 0;border-bottom:1px solid ${C.g200};"><span style="color:${C.g500};">CRM</span><span style="font-weight:600;">Lead nuevo, sin historial</span></div><div style="display:grid;grid-template-columns:88px 1fr;gap:8px;padding:9px 0;border-bottom:1px solid ${C.g200};"><span style="color:${C.g500};">Sugerencia</span><span style="font-weight:600;">10% + implementación sin costo</span></div><div style="display:grid;grid-template-columns:88px 1fr;gap:8px;padding:9px 0;border-bottom:1px solid ${C.g200};"><span style="color:${C.g500};">Confianza</span><span style="font-weight:600;">54%</span></div></div></div></div><div style="padding:12px 14px 30px;border-top:1px solid ${C.g300};"><div style="position:relative;display:flex;justify-content:space-between;align-items:center;background:${takeBg};color:${C.wht};border-radius:12px;padding:15px;font-weight:700;font-size:15px;"><span>Tomar conversación</span><span>→</span>${tapHtml}</div></div></div>`;
     }
 
-    function buildAprobScreen(t) {
+    function buildAprobScreen(t: number) {
       const tapHtml = (t === 25 || t === 26)
         ? `<span class="tap" style="position:absolute;left:50%;top:50%;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;border:2px solid ${C.wht};background:rgba(255,255,255,0.3);"></span>` : '';
       const approveBg = t === 26 ? C.a700 : C.a600;
@@ -745,7 +746,7 @@
       return `<div class="phone-screen" style="display:flex;flex-direction:column;flex:1;"><div style="padding:58px 18px 12px;border-bottom:1px solid ${C.g300};display:flex;justify-content:space-between;align-items:baseline;"><span style="font-family:var(--font-family-heading);font-size:26px;font-weight:800;letter-spacing:-0.02em;">Aprobaciones</span><span style="font-family:var(--font-family-heading);font-size:20px;font-weight:800;color:${C.a600};">${aprobCount}</span></div><div style="flex:1;padding:16px 18px;display:flex;flex-direction:column;gap:12px;overflow:hidden;"><span style="font-family:var(--font-family-ui);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:${C.a700};">Cotización · propuesta por el agente</span><span style="font-family:var(--font-family-heading);font-size:20px;font-weight:800;line-height:1.15;letter-spacing:-0.01em;">Plan mensual · 40 usuarios · María José Pérez</span><div style="border-top:1px solid ${C.ink};font-size:13px;"><div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid ${C.g200};"><span style="color:${C.g500};">Precio lista</span><span style="font-weight:600;">US$ 2.400 / mes</span></div><div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid ${C.g200};"><span style="color:${C.g500};">Descuento</span><span style="font-weight:600;">10% · dentro de política</span></div><div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid ${C.g200};"><span style="color:${C.g500};">Implementación</span><span style="font-weight:600;">Sin costo</span></div><div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid ${C.ink};font-size:15px;font-weight:800;"><span>Total mensual</span><span>US$ 2.160</span></div></div></div><div style="padding:12px 14px 30px;border-top:1px solid ${C.g300};">${bottomHtml}</div></div>`;
     }
 
-    function buildHomeScreen(t) {
+    function buildHomeScreen(t: number) {
       const homeT = t - 29;
       const kpiVal = homeT >= 2 ? '42 s' : '18 min';
       const barsH = [100, 92, 70, 48, 30, 18, 12, 9, 7, 6, 5, 4];
@@ -758,7 +759,7 @@
     }
 
     // ── Render ────────────────────────────────────────────
-    function render(t) {
+    function render(t: number) {
       // Steps
       stepItems.forEach((li, i) => {
         const s = STEPS[i];

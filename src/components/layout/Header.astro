@@ -350,7 +350,10 @@ import { navigation } from '@config/navigation';
 
   // ── Scroll-spy ────────────────────────────────────────
   const navLinks = Array.from(header.querySelectorAll<HTMLAnchorElement>('.header__nav-link'));
-  const sectionIds = navLinks.map(a => a.getAttribute('href')?.slice(1)).filter(Boolean) as string[];
+  // Solo los links a anclas de la página actual participan del scroll-spy
+  const linkId = (a: HTMLAnchorElement) =>
+    a.pathname === window.location.pathname ? a.hash.slice(1) : '';
+  const sectionIds = navLinks.map(linkId).filter(Boolean);
   const intersecting = new Set<string>();
 
   function updateActiveLink() {
@@ -369,7 +372,7 @@ import { navigation } from '@config/navigation';
       }
     }
     navLinks.forEach(a => {
-      const matches = a.getAttribute('href') === `#${activeId}`;
+      const matches = activeId !== null && linkId(a) === activeId;
       a.classList.toggle('is-active', matches);
     });
   }
