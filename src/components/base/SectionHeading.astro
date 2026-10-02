@@ -2,10 +2,11 @@
 export interface Props {
   size?: 'xl' | 'lg';
   variant?: 'default' | 'inverse';
+  id?: string;
 }
-const { size = 'lg', variant = 'default' } = Astro.props;
+const { size = 'lg', variant = 'default', id } = Astro.props;
 ---
-<h2 class={`section-heading section-heading--${size} section-heading--${variant}`}>
+<h2 id={id} class={`section-heading section-heading--${size} section-heading--${variant}`}>
   <slot />
 </h2>
 
