@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informe Grupo Borie · Septiembre–Octubre 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --navy: #0D1F3C;
+    --blue: #1A6FD4;
+    --teal: #0A9688;
+    --green: #1E8C50;
+    --amber: #D97010;
+    --red: #C0392B;
+    --light-bg: #F5F7FA;
+    --card-bg: #FFFFFF;
+    --border: #E2E8F0;
+    --text-main: #1A202C;
+    --text-muted: #64748B;
+    --nav-h: 60px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--light-bg);
+    color: var(--text-main);
+    font-size: 15px;
+    line-height: 1.65;
+    padding-top: var(--nav-h);
+  }
+
+  /* ── NAV ── */
+  #topNav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    height: var(--nav-h);
+    background: var(--navy);
+    display: flex; align-items: center;
+    padding: 0 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.25);
+  }
+  #navLogo {
+    font-weight: 700; font-size: 13px; color: #fff; letter-spacing: .5px;
+    white-space: nowrap; margin-right: 24px; flex-shrink: 0;
+  }
+  #navLinks {
+    display: flex; gap: 6px; list-style: none; flex-wrap: nowrap;
+    overflow-x: auto; flex: 1;
+  }
+  #navLinks::-webkit-scrollbar { display: none; }
+  #navLinks a {
+    color: rgba(255,255,255,.65); font-size: 12px; font-weight: 500;
+    padding: 4px 10px; border-radius: 20px;
+    text-decoration: none; white-space: nowrap;
+    transition: background .2s, color .2s;
+  }
+  #navLinks a:hover, #navLinks a.active {
+    background: rgba(255,255,255,.15); color: #fff;
+  }
+  #burgerBtn {
+    display: none; background: none; border: none; cursor: pointer;
+    padding: 6px; margin-left: auto; flex-shrink: 0;
+  }
+  #burgerBtn span {
+    display: block; width: 22px; height: 2px;
+    background: #fff; margin: 4px 0; transition: .3s;
+  }
+  #navDrawer {
+    display: none; position: fixed; top: var(--nav-h); left: 0; right: 0;
+    background: var(--navy); z-index: 199; padding: 12px 0 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.3);
+  }
+  #navDrawer.open { display: block; }
+  #navDrawer a {
+    display: block; color: rgba(255,255,255,.8); font-size: 14px;
+    padding: 10px 24px; text-decoration: none;
+  }
+  #navDrawer a:hover { background: rgba(255,255,255,.08); color: #fff; }
+
+  @media (max-width: 860px) {
+    #navLinks { display: none; }
+    #burgerBtn { display: block; }
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 960px; margin: 0 auto; padding: 0 16px 60px; }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #1a3a6e 100%);
+    color: #fff; padding: 56px 16px 48px; text-align: center;
+  }
+  .hero-badge {
+    display: inline-block; background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 20px; font-size: 11px; font-weight: 600;
+    letter-spacing: .8px; text-transform: uppercase;
+    padding: 4px 14px; margin-bottom: 18px; color: rgba(255,255,255,.85);
+  }
+  .hero h1 {
+    font-size: clamp(24px, 4vw, 38px); font-weight: 700;
+    line-height: 1.2; margin-bottom: 10px;
+  }
+  .hero p { color: rgba(255,255,255,.65); font-size: 15px; }
+
+  /* ── SECTIONS ── */
+  section { padding: 48px 0 8px; }
+  .section-title {
+    font-size: 20px; font-weight: 700; color: var(--navy);
+    border-left: 4px solid var(--blue);
+    padding-left: 14px; margin-bottom: 24px;
+  }
+  .section-intro {
+    color: var(--text-muted); margin-bottom: 24px; max-width: 680px;
+    font-size: 14px;
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--card-bg); border-radius: 14px;
+    border: 1px solid var(--border);
+    padding: 24px; margin-bottom: 16px;
+    box-shadow: 0 1px 6px rgba(0,0,0,.04);
+  }
+  .card-title {
+    font-size: 13px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .7px; color: var(--text-muted); margin-bottom: 16px;
+  }
+
+  /* ── KPI GRID ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px; margin-bottom: 16px;
+  }
+  .kpi {
+    background: var(--card-bg); border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 18px 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.04);
+  }
+  .kpi-label {
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .6px; color: var(--text-muted); margin-bottom: 6px;
+  }
+  .kpi-value {
+    font-size: 26px; font-weight: 700; color: var(--navy);
+    line-height: 1;
+  }
+  .kpi-delta {
+    font-size: 12px; margin-top: 4px; font-weight: 500;
+  }
+  .kpi-delta.up { color: var(--green); }
+  .kpi-delta.neutral { color: var(--amber); }
+  .kpi-delta.down { color: var(--red); }
+
+  /* ── TABLE ── */
+  .tbl-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th {
+    background: var(--light-bg); color: var(--text-muted);
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .6px; padding: 10px 14px; text-align: left;
+    border-bottom: 2px solid var(--border);
+  }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #F8FAFF; }
+  .badge {
+    display: inline-block; border-radius: 6px; font-size: 11px;
+    font-weight: 600; padding: 2px 8px;
+  }
+  .badge-green { background: #D1FAE5; color: #065F46; }
+  .badge-blue  { background: #DBEAFE; color: #1E40AF; }
+  .badge-amber { background: #FEF3C7; color: #92400E; }
+  .badge-gray  { background: #F1F5F9; color: #475569; }
+  .badge-red   { background: #FEE2E2; color: #991B1B; }
+
+  /* ── CHART CONTAINERS ── */
+  .chart-wrap {
+    background: var(--card-bg); border-radius: 14px;
+    border: 1px solid var(--border);
+    padding: 24px; margin-bottom: 16px;
+    box-shadow: 0 1px 6px rgba(0,0,0,.04);
+  }
+  .chart-title {
+    font-size: 13px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .7px; color: var(--text-muted); margin-bottom: 16px;
+  }
+  .chart-inner { position: relative; height: 260px; }
+
+  /* ── TWO-COL ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 660px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ── TIMELINE ── */
+  .timeline { list-style: none; }
+  .timeline li {
+    display: flex; gap: 16px; padding-bottom: 20px;
+    position: relative;
+  }
+  .timeline li::before {
+    content: ''; position: absolute; left: 11px; top: 22px;
+    width: 2px; bottom: 0; background: var(--border);
+  }
+  .timeline li:last-child::before { display: none; }
+  .tl-dot {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--blue); flex-shrink: 0; margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .tl-dot svg { width: 12px; height: 12px; fill: #fff; }
+  .tl-date { font-size: 12px; color: var(--text-muted); font-family: 'DM Mono', monospace; }
+  .tl-text { font-size: 14px; }
+
+  /* ── TOOLTIP ── */
+  .tip {
+    position: relative; cursor: help;
+    border-bottom: 1px dashed var(--blue); color: var(--blue);
+  }
+  .tip::after {
+    content: attr(data-tip);
+    position: absolute; bottom: calc(100% + 8px); left: 50%;
+    transform: translateX(-50%);
+    background: var(--navy); color: #fff; font-size: 12px; line-height: 1.4;
+    padding: 8px 12px; border-radius: 8px; width: 220px;
+    pointer-events: none; opacity: 0; transition: opacity .2s;
+    white-space: normal; z-index: 100;
+  }
+  .tip::before {
+    content: ''; position: absolute; bottom: calc(100% + 2px); left: 50%;
+    transform: translateX(-50%); border: 6px solid transparent;
+    border-top-color: var(--navy); pointer-events: none;
+    opacity: 0; transition: opacity .2s;
+  }
+  .tip:hover::after, .tip:hover::before { opacity: 1; }
+
+  /* ── STATUS PILLS ── */
+  .status-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+  .status-pill {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 20px; padding: 6px 14px; font-size: 13px;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot-green { background: var(--green); }
+  .dot-amber { background: var(--amber); }
+  .dot-blue  { background: var(--blue); }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight {
+    border-radius: 12px; padding: 18px 20px;
+    margin-bottom: 16px; font-size: 14px; line-height: 1.6;
+  }
+  .highlight-blue { background: #EBF4FF; border-left: 4px solid var(--blue); }
+  .highlight-green { background: #ECFDF5; border-left: 4px solid var(--green); }
+  .highlight-amber { background: #FFFBEB; border-left: 4px solid var(--amber); }
+  .highlight-navy { background: #EEF2FF; border-left: 4px solid var(--navy); }
+
+  /* ── BILLING ── */
+  .billing-total {
+    background: var(--navy); color: #fff; border-radius: 14px;
+    padding: 24px 28px;
+  }
+  .billing-total .label { font-size: 13px; opacity: .7; margin-bottom: 4px; }
+  .billing-total .amount { font-size: 36px; font-weight: 700; }
+  .billing-total .sub { font-size: 13px; opacity: .6; margin-top: 6px; }
+
+  /* ── WEB IMPROVEMENTS ── */
+  .site-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px 20px; margin-bottom: 12px;
+  }
+  .site-name {
+    font-size: 14px; font-weight: 700; color: var(--blue); margin-bottom: 10px;
+  }
+  .site-changes { list-style: none; }
+  .site-changes li {
+    font-size: 13px; color: var(--text-main); padding: 4px 0;
+    display: flex; gap: 8px; align-items: flex-start;
+  }
+  .site-changes li::before {
+    content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0;
+  }
+
+  /* ── NEXT STEPS ── */
+  .step-card {
+    background: var(--card-bg); border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 16px 20px; margin-bottom: 10px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .step-num {
+    background: var(--blue); color: #fff; border-radius: 50%;
+    width: 28px; height: 28px; display: flex; align-items: center;
+    justify-content: center; font-size: 13px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .step-text { font-size: 14px; }
+  .step-text strong { display: block; margin-bottom: 3px; }
+
+  /* ── EXPANSION ── */
+  .expansion-box {
+    background: linear-gradient(135deg, #0D1F3C 0%, #1a3a6e 100%);
+    color: #fff; border-radius: 16px; padding: 32px 28px; margin-bottom: 16px;
+  }
+  .expansion-box h3 { font-size: 20px; margin-bottom: 10px; }
+  .expansion-box p { font-size: 14px; opacity: .8; line-height: 1.7; }
+  .expansion-box ul { margin-top: 14px; padding-left: 0; list-style: none; }
+  .expansion-box li {
+    font-size: 13px; opacity: .85; padding: 5px 0;
+    display: flex; gap: 8px;
+  }
+  .expansion-box li::before { content: '→'; opacity: .6; flex-shrink: 0; }
+
+  /* ── FOOTER ── */
+  .report-footer {
+    border-top: 1px solid var(--border); padding: 32px 0 16px;
+    color: var(--text-muted); font-size: 13px; text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="topNav">
+  <span id="navLogo">Grupo Borie · Oct 2026</span>
+  <ul id="navLinks">
+    <li><a href="#sec-resumen">Resumen</a></li>
+    <li><a href="#sec-rrss">RRSS</a></li>
+    <li><a href="#sec-ads">Meta Ads</a></li>
+    <li><a href="#sec-web">Web</a></li>
+    <li><a href="#sec-whatsapp">WhatsApp</a></li>
+    <li><a href="#sec-crm">CRM</a></li>
+    <li><a href="#sec-expansion">Expansión</a></li>
+    <li><a href="#sec-pasos">Próximos pasos</a></li>
+    <li><a href="#sec-facturacion">Facturación</a></li>
+  </ul>
+  <button id="burgerBtn" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div id="navDrawer">
+  <a href="#sec-resumen" onclick="closeDrawer()">Resumen ejecutivo</a>
+  <a href="#sec-rrss" onclick="closeDrawer()">RRSS</a>
+  <a href="#sec-ads" onclick="closeDrawer()">Meta Ads</a>
+  <a href="#sec-web" onclick="closeDrawer()">Mejoras web</a>
+  <a href="#sec-whatsapp" onclick="closeDrawer()">Agente WhatsApp</a>
+  <a href="#sec-crm" onclick="closeDrawer()">CRM Twenty</a>
+  <a href="#sec-expansion" onclick="closeDrawer()">Expansión Grupo Borie</a>
+  <a href="#sec-pasos" onclick="closeDrawer()">Próximos pasos</a>
+  <a href="#sec-facturacion" onclick="closeDrawer()">Facturación</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Informe de Servicios</div>
+  <h1>First Cargo / Grupo Borie</h1>
+  <p>Período Septiembre–Octubre 2026 &nbsp;·&nbsp; Emitido 9 oct 2026 &nbsp;·&nbsp; Interforma Digital</p>
+</div>
+
+<div class="container">
+
+<!-- ── 1. RESUMEN EJECUTIVO ── -->
+<section id="sec-resumen">
+  <h2 class="section-title">1. Resumen ejecutivo</h2>
+  <p class="section-intro">El período consolida el ecosistema digital en funcionamiento pleno: RRSS con crecimiento sostenido, sistema de WhatsApp activo recibiendo consultas, CRM evolucionado hacia plataforma de gestión integral y cuatro sitios web mejorados con nueva sección de chat interactivo y video corporativo.</p>
+
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">Seguidores totales</div>
+      <div class="kpi-value">488</div>
+      <div class="kpi-delta up">+6.09% vs período anterior</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Impresiones RRSS</div>
+      <div class="kpi-value">15.5K</div>
+      <div class="kpi-delta up">+2.089% en orgánico</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Conversaciones WA</div>
+      <div class="kpi-value">48</div>
+      <div class="kpi-delta neutral">Período 30 días</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Oportunidades CRM</div>
+      <div class="kpi-value">156</div>
+      <div class="kpi-delta up">18 ganadas · 7 etapas</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Sitios actualizados</div>
+      <div class="kpi-value">4</div>
+      <div class="kpi-delta up">WhatsApp Chat + Video</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Flujo n8n → CRM</div>
+      <div class="kpi-value">✓</div>
+      <div class="kpi-delta up">Restaurado 30 sept</div>
+    </div>
+  </div>
+
+  <div class="highlight highlight-blue">
+    <strong>Hito del período:</strong> El 30 de septiembre se normalizaron las credenciales de Google en el flujo de cotización — el ciclo completo <span class="tip" data-tip="n8n es la plataforma de automatización que conecta WhatsApp → CRM → PDF → Google Drive → Gmail">n8n</span> → PDF → Drive → Gmail quedó operativo de punta a punta. El CRM evolucionó de gestión comercial a plataforma con módulos de Marketing, Operaciones Ganadas y Postventa.
+  </div>
+</section>
+
+<!-- ── 2. RRSS ── -->
+<section id="sec-rrss">
+  <h2 class="section-title">2. Redes Sociales (1 sept – 8 oct 2026)</h2>
+  <p class="section-intro">Cuenta Firstcargo: Facebook, Instagram y LinkedIn. Período con 41 publicaciones y crecimiento sostenido en las tres plataformas.</p>
+
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">Facebook</div>
+      <div class="kpi-value">174</div>
+      <div class="kpi-delta up">+4.19% seguidores</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Instagram</div>
+      <div class="kpi-value">242</div>
+      <div class="kpi-delta up">+7.08% seguidores</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">LinkedIn</div>
+      <div class="kpi-value">72</div>
+      <div class="kpi-delta up">+7.46% seguidores</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="chart-wrap">
+      <div class="chart-title">Impresiones orgánicas por red</div>
+      <div class="chart-inner"><canvas id="chartImpresiones"></canvas></div>
+    </div>
+    <div class="chart-wrap">
+      <div class="chart-title">Interacciones por red</div>
+      <div class="chart-inner"><canvas id="chartInteracciones"></canvas></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Posts más destacados (por impresiones)</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Red</th>
+            <th>Extracto</th>
+            <th>Impresiones</th>
+            <th>Interacciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>24 sept</td>
+            <td><span class="badge badge-blue">LinkedIn</span></td>
+            <td>En minería, la logística no es solo transporte: es continuidad operacional…</td>
+            <td><strong>137</strong></td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <td>29 sept</td>
+            <td><span class="badge badge-blue">LinkedIn</span></td>
+            <td>¿Sabías que una cotización logística incompleta puede costar más de lo previsto?…</td>
+            <td>78</td>
+            <td>12</td>
+          </tr>
+          <tr>
+            <td>8 sept</td>
+            <td><span class="badge badge-amber">Instagram</span></td>
+            <td>Cuando importas o exportas desde Latinoamérica, no basta con un buen operador…</td>
+            <td>53</td>
+            <td>10</td>
+          </tr>
+          <tr>
+            <td>3 sept</td>
+            <td><span class="badge badge-amber">Instagram</span></td>
+            <td>¿Tu carga no llena un contenedor completo? No tienes que pagar por espacio…</td>
+            <td>52</td>
+            <td>6</td>
+          </tr>
+          <tr>
+            <td>20 sept</td>
+            <td><span class="badge badge-amber">Instagram</span></td>
+            <td>Importar maquinaria no es como importar cualquier mercancía…</td>
+            <td>50</td>
+            <td>10</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Audiencia firstcargo.cl (tráfico web)</div>
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="kpi-label">Visualizaciones</div>
+        <div class="kpi-value">561</div>
+        <div class="kpi-delta up">+85.76%</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Visitas</div>
+        <div class="kpi-value">408</div>
+        <div class="kpi-delta up">+59.38%</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Visitantes únicos</div>
+        <div class="kpi-value">384</div>
+        <div class="kpi-delta up">+54.22%</div>
+      </div>
+    </div>
+    <p style="font-size:13px; color:var(--text-muted); margin-top:8px;">Septiembre fue el mes con mayor tráfico de los últimos 12 meses, según historial visible en Metricool.</p>
+  </div>
+
+  <!-- AGENCIA BORIE RRSS -->
+  <div style="margin-top:32px; border-top:2px solid var(--border); padding-top:28px;">
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+      <h3 style="font-size:16px; font-weight:700; color:var(--navy);">Agencia de Aduanas Borie — Canal en gestión</h3>
+      <span style="background:#EEF2FF; color:var(--blue); font-size:11px; font-weight:600; padding:2px 10px; border-radius:20px; letter-spacing:.4px; white-space:nowrap;">NUEVO · SE SUMA ESTE PERÍODO</span>
+    </div>
+    <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">Gestión RRSS iniciada en paralelo a First Cargo. Métricas aún no integradas a Metricool — datos extraídos directamente de Meta Business Suite (11 sept – 8 oct 2026).</p>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+
+      <!-- Facebook -->
+      <div class="card" style="margin-bottom:0">
+        <div class="card-title" style="display:flex;align-items:center;gap:8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.514c-1.491 0-1.956.93-1.956 1.886v2.268h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+          Facebook · agenciaborie
+        </div>
+        <div class="kpi-grid" style="grid-template-columns:1fr 1fr; gap:8px; margin-top:8px;">
+          <div class="kpi" style="padding:12px">
+            <div class="kpi-label">Seguidores totales</div>
+            <div class="kpi-value" style="font-size:24px">127</div>
+          </div>
+          <div class="kpi" style="padding:12px">
+            <div class="kpi-label">Visualizaciones</div>
+            <div class="kpi-value" style="font-size:24px">45</div>
+            <div class="kpi-delta down">↓11,8%</div>
+          </div>
+          <div class="kpi" style="padding:12px">
+            <div class="kpi-label">Espectadores</div>
+            <div class="kpi-value" style="font-size:24px">22</div>
+            <div class="kpi-delta up">↑450%</div>
+          </div>
+          <div class="kpi" style="padding:12px">
+            <div class="kpi-label">Visitas al perfil</div>
+            <div class="kpi-value" style="font-size:24px">23</div>
+            <div class="kpi-delta up">↑15%</div>
+          </div>
+        </div>
+        <div style="margin-top:10px; font-size:12px; color:var(--text-muted);">
+          Audiencia: 63,4% hombres · rango 55–64 predominante<br>
+          Ciudades: Santiago 30,7% · Viña del Mar 9,4% · Buenos Aires 7,1%<br>
+          Países: Chile 64,6% · Argentina 18,9% · EE.UU 3,1%
+        </div>
+      </div>
+
+      <!-- Instagram -->
+      <div class="card" style="margin-bottom:0">
+        <div class="card-title" style="display:flex;align-items:center;gap:8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="url(#ig-grad)"><defs><linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#f09433"/><stop offset="25%" stop-color="#e6683c"/><stop offset="50%" stop-color="#dc2743"/><stop offset="75%" stop-color="#cc2366"/><stop offset="100%" stop-color="#bc1888"/></linearGradient></defs><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          Instagram · agenciaborie
+        </div>
+        <div class="kpi-grid" style="grid-template-columns:1fr 1fr; gap:8px; margin-top:8px;">
+          <div class="kpi" style="padding:12px">
+            <div class="kpi-label">Seguidores totales</div>
+            <div class="kpi-value" style="font-size:24px">167</div>
+          </div>
+          <div class="kpi" style="padding:12px">
+            <div class="kpi-label">Visualizaciones</div>
+            <div class="kpi-value" style="font-size:24px">145</div>
+            <div class="kpi-delta up">↑383,3%</div>
+          </div>
+          <div class="kpi" style="padding:12px">
+            <div class="kpi-label">Alcance</div>
+            <div class="kpi-value" style="font-size:24px">28</div>
+            <div class="kpi-delta up">↑1.300%</div>
+          </div>
+          <div class="kpi" style="padding:12px">
+            <div class="kpi-label">Interacciones</div>
+            <div class="kpi-value" style="font-size:24px">35</div>
+            <div class="kpi-delta up">↑100%</div>
+          </div>
+        </div>
+        <div style="margin-top:10px; font-size:12px; color:var(--text-muted);">
+          Audiencia: 56,4% hombres · rango 35–44 predominante<br>
+          Ciudades: Santiago 48,5% · Colina 2,4% · Iquique 1,2%<br>
+          Países: Chile 66,5% · Italia 3% · Argentina 1,8%
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight highlight-blue" style="margin-top:0">
+      <strong>Contexto:</strong> Agencia Borie se incorpora a la gestión digital de Interforma este período. Los seguidores actuales (127 FB · 167 IG) son la base desde la que se construirá la presencia digital, con el mismo plan de contenidos y calendario editorial que First Cargo. A partir de noviembre las métricas quedarán integradas en Metricool para seguimiento unificado.
+    </div>
+  </div>
+</section>
+
+<!-- ── 3. META ADS ── -->
+<section id="sec-ads">
+  <h2 class="section-title">3. Meta Ads</h2>
+  <p class="section-intro">Campaña activa: <strong>FC_CotizaAhora_Test_Ago26</strong> — objetivo OUTCOME_ENGAGEMENT con foco en iniciar conversaciones WhatsApp.</p>
+
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">Impresiones</div>
+      <div class="kpi-value">14.4K</div>
+      <div class="kpi-delta neutral">Meta Ads período</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Clics</div>
+      <div class="kpi-value">203</div>
+      <div class="kpi-delta neutral">CPC: $351.86 CLP</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">CPM</div>
+      <div class="kpi-value">$4.971</div>
+      <div class="kpi-delta neutral">CLP por mil impresiones</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Gasto total</div>
+      <div class="kpi-value">$71.4K</div>
+      <div class="kpi-delta neutral">CLP período</div>
+    </div>
+  </div>
+
+  <div class="highlight highlight-amber">
+    <strong>Nota:</strong> La campaña registra actividad en dos tramos (inicio de septiembre y primera semana de octubre), con pausa intermedia. El CTR promedio indica que el público objetivo está respondiendo. Se recomienda activar una campaña nueva con presupuesto diario definido para mantener flujo constante de consultas hacia WhatsApp.
+  </div>
+</section>
+
+<!-- ── 4. MEJORAS WEB ── -->
+<section id="sec-web">
+  <h2 class="section-title">4. Mejoras a los sitios web del Grupo Borie</h2>
+  <p class="section-intro">Durante el período se aplicaron cuatro mejoras estructurales a los cuatro sitios del grupo, replicando desde firstcargo.cl hacia bmgroup.cl, agenciaborie.cl y bmtransport.cl.</p>
+
+  <div class="status-row">
+    <span class="status-pill"><span class="dot dot-green"></span>firstcargo.cl <span style="font-size:11px;opacity:.7">ES · EN</span></span>
+    <span class="status-pill"><span class="dot dot-green"></span>bmgroup.cl <span style="font-size:11px;opacity:.7">ES · EN</span></span>
+    <span class="status-pill"><span class="dot dot-green"></span>agenciaborie.cl <span style="font-size:11px;opacity:.7">ES · EN</span></span>
+    <span class="status-pill"><span class="dot dot-green"></span>bmtransport.cl <span style="font-size:11px;opacity:.7">ES</span></span>
+  </div>
+
+  <div class="site-card">
+    <div class="site-name">Cambio 1 — Sección WhatsApp Chat animada</div>
+    <ul class="site-changes">
+      <li>Se reemplazó el formulario Cotizador por una sección con chat de WhatsApp animado</li>
+      <li>Fondo azul oscuro con mockup de teléfono (CSS puro) y 6 mensajes en secuencia</li>
+      <li>Botón CTA directo a WhatsApp con mensaje pre-llenado</li>
+      <li>Actualizado en Nav, Hero, Footer y Services: <code>#cotizador</code> → <code>#whatsapp-chat</code></li>
+    </ul>
+  </div>
+
+  <div class="site-card">
+    <div class="site-name">Cambio 2 — Video corporativo BM Group</div>
+    <ul class="site-changes">
+      <li>Nueva sección <code>VideoSection</code> entre "Quiénes Somos" y el chat de WhatsApp</li>
+      <li>Video corporativo del grupo embebido desde Google Drive</li>
+      <li>Diseño con fondo oscuro, título de sección y poster de pre-carga</li>
+    </ul>
+  </div>
+
+  <div class="site-card">
+    <div class="site-name">Cambio 3 — Widget flotante WhatsApp simplificado</div>
+    <ul class="site-changes">
+      <li>Se reemplazó el panel popup con 4 botones por un tooltip tipo píldora con un solo mensaje</li>
+      <li>Diseño más limpio: punto verde animado + texto "Cotizar o consultar 👋"</li>
+      <li>Adaptado con mensajes distintos según el servicio de cada sitio</li>
+    </ul>
+  </div>
+
+  <div class="site-card">
+    <div class="site-name">Cambio 4 — Actualización de links y navegación</div>
+    <ul class="site-changes">
+      <li>Todos los CTAs internos actualizados al nuevo anchor <code>#whatsapp-chat</code></li>
+      <li>Archivos afectados: Nav, Hero, Footer, Services, ServicePage, IndustryPage, VideoSection</li>
+      <li>Build verificado y desplegado vía Vercel desde rama <code>main</code> en cada repositorio</li>
+    </ul>
+  </div>
+
+  <div class="highlight highlight-green">
+    Estos cambios mejoran directamente el <strong>posicionamiento orgánico en Google</strong>: secciones más claras, mejor estructura de navegación interna y CTAs coherentes facilitan el rastreo e indexación. El video corporativo además aumenta el tiempo de permanencia en el sitio, señal positiva para SEO.
+  </div>
+</section>
+
+<!-- ── 5. WHATSAPP ── -->
+<section id="sec-whatsapp">
+  <h2 class="section-title">5. Agente WhatsApp (<span class="tip" data-tip="Chatwoot es la plataforma que centraliza todas las conversaciones de WhatsApp en una bandeja unificada, con asignación a agentes y métricas">Chatwoot</span>)</h2>
+  <p class="section-intro">Período analizado: 10 sept – 8 oct 2026. Bandeja: BM Group (WhatsApp). Agente: Atención Comercial.</p>
+
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">Conversaciones totales</div>
+      <div class="kpi-value">48</div>
+      <div class="kpi-delta neutral">Período 30 días</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Mensajes recibidos</div>
+      <div class="kpi-value">196</div>
+      <div class="kpi-delta neutral">Últimos 7 días</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Mensajes enviados</div>
+      <div class="kpi-value">153</div>
+      <div class="kpi-delta neutral">Últimos 7 días</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Tiempo 1ª respuesta</div>
+      <div class="kpi-value">17h 55m</div>
+      <div class="kpi-delta down">⚠ Mejorar a &lt;2h</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="chart-wrap">
+      <div class="chart-title">Conversaciones por día (Sept–Oct)</div>
+      <div class="chart-inner"><canvas id="chartWA"></canvas></div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-title">Etiquetas activas</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Etiqueta</th><th>Conversaciones</th></tr></thead>
+          <tbody>
+            <tr><td>cotización-enviada</td><td>1</td></tr>
+            <tr><td>cotización-solicitada</td><td>1</td></tr>
+            <tr><td>hans</td><td>1</td></tr>
+            <tr><td>agencia-aduana, bm-transport, firstcargo, carlos, francisco</td><td>0 (disponibles)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="highlight highlight-amber" style="margin-top:14px; font-size:13px;">
+        El tiempo de primera respuesta de 17h 55m indica que las consultas llegan fuera del horario laboral. Se recomienda activar respuestas automáticas de bienvenida o establecer horario de atención visible.
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="card-title">Distribución horaria de conversaciones (días de mayor actividad)</div>
+    <p style="font-size:13px; color:var(--text-muted); margin-bottom:14px;">Los picos de actividad se concentran entre 12:00–15:00 y 18:00–19:00. Días más activos: 2 oct (7 conv.), 4 oct (5), 8 oct (5).</p>
+    <div class="chart-inner"><canvas id="chartHoras"></canvas></div>
+  </div>
+</section>
+
+<!-- ── 6. CRM ── -->
+<section id="sec-crm">
+  <h2 class="section-title">6. <span class="tip" data-tip="Twenty CRM es el sistema de gestión de clientes y ventas donde se registran oportunidades, cotizaciones y el seguimiento comercial">CRM Twenty</span> — Evolución del período</h2>
+  <p class="section-intro">Período 3 sept – 9 oct 2026. El CRM evolucionó de un flujo de cotizaciones a una plataforma de seguimiento integral: comercial, marketing, operaciones y postventa.</p>
+
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">Oportunidades totales</div>
+      <div class="kpi-value">156</div>
+      <div class="kpi-delta neutral">En 7 etapas</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Cotizaciones</div>
+      <div class="kpi-value">17</div>
+      <div class="kpi-delta up">15 enviadas · 2 borradores</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Operaciones Ganadas</div>
+      <div class="kpi-value">18</div>
+      <div class="kpi-delta neutral">14 Pendiente inicio</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Tareas abiertas</div>
+      <div class="kpi-value">113</div>
+      <div class="kpi-delta neutral">Pendientes gestión</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Empresas creadas</div>
+      <div class="kpi-value">60</div>
+      <div class="kpi-delta neutral">Período</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Workflows activos</div>
+      <div class="kpi-value">15</div>
+      <div class="kpi-delta up">+ 2 en revisión</div>
+    </div>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-title">Distribución del pipeline por etapa</div>
+    <div class="chart-inner"><canvas id="chartPipeline"></canvas></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Origen de leads (3 sept – 9 oct)</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>Origen</th><th>Total</th><th>Activas</th><th>Ganadas</th><th>Perdidas</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tip" data-tip="WhatsApp es el canal; n8n es la capa técnica que registra automáticamente el lead en el CRM cuando un usuario escribe por WhatsApp">WhatsApp vía n8n</span></td>
+            <td>23</td><td>15</td><td>0</td><td>8</td>
+          </tr>
+          <tr>
+            <td>Carga manual</td>
+            <td><strong>26</strong></td><td>19</td><td>3</td><td>4</td>
+          </tr>
+          <tr>
+            <td>Sin fuente</td>
+            <td>16</td><td>12</td><td>3</td><td>1</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Hitos de evolución del período</div>
+    <ul class="timeline">
+      <li>
+        <div class="tl-dot"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg></div>
+        <div><div class="tl-date">3–9 sept</div><div class="tl-text">Estabilización del flujo de cotización y revisión de accesos/autenticación OAuth Google.</div></div>
+      </li>
+      <li>
+        <div class="tl-dot"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg></div>
+        <div><div class="tl-date">16 sept</div><div class="tl-text">Creación de <em>Marketing | Grupo Borie</em>: dashboard con 12 gráficos, vista Remarketing y módulo Postventa.</div></div>
+      </li>
+      <li>
+        <div class="tl-dot"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg></div>
+        <div><div class="tl-date">21 sept</div><div class="tl-text">Vista de supervisión semanal activada para priorizar oportunidades y controlar actividad del equipo.</div></div>
+      </li>
+      <li>
+        <div class="tl-dot"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg></div>
+        <div><div class="tl-date">28 sept</div><div class="tl-text">Módulo <strong>Operaciones Ganadas</strong>: seguimiento desde la venta hasta salida, tránsito, arribo y entrega.</div></div>
+      </li>
+      <li>
+        <div class="tl-dot"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg></div>
+        <div><div class="tl-date">30 sept</div><div class="tl-text"><strong>Restauración de credenciales Google</strong> — flujo completo WhatsApp → <span class="tip" data-tip="n8n orquesta el flujo: recibe mensaje de WhatsApp, crea oportunidad en CRM, genera PDF de cotización, lo sube a Google Drive y envía por Gmail">n8n</span> → PDF → Drive → Gmail operativo.</div></div>
+      </li>
+      <li>
+        <div class="tl-dot"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg></div>
+        <div><div class="tl-date">9 oct</div><div class="tl-text">Auditoría completa de módulos, vistas, tableros y automatizaciones. Línea base para mejora continua.</div></div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="highlight highlight-navy">
+    <strong>Próxima prioridad CRM:</strong> Asignar responsable a las 22 oportunidades sin asignar, completar motivo en las 20 pérdidas pendientes y activar la cartera de remarketing. Con esas acciones, los dashboards pasarán de estructura vacía a información accionable.
+  </div>
+</section>
+
+<!-- ── 7. EXPANSIÓN ── -->
+<section id="sec-expansion">
+  <h2 class="section-title">7. Expansión hacia Agencia de Aduana</h2>
+
+  <div class="expansion-box">
+    <h3>El momento es ahora</h3>
+    <p>El flujo comercial digital está validado: WhatsApp capta consultas, el CRM las organiza, <span style="border-bottom:1px dashed rgba(255,255,255,.5)">n8n</span> automatiza el ciclo de cotización y los sitios del grupo dirigen tráfico cualificado. Esta infraestructura ya está construida y probada en First Cargo — activarla para <strong>Agencia de Aduana (agenciaborie.cl)</strong> no requiere partir de cero.</p>
+    <ul>
+      <li>El sitio agenciaborie.cl ya recibió las mejoras web del período (WhatsApp Chat + Video)</li>
+      <li>La sinergia de grupo fortalece el posicionamiento orgánico de todas las empresas en Google</li>
+      <li>Compartir leads entre empresas del grupo abre oportunidades de venta cruzada</li>
+      <li>Un solo CRM centralizado facilita la visibilidad de clientes que contratan más de un servicio</li>
+    </ul>
+  </div>
+
+  <div class="highlight highlight-green">
+    <strong>Beneficio para Google:</strong> Tener sitios interconectados del mismo grupo con contenido relevante y CTAs claros genera señales de autoridad que benefician el ranking de todos — especialmente cuando comparten temática (logística, comercio exterior, aduana).
+  </div>
+</section>
+
+<!-- ── 8. PRÓXIMOS PASOS ── -->
+<section id="sec-pasos">
+  <h2 class="section-title">8. Próximos pasos</h2>
+
+  <div class="step-card">
+    <div class="step-num">1</div>
+    <div class="step-text">
+      <strong>Mejorar tiempo de primera respuesta WhatsApp</strong>
+      Activar respuesta automática de bienvenida en Chatwoot para consultas fuera de horario. Meta: reducir de 17h 55m a menos de 2 horas.
+    </div>
+  </div>
+  <div class="step-card">
+    <div class="step-num">2</div>
+    <div class="step-text">
+      <strong>Completar datos CRM prioritarios</strong>
+      Asignar responsable a 22 oportunidades sin asignar · Registrar motivo en 20 pérdidas · Activar las 14 Operaciones Ganadas en el módulo de tracking.
+    </div>
+  </div>
+  <div class="step-card">
+    <div class="step-num">3</div>
+    <div class="step-text">
+      <strong>Campaña de remarketing</strong>
+      Con las 28 oportunidades perdidas clasificadas y la vista de Remarketing activa, diseñar la primera campaña de recuperación de leads (email o WhatsApp broadcast).
+    </div>
+  </div>
+  <div class="step-card">
+    <div class="step-num">4</div>
+    <div class="step-text">
+      <strong>Activar ecosistema para Agencia de Aduana</strong>
+      Conectar el número WhatsApp de Agencia Borie al flujo WhatsApp → CRM → cotización. El sitio agenciaborie.cl ya está actualizado; el paso pendiente es vincular su línea WhatsApp propia a Chatwoot y crear el pipeline de aduana en Twenty CRM.
+    </div>
+  </div>
+  <div class="step-card" style="opacity:.65">
+    <div class="step-num" style="background:var(--green)">✓</div>
+    <div class="step-text">
+      <strong style="text-decoration:line-through; opacity:.7">Plan de contenidos RRSS octubre</strong>
+      <span style="color:var(--green); font-weight:600; display:block; margin-top:2px;">✅ Realizado — 41 publicaciones ejecutadas en el período (FB 13 · IG 14 · LI 14)</span>
+    </div>
+  </div>
+  <div class="step-card">
+    <div class="step-num">6</div>
+    <div class="step-text">
+      <strong>Nueva campaña Meta Ads</strong>
+      Lanzar campaña con objetivo conversaciones WhatsApp, presupuesto diario definido y creativos orientados a los servicios de mayor conversión (según datos CRM).
+    </div>
+  </div>
+</section>
+
+<!-- ── 9. FACTURACIÓN ── -->
+<section id="sec-facturacion">
+  <h2 class="section-title">9. Facturación — Octubre 2026</h2>
+
+  <div class="card">
+    <div class="card-title">Detalle de servicios</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>Ítem</th><th>Descripción</th><th>Monto CLP</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Fee mensual Interforma</strong></td>
+            <td>Gestión digital, RRSS, agente WhatsApp, CRM</td>
+            <td>$700.000</td>
+          </tr>
+          <tr>
+            <td><span class="tip" data-tip="Chatwoot Cloud: plataforma que centraliza la bandeja de WhatsApp con historial, etiquetas y métricas de atención. Plan 1 usuario agente.">Chatwoot Cloud</span></td>
+            <td>1 usuario agente — bandeja centralizada WhatsApp</td>
+            <td>$17.860</td>
+          </tr>
+          <tr>
+            <td><span class="tip" data-tip="Twenty CRM Pro: plan de 8 usuarios para el equipo completo de First Cargo. Precio: USD 96 factura QIS54T5M-0007 · TC $977.">Twenty CRM Pro</span></td>
+            <td>8 usuarios · USD 96 total · TC $977</td>
+            <td>$93.875</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="two-col" style="margin-top:16px">
+    <div class="billing-total">
+      <div class="label">Total a pagar</div>
+      <div class="amount">$965.965</div>
+      <div class="sub">Subtotal $811.735 + IVA 19% ($154.230)</div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-title">Resumen de costos</div>
+      <div class="tbl-wrap">
+        <table>
+          <tbody>
+            <tr><td>Fee Interforma</td><td><strong>$700.000</strong></td></tr>
+            <tr><td>Chatwoot (1 usuario)</td><td>$17.860</td></tr>
+            <tr><td>Twenty CRM (8 usuarios)</td><td>$93.875</td></tr>
+            <tr><td><strong>Subtotal neto</strong></td><td><strong>$811.735</strong></td></tr>
+            <tr><td>IVA (19%)</td><td>$154.230</td></tr>
+            <tr style="background:#EEF2FF"><td><strong>Total a pagar</strong></td><td><strong>$965.965</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:12px; color:var(--text-muted); margin-top:16px;">
+    TC referencial: USD 1 = CLP $940 aprox. · Twenty CRM Pro: 8 plazas × $12 USD · próximo cobro: 5 nov 2026
+  </p>
+</section>
+
+<div class="report-footer">
+  <strong>Interforma Digital</strong> · interformamktg@gmail.com · Viña del Mar, Chile<br>
+  Informe generado para Grupo Borie — Gabriel Borie · Período Septiembre–Octubre 2026
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ── NAV ACTIVE + SCROLL ──
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('#navLinks a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => a.classList.remove('active'));
+      const link = document.querySelector(`#navLinks a[href="#${e.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+sections.forEach(s => observer.observe(s));
+
+// ── BURGER ──
+const burger = document.getElementById('burgerBtn');
+const drawer = document.getElementById('navDrawer');
+burger.addEventListener('click', () => drawer.classList.toggle('open'));
+function closeDrawer() { drawer.classList.remove('open'); }
+
+// ── CHART DEFAULTS ──
+Chart.defaults.font.family = 'Inter';
+Chart.defaults.color = '#64748B';
+const COLORS = ['#1A6FD4','#E4007C','#0A9688'];
+
+// ── CHART: Impresiones por red ──
+new Chart(document.getElementById('chartImpresiones'), {
+  type: 'bar',
+  data: {
+    labels: ['Facebook','Instagram','LinkedIn'],
+    datasets: [{
+      label: 'Impresiones',
+      data: [9810, 5085, 579],
+      backgroundColor: COLORS,
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false } },
+      y: { grid: { color: '#F1F5F9' }, ticks: { callback: v => v >= 1000 ? (v/1000)+'K' : v } }
+    }
+  }
+});
+
+// ── CHART: Interacciones ──
+new Chart(document.getElementById('chartInteracciones'), {
+  type: 'bar',
+  data: {
+    labels: ['Facebook','Instagram','LinkedIn'],
+    datasets: [{
+      label: 'Interacciones',
+      data: [18, 110, 89],
+      backgroundColor: COLORS,
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false } },
+      y: { grid: { color: '#F1F5F9' } }
+    }
+  }
+});
+
+// ── CHART: WA diario ──
+const waDates = ['10-sep','11-sep','12-sep','13-sep','14-sep','15-sep','16-sep','17-sep','18-sep','19-sep','20-sep','21-sep','22-sep','23-sep','24-sep','25-sep','26-sep','27-sep','28-sep','29-sep','30-sep','1-oct','2-oct','3-oct','4-oct','5-oct','6-oct','7-oct','8-oct'];
+const waData = [0,1,0,0,2,2,1,1,1,1,0,2,2,2,1,0,0,0,1,3,0,0,7,3,5,1,1,1,5];
+new Chart(document.getElementById('chartWA'), {
+  type: 'bar',
+  data: {
+    labels: waDates,
+    datasets: [{
+      label: 'Conversaciones',
+      data: waData,
+      backgroundColor: '#1A6FD4',
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false }, ticks: { maxRotation: 45, font: { size: 9 } } },
+      y: { grid: { color: '#F1F5F9' }, ticks: { stepSize: 1 } }
+    }
+  }
+});
+
+// ── CHART: Distribución horaria WA ──
+new Chart(document.getElementById('chartHoras'), {
+  type: 'bar',
+  data: {
+    labels: ['0h','1h','2h','3h','4h','5h','6h','7h','8h','9h','10h','11h','12h','13h','14h','15h','16h','17h','18h','19h','20h','21h','22h','23h'],
+    datasets: [{
+      label: 'Conversaciones',
+      data: [2,2,1,0,1,1,0,0,0,1,1,1,9,4,3,4,2,0,3,5,1,2,1,0],
+      backgroundColor: '#0A9688',
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+      y: { grid: { color: '#F1F5F9' }, ticks: { stepSize: 1 } }
+    }
+  }
+});
+
+// ── CHART: Pipeline CRM ──
+new Chart(document.getElementById('chartPipeline'), {
+  type: 'bar',
+  data: {
+    labels: ['Cotización enviada','Recordatorio 48h','Perdida','Ganada','Lead captado','Recordatorio 24h','Cot. solicitada'],
+    datasets: [{
+      label: 'Oportunidades',
+      data: [54, 30, 28, 18, 13, 7, 6],
+      backgroundColor: ['#1A6FD4','#0A9688','#C0392B','#1E8C50','#8B5CF6','#D97010','#64748B'],
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { color: '#F1F5F9' } },
+      y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+    }
+  }
+});
+</script>
+</body>
+</html>
