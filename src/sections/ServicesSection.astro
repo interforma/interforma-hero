@@ -148,7 +148,7 @@ const cards = [
   }
 
   .svc-card--primary-50 {
-    background: var(--primary-50);
+    background: var(--sky);
     border: none;
     min-height: 240px;
   }
@@ -180,7 +180,7 @@ const cards = [
   /* ── Title sizes ─────────────────────────────────────── */
   .svc-card__title {
     font-family: var(--font-family-heading);
-    font-weight: 700;
+    font-weight: var(--font-weight-heading);
     letter-spacing: -0.03em;
     color: var(--ink);
     line-height: 1.15;
@@ -227,7 +227,7 @@ const cards = [
   .svc-strip__title {
     font-family: var(--font-family-heading);
     font-size: var(--font-size-display-md); /* 40px */
-    font-weight: 700;
+    font-weight: var(--font-weight-heading);
     letter-spacing: -0.03em;
     color: var(--white);
     line-height: 1.15;
@@ -236,7 +236,7 @@ const cards = [
   .svc-strip__body {
     font-size: var(--font-size-body-md);
     line-height: var(--line-height-body-sm);
-    color: #C8C8C3;
+    color: var(--stone);
     max-width: 560px;
   }
 
@@ -246,7 +246,7 @@ const cards = [
     align-items: center;
     height: 52px;
     padding: 0 26px;
-    background: var(--white);
+    background: var(--brand-500);
     color: var(--ink);
     border-radius: var(--radius-cta);
     font-size: var(--font-size-body-sm);
@@ -256,10 +256,10 @@ const cards = [
     transition: background 150ms, color 150ms;
   }
 
-  .svc-strip__cta:hover { background: var(--paper); color: var(--ink); }
+  .svc-strip__cta:hover { background: var(--brand-400); color: var(--ink); }
 
   .svc-strip__cta:focus-visible {
-    outline: 2px solid var(--white);
+    outline: 2px solid var(--brand-500);
     outline-offset: 3px;
     border-radius: var(--radius-cta);
   }

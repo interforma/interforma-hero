@@ -29,8 +29,8 @@ import SectionHeading from '@components/base/SectionHeading.astro';
   }
 
   .cta {
-    background: var(--primary-500);
-    color: var(--white);
+    background: var(--brand-500);
+    color: var(--ink);
     border-radius: 24px;
     padding: clamp(40px, 4.5vw, 64px);
     display: flex;
@@ -48,16 +48,20 @@ import SectionHeading from '@components/base/SectionHeading.astro';
     max-width: 800px;
   }
 
-  /* Override eyebrow color inside blue bg */
+  /* Sobre Energía todo el texto va en Umbra */
   .cta__copy :global(.eyebrow--dark-accent) {
-    color: var(--primary-100);
+    color: var(--ink);
+  }
+
+  .cta__copy :global(.section-heading--inverse) {
+    color: var(--ink);
   }
 
   .cta__body {
     margin: 0;
     font-size: var(--font-size-body-md);
     line-height: 1.6;
-    color: var(--primary-50);
+    color: var(--ink);
   }
 
   /* ── Button ──────────────────────────────────────────── */
@@ -67,8 +71,8 @@ import SectionHeading from '@components/base/SectionHeading.astro';
     align-items: center;
     height: 60px;
     padding: 0 32px;
-    background: var(--white);
-    color: var(--ink);
+    background: var(--ink);
+    color: var(--white);
     border-radius: var(--radius-cta);
     font-size: var(--font-size-body-md);
     font-weight: var(--font-weight-semibold);
@@ -77,10 +81,10 @@ import SectionHeading from '@components/base/SectionHeading.astro';
     transition: background 150ms, color 150ms;
   }
 
-  .cta__btn:hover { background: var(--paper); color: var(--ink); }
+  .cta__btn:hover { background: var(--color-interactive-hover); color: var(--white); }
 
   .cta__btn:focus-visible {
-    outline: 2px solid var(--white);
+    outline: 2px solid var(--ink);
     outline-offset: 3px;
     border-radius: var(--radius-cta);
   }

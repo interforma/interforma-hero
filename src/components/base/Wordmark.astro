@@ -1,12 +1,23 @@
 ---
+/**
+ * Wordmark — isotipo "Transforma" + logotipo "interforma".
+ * Isotipo: tres módulos en diagonal cuyo radio crece (3u → 9u → 15u)
+ * hasta volverse círculo Energía. Ver DESIGN.md §Logo.
+ */
 export interface Props {
   size?: 'sm' | 'md';
   href?: string;
+  /** 'dark' para usar sobre fondos Umbra (footer). */
+  tone?: 'light' | 'dark';
 }
-const { size = 'md', href = '/#inicio' } = Astro.props;
+const { size = 'md', href = '/#inicio', tone = 'light' } = Astro.props;
 ---
-<a href={href} class={`wordmark wordmark--${size}`} aria-label="interforma — ir al inicio">
-  <span class="wordmark__dash" aria-hidden="true"></span>
+<a href={href} class={`wordmark wordmark--${size} wordmark--${tone}`} aria-label="interforma — ir al inicio">
+  <svg class="wordmark__mark" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+    <rect x="14" y="76" width="30" height="30" rx="3" class="wordmark__mod" />
+    <rect x="45" y="45" width="30" height="30" rx="9" class="wordmark__mod" />
+    <rect x="76" y="14" width="30" height="30" rx="15" class="wordmark__dot" />
+  </svg>
   <span class="wordmark__text">interforma</span>
 </a>
 
@@ -19,42 +30,30 @@ const { size = 'md', href = '/#inicio' } = Astro.props;
     color: var(--ink);
   }
 
+  .wordmark--dark { color: var(--white); }
+
   .wordmark:focus-visible {
     outline: 2px solid var(--primary-500);
     outline-offset: 4px;
     border-radius: var(--radius-sm);
   }
 
-  .wordmark__dash {
-    display: block;
-    background: var(--primary-500);
-  }
+  .wordmark--dark:focus-visible { outline-color: var(--dark-accent); }
 
-  .wordmark--md .wordmark__dash {
-    width: 18px;
-    height: 4px;
-    margin-bottom: 6px;
-  }
+  .wordmark__mark { display: block; flex-shrink: 0; }
+  .wordmark__mod  { fill: currentColor; }
+  .wordmark__dot  { fill: var(--brand-500); }
 
-  .wordmark--md .wordmark__text {
+  .wordmark__text {
     font-family: var(--font-family-heading);
-    font-weight: 700;
-    font-size: 22px;
-    letter-spacing: -0.02em;
+    font-weight: var(--font-weight-heading);
+    letter-spacing: -0.03em;
     line-height: 1;
   }
 
-  .wordmark--sm .wordmark__dash {
-    width: 14px;
-    height: 3px;
-    margin-bottom: 5px;
-  }
+  .wordmark--md .wordmark__mark { width: 30px; height: 30px; }
+  .wordmark--md .wordmark__text { font-size: 24px; }
 
-  .wordmark--sm .wordmark__text {
-    font-family: var(--font-family-heading);
-    font-weight: 700;
-    font-size: 18px;
-    letter-spacing: -0.02em;
-    line-height: 1;
-  }
+  .wordmark--sm .wordmark__mark { width: 24px; height: 24px; }
+  .wordmark--sm .wordmark__text { font-size: 20px; }
 </style>
