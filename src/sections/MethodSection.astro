@@ -54,8 +54,23 @@ const steps = [
       </ul>
     </div>
 
+    <!-- Link to detail page -->
+    <div class="method__more">
+      <a href="/metodo" class="method__more-link" data-track-event="method_detail_open">
+        Ver el método en detalle
+        <span aria-hidden="true">→</span>
+      </a>
+      <span class="method__more-note">Qué hacemos, qué aporta su equipo y qué decide en cada etapa.</span>
+    </div>
+
   </section>
 </div>
+
+<script>
+  import { track } from '@lib/analytics/track';
+  document.querySelector<HTMLAnchorElement>('[data-track-event="method_detail_open"]')
+    ?.addEventListener('click', () => track('method_detail_open', { placement: 'home_method' }));
+</script>
 
 <style>
   /* ── Wrapper ─────────────────────────────────────────── */
@@ -186,6 +201,37 @@ const steps = [
   .method__card-del {
     font-size: var(--font-size-body-sm);
     line-height: 1.5;
+    color: #C8C8C3;
+  }
+
+  /* ── Detail link ─────────────────────────────────────── */
+  .method__more {
+    display: flex;
+    align-items: center;
+    gap: 16px 24px;
+    flex-wrap: wrap;
+  }
+
+  .method__more-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 22px;
+    border-radius: var(--radius-btn);
+    background: var(--white);
+    color: var(--ink);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    transition: background .2s, transform .2s;
+  }
+
+  .method__more-link:hover { background: var(--dark-accent); }
+  .method__more-link:hover span { transform: translateX(3px); }
+  .method__more-link span { transition: transform .2s; }
+  .method__more-link:focus-visible { outline: 2px solid var(--dark-accent); outline-offset: 3px; }
+
+  .method__more-note {
+    font-size: var(--font-size-body-sm);
     color: #C8C8C3;
   }
 

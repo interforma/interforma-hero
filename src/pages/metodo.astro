@@ -1,0 +1,213 @@
+---
+import Base from '@layouts/Base.astro';
+import Eyebrow from '@components/base/Eyebrow.astro';
+import SectionHeading from '@components/base/SectionHeading.astro';
+import WhatsAppButton from '@components/composite/WhatsAppButton.astro';
+
+const stages = [
+  { num: '01', title: 'Diagnóstico',    does: 'Entrevistas y revisión de procesos y sistemas actuales.', client: 'Comparte datos y acceso a las áreas clave.', deliverable: 'Hoja de ruta priorizada', decision: '¿Qué problema atacamos primero?' },
+  { num: '02', title: 'Diseño',         does: 'Mapeo de procesos futuros y selección de tecnología.',     client: 'Valida el blueprint con los dueños de proceso.', deliverable: 'Blueprint de procesos y propuesta tecnológica', decision: '¿Aprobamos el blueprint y la herramienta?' },
+  { num: '03', title: 'Implementación', does: 'Construcción y configuración del sistema.',               client: 'Prueba con casos reales del negocio.', deliverable: 'Sistema en producción y documentación', decision: '¿El sistema cumple lo acordado?' },
+  { num: '04', title: 'Integración',    does: 'Conexión con CRM, WhatsApp, formularios y sistemas existentes.', client: 'Confirma que los datos son correctos.', deliverable: 'Flujos integrados y datos unificados', decision: '¿La información fluye entre áreas?' },
+  { num: '05', title: 'Adopción',       does: 'Capacitación y acompañamiento al equipo.',               client: 'El equipo usa el sistema en su día a día.', deliverable: 'Equipo capacitado y protocolo de uso', decision: '¿El equipo lo usa sin acompañamiento?' },
+  { num: '06', title: 'Optimización',   does: 'Medición de KPIs y ajustes.',                              client: 'Revisa resultados en una reunión mensual.', deliverable: 'Métricas y ciclo de mejora continua', decision: '¿Qué mejoramos en el próximo ciclo?' },
+];
+
+const howTo = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'Método Interforma',
+  description: 'Seis etapas para transformar procesos con tecnología. Cada etapa cierra con un entregable concreto y una decisión antes de avanzar.',
+  step: stages.map((s, i) => ({
+    '@type': 'HowToStep',
+    position: i + 1,
+    name: s.title,
+    text: `${s.does} Entregable: ${s.deliverable}.`,
+  })),
+};
+---
+<Base
+  title="Método Interforma — Seis etapas, un entregable y una decisión en cada una"
+  description="Cómo trabajamos: Diagnóstico, Diseño, Implementación, Integración, Adopción y Optimización. Qué hacemos, qué aporta su equipo y qué recibe en cada etapa."
+  canonical="https://interforma.digital/metodo"
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(howTo)} />
+
+  <section class="md-intro" aria-labelledby="md-heading">
+    <div class="md-container">
+      <a href="/#metodo" class="md-back" data-track-event="method_detail_back">← Volver al inicio</a>
+      <Eyebrow>Nuestro proceso</Eyebrow>
+      <SectionHeading size="xl" id="md-heading" as="h1">El Método Interforma en detalle</SectionHeading>
+      <p class="md-sub">
+        Seis etapas. Cada una cierra con un entregable concreto y una decisión compartida antes de pasar a la siguiente.
+        Primero entendemos el problema; después elegimos la herramienta.
+      </p>
+    </div>
+  </section>
+
+  <section class="md-diagram" aria-label="Diagrama del método">
+    <div class="md-container">
+      <div class="md-frame">
+        <iframe
+          src="/diagramas/metodo-interforma.html"
+          title="Diagrama interactivo del Método Interforma: etapas y entregables"
+          loading="lazy"
+        ></iframe>
+      </div>
+      <p class="md-frame-note">
+        Use las vistas Entender, Construir e Instalar y mejorar para recorrerlo por bloques.
+        <a href="/diagramas/metodo-interforma.html" target="_blank" rel="noopener" data-track-event="method_diagram_fullscreen">Abrir en pantalla completa</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="md-stages" aria-labelledby="md-stages-heading">
+    <div class="md-container">
+      <SectionHeading size="lg" id="md-stages-heading">Qué pasa en cada etapa</SectionHeading>
+      <ol class="md-list" role="list">
+        {stages.map((s) => (
+          <li class="md-stage">
+            <header class="md-stage__head">
+              <span class="md-stage__num">{s.num}</span>
+              <h3 class="md-stage__title">{s.title}</h3>
+            </header>
+            <dl class="md-stage__rows">
+              <div><dt>Interforma hace</dt><dd>{s.does}</dd></div>
+              <div><dt>Su equipo participa</dt><dd>{s.client}</dd></div>
+              <div><dt>Entregable</dt><dd class="md-strong">{s.deliverable}</dd></div>
+              <div><dt>Decisión antes de avanzar</dt><dd>{s.decision}</dd></div>
+            </dl>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="md-cta" aria-labelledby="md-cta-heading">
+    <div class="md-container md-cta__inner">
+      <div>
+        <h2 id="md-cta-heading" class="md-cta__title">Empecemos por el diagnóstico.</h2>
+        <p class="md-cta__sub">Una conversación de 30 minutos, sin compromiso. Respuesta en menos de 24 horas hábiles.</p>
+      </div>
+      <WhatsAppButton label="Agendar diagnóstico gratuito" size="lg" />
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { track } from '@lib/analytics/track';
+  document.querySelectorAll<HTMLAnchorElement>('[data-track-event^="method_"]').forEach((el) => {
+    el.addEventListener('click', () => track(el.dataset.trackEvent!, { page: 'metodo' }));
+  });
+</script>
+
+<style>
+  .md-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-inline: clamp(20px, 5.5vw, 80px);
+  }
+
+  /* Intro */
+  .md-intro { padding-block: clamp(48px, 8vw, 96px) var(--spacing-10); }
+  .md-intro .md-container { display: flex; flex-direction: column; gap: 18px; }
+  .md-back {
+    align-self: flex-start;
+    font-size: var(--font-size-body-sm);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+  }
+  .md-back:hover { color: var(--color-interactive-default); }
+  .md-sub {
+    margin: 0;
+    max-width: 62ch;
+    font-size: var(--font-size-body-lg);
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  /* Diagram */
+  .md-frame {
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-card-lg);
+    overflow: hidden;
+    background: var(--color-bg-subtle);
+  }
+  .md-frame iframe {
+    display: block;
+    width: 100%;
+    height: clamp(520px, 62vw, 800px);
+    border: 0;
+  }
+  .md-frame-note {
+    margin: var(--spacing-3) 0 0;
+    font-size: var(--font-size-body-sm);
+    color: var(--color-text-secondary);
+  }
+  .md-frame-note a { color: var(--color-interactive-default); font-weight: 600; }
+
+  /* Stages */
+  .md-stages { padding-block: clamp(56px, 8vw, 96px); }
+  .md-stages .md-container { display: flex; flex-direction: column; gap: var(--spacing-8); }
+  .md-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--spacing-4);
+  }
+  .md-stage {
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-card);
+    padding: var(--spacing-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+    background: var(--color-bg-surface);
+  }
+  .md-stage__head { display: flex; align-items: baseline; gap: var(--spacing-3); }
+  .md-stage__num {
+    font-size: var(--font-size-label-md);
+    font-weight: 600;
+    color: var(--color-interactive-default);
+    font-variant-numeric: tabular-nums;
+  }
+  .md-stage__title {
+    margin: 0;
+    font-family: var(--font-family-heading);
+    font-size: var(--font-size-heading-md);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .md-stage__rows { margin: 0; display: flex; flex-direction: column; gap: var(--spacing-3); }
+  .md-stage__rows div { display: flex; flex-direction: column; gap: 2px; }
+  .md-stage__rows dt { font-size: var(--font-size-label-md); color: var(--color-text-tertiary); }
+  .md-stage__rows dd { margin: 0; font-size: var(--font-size-body-sm); line-height: 1.5; color: var(--color-text-primary); }
+  .md-strong { font-weight: 600; }
+
+  /* CTA */
+  .md-cta { padding-block: 0 clamp(64px, 9vw, 112px); }
+  .md-cta__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-6);
+    flex-wrap: wrap;
+  }
+  .md-cta__title {
+    margin: 0;
+    font-family: var(--font-family-heading);
+    font-size: var(--font-size-heading-xl);
+    letter-spacing: -0.02em;
+  }
+  .md-cta__sub { margin: var(--spacing-2) 0 0; color: var(--color-text-secondary); }
+
+  @media (max-width: 1024px) {
+    .md-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 640px) {
+    .md-list { grid-template-columns: 1fr; }
+    .md-frame iframe { height: 520px; }
+  }
+</style>
