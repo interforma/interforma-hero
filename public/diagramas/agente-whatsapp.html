@@ -5040,6 +5040,60 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       svg [data-node-id], svg [data-edge-from], svg [data-detail], svg [data-detail-anchor], svg [data-legend-hit], svg { transition: none !important; }
     }
   </style>
+  <style id="interforma-brand">
+    /* Identidad Interforma 2026: sobrescribe la paleta de Archify.
+       Solo color y tipografia; el contenido del diagrama no cambia.
+       Especificidad html[data-theme][data-preset] > presets de Archify. */
+    @font-face { font-family: 'Manrope'; font-style: normal; font-weight: 200 800; font-display: swap;
+      src: url('/fonts/marca/manrope-latin-wght-normal.woff2') format('woff2'); }
+    @font-face { font-family: 'Outfit'; font-style: normal; font-weight: 100 900; font-display: swap;
+      src: url('/fonts/marca/outfit-latin-wght-normal.woff2') format('woff2'); }
+
+    html[data-theme="light"][data-preset] {
+      --bg: #E4E3DF; --grid: #D8D5CF; --canvas-dot: #D0CCC4;
+      --text: #281F18; --text-muted: #5C564E; --text-dim: #8F887E; --text-faint: #6F685E;
+      --panel: #F2F1EE; --panel-border: #D0CCC4;
+      --lane-fill: rgba(242, 241, 238, 0.6); --lane-stroke: #BEB8AE;
+      --arrow: #6F685E; --arrow-emphasis: #9A3D1A; --mask: #F2F1EE;
+      --frontend-fill: rgba(238, 110, 67, 0.16);  --frontend-stroke: #B4471F;
+      --backend-fill: rgba(47, 111, 143, 0.14);   --backend-stroke: #2F6F8F;
+      --database-fill: rgba(107, 78, 155, 0.14);  --database-stroke: #6B4E9B;
+      --cloud-fill: rgba(154, 116, 18, 0.16);     --cloud-stroke: #8A6A10;
+      --security-fill: rgba(179, 38, 30, 0.12);   --security-stroke: #B3261E;
+      --messagebus-fill: rgba(94, 125, 58, 0.15); --messagebus-stroke: #5E7D3A;
+      --external-fill: rgba(190, 184, 174, 0.3);  --external-stroke: #6F685E;
+      --toolbar-bg: rgba(242, 241, 238, 0.94); --toolbar-border: #BEB8AE;
+      --toolbar-text: #3F3A34; --toolbar-hover: #F2F1EE; --toolbar-menu-bg: #F2F1EE;
+    }
+
+    html[data-theme="dark"][data-preset] {
+      --bg: #1C1611; --grid: #2F2620; --canvas-dot: rgba(190, 184, 174, 0.14);
+      --text: #F2F1EE; --text-muted: #BEB8AE; --text-dim: #6F685E; --text-faint: #A39C91;
+      --panel: rgba(40, 31, 24, 0.6); --panel-border: #3F3A34;
+      --lane-fill: rgba(40, 31, 24, 0.35); --lane-stroke: #4A4038;
+      --arrow: #A39C91; --arrow-emphasis: #EE6E43; --mask: #281F18;
+      --frontend-fill: rgba(238, 110, 67, 0.18);    --frontend-stroke: #EE6E43;
+      --backend-fill: rgba(142, 195, 222, 0.14);    --backend-stroke: #8EC3DE;
+      --database-fill: rgba(185, 163, 227, 0.14);   --database-stroke: #B9A3E3;
+      --cloud-fill: rgba(226, 183, 74, 0.14);       --cloud-stroke: #E2B74A;
+      --security-fill: rgba(240, 138, 128, 0.14);   --security-stroke: #F08A80;
+      --messagebus-fill: rgba(168, 196, 122, 0.14); --messagebus-stroke: #A8C47A;
+      --external-fill: rgba(190, 184, 174, 0.12);   --external-stroke: #BEB8AE;
+      --toolbar-bg: rgba(40, 31, 24, 0.9); --toolbar-border: #4A4038;
+      --toolbar-text: #E4E3DF; --toolbar-hover: rgba(40, 31, 24, 0.98); --toolbar-menu-bg: #281F18;
+    }
+
+    html[data-preset] body {
+      font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background-image: none;
+    }
+    html[data-preset]:not([data-preset="editorial"]) h1,
+    html[data-preset]:not([data-preset="editorial"]) .card h3 {
+      font-family: 'Outfit', 'Manrope', system-ui, sans-serif;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+  </style>
 </head>
 <body>
   <!-- Toolbar: theme, live visual style, trace motion, presentation stage, and export.
