@@ -146,9 +146,9 @@
 
   .demo__h2 {
     margin: 0;
-    font-family: var(--font-family-host-grotesk);
+    font-family: var(--font-family-heading);
     font-size: clamp(30px, 3.6vw, 44px);
-    font-weight: 800;
+    font-weight: var(--font-weight-heading);
     line-height: 1.1;
     letter-spacing: -0.03em;
     color: var(--color-text-primary);
@@ -180,7 +180,7 @@
   }
 
   .demo__step-btn:focus-visible {
-    outline: 2px solid var(--agents-accent);
+    outline: 2px solid var(--brand-800);
     outline-offset: 2px;
     border-radius: var(--radius-sm);
   }
@@ -189,11 +189,11 @@
     font-weight: 700;
     font-size: 14px;
     line-height: 24px;
-    color: var(--color-text-tertiary, #9C9C97);
+    color: var(--color-text-tertiary);
     transition: color 200ms;
   }
 
-  .demo__step.is-active .demo__snum { color: var(--agents-accent); }
+  .demo__step.is-active .demo__snum { color: var(--brand-800); }
   .demo__step.is-done   .demo__snum { color: var(--color-text-secondary); }
 
   .demo__scontent {
@@ -208,7 +208,7 @@
     font-size: 18px;
     line-height: 1.3;
     letter-spacing: -0.01em;
-    color: var(--color-text-tertiary, #9C9C97);
+    color: var(--color-text-tertiary);
     transition: color 200ms;
   }
 
@@ -262,16 +262,16 @@
 
   .demo__playpause:hover {
     border-color: var(--color-text-secondary);
-    background: var(--color-bg-subtle, #F6F6F5);
+    background: var(--color-bg-subtle);
   }
 
   .demo__playpause:focus-visible {
-    outline: 2px solid var(--agents-accent);
+    outline: 2px solid var(--brand-800);
     outline-offset: 3px;
   }
 
   .demo__icon-pause,
-  .demo__icon-play { color: var(--agents-accent); }
+  .demo__icon-play { color: var(--brand-800); }
 
   /* ── Right column: phone ──────────────────────────────── */
   .demo__right {
@@ -287,7 +287,7 @@
     height: 740px;
     border-radius: 40px;
     border: 8px solid #1a1a18;
-    background: #F6F6F5;
+    background: var(--paper);
     position: relative;
     overflow: hidden;
     box-shadow:
@@ -389,7 +389,7 @@
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: #6E6E68;
+    background: var(--gray-500);
     animation: agTypingDot 1s infinite;
   }
   .ag-typing-inline i:nth-child(2) { animation-delay: 0.15s; }
@@ -451,21 +451,22 @@
     ];
 
     const C = {
-      ink:  '#111110',
-      wht:  '#FFFFFF',
-      ppr:  '#F6F6F5',
-      g200: '#E3E3E0',
-      g300: '#D1D1CD',
-      g400: '#9C9C97',
-      g500: '#6E6E68',
-      g700: '#3D3D3B',
-      a100: '#FFE0D9',
-      a400: '#FF9783',
-      a500: '#FF563C',
-      a600: '#DD2B0F',
-      a700: '#AE1800',
-      a800: '#7C1405',
-      acc:  '#EC3013',
+      // Paleta identidad 2026 (ver src/styles/tokens.css)
+      ink:  '#281F18',
+      wht:  '#F2F1EE',
+      ppr:  '#E4E3DF',
+      g200: '#D0CCC4',
+      g300: '#BEB8AE',
+      g400: '#8F887E',
+      g500: '#5C564E',
+      g700: '#3F3A34',
+      a100: '#F7CDBB',
+      a400: '#F2906D',
+      a500: '#EE6E43',
+      a600: '#9A3D1A',
+      a700: '#7A2F13',
+      a800: '#7A2F13',
+      acc:  '#9A3D1A',
     };
 
     const MS: Record<string, { align: string; bg: string; fg: string; bd: string; who: string; radius: string }> = {
@@ -550,7 +551,7 @@
       const barsH = [100, 92, 70, 48, 30, 18, 12, 9, 7, 6, 5, 4];
       const barsHtml = barsH.map((h, i) => {
         const ht = homeT >= 1 ? `${h}%` : '2%';
-        const bg = i < 2 ? '#BAB6B6' : C.acc;
+        const bg = i < 2 ? '#BEB8AE' : C.a500;
         return `<span style="flex:1;height:${ht};background:${bg};border-radius:2px 2px 0 0;transition:height .5s;"></span>`;
       }).join('');
       return `<div class="ag-phone-screen" style="padding:58px 18px 0;display:flex;flex-direction:column;flex:1;"><div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid ${C.g300};padding-bottom:10px;"><span style="font-size:13px;color:${C.g500};">Hola, Carla</span><span style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:${C.a700};">Piloto · Día 12 de 30</span></div><div style="font-size:26px;font-weight:800;line-height:1.05;letter-spacing:-0.02em;margin:14px 0 16px;">Cotizaciones</div><div style="border-top:1px solid ${C.ink};border-bottom:1px solid ${C.ink};padding:14px 0;display:flex;flex-direction:column;gap:8px;"><span style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:${C.g500};">KPI del piloto · Tiempo de respuesta</span><div style="display:flex;align-items:baseline;gap:10px;"><span style="font-size:52px;font-weight:800;line-height:1;letter-spacing:-0.04em;">${kpiVal}</span><span style="font-size:18px;font-weight:800;color:${C.acc};">−96%</span></div><div style="display:flex;align-items:flex-end;gap:4px;height:56px;margin-top:4px;">${barsHtml}</div><div style="display:flex;justify-content:space-between;font-size:12px;color:${C.g500};"><span>Línea base 18 min</span><span>Meta −50%</span></div></div><div style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:${C.g500};margin:16px 0 6px;">Requiere tu atención</div><div style="border-top:1px solid ${C.ink};"><div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid ${C.g200};"><span style="font-size:22px;font-weight:800;min-width:28px;color:${C.acc};">1</span><span style="font-size:13px;font-weight:600;">Conversación espera a una persona</span></div><div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid ${C.g200};"><span style="font-size:22px;font-weight:800;min-width:28px;color:${C.acc};">2</span><span style="font-size:13px;font-weight:600;">Acciones por aprobar</span></div></div></div>`;

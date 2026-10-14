@@ -1,61 +1,138 @@
 {
   "$description": "Color tokens for Interforma.digital. Source of truth — tokens.css is generated from this file.",
-  "$version": "1.0.0",
-  "$source": "Product Design System v1.0 §6",
+  "$version": "2.0.0",
+  "$source": "Identidad 2026 (oct. 2026) — paleta Energía. Ver DESIGN.md",
   "neutrals": {
-    "0":   "#FFFFFF",
-    "50":  "#F9F9F8",
-    "100": "#F2F2F0",
-    "200": "#E8E8E5",
-    "300": "#D1D1CD",
-    "400": "#A5A5A0",
-    "500": "#737370",
-    "600": "#5A5A57",
-    "700": "#3D3D3B",
-    "800": "#252523",
-    "900": "#111110"
+    "0": "#F2F1EE",
+    "50": "#ECEAE6",
+    "100": "#E4E3DF",
+    "200": "#D8D5CF",
+    "300": "#BEB8AE",
+    "400": "#A39C91",
+    "500": "#6F685E",
+    "600": "#5C564E",
+    "700": "#3F3A34",
+    "800": "#2F2620",
+    "900": "#281F18"
   },
   "primary": {
-    "50":  "#EEF2FD",
-    "100": "#D5DFFB",
-    "500": "#2655E8",
-    "600": "#1A44C9",
-    "700": "#1236A8",
-    "900": "#0B2060"
+    "$description": "Alias heredado: ahora apunta a la escala brand (texto/foco naranja sobre claro).",
+    "50": "#FBE6DC",
+    "100": "#F7CDBB",
+    "500": "#9A3D1A",
+    "600": "#7A2F13",
+    "700": "#7A2F13",
+    "900": "#4A1C0B"
   },
   "success": {
-    "50":  "#EFFAF6",
+    "50": "#EFFAF6",
     "500": "#18794E"
   },
   "warning": {
-    "50":  "#FFF8ED",
+    "50": "#FFF8ED",
     "500": "#A35200"
   },
   "error": {
-    "50":  "#FFF0F0",
+    "50": "#FFF0F0",
     "500": "#C53030"
   },
   "dark": {
-    "accent": "#7BA3FF"
+    "accent": "#EE6E43"
   },
   "roles": {
     "$description": "Semantic role tokens — reference base values above. Change here to update globally.",
-    "bg-page":              { "ref": "neutrals.50",  "value": "#F9F9F8" },
-    "bg-surface":           { "ref": "neutrals.0",   "value": "#FFFFFF" },
-    "bg-subtle":            { "ref": "neutrals.100", "value": "#F2F2F0" },
-    "bg-dark":              { "ref": "neutrals.900", "value": "#111110" },
-    "border-default":       { "ref": "neutrals.200", "value": "#E8E8E5" },
-    "border-strong":        { "ref": "neutrals.300", "value": "#D1D1CD" },
-    "text-primary":         { "ref": "neutrals.900", "value": "#111110" },
-    "text-secondary":       { "ref": "neutrals.600", "value": "#5A5A57" },
-    "text-tertiary":        { "ref": "neutrals.500", "value": "#737370" },
-    "text-disabled":        { "ref": "neutrals.400", "value": "#A5A5A0" },
-    "text-inverse":         { "ref": "neutrals.0",   "value": "#FFFFFF" },
-    "text-on-dark-primary": { "ref": "neutrals.50",  "value": "#F9F9F8" },
-    "text-on-dark-secondary":{ "ref": "neutrals.400", "value": "#A5A5A0" },
-    "interactive-default":  { "ref": "primary.500",  "value": "#2655E8" },
-    "interactive-hover":    { "ref": "primary.600",  "value": "#1A44C9" },
-    "interactive-active":   { "ref": "primary.700",  "value": "#1236A8" },
-    "interactive-subtle":   { "ref": "primary.50",   "value": "#EEF2FD" }
+    "bg-page": {
+      "ref": "neutrals.0",
+      "value": "#F2F1EE"
+    },
+    "bg-surface": {
+      "ref": "neutrals.0",
+      "value": "#F2F1EE"
+    },
+    "bg-subtle": {
+      "ref": "neutrals.100",
+      "value": "#E4E3DF"
+    },
+    "bg-dark": {
+      "ref": "neutrals.900",
+      "value": "#281F18"
+    },
+    "border-default": {
+      "ref": "neutrals.200",
+      "value": "#D8D5CF"
+    },
+    "border-strong": {
+      "ref": "neutrals.300",
+      "value": "#BEB8AE"
+    },
+    "text-primary": {
+      "ref": "neutrals.900",
+      "value": "#281F18"
+    },
+    "text-secondary": {
+      "ref": "neutrals.600",
+      "value": "#5C564E"
+    },
+    "text-tertiary": {
+      "ref": "neutrals.500",
+      "value": "#6F685E"
+    },
+    "text-disabled": {
+      "ref": "neutrals.400",
+      "value": "#A39C91"
+    },
+    "text-inverse": {
+      "ref": "neutrals.0",
+      "value": "#F2F1EE"
+    },
+    "text-on-dark-primary": {
+      "ref": "neutrals.0",
+      "value": "#F2F1EE"
+    },
+    "text-on-dark-secondary": {
+      "ref": "neutrals.300",
+      "value": "#BEB8AE"
+    },
+    "interactive-default": {
+      "ref": "neutrals.900",
+      "value": "#281F18"
+    },
+    "interactive-hover": {
+      "ref": "neutrals.800",
+      "value": "#3A2F27"
+    },
+    "interactive-active": {
+      "ref": "neutrals.900",
+      "value": "#1C1611"
+    },
+    "interactive-subtle": {
+      "ref": "neutrals.100",
+      "value": "#E4E3DF"
+    },
+    "accent-surface": {
+      "ref": "brand.500",
+      "value": "#EE6E43"
+    },
+    "accent-text": {
+      "ref": "brand.800",
+      "value": "#9A3D1A"
+    }
+  },
+  "brand": {
+    "$description": "Energía + neutros piedra. Texto sobre 500 siempre en umbra; texto naranja sobre claro en 800.",
+    "50": "#FBE6DC",
+    "100": "#F7CDBB",
+    "400": "#F2906D",
+    "500": "#EE6E43",
+    "600": "#D9582E",
+    "800": "#9A3D1A",
+    "900": "#7A2F13",
+    "950": "#4A1C0B",
+    "piedra-clara": "#E4E3DF",
+    "papel": "#F2F1EE",
+    "piedra": "#BEB8AE",
+    "piedra-700": "#5C564E",
+    "cielo": "#CCE2ED",
+    "umbra": "#281F18"
   }
 }

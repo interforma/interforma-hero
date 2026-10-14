@@ -212,9 +212,9 @@
   }
 
   @keyframes orPulse {
-    0%   { box-shadow: 0 0 0 0 rgba(255, 86, 60, 0.5); }
-    70%  { box-shadow: 0 0 0 8px rgba(255, 86, 60, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(255, 86, 60, 0); }
+    0%   { box-shadow: 0 0 0 0 rgba(238, 110, 67, 0.5); }
+    70%  { box-shadow: 0 0 0 8px rgba(238, 110, 67, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(238, 110, 67, 0); }
   }
 
   /* Headline */
@@ -222,7 +222,7 @@
     margin: 0;
     font-family: var(--font-family-heading);
     font-size: clamp(2rem, 3.5vw, 3.25rem);
-    font-weight: 800;
+    font-weight: var(--font-weight-heading);
     line-height: 1.05;
     letter-spacing: -0.035em;
     color: var(--white);
@@ -235,7 +235,7 @@
     margin: 0;
     font-size: var(--font-size-body-lg);
     line-height: 1.6;
-    color: #C8C8C3;
+    color: var(--stone);
   }
 
   .agents__cta {
@@ -304,7 +304,7 @@
   .hito__num {
     font-family: var(--font-family-heading);
     font-size: clamp(2rem, 3.5vw, 2.75rem);
-    font-weight: 800;
+    font-weight: var(--font-weight-heading);
     line-height: 1;
     letter-spacing: -0.03em;
     color: var(--agents-500);
@@ -316,7 +316,7 @@
     font-size: var(--font-size-label-md);
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #C8C8C3;
+    color: var(--stone);
     margin: 0;
   }
 
@@ -346,7 +346,7 @@
     margin: 0;
     font-family: var(--font-family-heading);
     font-size: clamp(1.5rem, 2.5vw, 2.25rem);
-    font-weight: 800;
+    font-weight: var(--font-weight-heading);
     line-height: 1.1;
     letter-spacing: -0.03em;
     color: var(--white);
@@ -396,7 +396,7 @@
 
   .demo__stitle {
     font-family: var(--font-family-heading);
-    font-weight: 700;
+    font-weight: var(--font-weight-heading);
     font-size: 19px;
     line-height: 24px;
     letter-spacing: -0.01em;
@@ -411,7 +411,7 @@
     display: none;
     font-size: var(--font-size-body-md);
     line-height: 1.5;
-    color: #C8C8C3;
+    color: var(--stone);
   }
 
   .demo__step.is-active .demo__sdesc { display: block; }
@@ -687,8 +687,8 @@
       g700: cv('--gray-700', '#3D3D3B'),
       a100: cv('--agents-100', '#FFE0D9'),
       a400: cv('--agents-400', '#FF9783'),
-      a500: cv('--agents-500', '#FF563C'),
-      a600: cv('--agents-600', '#DD2B0F'),
+      a500: cv('--agents-500', '#EE6E43'),
+      a600: cv('--agents-600', '#9A3D1A'),
       a700: cv('--agents-700', '#AE1800'),
       a800: cv('--agents-800', '#7C1405'),
     };
@@ -778,7 +778,7 @@
       const barsH = [100, 92, 70, 48, 30, 18, 12, 9, 7, 6, 5, 4];
       const barsHtml = barsH.map((h, i) => {
         const ht = homeT >= 1 ? `${h}%` : '2%';
-        const bg = i < 2 ? '#BAB6B6' : C.a600;
+        const bg = i < 2 ? '#BEB8AE' : C.a500;
         return `<span style="flex:1;height:${ht};background:${bg};border-radius:2px 2px 0 0;transition:height .5s;"></span>`;
       }).join('');
       return `<div class="phone-screen" style="padding:58px 18px 0;display:flex;flex-direction:column;flex:1;"><div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid ${C.g300};padding-bottom:10px;"><span style="font-size:13px;color:${C.g500};">Hola, Carla</span><span style="font-family:var(--font-family-ui);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:${C.a700};">Piloto · Día 12 de 30</span></div><div style="font-family:var(--font-family-heading);font-size:26px;font-weight:800;line-height:1.05;letter-spacing:-0.02em;margin:14px 0 16px;">Cotizaciones</div><div style="border-top:1px solid ${C.ink};border-bottom:1px solid ${C.ink};padding:14px 0;display:flex;flex-direction:column;gap:8px;"><span style="font-family:var(--font-family-ui);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:${C.g500};">KPI del piloto · Tiempo de respuesta</span><div style="display:flex;align-items:baseline;gap:10px;"><span style="font-family:var(--font-family-heading);font-size:52px;font-weight:800;line-height:1;letter-spacing:-0.04em;">${kpiVal}</span><span style="font-family:var(--font-family-heading);font-size:18px;font-weight:800;color:${C.a600};">−96%</span></div><div style="display:flex;align-items:flex-end;gap:4px;height:56px;margin-top:4px;">${barsHtml}</div><div style="display:flex;justify-content:space-between;font-size:12px;color:${C.g500};"><span>Línea base 18 min</span><span>Meta −50%</span></div></div><div style="font-family:var(--font-family-ui);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:${C.g500};margin:16px 0 6px;">Requiere tu atención</div><div style="border-top:1px solid ${C.ink};"><div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid ${C.g200};"><span style="font-family:var(--font-family-heading);font-size:22px;font-weight:800;min-width:28px;color:${C.a600};">1</span><span style="font-size:13px;font-weight:600;">Conversación espera a una persona</span></div><div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid ${C.g200};"><span style="font-family:var(--font-family-heading);font-size:22px;font-weight:800;min-width:28px;color:${C.a600};">2</span><span style="font-size:13px;font-weight:600;">Acciones por aprobar</span></div></div></div>`;

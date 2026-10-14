@@ -109,9 +109,9 @@
 
   .hero__h1 {
     margin: 0;
-    font-family: var(--font-family-host-grotesk);
+    font-family: var(--font-family-heading);
     font-size: clamp(42px, 6vw, 80px);
-    font-weight: 800;
+    font-weight: var(--font-weight-heading);
     line-height: 1.04;
     letter-spacing: -0.025em;
     color: var(--color-text-primary);
@@ -121,7 +121,7 @@
   }
 
   .hero__h1-accent {
-    color: var(--agents-accent);
+    color: var(--brand-600); /* 3,2:1 en tamaño display */
   }
 
   .hero__body {
@@ -155,7 +155,7 @@
   .hero__cta--primary {
     padding: 16px 24px;
     background: var(--agents-accent);
-    color: #fff;
+    color: var(--ink);
     border: none;
   }
 
@@ -164,7 +164,7 @@
   }
 
   .hero__cta--primary:focus-visible {
-    outline: 2px solid var(--agents-accent);
+    outline: 2px solid var(--brand-800);
     outline-offset: 3px;
   }
 
@@ -176,7 +176,7 @@
   }
 
   .hero__cta--ghost:hover {
-    background: var(--color-bg-subtle, #F6F6F5);
+    background: var(--color-bg-subtle);
   }
 
   .hero__cta--ghost:focus-visible {
@@ -202,7 +202,7 @@
 
   .mock__header {
     background: var(--agents-accent);
-    color: #fff;
+    color: var(--ink);
     padding: 14px 20px;
     display: flex;
     align-items: center;
@@ -233,9 +233,9 @@
 
   .mock__name {
     margin: 0;
-    font-family: var(--font-family-host-grotesk);
+    font-family: var(--font-family-heading);
     font-size: 24px;
-    font-weight: 800;
+    font-weight: var(--font-weight-heading);
     line-height: 1.1;
     letter-spacing: -0.02em;
     color: var(--color-text-primary);
@@ -282,7 +282,7 @@
   .mock__cta-row {
     margin-top: 20px;
     background: var(--color-text-primary);
-    color: #fff;
+    color: var(--white);
     padding: 14px 16px;
     display: flex;
     align-items: center;

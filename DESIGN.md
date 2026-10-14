@@ -2,50 +2,41 @@
 name: Interforma
 description: Consultora digital chilena — transformación con método, no con promesas
 colors:
-  signal-blue: "#2655E8"
-  signal-blue-deep: "#1A44C9"
-  signal-blue-deeper: "#1236A8"
-  signal-blue-faint: "#EEF2FD"
-  signal-blue-pale: "#D5DFFB"
-  signal-blue-midnight: "#0B2060"
-  signal-blue-on-dark: "#7BA3FF"
-  page: "#F9F9F8"
-  surface: "#FFFFFF"
-  subtle: "#F2F2F0"
-  border-quiet: "#E8E8E5"
-  border-clear: "#D1D1CD"
-  text-strong: "#111110"
-  text-secondary: "#5A5A57"
-  text-quiet: "#737370"
-  text-muted: "#A5A5A0"
-  ink: "#111110"
-  ink-refined: "#15171C"
+  energia: "#EE6E43"
+  energia-600: "#D9582E"
+  energia-800: "#9A3D1A"
+  piedra-clara: "#E4E3DF"
+  papel: "#F2F1EE"
+  piedra: "#BEB8AE"
+  piedra-700: "#5C564E"
+  cielo: "#CCE2ED"
+  umbra: "#281F18"
   whatsapp-green: "#25D366"
 typography:
   display:
-    fontFamily: "'Host Grotesk Variable', 'Host Grotesk', -apple-system, sans-serif"
+    fontFamily: "'Outfit Variable', 'Outfit', system-ui, sans-serif"
     fontSize: "clamp(2.5rem, 5vw, 4.5rem)"
-    fontWeight: 700
+    fontWeight: 500
     lineHeight: 1.05
     letterSpacing: "-0.02em"
   headline:
-    fontFamily: "'Host Grotesk Variable', 'Host Grotesk', -apple-system, sans-serif"
+    fontFamily: "'Outfit Variable', 'Outfit', system-ui, sans-serif"
     fontSize: "2rem"
-    fontWeight: 700
+    fontWeight: 500
     lineHeight: 1.2
     letterSpacing: "-0.02em"
   title:
-    fontFamily: "'Host Grotesk Variable', 'Host Grotesk', -apple-system, sans-serif"
+    fontFamily: "'Outfit Variable', 'Outfit', system-ui, sans-serif"
     fontSize: "1.5rem"
-    fontWeight: 600
+    fontWeight: 500
     lineHeight: 1.25
   body:
-    fontFamily: "'Host Grotesk Variable', 'Host Grotesk', -apple-system, sans-serif"
+    fontFamily: "'Manrope Variable', 'Manrope', system-ui, sans-serif"
     fontSize: "1rem"
     fontWeight: 400
     lineHeight: 1.6
   label:
-    fontFamily: "'Host Grotesk Variable', 'Host Grotesk', -apple-system, sans-serif"
+    fontFamily: "'Manrope Variable', 'Manrope', system-ui, sans-serif"
     fontSize: "0.75rem"
     fontWeight: 500
     lineHeight: 1.4
@@ -71,28 +62,34 @@ spacing:
   20: "80px"
 components:
   button-primary:
-    backgroundColor: "{colors.signal-blue}"
-    textColor: "{colors.surface}"
+    backgroundColor: "{colors.energia}"
+    textColor: "{colors.umbra}"
     rounded: "{rounded.full}"
     padding: "12px 20px"
   button-primary-hover:
-    backgroundColor: "{colors.signal-blue-deep}"
+    backgroundColor: "{colors.energia-600}"
   button-ghost:
     backgroundColor: "transparent"
-    textColor: "{colors.signal-blue}"
+    textColor: "{colors.energia}"
     rounded: "{rounded.full}"
     padding: "12px 20px"
   button-ghost-hover:
-    backgroundColor: "{colors.signal-blue-faint}"
+    backgroundColor: "{colors.papel}"
   nav-link:
-    textColor: "{colors.text-secondary}"
+    textColor: "{colors.piedra-700}"
     rounded: "{rounded.sm}"
     padding: "4px 8px"
   nav-link-hover:
-    textColor: "{colors.text-strong}"
+    textColor: "{colors.umbra}"
 ---
 
 # Design System: Interforma
+
+> **Identidad 2026 (oct. 2026).** El azul señal fue reemplazado por **Energía `#EE6E43`** y los neutros pasan a piedra cálida (Piedra clara `#E4E3DF`, Papel `#F2F1EE`, Piedra `#BEB8AE`, Umbra `#281F18`, Cielo `#CCE2ED`). Titulares en **Outfit 500**, cuerpo en **Manrope**, datos en **JetBrains Mono**. Logo: isotipo **Transforma** (tres módulos en diagonal cuyo radio crece 3u→9u→15u hasta el círculo Energía) + logotipo "interforma" en minúsculas; ver `src/components/base/Wordmark.astro` y `public/favicon.svg`. Fuente de verdad de valores: `src/styles/tokens.css` (bloque IDENTIDAD 2026).
+>
+> **Reglas de contraste:** sobre Energía el texto va siempre en Umbra (5,4:1), nunca en blanco (2,7:1). Texto o foco naranja sobre fondos claros usa Energía 800 `#9A3D1A` (5,4:1); en tamaños ≥24 px puede usarse Energía 600 `#D9582E`. Sobre Umbra, Energía directo (5,4:1).
+>
+> Las secciones siguientes describen la versión anterior (azul) y se mantienen como historial; donde contradigan esta nota, manda esta nota.
 
 ## Overview
 
