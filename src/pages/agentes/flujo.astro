@@ -1,0 +1,247 @@
+---
+import Base from '@layouts/Base.astro';
+import Eyebrow from '@components/base/Eyebrow.astro';
+import SectionHeading from '@components/base/SectionHeading.astro';
+import WhatsAppButton from '@components/composite/WhatsAppButton.astro';
+
+const steps = [
+  { num: '01', title: 'Atención automática', agent: 'Responde al instante, cotiza de forma referencial y recoge los datos clave.', person: 'No interviene: la conversación queda en estado Pendiente.', control: 'El agente responde solo lo que está dentro de la política acordada.' },
+  { num: '02', title: 'Derivación a una persona', agent: 'Detecta urgencias, reclamos, casos fuera de política o un pedido de hablar con alguien.', person: 'Recibe una alerta y toma la conversación con todo el contexto.', control: 'Conversación Abierta: el agente se calla. Puede volver al agente marcándola Pendiente.' },
+  { num: '03', title: 'Registro en el CRM', agent: 'Cuando hay intención comercial real, crea la ficha y la oportunidad con los datos capturados.', person: 'Revisa la oportunidad en el CRM.', control: 'Un mismo número no genera leads duplicados.' },
+  { num: '04', title: 'Confirmación al cliente', agent: 'Envía un correo automático confirmando que la solicitud fue recibida.', person: 'No requiere acción.', control: 'El correo sale con la identidad de su empresa.' },
+  { num: '05', title: 'Cotización aprobada', agent: 'Prepara el formato y envía la cotización formal cuando la persona la aprueba.', person: 'Define monto y condiciones, y marca "Enviar cotización".', control: 'Nada sensible llega al cliente sin aprobación humana. El pipeline se actualiza solo.' },
+  { num: '06', title: 'Seguimiento', agent: 'Envía recordatorios a quien no responde, espaciados a 15, 30 y 45 días.', person: 'Retoma el contacto cuando el cliente vuelve a escribir.', control: 'La secuencia se detiene en cuanto el cliente responde.' },
+  { num: '07', title: 'Postventa y marketing', agent: 'Programa la encuesta de satisfacción y segmenta el remarketing por motivo de pérdida.', person: 'Marca cada oportunidad como ganada o perdida, con su motivo.', control: 'Una nota de 1 a 3 o un reclamo crea una tarea urgente para el equipo.' },
+  { num: '08', title: 'Medición del piloto', agent: 'Registra cada conversación, derivación y cotización.', person: 'Revisa el KPI acordado en el tablero.', control: 'Al día 30 se decide con datos: escalar, ajustar o detener.' },
+];
+
+const howTo = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'Flujo del agente de WhatsApp de Interforma Agents',
+  description: 'Cómo un agente de IA atiende por WhatsApp, deriva a una persona cuando corresponde, registra el lead en el CRM y hace seguimiento, con aprobación humana para todo lo sensible.',
+  step: steps.map((s, i) => ({
+    '@type': 'HowToStep',
+    position: i + 1,
+    name: s.title,
+    text: `${s.agent} ${s.control}`,
+  })),
+};
+---
+<Base
+  title="Flujo del agente de WhatsApp — Interforma Agents"
+  description="Cómo atiende el agente de WhatsApp: respuesta automática, derivación a una persona, registro en el CRM, cotización aprobada, seguimiento, postventa y medición del piloto."
+  canonical="https://interforma.digital/agentes/flujo"
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(howTo)} />
+
+  <section class="af-intro" aria-labelledby="af-heading">
+    <div class="af-container">
+      <a href="/#agentes" class="af-back" data-track-event="agents_flow_back">← Volver al inicio</a>
+      <Eyebrow>Interforma Agents</Eyebrow>
+      <SectionHeading size="xl" id="af-heading" as="h1">El flujo del agente de WhatsApp</SectionHeading>
+      <p class="af-sub">
+        Del primer mensaje a la cotización, el seguimiento y la postventa.
+        El agente atiende lo repetitivo; una persona decide todo lo sensible.
+      </p>
+    </div>
+  </section>
+
+  <section class="af-diagram" aria-label="Diagrama del flujo">
+    <div class="af-container">
+      <div class="af-frame">
+        <iframe
+          src="/diagramas/agente-whatsapp.html"
+          title="Diagrama interactivo del flujo del agente de WhatsApp"
+          loading="lazy"
+        ></iframe>
+      </div>
+      <p class="af-frame-note">
+        Use las vistas Atención automática, Derivación, Registro y cotización, y Seguimiento y marketing para recorrerlo por partes.
+        <a href="/diagramas/agente-whatsapp.html" target="_blank" rel="noopener" data-track-event="agents_flow_fullscreen">Abrir en pantalla completa</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="af-steps" aria-labelledby="af-steps-heading">
+    <div class="af-container">
+      <SectionHeading size="lg" id="af-steps-heading">Qué pasa en cada paso</SectionHeading>
+      <ol class="af-list" role="list">
+        {steps.map((s) => (
+          <li class="af-step">
+            <header class="af-step__head">
+              <span class="af-step__num">{s.num}</span>
+              <h3 class="af-step__title">{s.title}</h3>
+            </header>
+            <dl class="af-step__rows">
+              <div><dt>El agente</dt><dd>{s.agent}</dd></div>
+              <div><dt>La persona</dt><dd>{s.person}</dd></div>
+              <div><dt>Regla de control</dt><dd class="af-strong">{s.control}</dd></div>
+            </dl>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="af-states" aria-labelledby="af-states-heading">
+    <div class="af-container">
+      <SectionHeading size="lg" id="af-states-heading">Quién atiende en cada momento</SectionHeading>
+      <dl class="af-states__grid">
+        <div class="af-state"><dt>Pendiente</dt><dd>Atiende el agente.</dd></div>
+        <div class="af-state"><dt>Abierta</dt><dd>Atiende una persona. El agente queda en pausa.</dd></div>
+        <div class="af-state"><dt>Resuelta</dt><dd>Conversación cerrada.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="af-cta" aria-labelledby="af-cta-heading">
+    <div class="af-container af-cta__inner">
+      <div>
+        <h2 id="af-cta-heading" class="af-cta__title">Pruébelo en un piloto de 30 días.</h2>
+        <p class="af-cta__sub">Un agente, un canal y un KPI. Con una persona al mando desde el primer día.</p>
+      </div>
+      <div class="af-cta__actions">
+        <WhatsAppButton label="Conversar sobre un piloto" size="lg" />
+        <a href="/agentes" class="af-link" data-track-event="agents_flow_to_landing">Ver Interforma Agents</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { track } from '@lib/analytics/track';
+  document.querySelectorAll<HTMLAnchorElement>('[data-track-event^="agents_flow_"]').forEach((el) => {
+    el.addEventListener('click', () => track(el.dataset.trackEvent!, { page: 'agentes_flujo' }));
+  });
+</script>
+
+<style>
+  .af-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-inline: clamp(20px, 5.5vw, 80px);
+  }
+
+  .af-intro { padding-block: clamp(48px, 8vw, 96px) var(--spacing-10); }
+  .af-intro .af-container { display: flex; flex-direction: column; gap: 18px; }
+  .af-back {
+    align-self: flex-start;
+    font-size: var(--font-size-body-sm);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+  }
+  .af-back:hover { color: var(--color-interactive-default); }
+  .af-sub {
+    margin: 0;
+    max-width: 62ch;
+    font-size: var(--font-size-body-lg);
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .af-frame {
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-card-lg);
+    overflow: hidden;
+    background: var(--color-bg-subtle);
+  }
+  .af-frame iframe {
+    display: block;
+    width: 100%;
+    height: clamp(560px, 66vw, 880px);
+    border: 0;
+  }
+  .af-frame-note {
+    margin: var(--spacing-3) 0 0;
+    font-size: var(--font-size-body-sm);
+    color: var(--color-text-secondary);
+  }
+  .af-frame-note a { color: var(--color-interactive-default); font-weight: 600; }
+
+  .af-steps { padding-block: clamp(56px, 8vw, 96px) var(--spacing-12); }
+  .af-steps .af-container,
+  .af-states .af-container { display: flex; flex-direction: column; gap: var(--spacing-8); }
+  .af-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--spacing-4);
+  }
+  .af-step {
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-card);
+    padding: var(--spacing-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+    background: var(--color-bg-surface);
+  }
+  .af-step__head { display: flex; align-items: baseline; gap: var(--spacing-3); }
+  .af-step__num {
+    font-size: var(--font-size-label-md);
+    font-weight: 600;
+    color: var(--color-interactive-default);
+    font-variant-numeric: tabular-nums;
+  }
+  .af-step__title {
+    margin: 0;
+    font-family: var(--font-family-heading);
+    font-size: var(--font-size-heading-md);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .af-step__rows { margin: 0; display: flex; flex-direction: column; gap: var(--spacing-3); }
+  .af-step__rows div { display: flex; flex-direction: column; gap: 2px; }
+  .af-step__rows dt { font-size: var(--font-size-label-md); color: var(--color-text-tertiary); }
+  .af-step__rows dd { margin: 0; font-size: var(--font-size-body-sm); line-height: 1.5; color: var(--color-text-primary); }
+  .af-strong { font-weight: 600; }
+
+  .af-states { padding-block: 0 clamp(56px, 8vw, 96px); }
+  .af-states__grid {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--spacing-4);
+  }
+  .af-state {
+    background: var(--color-bg-subtle);
+    border-radius: var(--radius-card);
+    padding: var(--spacing-5) var(--spacing-6);
+  }
+  .af-state dt {
+    font-family: var(--font-family-heading);
+    font-weight: 700;
+    font-size: var(--font-size-heading-sm);
+  }
+  .af-state dd { margin: var(--spacing-1) 0 0; font-size: var(--font-size-body-sm); color: var(--color-text-secondary); }
+
+  .af-cta { padding-block: 0 clamp(64px, 9vw, 112px); }
+  .af-cta__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-6);
+    flex-wrap: wrap;
+  }
+  .af-cta__title {
+    margin: 0;
+    font-family: var(--font-family-heading);
+    font-size: var(--font-size-heading-xl);
+    letter-spacing: -0.02em;
+  }
+  .af-cta__sub { margin: var(--spacing-2) 0 0; color: var(--color-text-secondary); }
+  .af-cta__actions { display: flex; align-items: center; gap: var(--spacing-5); flex-wrap: wrap; }
+  .af-link { color: var(--color-interactive-default); font-weight: 600; }
+
+  @media (max-width: 1100px) {
+    .af-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 640px) {
+    .af-list, .af-states__grid { grid-template-columns: 1fr; }
+    .af-frame iframe { height: 560px; }
+  }
+</style>

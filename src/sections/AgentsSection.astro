@@ -23,9 +23,14 @@
           Responden consultas frecuentes, recogen los datos clave y derivan a una persona
           cuando corresponde. Nada sensible llega al cliente sin aprobación humana.
         </p>
-        <a href="/agentes" class="agents__cta">
-          Ver Interforma Agents <span class="agents__cta-arrow" aria-hidden="true">→</span>
-        </a>
+        <div class="agents__ctas">
+          <a href="/agentes" class="agents__cta">
+            Ver Interforma Agents <span class="agents__cta-arrow" aria-hidden="true">→</span>
+          </a>
+          <a href="/agentes/flujo" class="agents__cta agents__cta--ghost" data-track-event="agents_flow_open">
+            Ver el flujo en detalle
+          </a>
+        </div>
       </div>
     </div>
 
@@ -250,6 +255,22 @@
   }
 
   .agents__cta:hover { background: var(--paper); }
+
+  .agents__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .agents__cta--ghost {
+    background: transparent;
+    color: var(--white);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .35);
+  }
+
+  .agents__cta--ghost:hover {
+    background: rgba(255, 255, 255, .08);
+  }
 
   .agents__cta:focus-visible {
     outline: 2px solid var(--white);
@@ -621,6 +642,12 @@
     }
   }
 </style>
+
+<script>
+  import { track } from '@lib/analytics/track';
+  document.querySelector<HTMLAnchorElement>('[data-track-event="agents_flow_open"]')
+    ?.addEventListener('click', () => track('agents_flow_open', { placement: 'home_agents' }));
+</script>
 
 <script>
   (() => {
