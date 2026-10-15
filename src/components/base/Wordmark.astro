@@ -3,6 +3,16 @@
  * Wordmark — isotipo "Transforma" + logotipo "interforma".
  * Isotipo: tres módulos en diagonal cuyo radio crece (3u → 9u → 15u)
  * hasta volverse círculo Energía. Ver DESIGN.md §Logo.
+ *
+ * Movimiento: al entrar en pantalla, el módulo base aparece y una copia
+ * sube la diagonal redondeándose hasta el círculo Energía (≈1,7 s, una vez).
+ * Se repite al pasar el cursor o enfocar el enlace. Sin bucles.
+ * Con prefers-reduced-motion se muestra estático.
+ *
+ * Los módulos son <span> con border-radius (no SVG rx) para que la
+ * transición de radio funcione igual en Safari, Chrome y Firefox.
+ * Geometría en unidades del viewBox original de 120u:
+ *   módulo 30u · posiciones (14,76) (45,45) (76,14) · paso 31u.
  */
 export interface Props {
   size?: 'sm' | 'md';
@@ -12,12 +22,12 @@ export interface Props {
 }
 const { size = 'md', href = '/#inicio', tone = 'light' } = Astro.props;
 ---
-<a href={href} class={`wordmark wordmark--${size} wordmark--${tone}`} aria-label="interforma — ir al inicio">
-  <svg class="wordmark__mark" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
-    <rect x="14" y="76" width="30" height="30" rx="3" class="wordmark__mod" />
-    <rect x="45" y="45" width="30" height="30" rx="9" class="wordmark__mod" />
-    <rect x="76" y="14" width="30" height="30" rx="15" class="wordmark__dot" />
-  </svg>
+<a href={href} class={`wordmark wordmark--${size} wordmark--${tone}`} aria-label="interforma — ir al inicio" data-wordmark>
+  <span class="wordmark__mark" aria-hidden="true">
+    <span class="wordmark__m wordmark__m--a"></span>
+    <span class="wordmark__m wordmark__m--b"></span>
+    <span class="wordmark__m wordmark__m--c"></span>
+  </span>
   <span class="wordmark__text">interforma</span>
 </a>
 
@@ -40,9 +50,22 @@ const { size = 'md', href = '/#inicio', tone = 'light' } = Astro.props;
 
   .wordmark--dark:focus-visible { outline-color: var(--dark-accent); }
 
-  .wordmark__mark { display: block; flex-shrink: 0; }
-  .wordmark__mod  { fill: currentColor; }
-  .wordmark__dot  { fill: var(--brand-500); }
+  .wordmark__mark {
+    position: relative;
+    display: block;
+    flex-shrink: 0;
+  }
+
+  /* 30u / 120u = 25 % */
+  .wordmark__m {
+    position: absolute;
+    width: 25%;
+    height: 25%;
+    background: currentColor;
+  }
+  .wordmark__m--a { left: 11.667%; top: 63.333%; border-radius: 10%; }
+  .wordmark__m--b { left: 37.5%;   top: 37.5%;   border-radius: 30%; }
+  .wordmark__m--c { left: 63.333%; top: 11.667%; border-radius: 50%; background: var(--brand-500); }
 
   .wordmark__text {
     font-family: var(--font-family-heading);
@@ -56,4 +79,88 @@ const { size = 'md', href = '/#inicio', tone = 'light' } = Astro.props;
 
   .wordmark--sm .wordmark__mark { width: 24px; height: 24px; }
   .wordmark--sm .wordmark__text { font-size: 20px; }
+
+  /* ---------- Movimiento: Transforma ---------- */
+  /* Paso diagonal = 31u / 30u = 103.333 % del módulo */
+  .wordmark.is-playing .wordmark__m--a {
+    animation: wm-in 400ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .wordmark.is-playing .wordmark__m--b {
+    animation:
+      wm-show 1ms linear 300ms both,
+      wm-b 700ms cubic-bezier(0.65, 0, 0.35, 1) 300ms both;
+  }
+  .wordmark.is-playing .wordmark__m--c {
+    animation:
+      wm-show 1ms linear 300ms both,
+      wm-c 1400ms linear 300ms both;
+  }
+
+  @keyframes wm-show { from { opacity: 0; } to { opacity: 1; } }
+
+  @keyframes wm-in {
+    from { opacity: 0; transform: scale(0.5); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @keyframes wm-b {
+    from { transform: translate(-103.333%, 103.333%); border-radius: 10%; }
+    to   { transform: none; border-radius: 30%; }
+  }
+
+  /* Un solo recorrido continuo: acelera hasta el módulo medio y frena en el círculo */
+  @keyframes wm-c {
+    0% {
+      transform: translate(-206.667%, 206.667%);
+      border-radius: 10%;
+      background: currentColor;
+      animation-timing-function: cubic-bezier(0.55, 0, 0.8, 0.55);
+    }
+    48% {
+      transform: translate(-103.333%, 103.333%);
+      border-radius: 30%;
+      background: currentColor;
+      animation-timing-function: cubic-bezier(0.2, 0.45, 0.3, 1);
+    }
+    100% {
+      transform: none;
+      border-radius: 50%;
+      background: var(--brand-500);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wordmark.is-playing .wordmark__m { animation: none; }
+  }
 </style>
+
+<script>
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  const play = (el: HTMLElement) => {
+    if (reduce.matches) return;
+    el.classList.remove('is-playing');
+    void el.offsetWidth; // reinicia la animación
+    el.classList.add('is-playing');
+  };
+
+  const marks = document.querySelectorAll<HTMLElement>('[data-wordmark]');
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          play(entry.target as HTMLElement);
+          io.unobserve(entry.target);
+        }
+      }
+    },
+    { threshold: 0.6 }
+  );
+
+  marks.forEach((el) => {
+    io.observe(el);
+    el.addEventListener('mouseenter', () => play(el));
+    el.addEventListener('focus', () => play(el));
+  });
+</script>
