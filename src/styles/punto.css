@@ -1,0 +1,84 @@
+/*
+ * Punto — animaciones de la mascota (ver src/lib/punto.ts y DESIGN.md §Punto).
+ * Reposo: respira 3,2 s, parpadea cada 4,6 s, mira a los lados cada 9 s.
+ * Con prefers-reduced-motion queda quieto.
+ */
+
+.punto {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.punto-bob { animation: punto-bob 3.2s ease-in-out infinite; }
+
+.punto-blink {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: punto-blink 4.6s linear infinite;
+}
+
+.punto-look { animation: punto-look 9s ease-in-out infinite; }
+
+/* Saluda: se balancea tres veces y luego queda en reposo */
+.punto-sway {
+  transform-box: view-box;
+  transform-origin: 100px 182px;
+  animation: punto-sway 0.9s ease-in-out 3;
+}
+
+.punto-flick { animation: punto-flick 0.9s ease-in-out 3 both; }
+.punto-dot { animation: punto-dot 2.4s ease-in-out infinite; }
+
+.punto-pop {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: punto-pop 1.1s ease-out infinite;
+}
+
+@keyframes punto-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes punto-blink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  93% { transform: scaleY(0.08); }
+  96% { transform: scaleY(1); }
+}
+
+@keyframes punto-look {
+  0%, 30% { transform: translateX(0); }
+  36%, 55% { transform: translateX(8px); }
+  61%, 78% { transform: translateX(-6px); }
+  84%, 100% { transform: translateX(0); }
+}
+
+@keyframes punto-sway {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-8deg); }
+  75% { transform: rotate(8deg); }
+}
+
+@keyframes punto-flick {
+  0%, 100% { opacity: 0; }
+  30%, 70% { opacity: 1; }
+}
+
+@keyframes punto-dot {
+  0% { opacity: 0; }
+  25%, 80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes punto-pop {
+  0% { transform: translateY(0) scale(0); opacity: 0; }
+  30% { transform: translateY(-12px) scale(1); opacity: 1; }
+  100% { transform: translateY(26px) rotate(120deg); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .punto,
+  .punto * { animation: none !important; }
+}

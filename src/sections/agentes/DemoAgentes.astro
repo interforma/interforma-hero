@@ -427,6 +427,8 @@
 </style>
 
 <script>
+  import { puntoSvg, type PuntoExpr } from '@lib/punto';
+
   (() => {
     const LEN  = 35;
     const TICK = 750;
@@ -440,11 +442,12 @@
       { start: 29, end: 35 },
     ];
 
-    const MSGS = [
+    // Punto (la mascota) es la cara del agente: su expresión acompaña cada momento.
+    const MSGS: { t: number; from: string; text: string; expr?: PuntoExpr }[] = [
       { t: 1,  from: 'cliente',  text: 'Hola, necesito cotizar el plan mensual para 3 sucursales.' },
-      { t: 3,  from: 'agente',   text: '¡Claro! ¿Cuántos usuarios en total y por cuánto tiempo?' },
+      { t: 3,  from: 'agente',   text: '¡Claro! ¿Cuántos usuarios en total y por cuánto tiempo?', expr: 'atento' },
       { t: 5,  from: 'cliente',  text: '40 usuarios, 12 meses. ¿Me pueden dar 20% de descuento?' },
-      { t: 7,  from: 'agente',   text: 'Déjame consultarlo con el equipo. Te respondo en unos minutos.' },
+      { t: 7,  from: 'agente',   text: 'Déjame consultarlo con el equipo. Te respondo en unos minutos.', expr: 'piensa' },
       { t: 8,  from: 'sistema',  text: 'Derivada a una persona · descuento fuera de política' },
       { t: 16, from: 'sistema',  text: 'Carla tomó la conversación · agente en pausa' },
       { t: 20, from: 'operador', text: REPLY },
@@ -493,7 +496,8 @@
     function buildMsg(m: typeof MSGS[0], animate: boolean): string {
       const s = MS[m.from];
       const cls = animate ? 'ag-phone-msg' : '';
-      const who = s.who ? `<span style="font-size:9.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;opacity:0.8;">${s.who}</span>` : '';
+      const avatar = m.from === 'agente' ? puntoSvg(m.expr ?? 'atento', { size: 16 }) : '';
+      const who = s.who ? `<span style="display:flex;align-items:center;gap:6px;font-size:9.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;"><span style="display:flex;align-items:center;gap:6px;opacity:0.85;">${avatar}${s.who}</span></span>` : '';
       const fs   = m.from === 'sistema' ? '11.5px' : '13px';
       const maxw = m.from === 'sistema' ? '100%' : '84%';
       return `<div class="${cls}" style="align-self:${s.align};max-width:${maxw};background:${s.bg};color:${s.fg};border:${s.bd};border-radius:${s.radius};padding:9px 11px;font-size:${fs};line-height:1.4;display:flex;flex-direction:column;gap:3px;">${who}<span>${m.text}</span></div>`;
@@ -510,7 +514,7 @@
         .map(m => buildMsg(m, m.t === t)).join('');
 
       const typingHtml = (t === 2 || t === 6)
-        ? `<div style="align-self:flex-end;display:flex;align-items:center;gap:8px;background:${C.g200};color:${C.g700};border-radius:12px;padding:9px 11px;font-size:12.5px;"><span class="ag-typing-inline"><i></i><i></i><i></i></span>Agente IA escribiendo</div>`
+        ? `<div style="align-self:flex-end;display:flex;align-items:center;gap:8px;background:${C.g200};color:${C.g700};border-radius:12px;padding:9px 11px;font-size:12.5px;">${puntoSvg('piensa', { size: 18 })}<span class="ag-typing-inline"><i></i><i></i><i></i></span>Agente IA escribiendo</div>`
         : '';
 
       const bannerHtml = (t === 10 || t === 11)
@@ -522,7 +526,7 @@
 
       const bottomHtml = opPhase
         ? `<div style="display:flex;gap:8px;"><div style="flex:1;border:1px solid ${C.g300};border-radius:10px;background:${C.wht};padding:9px 11px;font-size:13px;line-height:1.35;min-height:18px;">${draft}<span class="ag-caret" style="display:inline-block;width:2px;height:15px;background:${C.a600};vertical-align:-3px;margin-left:1px;"></span></div><div style="width:42px;border-radius:10px;background:${C.a600};color:${C.wht};display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div></div>`
-        : `<div style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:${C.g700};"><span style="width:8px;height:8px;background:${C.acc};display:block;flex-shrink:0;"></span>${agentStatus}</div>`;
+        : `<div style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:${C.g700};">${puntoSvg(t >= 8 ? 'escucha' : 'atento', { size: 20 })}${agentStatus}</div>`;
 
       return `<div style="padding:56px 16px 12px;border-bottom:1px solid ${C.g300};display:flex;align-items:center;gap:10px;"><div style="flex:1;display:flex;flex-direction:column;gap:2px;"><span style="font-weight:800;font-size:16px;">María José Pérez</span><span style="font-size:12px;color:${C.g500};">WhatsApp · Cotización</span></div><span style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:5px 8px;border-radius:4px;white-space:nowrap;background:${tag.bg};color:${tag.fg};">${tag.label}</span></div><div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;padding:14px;overflow:hidden;">${msgsHtml}${typingHtml}</div><div style="border-top:1px solid ${C.g300};padding:12px 14px 30px;">${bottomHtml}</div>${bannerHtml}`;
     }
@@ -541,7 +545,7 @@
       const aprobCount = t >= 27 ? '2' : '3';
       const bottomHtml = t < 27
         ? `<div style="display:grid;grid-template-columns:1fr 1.4fr;gap:8px;"><div style="border:1px solid ${C.ink};border-radius:12px;padding:14px;font-weight:700;font-size:14px;text-align:center;">Rechazar</div><div style="position:relative;display:flex;justify-content:space-between;align-items:center;background:${approveBg};color:${C.wht};border-radius:12px;padding:14px;font-weight:700;font-size:14px;"><span>Aprobar y enviar</span><span>✓</span>${tapHtml}</div></div>`
-        : `<div class="ag-phone-msg" style="display:flex;align-items:center;gap:10px;background:${C.ink};color:${C.wht};border-radius:12px;padding:15px;font-weight:700;font-size:14px;"><span style="color:${C.a500};">✓</span><span>Aprobada · enviada a María José</span></div>`;
+        : `<div class="ag-phone-msg" style="display:flex;align-items:center;gap:10px;background:${C.ink};color:${C.wht};border-radius:12px;padding:15px;font-weight:700;font-size:14px;">${puntoSvg('celebra', { size: 22 })}<span>Aprobada · enviada a María José</span></div>`;
       return `<div class="ag-phone-screen" style="display:flex;flex-direction:column;flex:1;"><div style="padding:58px 18px 12px;border-bottom:1px solid ${C.g300};display:flex;justify-content:space-between;align-items:baseline;"><span style="font-size:26px;font-weight:800;letter-spacing:-0.02em;">Aprobaciones</span><span style="font-size:20px;font-weight:800;color:${C.acc};">${aprobCount}</span></div><div style="flex:1;padding:16px 18px;display:flex;flex-direction:column;gap:12px;overflow:hidden;"><span style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:${C.a700};">Cotización · propuesta por el agente</span><span style="font-size:20px;font-weight:800;line-height:1.15;letter-spacing:-0.01em;">Plan mensual · 40 usuarios · María José Pérez</span><div style="border-top:1px solid ${C.ink};font-size:13px;"><div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid ${C.g200};"><span style="color:${C.g500};">Precio lista</span><span style="font-weight:600;">US$ 2.400 / mes</span></div><div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid ${C.g200};"><span style="color:${C.g500};">Descuento</span><span style="font-weight:600;">10% · dentro de política</span></div><div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid ${C.g200};"><span style="color:${C.g500};">Implementación</span><span style="font-weight:600;">Sin costo</span></div><div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid ${C.ink};font-size:15px;font-weight:800;"><span>Total mensual</span><span>US$ 2.160</span></div></div></div><div style="padding:12px 14px 30px;border-top:1px solid ${C.g300};">${bottomHtml}</div></div>`;
     }
 
