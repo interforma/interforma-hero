@@ -1,0 +1,18 @@
+---
+/**
+ * Punto — mascota de Interforma. Ver src/lib/punto.ts y DESIGN.md §Punto.
+ * Ej.: <Punto expr="uy" size={160} decor alive label="Punto preocupado" />
+ */
+import { puntoSvg, type PuntoExpr } from '@lib/punto';
+
+export interface Props {
+  expr?: PuntoExpr;
+  size?: number;
+  label?: string;
+  decor?: boolean;
+  alive?: boolean;
+}
+
+const { expr = 'atento', ...opts } = Astro.props;
+---
+<Fragment set:html={puntoSvg(expr, opts)} />
