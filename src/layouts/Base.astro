@@ -34,6 +34,8 @@ const ga4Id = import.meta.env.PUBLIC_GA4_MEASUREMENT_ID?.trim();
     {ga4Id && (
       <Fragment set:html={`<script async src="https://www.googletagmanager.com/gtag/js?id=${ga4Id}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${ga4Id}');</script>`} />
     )}
+    <!-- Metricool -->
+    <script is:inline>function loadScript(a){var b=document.getElementsByTagName("head")[0],c=document.createElement("script");c.type="text/javascript",c.src="https://tracker.metricool.com/resources/be.js",c.onreadystatechange=a,c.onload=a,b.appendChild(c)}loadScript(function(){beTracker.t({hash:"58027f106579c94ce15019305e28e19"})});</script>
     <!-- Microsoft Clarity -->
     <script is:inline define:vars={{ clarityId }}>
       (function(c,l,a,r,i,t,y){
