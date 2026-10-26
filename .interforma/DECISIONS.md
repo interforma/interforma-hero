@@ -46,7 +46,7 @@
 **Estado:** Aprobado (registrado retroactivamente el 2026-10-26)
 **Motivo:** dar más energía visual a la marca.
 **Decisión:** el acento pasa de Signal Blue a **Energía `#EE6E43`** con neutros piedra cálida; titulares en Outfit, cuerpo en Manrope y datos en JetBrains Mono, autoalojadas; isotipo **Transforma** y logotipo «interforma» en minúsculas; **Punto** como mascota, separada del logo oficial. La fuente de verdad de valores es el bloque *IDENTIDAD 2026* de `src/styles/tokens.css`. Implementado en PR #8 a #11.
-**Pendiente:** reescribir el cuerpo de `DESIGN.md`, que todavía describe el sistema azul.
+**Aplicación completa (2026-10-26):** `DESIGN.md` reescrito como referencia única; fuentes anteriores (Plus Jakarta Sans, Inter, Host Grotesk) retiradas del código y de las dependencias; botones y foco unificados; documentos HTML de Interforma en `public/` con la marca vía `public/marca/interforma-docs.css`. Excepciones documentadas en `DESIGN.md` §9 y §10 (colores de redes sociales, familias de categoría en diagramas de sistema, material con marca del cliente).
 
 ## ADR-010 — Arquitectura de Interforma Agents
 
@@ -58,7 +58,7 @@
 
 ## ADR-011 — Activos de clientes servidos desde `public/`
 
-**Estado:** Propuesto — requiere revisión
-**Contexto:** informes mensuales, propuestas comerciales, planes y landings de clientes se publican como HTML estáticos en `public/informes/`, `public/propuestas/`, `public/clientes/` y `public/agente-medic-home/`. Es rápido de compartir, pero quedan en un repositorio público, sin `noindex`, y con `robots.txt` abierto. Algunos incluyen montos facturados.
-**Propuesta:** (a) en el corto plazo, `noindex, nofollow` vía header `X-Robots-Tag` en `vercel.json` y `Disallow` en `robots.txt` para esas rutas; (b) en el mediano plazo, moverlos a un repositorio privado o a un portal con acceso (por ejemplo, el portal de reportes de clientes).
-**Decisión:** pendiente.
+**Estado:** Parcial — paso (a) aplicado, paso (b) pendiente de decisión
+**Contexto:** informes mensuales, propuestas comerciales, planes y landings de clientes se publican como HTML estáticos en `public/informes/`, `public/propuestas/`, `public/clientes/` y `public/agente-medic-home/`. Es rápido de compartir, pero quedan en un repositorio público. Algunos incluyen montos facturados.
+**(a) Corto plazo — aplicado el 2026-10-26:** `<meta name="robots" content="noindex, nofollow, noarchive">` en cada documento y header `X-Robots-Tag` con el mismo valor en `vercel.json` para esas rutas. **No** se bloquean en `robots.txt` a propósito: Google necesita leer el `noindex` para sacar del índice lo que ya hubiera indexado.
+**(b) Mediano plazo — pendiente:** moverlos a un repositorio privado o a un portal con acceso (por ejemplo, el portal de reportes de clientes).

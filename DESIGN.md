@@ -1,23 +1,33 @@
 ---
 name: Interforma
 description: Consultora digital chilena — transformación con método, no con promesas
+version: Identidad 2026 (oct. 2026, ADR-009)
 colors:
   energia: "#EE6E43"
+  energia-400: "#F2906D"
   energia-600: "#D9582E"
   energia-800: "#9A3D1A"
-  piedra-clara: "#E4E3DF"
-  papel: "#F2F1EE"
-  piedra: "#BEB8AE"
-  piedra-700: "#5C564E"
-  cielo: "#CCE2ED"
+  energia-900: "#7A2F13"
+  energia-50: "#FBE6DC"
+  energia-100: "#F7CDBB"
   umbra: "#281F18"
+  papel: "#F2F1EE"
+  piedra-clara: "#E4E3DF"
+  piedra: "#BEB8AE"
+  piedra-500: "#8F887E"
+  piedra-700: "#5C564E"
+  borde: "#D0CCC4"
+  cielo: "#CCE2ED"
+  ok: "#18794E"
+  alerta: "#A35200"
+  error: "#C53030"
   whatsapp-green: "#25D366"
 typography:
   display:
     fontFamily: "'Outfit Variable', 'Outfit', system-ui, sans-serif"
-    fontSize: "clamp(2.5rem, 5vw, 4.5rem)"
+    fontSize: "clamp(2.5rem, 6.5vw, 5.25rem)"
     fontWeight: 500
-    lineHeight: 1.05
+    lineHeight: 1.02
     letterSpacing: "-0.02em"
   headline:
     fontFamily: "'Outfit Variable', 'Outfit', system-ui, sans-serif"
@@ -41,12 +51,17 @@ typography:
     fontWeight: 500
     lineHeight: 1.4
     letterSpacing: "0.08em"
+  data:
+    fontFamily: "'JetBrains Mono', ui-monospace, monospace"
+    fontWeight: 400
 rounded:
-  none: "0"
   sm: "4px"
   md: "8px"
   lg: "12px"
-  xl: "16px"
+  btn: "11px"
+  card: "16px"
+  card-lg: "20px"
+  cta: "28px"
   full: "9999px"
 spacing:
   1: "4px"
@@ -64,218 +79,220 @@ components:
   button-primary:
     backgroundColor: "{colors.energia}"
     textColor: "{colors.umbra}"
-    rounded: "{rounded.full}"
-    padding: "12px 20px"
+    rounded: "{rounded.btn}"
   button-primary-hover:
-    backgroundColor: "{colors.energia-600}"
-  button-ghost:
+    backgroundColor: "{colors.energia-400}"
+  button-on-energia:
+    backgroundColor: "{colors.umbra}"
+    textColor: "{colors.papel}"
+    rounded: "{rounded.btn}"
+  button-secondary:
     backgroundColor: "transparent"
-    textColor: "{colors.energia}"
-    rounded: "{rounded.full}"
-    padding: "12px 20px"
-  button-ghost-hover:
-    backgroundColor: "{colors.papel}"
-  nav-link:
-    textColor: "{colors.piedra-700}"
-    rounded: "{rounded.sm}"
-    padding: "4px 8px"
-  nav-link-hover:
     textColor: "{colors.umbra}"
+    borderColor: "{colors.umbra}"
+    rounded: "{rounded.btn}"
+  focus-ring:
+    color: "{colors.energia-800}"
+    width: "2px"
+    offset: "2px"
 ---
 
 # Design System: Interforma
 
-> **Identidad 2026 (oct. 2026).** El azul señal fue reemplazado por **Energía `#EE6E43`** y los neutros pasan a piedra cálida (Piedra clara `#E4E3DF`, Papel `#F2F1EE`, Piedra `#BEB8AE`, Umbra `#281F18`, Cielo `#CCE2ED`). Titulares en **Outfit 500**, cuerpo en **Manrope**, datos en **JetBrains Mono**. Logo: isotipo **Transforma** (tres módulos en diagonal cuyo radio crece 3u→9u→15u hasta el círculo Energía) + logotipo "interforma" en minúsculas; ver `src/components/base/Wordmark.astro` y `public/favicon.svg`. **Movimiento del isotipo:** al entrar en pantalla, el módulo base aparece y una copia sube la diagonal redondeándose hasta el círculo Energía (≈1,7 s, una sola vez, CSS puro); se repite al pasar el cursor o enfocar el enlace; sin bucles; estático con `prefers-reduced-motion`. Fuente de verdad de valores: `src/styles/tokens.css` (bloque IDENTIDAD 2026).
->
-> **Punto (mascota).** El círculo Energía del isotipo en primer plano, con ojos Umbra; es un personaje aparte y el logo oficial nunca lleva ojos. Ocho expresiones (`atento`, `saluda`, `escucha`, `piensa`, `trabaja`, `sorpresa`, `celebra`, `uy`) en `src/lib/punto.ts`, componente `src/components/base/Punto.astro`, animaciones en `src/styles/punto.css` (reposo: respira 3,2 s, parpadea cada 4,6 s, mira a los lados cada 9 s; estático con `prefers-reduced-motion`). Sin boca, brazos ni otros colores (salvo la gota Cielo de `uy`); bajo 24 px se usa el isotipo, salvo como avatar en interfaces densas (demo del agente). Hoy aparece en: avatar del agente en /agentes, saludo junto al botón de WhatsApp (una vez por sesión) y página 404.
->
-> **Reglas de contraste:** sobre Energía el texto va siempre en Umbra (5,4:1), nunca en blanco (2,7:1). Texto o foco naranja sobre fondos claros usa Energía 800 `#9A3D1A` (5,4:1); en tamaños ≥24 px puede usarse Energía 600 `#D9582E`. Sobre Umbra, Energía directo (5,4:1).
->
-> Las secciones siguientes describen la versión anterior (azul) y se mantienen como historial; donde contradigan esta nota, manda esta nota.
+**Versión vigente:** Identidad 2026 (octubre de 2026, ADR-009). Reemplaza por completo al sistema azul anterior (Signal Blue `#2655E8`, Host Grotesk), que ya no se usa en ninguna parte.
 
-## Overview
+**Fuentes de verdad**
 
-**Creative North Star: "El Método como máquina"**
+| Qué | Dónde |
+|---|---|
+| Valores del sitio | `src/styles/tokens.css`, bloque *IDENTIDAD 2026* |
+| Valores para documentos sueltos (informes, propuestas) | `public/marca/interforma-docs.css` |
+| Tokens JSON | `design/tokens/*.json` |
+| Logo | `src/components/base/Wordmark.astro`, `public/marca/isotipo.svg`, `public/favicon.svg` |
+| Mascota | `src/lib/punto.ts`, `src/components/base/Punto.astro`, `src/styles/punto.css` |
+| Animación de marca | `design/motion/` |
 
-Interforma no vende aspiraciones — vende un proceso. El sistema visual refleja eso: cada elemento ocupa el espacio que merece, la tipografía trabaja sin decoración, y el único color de acento es exactamente tan prominente como la acción que pide. No hay ornamento que no sea función.
-
-La densidad es media: suficiente espacio para respirar entre secciones, nunca tanto que el contenido se disperse. El fondo base es un blanco ligeramente cálido (#F9F9F8) que distingue la página de una pantalla vacía sin añadir color. Las secciones oscuras (Método, Footer) usan un azul-negro profundo (#15171C) que refuerza la seriedad del servicio. El azul señal (#2655E8) aparece solo en acciones: botones, links activos, estados de foco. Su escasez es su autoridad.
-
-El movimiento es técnico y rápido: entradas de fade-up en 400ms con `cubic-bezier(0.16, 1, 0.3, 1)`, sin rebotes ni efectos de atención. El fondo del hero tiene una animación halftone generativa (canvas 2D, tres capas: blob/sphere/hexagon) con parallax scroll+pointer, única excepción ornamental justificada por ser el primer punto de contacto. La preferencia `prefers-reduced-motion` suprime todas las animaciones y transiciones.
-
-**Key Characteristics:**
-- Azul señal como único acento; neutrales cálidos para todo lo demás
-- Host Grotesk Variable — grotesca geométrica, sin serif, tracking negativo en display
-- Plano por defecto, sombras solo en respuesta a estado (hover, scroll)
-- Espaciado en escala de 4px, secciones en 64-80px block
-- Voz formal (usted), eyebrow en mayúsculas con 0.08em de tracking
+Si cambia un valor, se cambia en `tokens.css`, en `interforma-docs.css` y en este documento.
 
 ---
 
-## Colors
+## 1. Principio
 
-Paleta binaria: un azul señal saturado para la acción, y neutrales cálidos ligeramente amarronados para todo lo estructural. No hay secundario ni terciario.
+**«El Método como máquina».** Interforma vende un proceso, no aspiraciones. Cada elemento ocupa el espacio que merece, la tipografía trabaja sin decoración y el color de acción aparece solo donde se pide actuar.
 
-### Primary
-- **Signal Blue** (#2655E8): El único acento del sistema. Botones primarios, links en hover, estados de foco, elemento activo en nav. Aparece en menos del 15% de cualquier pantalla — su escasez es su fuerza.
-- **Signal Blue Deep** (#1A44C9): Estado hover de los interactivos.
-- **Signal Blue Deeper** (#1236A8): Estado active/pressed.
-- **Signal Blue Faint** (#EEF2FD): Fondo sutil en hover del botón ghost y estados de énfasis suave.
-- **Signal Blue Pale** (#D5DFFB): Selección de texto, acentos de bajo contraste.
-- **Signal Blue Midnight** (#0B2060): Texto sobre fondos muy claros en contextos de máximo énfasis — raro.
-- **Signal Blue on Dark** (#7BA3FF): Azul ajustado para legibilidad sobre fondos oscuros (#15171C).
+**Rasgos clave**
 
-**The One Accent Rule.** Signal Blue solo marca acción, estado activo, o foco. Nunca se usa decorativamente, como separador de sección, ni como fondo de contenedor. Cada aparición del azul es una invitación a actuar.
+- Un acento cálido, **Energía**, sobre neutros de piedra.
+- Titulares en **Outfit 500**, cuerpo en **Manrope**, datos en **JetBrains Mono**.
+- Plano por defecto; las sombras responden a un estado.
+- Voz formal (**usted**) en todo el sitio y en los documentos para clientes.
+- Movimiento discreto y siempre opcional (`prefers-reduced-motion`).
 
-### Neutral
-- **Warm Parchment** (#F9F9F8): Fondo de página — base de todo el sitio. Ligeramente más cálido que el blanco puro.
-- **Surface White** (#FFFFFF): Superficies de tarjetas, header scrolled, overlay móvil.
-- **Subtle Ground** (#F2F2F0): Fondo secundario, separadores implícitos.
-- **Border Quiet** (#E8E8E5): Bordes de tarjetas y divisores por defecto.
-- **Border Clear** (#D1D1CD): Bordes visibles en hover o contextos de mayor contraste.
-- **Text Strong** (#111110): Texto primario — headlines, labels de botón, texto de acción.
-- **Text Secondary** (#5A5A57): Cuerpo de texto, descripciones, nav links en reposo.
-- **Text Quiet** (#737370): Texto terciario, eyebrows, notas, metadatos.
-- **Text Muted** (#A5A5A0): Texto deshabilitado, placeholders.
-- **Ink** (#111110): Fondo de secciones oscuras cuando se quiere máximo contraste.
-- **Ink Refined** (#15171C): Fondo de la sección Método y el Footer — azul-negro profundo que no es negro puro.
-- **WhatsApp Green** (#25D366): Color exclusivo del botón y FAB de WhatsApp. No reutilizar en ningún otro contexto.
+## 2. Color
 
-**The Warm Neutral Rule.** Los neutrales de Interforma tienen un leve matiz cálido. Nunca mezclar con neutrales fríos puros (#F5F5F5, #9E9E9E) — la diferencia sutil rompe la cohesión.
+### Marca
 
----
+| Token | Hex | Uso |
+|---|---|---|
+| **Energía** | `#EE6E43` | Acción principal, superficies de llamada (sección CTA), acentos sobre Umbra, el círculo del isotipo y Punto. |
+| Energía 400 | `#F2906D` | Hover de la acción principal. |
+| Energía 600 | `#D9582E` | Texto naranja grande (≥ 24 px) sobre claro. |
+| **Energía 800** | `#9A3D1A` | Texto, eyebrows, enlaces y foco naranja sobre fondos claros. |
+| Energía 900 | `#7A2F13` | Texto pequeño naranja sobre claro con máximo contraste. |
+| Energía 50 / 100 | `#FBE6DC` / `#F7CDBB` | Fondos suaves de énfasis, selección de texto. |
+| **Umbra** | `#281F18` | Texto principal, fondos oscuros (Método, header de documentos), botón sobre Energía. |
+| **Papel** | `#F2F1EE` | Superficie base del sitio, tarjetas, header. |
+| **Piedra clara** | `#E4E3DF` | Fondo de secciones alternas y de página en documentos; `theme-color`. |
+| Piedra | `#BEB8AE` | Bordes fuertes, series secundarias en gráficos. |
+| Piedra 500 | `#8F887E` | Texto terciario. |
+| Piedra 700 | `#5C564E` | Texto secundario. |
+| Borde | `#D0CCC4` | Bordes y divisores por defecto. |
+| **Cielo** | `#CCE2ED` | Acento frío puntual (la gota de Punto en «uy», series en gráficos). Nunca como color de acción. |
 
-## Typography
+### Estados
 
-**Display / Body Font:** Host Grotesk Variable (con fallback a Plus Jakarta Sans Variable, -apple-system, sans-serif)
-**Label Font:** Host Grotesk Variable (misma familia, tamaño reducido, tracking abierto)
+| Token | Hex | Fondo |
+|---|---|---|
+| OK | `#18794E` | `#EFFAF6` |
+| Alerta | `#A35200` | `#FFF8ED` |
+| Error | `#C53030` | `#FFF0F0` |
 
-**Character:** Grotesca geométrica variable, tracking negativo en display (-0.02em), que comunica precisión técnica sin frialdad. El peso semibold/bold es el valor por defecto para headings; el regular para cuerpo. Sin serif, sin decoración tipográfica.
+### Reglas de color
 
-### Hierarchy
-- **Display** (700, 40px mobile → 72px desktop, 1.05 lh, -0.02em): Hero headline principal únicamente. Max 16-24ch de ancho.
-- **Headline** (700, 32-40px, 1.15-1.2 lh, -0.02em): Titulares de sección (h2). Max 20ch.
-- **Title** (600, 24px, 1.25 lh): Subtítulos de subsección, encabezados de tarjeta.
-- **Body XL** (400, 20px, 1.65 lh): Subheadlines de hero y sección principal. Max 44-48ch.
-- **Body Large** (400, 18px, 1.65 lh): Introducción de sección, texto de apoyo. Max 44-48ch.
-- **Body** (400, 16px, 1.6 lh): Texto de descripción en tarjetas, párrafos. Max 65ch.
-- **Body Small** (400, 14px, 1.55 lh): Notas, disclaimers, metadatos secundarios.
-- **Label** (500, 12px, 1.4 lh, 0.08em, UPPERCASE): Eyebrows de sección, etiquetas de estado, numeración de pasos.
+- **Texto sobre Energía siempre en Umbra** (5,4:1). Nunca blanco (2,7:1).
+- **Naranja sobre claro = Energía 800** (5,4:1). Energía 600 solo en tamaños ≥ 24 px.
+- **Sobre Umbra, Energía directo** (5,4:1).
+- **Una acción principal por bloque.** Energía marca la acción; no se usa como separador ni como decoración.
+- **Neutros siempre cálidos.** No mezclar grises fríos (`#F5F5F5`, `#3D3D3B`, `#64748B`).
+- **WhatsApp Green `#25D366`** solo en el botón flotante de WhatsApp.
+- Los aliases `--agents-*`, `--primary-*` y `--cj-*` de `tokens.css` apuntan a esta paleta y se conservan por compatibilidad. En componentes nuevos, usar `--brand-*`, `--ink`, `--paper`, `--white` y `--gray-*`.
 
-**The Eyebrow Rule.** Los eyebrows van siempre en mayúsculas, 12px, peso 500, tracking 0.08em, color text-quiet (#737370). Nunca en negrita. Son señalizadores, no headings.
+## 3. Tipografía
 
-**The Display Tracking Rule.** Display y Headline siempre con letter-spacing -0.02em. Por debajo de Title, el tracking es 0 o positivo (nunca negativo).
+| Familia | Uso | Pesos |
+|---|---|---|
+| **Outfit** | Display, titulares (h1–h3), cifras grandes | 500 (700 solo en cifras de impacto) |
+| **Manrope** | Cuerpo, UI, botones, eyebrows | 400–700 |
+| **JetBrains Mono** | Datos, numeración de pasos, códigos y folios | 400–500 |
 
----
+Todas están autoalojadas: en el sitio, vía `@fontsource` (`tokens.css`); en documentos, vía `/fonts/marca/` (`interforma-docs.css`). No se cargan fuentes desde Google Fonts.
 
-## Layout
+**Jerarquía**
 
-Sistema de una sola columna en mobile, con transición a dos columnas en el Hero desktop (1fr + 480px fijo) a partir de 1024px. El resto del sitio es una columna centrada.
+- **Display** (500, 40 → 84 px, lh 1,02, −0,02 em): solo el H1 del hero.
+- **Headline** (500, 32–40 px, lh 1,2, −0,02 em): títulos de sección.
+- **Title** (500, 24 px, lh 1,25): subsecciones y tarjetas.
+- **Body XL / L** (400, 20 / 18 px, lh 1,55–1,65): bajadas. Máximo 48 ch.
+- **Body** (400, 16 px, lh 1,6): párrafos. Máximo 65 ch.
+- **Label / eyebrow** (500, 12 px, +0,08 em, MAYÚSCULAS): eyebrows en Energía 800 o Piedra 700; nunca en negrita.
 
-**Contenedor:** max-width 1280px, centrado, padding de 20px (mobile) → 32px (tablet 768px+) → 48px (desktop 1280px+).
+## 4. Logo y mascota
 
-**Secciones:** padding-block de 64px (secciones de apoyo) a 80px (secciones principales). El Hero usa min-height 88svh con padding-block 64px/48px.
+- **Isotipo Transforma:** tres módulos en diagonal cuyo radio crece 3u → 9u → 15u hasta el círculo Energía, más el logotipo «interforma» en minúsculas.
+- **Movimiento del isotipo:** al entrar en pantalla, una copia del módulo sube la diagonal redondeándose (≈ 1,7 s, una vez, CSS puro); se repite con hover o foco; estático con reduced motion.
+- **Punto:** el círculo Energía con ojos Umbra. Es un personaje aparte; el logo oficial nunca lleva ojos. Ocho expresiones: `atento`, `saluda`, `escucha`, `piensa`, `trabaja`, `sorpresa`, `celebra`, `uy`. Sin boca, brazos ni otros colores (salvo la gota Cielo de `uy`). Bajo 24 px se usa el isotipo, salvo como avatar en interfaces densas. Hoy aparece como avatar del agente en `/agentes`, en el saludo junto al botón de WhatsApp (una vez por sesión) y en la página 404.
 
-**Breakpoints:** 640px (sm), 768px (md), 1024px (lg), 1280px (xl).
+## 5. Layout
 
-**Ritmo vertical:** escala de 4px. Espaciado entre elementos relacionados: 16-24px. Entre secciones: 64-80px.
+- **Contenedor:** máximo 1280 px; padding 20 px (móvil) → 32 px (≥ 768 px) → 48 px (≥ 1280 px).
+- **Secciones:** 64–112 px de padding vertical.
+- **Breakpoints:** 640, 768, 1024 y 1280 px.
+- **Ritmo:** escala de 4 px; 16–24 px entre elementos relacionados.
+- **Mobile-first:** una columna en móvil; grillas desde tablet.
 
-**The One-Column Rule.** Fuera del Hero, el layout es siempre una columna centrada. No hay grids de contenido de dos o más columnas en versión mobile. La complejidad visual (diagrama, tarjetas de problema en grid) se introduce solo en desktop.
+## 6. Formas y elevación
 
----
+| Token | Valor | Uso |
+|---|---|---|
+| `--radius-btn` | 11 px | Botones estándar (header, `/agentes`, `WhatsAppButton`, `Button`) |
+| `--radius-cta` | 28 px | Botones grandes de hero y CTA final |
+| `--radius-card` | 16 px | Tarjetas |
+| `--radius-card-lg` | 20 px | Paneles grandes (Método, CTA) |
+| `--radius-full` | 9999 px | Botón flotante de WhatsApp, chips, puntos |
 
-## Elevation & Depth
+No hay esquinas rectas en botones.
 
-El sistema es **plano por defecto**. Las superficies en reposo no tienen sombra. La profundidad aparece solo como respuesta a estado o contexto de superposición.
+**Sombras:** plano por defecto. `--shadow-sm` en el header al hacer scroll y en hover de tarjetas; `--shadow-lg` solo en el botón flotante de WhatsApp.
 
-### Shadow Vocabulary
-- **Shadow SM** (`0 1px 2px 0 rgb(0 0 0 / 0.05)`): Header al hacer scroll (indica elevación sobre el contenido). El toque más sutil del sistema.
-- **Shadow MD** (`0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05)`): No asignado aún en producción — disponible para modales pequeños o dropdowns.
-- **Shadow LG** (`0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.05)`): Botón flotante de WhatsApp (FAB), contextos de mayor elevación.
+## 7. Componentes
 
-**The Flat-By-Default Rule.** Las superficies no piden atención con sombras. El hover de tarjeta usa shadow-sm para indicar interactividad, no decoración. Solo el FAB de WhatsApp usa shadow-lg de forma permanente porque su función requiere separación visual constante del contenido.
+### Botones
 
----
+| Variante | Fondo | Texto | Cuándo |
+|---|---|---|---|
+| **Primario** | Energía | Umbra | Acción principal sobre fondos claros o Umbra. Hover: Energía 400. |
+| **Primario sobre Energía** | Umbra | Papel | Acción principal dentro de una superficie Energía (CTA final, `/agentes`). |
+| **Secundario** | transparente, borde Umbra 1–2 px | Umbra | Acción alternativa. Sobre Energía: borde y texto Umbra. |
+| **Ghost** | transparente | Umbra | Navegación secundaria («Ver el método →»). |
 
-## Shapes
+- Manrope 600–700, 16 px; `:active` → `scale(0.98)`.
+- **Foco:** contorno de 2 px en Energía 800 con 2 px de separación (`--color-focus-ring`). Nunca se suprime.
+- Implementaciones: `src/components/base/Button.astro`, `src/components/composite/WhatsAppButton.astro`. Tokens: `--color-action-bg`, `--color-action-bg-hover`, `--color-action-text`.
 
-Lenguaje de formas dual: **píldoras para acciones, curvado suave para contenedores**.
+### Header
 
-Los botones son píldoras completas (`border-radius: 9999px`) — forma que comunica acción directa y completada, sin ángulos que sugieran precaución. Las tarjetas y superficies de contenido usan 8-12px de radio (md/lg) — redondeado que es amigable sin ser infantil. Los elementos de navegación inline usan 4px (sm) — apenas suavizado.
+Sticky; fondo Papel con borde inferior; `--shadow-sm` al hacer scroll. Links en Piedra 700 → Umbra en hover. CTA «Hablar por WhatsApp» como botón primario.
 
-No hay formas con bordes completamente rectos (radius 0) en el UI visible, excepto en elementos decorativos del diagrama y separadores. No hay formas con ángulos agresivos ni geometría compleja excepto en el fondo halftone generativo del hero.
+### Eyebrow
 
-El diagrama del sistema de método usa líneas rectas con nodos circulares pequeños — ingeniería visible, no ilustración.
+12 px, 500, +0,08 em, mayúsculas; color Energía 800 (`--primary-500`) sobre claro, Energía (`--dark-accent`) sobre Umbra, o Piedra 700 cuando no es el foco. Siempre seguido de un título.
 
-**The Pill-for-Action Rule.** Cualquier elemento cuya función principal sea iniciar una acción del usuario (botón, FAB, CTA) usa `border-radius: full`. Los contenedores de información (tarjetas, superficies) usan lg (12px) o md (8px).
+### Tarjetas
 
----
+Papel sobre Piedra clara (o al revés), borde 1 px `--gray-200`, radio 16 px, sin sombra en reposo.
 
-## Components
+### Paneles oscuros (Método, demo de Agentes)
 
-### Buttons
+Fondo Umbra; tarjetas `--gray-800` con borde `--gray-700`; acentos en Energía. Las barras de progreso del Método usan un degradado de Piedra a Energía.
 
-El botón no pide permiso. Relleno sólido con azul señal, píldora completa, texto blanco en semibold.
+### Botón flotante de WhatsApp
 
-- **Shape:** píldora completa (9999px)
-- **Primary (md):** fondo Signal Blue (#2655E8), texto blanco, padding 12px 20px, semibold 16px; hover → Signal Blue Deep (#1A44C9); active → scale(0.98); transición 100ms ease-default
-- **Primary (lg):** padding 16px 32px, 18px font-size
-- **Primary (sm):** padding 8px 16px, 14px font-size
-- **Ghost:** fondo transparente, borde 2px Signal Blue, texto Signal Blue; hover → fondo Signal Blue Faint (#EEF2FD)
-- **Focus:** outline 2px Signal Blue, offset 2px — nunca suprimido
+56 px, círculo, WhatsApp Green, `--shadow-lg`, pulso suave (sin pulso con reduced motion). Junto a él, el saludo de Punto «¿Conversamos?».
 
-### Navigation
+## 8. Movimiento
 
-- **Desktop nav link:** texto Text Secondary (#5A5A57), 16px medium, padding 4px 8px, radius 4px; hover → Text Strong (#111110); transición 100ms
-- **Mobile overlay:** fondo Surface White (#FFFFFF), full viewport desde el header. Links 20px semibold con hover tint primary-50.
-- **Header:** sticky, height 56px mobile / 64px desktop; en reposo transparente con borde transparent; al scroll → fondo Surface White, borde Border Quiet, shadow-sm
+- Entradas fade-up de 400 ms con `cubic-bezier(0.16, 1, 0.3, 1)`; sin rebotes.
+- Animaciones *visible-first* (no bloquean el LCP).
+- Con `prefers-reduced-motion`: sin traslados, escalas ni rotaciones; solo fades ≤ 250 ms.
+- Piezas animadas para redes: motor en `design/motion/` (ver su README).
 
-### Cards (Problema)
+## 9. Datos y diagramas
 
-Superficies de información en grid.
+**Series en gráficos** (en este orden): Energía `#EE6E43`, Umbra `#281F18`, Piedra `#BEB8AE`, Cielo `#CCE2ED`, Energía 400 `#F2906D`. Estados con OK / Alerta / Error.
 
-- **Corner style:** radius lg (12px)
-- **Background:** Surface White (#FFFFFF)
-- **Border:** 1px Border Quiet (#E8E8E5)
-- **Shadow:** none en reposo; shadow-sm en hover
-- **Internal padding:** 24px
-- **Hover:** border-color → Border Clear (#D1D1CD), sombra suave
+**Excepciones permitidas**
 
-### WhatsApp FAB
+1. **Colores de cada red social** (LinkedIn, Facebook, Instagram) cuando identifican la plataforma en un informe.
+2. **Familias de categoría en diagramas de sistema** con más de cinco capas (por ejemplo, la propuesta de Medic-Home): se conservan para que cada capa siga siendo distinguible. Cabecera, tipografía, neutros y acentos siguen la marca.
 
-Componente de conversión permanente — el único componente que viola "flat by default".
+**Diagramas interactivos** (`public/diagramas/`): Archify con la paleta de marca, modo «Activa» por defecto, `noindex` y canonical a su página.
 
-- **Size:** 56px × 56px, círculo completo
-- **Background:** WhatsApp Green (#25D366), permanente
-- **Shadow:** shadow-lg permanente — su elevación es parte de su función
-- **Pulse:** anillo animado rgba(37, 211, 102, 0.35) en loop 2.5s (suprimido con prefers-reduced-motion)
-- **Hover:** scale(1.08), shadow mayor
-- **Tooltip:** aparece a la izquierda en hover/focus
+## 10. Documentos para clientes
 
-### Eyebrow (signature)
+Informes, propuestas y presentaciones en HTML preparados por Interforma (`public/informes/`, `public/propuestas/`, `public/agente-medic-home/`):
 
-Etiqueta de sección — el patrón más recurrente del sistema.
+- Enlazan `/marca/interforma-docs.css`, que carga las fuentes y las variables `--if-*`.
+- Fondo Piedra clara, tarjetas Papel, encabezado Umbra, títulos en Outfit 500, cifras en Outfit o JetBrains Mono.
+- Llevan `<meta name="robots" content="noindex, nofollow, noarchive">` y además el header `X-Robots-Tag` de `vercel.json` (ADR-011).
+- Para un documento nuevo, partir de `public/informes/_template/informe-mensual-template.html`.
 
-- 12px, weight 500, letter-spacing 0.08em, text-transform uppercase, color Text Quiet (#737370)
-- Siempre encima del headline de sección, margen inferior 16px
-- Nunca en bold, nunca en el color primario, nunca sin el headline que le sigue
+**Material con marca del cliente** (por ejemplo, `public/clientes/gatica-property/`) mantiene la identidad del cliente, no la de Interforma.
 
----
+**Firmas de correo** (`email-signature/`): Umbra y Energía, con fuentes del sistema (los clientes de correo no cargan fuentes web) e isotipo en PNG o GIF.
 
-## Do's and Don'ts
+## 11. Hacer y no hacer
 
-### Do:
-- **Do** usar Signal Blue (#2655E8) exclusivamente en elementos de acción: botones primarios, links activos, focus rings, el icono activo de navegación.
-- **Do** usar Host Grotesk Variable con tracking negativo (-0.02em) en Display y Headline. Es la firma tipográfica del sistema.
-- **Do** mantener fondos de sección en Warm Parchment (#F9F9F8) o Ink Refined (#15171C). No inventar fondos intermedios.
-- **Do** usar píldoras completas (radius full) para todos los botones CTA y el FAB de WhatsApp.
-- **Do** mantener el eyebrow en 12px, uppercase, tracking 0.08em, color text-quiet — sin variaciones de peso ni color.
-- **Do** respetar `prefers-reduced-motion` suprimiendo toda animación de translate/scale/rotate; solo fades lentos (≤250ms) son aceptables.
+**Hacer**
 
-### Don't:
-- **Don't** usar Signal Blue como fondo de sección, separador decorativo, o borde no interactivo. El azul que no invita a actuar confunde.
-- **Don't** mezclar neutrales fríos (grises puros #F5F5F5, #9E9E9E) con la paleta neutra cálida del sistema.
-- **Don't** usar `border-radius: 0` en elementos de UI visibles salvo separadores y el sistema de diagrama.
-- **Don't** añadir sombras a elementos en reposo fuera del FAB de WhatsApp. Las sombras son respuesta a estado.
-- **Don't** fabricar testimonios, métricas, clientes, o nombres de empresa en el contenido del sitio.
-- **Don't** romper la jerarquía tipográfica añadiendo pesos o tamaños fuera de la escala — ni bold en body, ni display fuera del hero.
+- Usar los tokens de `tokens.css` o `interforma-docs.css`, nunca hex sueltos en componentes nuevos.
+- Una sola acción principal en Energía por bloque.
+- Revisar contraste con las reglas de la §2 antes de usar naranja en texto.
+- Mantener el usted en sitio y documentos.
+
+**No hacer**
+
+- Volver a Signal Blue, Host Grotesk, Plus Jakarta Sans, Inter, DM Sans o Playfair Display.
+- Texto blanco sobre Energía.
+- Grises fríos o negros puros en superficies (salvo la muesca del teléfono en mockups).
+- Poner ojos al logo oficial.
+- Inventar testimonios, métricas, clientes o nombres de empresa.

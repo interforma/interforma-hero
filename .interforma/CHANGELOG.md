@@ -2,6 +2,15 @@
 
 Registro de cambios por fecha. Para el detalle, ver el PR indicado.
 
+## 2026-10-26 — Identidad 2026 en todo y correcciones
+
+- **Sistema de diseño:** `DESIGN.md` reescrito con la identidad 2026; fuentes Plus Jakarta Sans, Inter y Host Grotesk retiradas (código y dependencias); botones primarios en Energía con texto Umbra en `Button` y `WhatsAppButton`; foco en Energía 800; botones de `/agentes` con radio de marca; grises fríos reemplazados en Método y en la demo de Agentes.
+- **Documentos de Interforma** (informes, plantilla, propuestas F5 y Medic-Home): nueva hoja `public/marca/interforma-docs.css` con fuentes autoalojadas y tokens; sin Google Fonts; colores y gráficos de marca. Se corrigió la lista del plan en la propuesta de F5.
+- **Privacidad:** `noindex` (meta + `X-Robots-Tag`) en `/informes`, `/propuestas`, `/clientes` y `/agente-medic-home`.
+- **Conversión de `/agentes`:** «Agendar piloto» → Cal.com; «Hablar con ventas» → WhatsApp con mensaje sobre el piloto.
+- **Tracking** en todos los CTA: Hero, CTA final, nav desktop, `WhatsAppButton`, `/agentes` y botón «Ver Interforma Agents».
+- **SEO:** URLs sin barra final en Astro, Vercel, sitemap y canonicals; sitemap estático eliminado; `llms.txt` con `/metodo`, `/agentes` y `/agentes/flujo`.
+
 ## 2026-10-26 — Documentación al día
 
 - Actualizado `docs/estado-proyecto.md` al commit `5f97aef`.

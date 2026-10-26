@@ -2,10 +2,11 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Asistente WhatsApp con IA — Medic Home</title>
+<link rel="stylesheet" href="/marca/interforma-docs.css">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
   :root{
     --teal-50:#e1f5ee;--teal-100:#9fe1cb;--teal-600:#0f6e56;--teal-800:#085041;
@@ -14,24 +15,24 @@
     --coral-50:#faece7;--coral-100:#f5c4b3;--coral-600:#993c1d;--coral-800:#712b13;
     --blue-50:#e6f1fb;--blue-100:#b5d4f4;--blue-600:#185fa5;--blue-800:#0c447c;
     --green-50:#eaf3de;--green-100:#c0dd97;--green-600:#3b6d11;--green-800:#27500a;
-    --gray-50:#f1efe8;--gray-100:#d3d1c7;--gray-400:#888780;--gray-600:#5f5e5a;--gray-800:#444441;
-    --bg:#f8f7f3;--surface:#fff;--text:#1a1a18;--muted:#6b6a64;--border:#dddbd2;--r:10px;
-    --font:'DM Sans',sans-serif;
+    --gray-50:#eceae6;--gray-100:#d0ccc4;--gray-400:#8f887e;--gray-600:#5c564e;--gray-800:#3f3a34;
+    --bg:#e4e3df;--surface:#f2f1ee;--text:#281f18;--muted:#5c564e;--border:#d0ccc4;--r:10px;
+    --font:'Manrope Variable',sans-serif;
   }
   body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;}
 
   /* HEADER */
-  .hdr{background:#0d1f1a;padding:32px 40px 28px;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;}
+  .hdr{background:#281f18;padding:32px 40px 28px;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;}
   .hdr-left{max-width:560px;}
-  .badge{display:inline-flex;align-items:center;gap:6px;background:rgba(29,158,117,.18);border:1px solid rgba(29,158,117,.35);color:#5DCAA5;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:14px;}
-  .badge::before{content:'';width:6px;height:6px;background:#5DCAA5;border-radius:50%;animation:pulse 2s infinite;}
+  .badge{display:inline-flex;align-items:center;gap:6px;background:rgba(238,110,67,.18);border:1px solid rgba(238,110,67,.35);color:#EE6E43;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:14px;}
+  .badge::before{content:'';width:6px;height:6px;background:#EE6E43;border-radius:50%;animation:pulse 2s infinite;}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-  .hdr h1{font-size:26px;font-weight:600;color:#fff;line-height:1.3;margin-bottom:8px;}
-  .hdr h1 span{color:#5DCAA5;}
-  .hdr p{font-size:14px;color:#8fa89f;line-height:1.6;max-width:480px;}
+  .hdr h1{font-size:26px;font-weight:600;color:#f2f1ee;line-height:1.3;margin-bottom:8px;}
+  .hdr h1 span{color:#EE6E43;}
+  .hdr p{font-size:14px;color:#beb8ae;line-height:1.6;max-width:480px;}
   .hdr-logo{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:4px;padding-top:4px;}
-  .hdr-logo .brand{font-size:13px;font-weight:600;color:#fff;letter-spacing:.04em;}
-  .hdr-logo .sub{font-size:11px;color:#8fa89f;}
+  .hdr-logo .brand{font-size:13px;font-weight:600;color:#f2f1ee;letter-spacing:.04em;}
+  .hdr-logo .sub{font-size:11px;color:#beb8ae;}
 
   /* MAIN */
   .main{max-width:960px;margin:0 auto;padding:40px 24px 60px;}
@@ -86,10 +87,10 @@
 
   /* STEP NUM */
   .sn{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-size:10px;font-weight:700;flex-shrink:0;}
-  .sn-t{background:var(--teal-600);color:#fff;}
-  .sn-p{background:var(--purple-600);color:#fff;}
-  .sn-a{background:var(--amber-600);color:#fff;}
-  .sn-b{background:var(--blue-600);color:#fff;}
+  .sn-t{background:var(--teal-600);color:#f2f1ee;}
+  .sn-p{background:var(--purple-600);color:#f2f1ee;}
+  .sn-a{background:var(--amber-600);color:#f2f1ee;}
+  .sn-b{background:var(--blue-600);color:#f2f1ee;}
 
   /* EVOLUTION CHIPS */
   .evo{margin-top:40px;}
@@ -139,9 +140,9 @@
   .gb-green {background:var(--green-100);color:var(--green-800);}
 
   /* FOOTER */
-  .ftr{background:#0d1f1a;padding:18px 40px;display:flex;justify-content:space-between;align-items:center;}
-  .ftr span{font-size:12px;color:#8fa89f;}
-  .ftr a{color:#5DCAA5;text-decoration:none;font-weight:500;}
+  .ftr{background:#281f18;padding:18px 40px;display:flex;justify-content:space-between;align-items:center;}
+  .ftr span{font-size:12px;color:#beb8ae;}
+  .ftr a{color:#EE6E43;text-decoration:none;font-weight:500;}
 
   @media(max-width:640px){
     .hdr{padding:24px 20px;flex-direction:column;}
@@ -151,6 +152,10 @@
     .ftr{flex-direction:column;gap:8px;text-align:center;}
     .gantt-task-name{font-size:11px;padding:8px 10px;}
   }
+
+  /* Identidad Interforma 2026 — ver /marca/interforma-docs.css y DESIGN.md */
+  body { font-family: var(--if-font-body); color: var(--if-umbra); }
+  h1, h2, h3 { font-family: var(--if-font-heading); font-weight: 500; letter-spacing: -0.02em; }
 </style>
 </head>
 <body>
@@ -404,7 +409,7 @@
           <div style="border-left:1px solid var(--border);"></div>
           <div style="border-left:1px solid var(--border);"></div>
           <div style="border-left:1px solid var(--border);display:flex;align-items:center;padding:4px;justify-content:flex-end;">
-            <div style="width:45%;height:26px;background:var(--teal-600);color:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;">🚀 Lanzamiento</div>
+            <div style="width:45%;height:26px;background:var(--teal-600);color:#f2f1ee;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;">🚀 Lanzamiento</div>
           </div>
         </div>
       </div>
@@ -550,7 +555,7 @@
           <div style="border-left:1px solid var(--border);"></div>
           <div style="border-left:1px solid var(--border);"></div>
           <div style="border-left:1px solid var(--border);display:flex;align-items:center;padding:4px;justify-content:flex-end;">
-            <div style="width:40%;height:26px;background:var(--teal-600);color:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;">🚀 Lanzamiento</div>
+            <div style="width:40%;height:26px;background:var(--teal-600);color:#f2f1ee;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;">🚀 Lanzamiento</div>
           </div>
         </div>
       </div>

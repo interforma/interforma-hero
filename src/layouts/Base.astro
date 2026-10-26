@@ -8,7 +8,6 @@ import '@styles/global.css';
 import '@styles/utilities.css';
 import '@styles/punto.css';
 import type { SEOProps } from '@t/seo';
-import { ACTIVE_FONT } from '@config/typography';
 
 export interface Props extends SEOProps {
   bodyClass?: string;
@@ -21,7 +20,7 @@ const clarityId = import.meta.env.PUBLIC_CLARITY_ID || 'xwqi4gkp67';
 const ga4Id = import.meta.env.PUBLIC_GA4_MEASUREMENT_ID?.trim();
 ---
 <!DOCTYPE html>
-<html lang="es" class={`font-${ACTIVE_FONT}`}>
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

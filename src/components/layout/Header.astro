@@ -350,6 +350,10 @@ import { navigation } from '@config/navigation';
 
   // ── Scroll-spy ────────────────────────────────────────
   const navLinks = Array.from(header.querySelectorAll<HTMLAnchorElement>('.header__nav-link'));
+  navLinks.forEach((link) => {
+    link.addEventListener('click', () =>
+      track({ name: 'nav_click', properties: { destination: link.getAttribute('href'), placement: 'header_desktop' } }));
+  });
   // Solo los links a anclas de la página actual participan del scroll-spy
   const linkId = (a: HTMLAnchorElement) =>
     a.pathname === window.location.pathname ? a.hash.slice(1) : '';

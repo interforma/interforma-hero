@@ -16,8 +16,8 @@
 ## Sprint 1 — Medición y optimización
 
 - ✅ Analytics base (GA4, Clarity, scroll, Metricool).
-- 🟡 Eventos del embudo (faltan CTA de Hero, CTA final, `WhatsAppButton`, nav desktop y `/agentes`).
-- ✅ SEO técnico (sitemap automático, canonical, JSON-LD) · 🟡 convención de barra final.
+- ✅ Eventos del embudo (todos los CTA con evento; ver `ANALYTICS.md`).
+- ✅ SEO técnico (sitemap automático, canonical, JSON-LD, URLs sin barra final).
 - ✅ GEO inicial (`llms.txt`).
 - ⬜ Ajustes de conversión con datos.
 - 🟡 Casos o escenarios por industria (sectores y piezas «Punto en acción»; faltan casos reales).

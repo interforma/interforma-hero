@@ -71,6 +71,6 @@ El agente registra cada conversación, derivación y cotización. Indicadores m�
 
 ## Pendientes comerciales
 
-- Definir el canal de conversión de `/agentes`: hoy los botones «Agendar piloto» y «Hablar con ventas» abren un correo a `hola@interforma.ai`, dominio distinto de `interforma.digital`. Alinear con WhatsApp o con la agenda de Cal.com.
+- ✅ Canal de conversión de `/agentes`: «Agendar piloto» lleva a la agenda de Cal.com y «Hablar con ventas» a WhatsApp, ambos medidos (antes abrían un correo a `hola@interforma.ai`).
 - Unificar la voz: `/agentes` usa «tú»; el resto del sitio y el agente en producción usan «usted».
 - Contar con un caso real publicable (con autorización del cliente y métricas verificables) para reemplazar el ejemplo ficticio de la demo.

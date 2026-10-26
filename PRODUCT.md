@@ -48,7 +48,8 @@ El diferenciador que ningún proveedor genérico puede copiar: **el proceso siem
 ## Brand Commitments
 
 - **Nombre:** "Interforma" — confirmado, definitivo
-- Colores, tipografía (Host Grotesk) y tono formal: presentes en el codebase pero no confirmados explícitamente como inamovibles
+- Identidad visual: **Identidad 2026** (paleta Energía, Outfit + Manrope + JetBrains Mono, isotipo Transforma y Punto). Ver `DESIGN.md` y ADR-009.
+- Tono formal (usted): presente en el codebase pero no confirmado explícitamente como inamovible
 
 ## Evidence on Hand
 

@@ -12,7 +12,7 @@ Mapa de todo lo que existe en este repositorio sobre Interforma Agents y cómo m
 | `/agentes` | `src/pages/agentes.astro` | Landing del servicio. Tono «tú». | ❌ No tiene |
 | `/agentes/flujo` | `src/pages/agentes/flujo.astro` | Diagrama interactivo, 8 pasos (agente / persona / regla de control), estados de la conversación y CTA de piloto por WhatsApp. Tono «usted». | ✅ `HowTo` |
 | `/diagramas/agente-whatsapp.html` | `public/diagramas/agente-whatsapp.html` | Diagrama a pantalla completa para presentaciones. `noindex` y canonical a `/agentes/flujo`. | — |
-| `/agente-medic-home/` | `public/agente-medic-home/index.html` | Propuesta estática para un cliente de salud (diagrama + Gantt). Sin `noindex`. | — |
+| `/agente-medic-home/` | `public/agente-medic-home/index.html` | Propuesta estática para un cliente de salud (diagrama + Gantt). `noindex`. | — |
 
 ### Secciones de `/agentes` (`src/sections/agentes/`)
 
@@ -23,7 +23,7 @@ Mapa de todo lo que existe en este repositorio sobre Interforma Agents y cómo m
 5. `IntegracionSeguridad` — agnóstico + Ley 19.628 / 21.719.
 6. `AppOperador` — concepto de app iOS del operador (derivaciones, aprobaciones, alertas). **Es un concepto: la app no existe todavía.**
 7. `Dia30` — puerta de decisión: escalar, ajustar o detener.
-8. `CtaAgentes` — «Agendar piloto» y «Hablar con ventas» (ambos `mailto:hola@interforma.ai`).
+8. `CtaAgentes` — «Agendar piloto» abre la agenda de Cal.com (`site.calUrl`, configurable con `PUBLIC_CAL_URL`) y «Hablar con ventas» abre WhatsApp con un mensaje prellenado sobre un piloto (`site.whatsappAgentsMessage`).
 
 ## Eventos de analytics
 
@@ -33,13 +33,12 @@ Mapa de todo lo que existe en este repositorio sobre Interforma Agents y cómo m
 | `agents_flow_back` | «← Volver al inicio» en `/agentes/flujo` | `page: 'agentes_flujo'` |
 | `agents_flow_fullscreen` | «Abrir en pantalla completa» | `page: 'agentes_flujo'` |
 | `agents_flow_to_landing` | «Ver Interforma Agents» | `page: 'agentes_flujo'` |
-| `nav_click` | Enlace «Agentes» de la nav **solo en móvil** | `destination`, `placement: 'mobile_menu'` |
+| `agents_landing_open` | «Ver Interforma Agents» en `/#agentes` | `placement: 'home_agents'` |
+| `agents_pilot_cta` | «Agendar piloto» del hero de `/agentes` y del CTA final (agenda) | `placement` (`agentes_hero` \| `agentes_cta_agenda`) |
+| `click_whatsapp` | «Hablar con ventas» en `/agentes` · «Conversar sobre un piloto» en `/agentes/flujo` | `placement` (`agentes_cta` \| `agentes_flujo_cta`) |
+| `nav_click` | Enlace «Agentes» de la nav (desktop y móvil) · «Cómo funciona» | `destination`, `placement` |
 
-**Sin tracking hoy:**
-
-- Botón «Ver Interforma Agents» de `/#agentes`.
-- Los CTA de `/agentes` (`#empezar`, `#como`, los dos `mailto`).
-- El botón «Conversar sobre un piloto» de `/agentes/flujo`: `WhatsAppButton` declara `data-track-event="click_whatsapp"` pero ningún script lo escucha.
+Todos los CTA de Interforma Agents tienen evento. Catálogo completo en `.interforma/ANALYTICS.md`.
 
 ## Cómo actualizar
 
@@ -53,9 +52,9 @@ Mapa de todo lo que existe en este repositorio sobre Interforma Agents y cómo m
 
 | Tema | Detalle |
 |---|---|
-| Conversión de `/agentes` | Cambiar los `mailto:hola@interforma.ai` por WhatsApp o Cal.com y agregar tracking. |
+| Conversión de `/agentes` | ✅ Resuelto: Cal.com + WhatsApp con tracking. Confirmar en el preview que el enlace de Cal.com es el evento correcto. |
 | Voz | Unificar «tú» (`/agentes`) con «usted» (resto del sitio). |
 | JSON-LD de `/agentes` | Agregar `Service` / `Offer` para el piloto. |
 | Alcance comunicado | Postventa, encuesta y remarketing aparecen en el flujo público, pero aún están en preparación. |
 | App del operador | Aclarar en el copy que es la experiencia objetivo o reemplazarla por la bandeja real. |
-| `/agente-medic-home/` | Evaluar `noindex` (propuesta de un cliente). |
+| `/agente-medic-home/` | ✅ Resuelto: `noindex` (meta + `X-Robots-Tag`) y marca Interforma 2026. |

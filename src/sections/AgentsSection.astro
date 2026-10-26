@@ -647,6 +647,8 @@
   import { track } from '@lib/analytics/track';
   document.querySelector<HTMLAnchorElement>('[data-track-event="agents_flow_open"]')
     ?.addEventListener('click', () => track('agents_flow_open', { placement: 'home_agents' }));
+  document.querySelector<HTMLAnchorElement>('.agents__cta:not(.agents__cta--ghost)')
+    ?.addEventListener('click', () => track('agents_landing_open', { placement: 'home_agents' }));
 </script>
 
 <script>
@@ -677,20 +679,20 @@
     const cs = getComputedStyle(document.documentElement);
     const cv = (name: string, fb: string) => cs.getPropertyValue(name).trim() || fb;
     const C = {
-      ink:  cv('--ink',   '#111110'),
-      wht:  cv('--white', '#FFFFFF'),
-      ppr:  cv('--paper', '#F6F6F5'),
-      g200: cv('--gray-200', '#E3E3E0'),
-      g300: cv('--color-neutral-300', '#D1D1CD'),
-      g400: cv('--gray-400', '#9C9C97'),
-      g500: cv('--gray-500', '#6E6E68'),
-      g700: cv('--gray-700', '#3D3D3B'),
-      a100: cv('--agents-100', '#FFE0D9'),
-      a400: cv('--agents-400', '#FF9783'),
+      ink:  cv('--ink',   '#281F18'),
+      wht:  cv('--white', '#F2F1EE'),
+      ppr:  cv('--paper', '#E4E3DF'),
+      g200: cv('--gray-200', '#D0CCC4'),
+      g300: cv('--color-neutral-300', '#BEB8AE'),
+      g400: cv('--gray-400', '#8F887E'),
+      g500: cv('--gray-500', '#5C564E'),
+      g700: cv('--gray-700', '#3F3A34'),
+      a100: cv('--agents-100', '#F7CDBB'),
+      a400: cv('--agents-400', '#F2906D'),
       a500: cv('--agents-500', '#EE6E43'),
       a600: cv('--agents-600', '#9A3D1A'),
-      a700: cv('--agents-700', '#AE1800'),
-      a800: cv('--agents-800', '#7C1405'),
+      a700: cv('--agents-700', '#7A2F13'),
+      a800: cv('--agents-800', '#7A2F13'),
     };
 
     const MS = {

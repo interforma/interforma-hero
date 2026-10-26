@@ -42,7 +42,10 @@ Seis etapas con entregables concretos y decisión de continuidad entre cada una:
 ## Páginas principales
 
 - https://interforma.digital/ — Página de inicio
-- https://interforma.digital/privacidad/ — Política de privacidad
+- https://interforma.digital/metodo — El Método Interforma: las 6 etapas en detalle
+- https://interforma.digital/agentes — Interforma Agents: agentes de IA con un piloto de 30 días
+- https://interforma.digital/agentes/flujo — Flujo del agente de WhatsApp paso a paso
+- https://interforma.digital/privacidad — Política de privacidad
 
 ## Uso de esta información
 

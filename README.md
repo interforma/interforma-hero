@@ -25,7 +25,7 @@ src/
 
 public/
 ├── diagramas/      # Diagramas interactivos (noindex): método y agente de WhatsApp
-├── marca/          # Isotipo en SVG, PNG y GIF animado
+├── marca/          # Isotipo (SVG, PNG, GIF) e interforma-docs.css para documentos HTML
 ├── fonts/          # Fuentes de marca
 ├── informes/       # Informes mensuales de clientes (ver ADR-011)
 ├── propuestas/     # Propuestas comerciales (ver ADR-011)

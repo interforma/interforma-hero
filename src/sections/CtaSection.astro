@@ -115,3 +115,9 @@ import SectionHeading from '@components/base/SectionHeading.astro';
     .cta__btn { width: 100%; justify-content: center; }
   }
 </style>
+
+<script>
+  import { track } from '@lib/analytics/track';
+  document.querySelector<HTMLAnchorElement>('.cta__btn')
+    ?.addEventListener('click', () => track('click_whatsapp', { placement: 'cta_section' }));
+</script>

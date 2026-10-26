@@ -68,7 +68,10 @@ Comportamiento por entorno:
 
 | Evento | Trigger | Props |
 |--------|---------|-------|
-| `nav_click` | Clic en un link del menú **móvil** | `destination`, `placement: 'mobile_menu'` |
+| `nav_click` | Clic en un link de la nav (desktop o móvil) | `destination`, `placement` (`header_desktop` \| `mobile_menu`) |
+| `nav_click` | «Ver el método →» del Hero | `destination: '#metodo'`, `placement: 'hero'` |
+| `nav_click` | «Cómo funciona» del hero de `/agentes` | `destination: '#como'`, `placement: 'agentes_hero'` |
+| `agents_landing_open` | «Ver Interforma Agents» en `/#agentes` | `placement: 'home_agents'` |
 | `method_detail_open` | «Ver el método en detalle» en `/#metodo` | `placement: 'home_method'` |
 | `method_detail_back` | «← Volver al inicio» en `/metodo` | `page: 'metodo'` |
 | `method_diagram_fullscreen` | «Abrir en pantalla completa» en `/metodo` | `page: 'metodo'` |
@@ -82,24 +85,23 @@ Comportamiento por entorno:
 | Evento | Trigger | Props |
 |--------|---------|-------|
 | `click_whatsapp` | Botón de WhatsApp del Header | `placement: 'header'` |
+| `click_whatsapp` | CTA principal del Hero | `placement: 'hero'` |
+| `click_whatsapp` | CTA final del home | `placement: 'cta_section'` |
+| `click_whatsapp` | `WhatsAppButton` (CTA de `/metodo` y `/agentes/flujo`) | `placement` (`metodo_cta` \| `agentes_flujo_cta`), `page_path` |
+| `click_whatsapp` | «Hablar con ventas» en `/agentes` | `placement: 'agentes_cta'`, `page: 'agentes'` |
 | `click_whatsapp` | Botón flotante | `placement: 'float'` |
 | `click_whatsapp` | Botón dentro del saludo de Punto | `placement: 'punto_bubble'` |
 | `punto_bubble_view` | Aparece el saludo «¿Conversamos?» (una vez por sesión, a los 6 s) | `path` |
 | `punto_bubble_dismiss` | El visitante cierra el saludo (× o Escape) | — |
 
-### Sin tracking (pendiente)
+### Interforma Agents (conversión)
 
-`AGENTS.md` exige que todo CTA tenga tracking. Faltan:
+| Evento | Trigger | Props |
+|--------|---------|-------|
+| `agents_pilot_cta` | «Agendar piloto» del hero de `/agentes` (lleva a `#empezar`) | `placement: 'agentes_hero'`, `page: 'agentes'` |
+| `agents_pilot_cta` | «Agendar piloto» del CTA final (abre la agenda de Cal.com) | `placement: 'agentes_cta_agenda'`, `page: 'agentes'` |
 
-| Elemento | Archivo | Evento sugerido |
-|---|---|---|
-| CTA principal del Hero (`wa.me`) | `src/sections/HeroSection.astro` | `click_whatsapp` · `placement: 'hero'` |
-| «Ver el método» del Hero | `src/sections/HeroSection.astro` | `nav_click` · `placement: 'hero'` |
-| CTA final azul (`wa.me`) | `src/sections/CtaSection.astro` | `click_whatsapp` · `placement: 'cta_section'` |
-| `WhatsAppButton` (declara `data-track-event` pero nada lo escucha) | `src/components/composite/WhatsAppButton.astro` | `click_whatsapp` · `placement` por página |
-| Links de la nav en desktop | `src/components/layout/Header.astro` | `nav_click` · `placement: 'header_desktop'` |
-| «Ver Interforma Agents» del home | `src/sections/AgentsSection.astro` | `agents_landing_open` |
-| CTA de `/agentes` (hero y `mailto`) | `src/sections/agentes/*` | `agents_pilot_cta` · `placement` |
+**KPI sugerido:** `agents_pilot_cta` con `placement: 'agentes_cta_agenda'` + `click_whatsapp` con `placement: 'agentes_cta'`, dividido por las visitas a `/agentes`.
 
 ### Otras herramientas
 
