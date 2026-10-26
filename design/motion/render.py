@@ -1,5 +1,3 @@
-# Uso (desde design/motion): VH=<alto> python3 render.py <story|cap04|reel> <inicio> <fin> <carpeta>  → cuadros JPG
-#           VH=<alto> python3 render.py <función> sheet 1,2.5,4  → hoja de contacto <función>_sheet.png
 import os, sys, time
 from playwright.sync_api import sync_playwright
 fn=sys.argv[1]; FPS=30; times=None

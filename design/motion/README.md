@@ -6,22 +6,47 @@ Todo se dibuja con código: `engine.html` contiene un motor SVG que dibuja cualq
 
 | Archivo | Qué hace |
 | --- | --- |
-| `engine.html` | Motor de dibujo. Funciones: `story(t)` La semilla (1080×1920, 50 s) · `reel(t)` presentación de Punto (1080×1920, 15 s) · `cap04(t)` Cap. 04 (1080×1350, 25 s) · `sticker(nombre, p)` stickers |
-| `render.py` | Captura cuadros JPG o una hoja de contacto para revisar |
-| `stickers.py` | Genera los 6 stickers WebP de WhatsApp |
+| `engine.html` | Motor de dibujo SVG. Cada función dibuja un cuadro a partir del tiempo `t` (ver tabla de piezas) |
+| `render.py` | `VH=<alto> python3 render.py <función> <inicio> <fin> <carpeta>` captura cuadros JPG a 30 fps; `... <función> sheet t1,t2,...` arma una hoja de contacto |
+| `cuadro.py` | `python3 cuadro.py <función> <t> <salida.png>`: un cuadro suelto a resolución completa |
 | `musica.py` | Música de «La semilla» (50 s, re mayor) |
-| `audio_cap04.py` | Música y efectos del Cap. 04 (25 s, 112 bpm) |
+| `audio_cap04.py` | Música y efectos del Cap. 04 (25 s, 112 bpm). Sus primeras 67 líneas son la caja de herramientas de síntesis que reutilizan los demás |
+| `audio_casos.py` | Música de los casos «Punto en acción» (`python3 audio_casos.py clinica\|automotora`, 34,5 s) |
+| `ambiente.py` | Sonido ambiente de las versiones con escenario: pájaros y gato (clínica), grillos (automotora) |
+| `audio_metodo.py` | Método Interforma: lo-fi por capas a 96 bpm, sube de Fa a Sol en la etapa 6 (48 s) |
+| `audio_reel03.py` | Cap. 03: rasgueo tipo ukelele, silbido y palmas a 104 bpm (18 s) |
+| `stickers.py` | Genera los 6 stickers WebP de WhatsApp |
+| `fonts/` | Outfit, Manrope y JetBrains Mono (licencia OFL), versionadas para que cualquier sesión pueda renderizar |
 | `../../scripts/isotipo-gif.py` | GIF del isotipo para la firma de correo |
+
+### Piezas en `engine.html`
+
+| Función | Pieza | Formato |
+| --- | --- | --- |
+| `story(t)` | Cap. 01 · La semilla (raíces v2) | 1080×1920, 50 s |
+| `reel(t)` | Presentación de Punto | 1080×1920, 15 s |
+| `cap04(t)` | Cap. 04 · ¿Qué es un agente de IA? | 1080×1350, 25 s |
+| `metodo(t)` | El Método Interforma: 6 etapas, 6 emociones | 1080×1920, 48 s |
+| `clinica(t)` / `automotora(t)` | Punto en acción, versión plana | 1080×1920, 34,5 s |
+| `clinica2(t)` / `automotora2(t)` | Punto en acción con escenarios del barrio (recepción con el gato, patio de autos de noche) | 1080×1920, 34,5 s |
+| `reel03(t)` | Cap. 03 · ¿En cuántas planillas vive tu cliente? | 1080×1920, 18 s |
+| `portada(k)`, `portadaCliSq()`, `post03()` | Portadas de grilla e imagen fija del Cap. 03 | — |
+| `sticker(nombre, p)` | Stickers de Punto | 512×512 |
+
+### El barrio de Punto (escenarios)
+
+Desde octubre de 2026 las piezas viven en «El barrio de Punto»: fondos con profundidad en capas (cielo → cerros lejanos más claros → cerros medios → objetos), interiores (recepción, oficina, sala de ventas) y exteriores (barrio, patio de noche). Las piezas reutilizables están en el bloque `escenas` de `engine.html`:
+
+- Paisaje: `hill`, `tree`, `house`, `car`, `lamp`, `stars`, `moon`, `birds`, `dayWindow`, `nightWindow`, `plant`, `clock`.
+- El gato del barrio (personaje fijo): `catLying` (duerme y despierta), `catSit`, `catWalk`. El perro se descartó en la revisión del 26/10.
+- Degradados y recortes: `lgrad`, `rgrad`, `clip` (llenan `DEFS`; cada función de pieza parte con `DEFS='';GID=0` y termina con `<defs>${DEFS}</defs>`).
+- Paleta de naturaleza, siempre apagada para no competir con Energía: `SAGE`, `SAGE2`, `SAGE_L`, `GROUND_L`, `HILL_C`, `WOOD`, y de noche `NIGHT1..3`.
 
 ## Preparar (una vez)
 
 ```bash
 cd design/motion
 pip install playwright pillow numpy scipy && python3 -m playwright install chromium
-mkdir -p fonts
-cp ../../node_modules/@fontsource-variable/outfit/files/outfit-latin-wght-normal.woff2 fonts/
-cp ../../node_modules/@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2 fonts/
-cp ../../node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2 fonts/
 ```
 
 ## Regenerar una pieza
@@ -48,4 +73,10 @@ Antes de renderizar todo, revisa con una hoja de contacto: `VH=1350 python3 rend
 
 Copia la función `cap04` en `engine.html` y cambia textos, expresiones de Punto y tiempos. Mantén la estructura de la serie: portada en Umbra con chip «CAP. NN · PILAR» → barrido Energía → tres viñetas numeradas → barrido Umbra → cierre con la idea fuerza y el adelanto del capítulo siguiente. Si cambian los tiempos, ajusta los efectos en una copia de `audio_cap04.py`.
 
-`out/`, `fonts/` y los `.wav` no se versionan.
+## Flujo semanal
+
+Cada domingo se producen las cinco publicaciones de lunes a viernes a partir del calendario de RRSS en Notion. Los videos y portadas quedan en Google Drive y la ficha de Notion pasa a «Revisión». Sergio revisa, pide cambios si hace falta y publica. Todas las piezas son reels 9:16 con música original y sonido ambiente cuando hay escenario.
+
+Para una pieza nueva: copia la función más parecida, revisa con una hoja de contacto, renderiza, compón la música con una copia del script de audio más parecido (manteniendo los tiempos de los efectos), normaliza a -14 LUFS y une con ffmpeg.
+
+`out/` y los `.wav` no se versionan.
