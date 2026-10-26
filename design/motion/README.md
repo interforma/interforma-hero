@@ -15,6 +15,7 @@ Todo se dibuja con código: `engine.html` contiene un motor SVG que dibuja cualq
 | `ambiente.py` | Sonido ambiente de las versiones con escenario: pájaros y gato (clínica), grillos (automotora) |
 | `audio_metodo.py` | Método Interforma: lo-fi por capas a 96 bpm, sube de Fa a Sol en la etapa 6 (48 s) |
 | `audio_reel03.py` | Cap. 03: rasgueo tipo ukelele, silbido y palmas a 104 bpm (18 s) |
+| `audio_reel05.py` | Cap. 05: latido tenso que se vuelve bossa a 112 bpm (23 s) |
 | `stickers.py` | Genera los 6 stickers WebP de WhatsApp |
 | `fonts/` | Outfit, Manrope y JetBrains Mono (licencia OFL), versionadas para que cualquier sesión pueda renderizar |
 | `../../scripts/isotipo-gif.py` | GIF del isotipo para la firma de correo |
@@ -30,6 +31,7 @@ Todo se dibuja con código: `engine.html` contiene un motor SVG que dibuja cualq
 | `clinica(t)` / `automotora(t)` | Punto en acción, versión plana | 1080×1920, 34,5 s |
 | `clinica2(t)` / `automotora2(t)` | Punto en acción con escenarios del barrio (recepción con el gato, patio de autos de noche) | 1080×1920, 34,5 s |
 | `reel03(t)` | Cap. 03 · ¿En cuántas planillas vive tu cliente? | 1080×1920, 18 s |
+| `reel05(t)` | Cap. 05 · El mito: «La IA va a reemplazar a mi equipo» (oficina con equipo y el gato) | 1080×1920, 23 s |
 | `portada(k)`, `portadaCliSq()`, `post03()` | Portadas de grilla e imagen fija del Cap. 03 | — |
 | `sticker(nombre, p)` | Stickers de Punto | 512×512 |
 

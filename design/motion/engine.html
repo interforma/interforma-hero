@@ -1177,6 +1177,76 @@ window.reel03=(t)=>{DEFS='';GID=0;
   if(f>0){o+=tx('Cuéntale a Punto en los comentarios.',64,DESK+140,{size:40,font:'Manrope',weight:700,op:f})+tx('No juzgamos, prometido.',64,DESK+196,{size:34,font:'Manrope',weight:500,fill:'#3F3A34',op:appear(t,14.8,.4)})+tx('interforma.digital',64,DESK+280,{size:28,font:'JBM',weight:400,fill:E800,op:appear(t,15.4,.4)});
     o+=`<path d="M${880} ${DESK+110}v60m-22 -22l22 22l22 -22" stroke="${INK}" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="${appear(t,15.0,.3)}" transform="translate(0 ${8*Math.sin(TAU*t*1.4)})"/>`;}
   svg.innerHTML=`<defs>${DEFS}</defs>`+o;};
+/* ---------- Cap. 05 · El mito: «La IA va a reemplazar a mi equipo» (reel 9:16, 23 s) ---------- */
+const R5_DESK=[200,540,880], R5_COL=[INK,E800,'#5C534A'];
+function officeScene(t){let o=`<rect width="${CW}" height="${CH}" fill="${lgrad([[0,PAPEL],[1,BG]])}"/>`;
+  o+=dayWindow(640,600,360,280,t,{frame:9});
+  o+=`<rect x="0" y="1480" width="${CW}" height="460" fill="${lgrad([[0,'#D8D3CA'],[1,'#CFC9BF']])}"/><rect x="0" y="1480" width="${CW}" height="6" fill="#BEB8AE"/>`;
+  o+=plant(90,1480,.9);
+  return o;}
+function desk(x,col,t,paper,relax){let o='';const bob=relax?3*Math.sin(t*3+x):0;
+  o+=`<g transform="translate(0 ${bob})">${person(x,1330,140,col)}</g>`;
+  o+=`<rect x="${x-150}" y="1330" width="300" height="20" rx="6" fill="${WOOD}"/><rect x="${x-140}" y="1350" width="14" height="130" fill="${WOOD_D}"/><rect x="${x+126}" y="1350" width="14" height="130" fill="${WOOD_D}"/>`;
+  o+=`<path d="M${x-62} 1330l12 -70h100l12 70z" fill="${INK}"/><rect x="${x-44}" y="1268" width="88" height="54" rx="4" fill="${CIELO}"/>`;
+  if(paper>0) for(let k=0;k<4;k++)o+=`<rect x="${x+70}" y="${1322-k*9}" width="64" height="8" rx="2" fill="${PAPEL}" stroke="${INK}" stroke-width="2.5" opacity="${paper}"/>`;
+  return o;}
+window.reel05=(t)=>{DEFS='';GID=0;
+  const svg=document.getElementById('stage');svg.setAttribute('width',CW);svg.setAttribute('height',CH);svg.setAttribute('viewBox',`0 0 ${CW} ${CH}`);
+  let o=`<rect width="${CW}" height="${CH}" fill="${INK}"/>`;
+  const pill='CAP. 05 · EL MITO';const pillSvg=(fill,col)=>`<rect x="64" y="110" width="${pill.length*20.6+64}" height="64" rx="32" fill="${fill}"/>`+tx(pill,96,153,{size:30,font:'JBM',weight:400,fill:col,ls:1});
+  const TASKS=['Tareas repetitivas','Respuestas frecuentes','Ordenar información'],TT=[5.0,6.2,7.4];
+  if(t<4.0){
+    // A · el rumor: Punto suda dentro del cuadrado redondeado
+    const g=eio(prog(t,3.5,4.0));const sz=lerp(560,2600,g),rx=lerp(96,0,g);
+    o+=pillSvg(E,INK);
+    const a=appear(t,.3);['«La IA va a','reemplazar a','mi equipo.»'].forEach((l,i)=>o+=tx(l,64,320+i*112,{size:104,weight:600,ls:-3,fill:i===2?E:PAPEL,op:a*(1-g),dy:18*(1-a)}));
+    if(g>0){const cp=clip(`<rect x="${540-sz/2}" y="${1150-sz/2}" width="${sz}" height="${sz}" rx="${rx}"/>`);o+=`<g ${cp}>${officeScene(t)}${R5_DESK.map((x,i)=>desk(x,R5_COL[i],t,1,false)).join('')}</g>`;}
+    else{o+=`<rect x="${540-280}" y="${1150-280}" width="560" height="560" rx="96" fill="${PAPEL}"/>`;}
+    o+=puntoAt(540,lerp(1180,1700,g),lerp(150,120,g),{eyes:'low',sweat:(t%1.0),rot:t<3.5?2.5*Math.sin(TAU*t*5):0,ey:-4});
+    [['¿Y mi trabajo?',120,1560,1.2],['¿Nos reemplazan?',600,1520,1.8],['Dicen que…',700,780,2.4]].forEach(([l,x,y,tt])=>{const k=appear(t,tt,.3)*(1-g);if(k>0){const w=l.length*19+56;o+=`<g opacity="${k}" transform="translate(0 ${10*(1-k)})"><rect x="${x}" y="${y}" width="${w}" height="76" rx="24" fill="${CIELO}"/>${tx(l,x+28,y+50,{size:32,font:'Manrope',weight:600})}</g>`;}});
+  } else if(t<15.8){
+    o=officeScene(t);
+    // gato durmiendo en el piso
+    o+=catLying(930,1800,.95,t,t>12.6&&t<14?Math.sin(Math.PI*(t-12.6)/1.4):0);
+    R5_DESK.forEach((x,i)=>{const gone=t>=TT[i];o+=desk(x,R5_COL[i],t,gone?0:1,gone);
+      if(gone&&t<TT[i]+1.4){const k=appear(t,TT[i]+.5,.3)*(1-prog(t,TT[i]+1.1,TT[i]+1.4));o+=tx('¡uf!',x,1150,{anchor:'middle',size:40,weight:700,fill:E800,op:k});}});
+    // las tareas vuelan a Punto
+    TT.forEach((tt,i)=>{const k=prog(t,tt,tt+.7);if(k>0&&k<1){const e=eio(k),x=lerp(R5_DESK[i]+100,540,e),y=lerp(1300,1660,e)-200*Math.sin(Math.PI*e);
+      o+=`<g transform="translate(${x} ${y}) rotate(${e*360})"><rect x="-40" y="-26" width="80" height="52" rx="6" fill="${PAPEL}" stroke="${INK}" stroke-width="4"/><path d="M-24 -8h48M-24 6h32" stroke="#BEB8AE" stroke-width="4"/></g>`;}});
+    let st={ey:-10,ty:-4*Math.sin(TAU*t/2.2)};
+    TT.forEach(tt=>{const d=t-tt-.7;if(d>0&&d<.45){st={eyes:'happy',ty:-26*Math.sin(Math.PI*d/.45),sy:1+.05*Math.sin(Math.PI*d/.45)};}});
+    if(t>=10.4) st={eyes:'oval',ey:-12,ex:6*Math.sin(t*1.5)};
+    if(t>=14.2) st=celebrate(t,14.2);
+    o+=`<ellipse cx="540" cy="1826" rx="120" ry="12" fill="${INK}" opacity=".16"/>`+puntoAt(540,1706,120,st);
+    // textos
+    const wi=1-eio(prog(t,4.0,4.4));
+    const h1=Math.min(appear(t,4.4),1-prog(t,10.1,10.4)),h2=appear(t,10.5);
+    o+=pillSvg(INK,PAPEL);
+    o+=tx('Lo que la IA',64,300,{size:84,weight:600,ls:-2.5,op:h1})+tx('hace bien hoy:',64,392,{size:84,weight:600,ls:-2.5,fill:E,op:h1});
+    TASKS.forEach((l,i)=>{const k=appear(t,TT[i]+.7,.35)*(1-prog(t,10.1,10.4));if(k>0)o+=`<g opacity="${k}">${check(90,452+i*64,k)}${tx(l,128,466+i*64,{size:38,font:'Manrope',weight:600})}</g>`;});
+    o+=tx('Lo que sigue',64,300,{size:84,weight:600,ls:-2.5,op:h2,dy:16*(1-h2)})+tx('necesitando',64,392,{size:84,weight:600,ls:-2.5,op:h2,dy:16*(1-h2)})+tx('a una persona:',64,484,{size:84,weight:600,ls:-2.5,fill:E,op:h2,dy:16*(1-h2)});
+    o+=tx('…y resolver lo inesperado.',64,560,{size:36,font:'Manrope',weight:600,fill:'#3F3A34',op:appear(t,12.8)});
+    ['Decidir','Negociar','Cuidar al cliente'].forEach((l,i)=>{const k=clamp((t-11.0-i*.5)/.35);if(k<=0)return;const w=l.length*17+56,x=R5_DESK[i];
+      o+=chip(x-w/2,1080,w,66,l,{k,fill:E,size:30});});
+    if(wi>0) o+=`<rect width="${CW}" height="${CH}" fill="${INK}" opacity="${wi}"/>`;
+    const wo=prog(t,15.4,15.8);if(wo>0)o+=`<rect x="0" y="${lerp(CH,0,eio(wo))}" width="${CW}" height="${CH}" fill="${INK}"/>`;
+  } else {
+    // D · la pregunta útil  ·  E · cierre
+    o+=pillSvg(E,INK);
+    const a=Math.min(appear(t,15.9),1-prog(t,19.3,19.6)),b=Math.min(appear(t,17.2),1-prog(t,19.3,19.6)),strike=eout(prog(t,16.7,17.1));
+    o+=tx('La pregunta útil',64,320,{size:88,weight:600,ls:-2.5,fill:PAPEL,op:a})+tx('no es:',64,416,{size:88,weight:600,ls:-2.5,fill:PAPEL,op:a});
+    o+=tx('«¿A quién reemplazo?»',64,530,{size:64,weight:600,fill:'#BEB8AE',op:a});
+    if(strike>0&&a>0) o+=`<line x1="60" y1="510" x2="${60+700*strike}" y2="510" stroke="${E}" stroke-width="8" stroke-linecap="round" opacity="${a}"/>`;
+    o+=tx('Sino: «¿qué tarea',64,680,{size:76,weight:600,fill:E,op:b,dy:14*(1-b)})+tx('repetitiva le quito',64,766,{size:76,weight:600,fill:E,op:b,dy:14*(1-b)})+tx('a mi equipo?»',64,852,{size:76,weight:600,fill:E,op:b,dy:14*(1-b)});
+    const c=appear(t,19.7);
+    o+=tx('¿Qué tarea le',64,320,{size:100,weight:600,ls:-3,fill:PAPEL,op:c,dy:18*(1-c)})+tx('quitarías primero',64,432,{size:100,weight:600,ls:-3,fill:PAPEL,op:c,dy:18*(1-c)})+tx('al tuyo?',64,544,{size:100,weight:600,ls:-3,fill:E,op:c,dy:18*(1-c)});
+    o+=tx('Te leemos en los comentarios.',64,660,{size:40,font:'Manrope',weight:600,fill:PAPEL,op:appear(t,20.4)})+tx('interforma.digital',64,1812,{size:28,font:'JBM',weight:400,fill:E,op:appear(t,20.8)});
+    o+=`<rect x="${540-280}" y="${1300-280}" width="560" height="560" rx="96" fill="${PAPEL}"/>`;
+    const st=t<19.7?{eyes:'line',ey:-6,sy:1+.06*Math.sin(Math.PI*clamp((t-16)/1.2)),sx:1-.04*Math.sin(Math.PI*clamp((t-16)/1.2))}:celebrate(t,19.7);
+    if(t>=17.2&&t<19.7){st.eyes='happy';}
+    o+=puntoAt(540,1330,150,st);
+  }
+  svg.innerHTML=`<defs>${DEFS}</defs>`+o;};
 
 window.ready=document.fonts.ready.then(()=>Promise.all([document.fonts.load('500 80px Outfit'),document.fonts.load('500 40px Manrope'),document.fonts.load('30px JBM')]));
 </script>
