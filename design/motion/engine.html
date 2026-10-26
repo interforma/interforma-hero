@@ -1247,6 +1247,119 @@ window.reel05=(t)=>{DEFS='';GID=0;
     o+=puntoAt(540,1330,150,st);
   }
   svg.innerHTML=`<defs>${DEFS}</defs>`+o;};
+/* ---------- El barrio de Punto · Ep. 01: Doña Rosa y los 40 audios (reel 9:16, 28 s) ---------- */
+const SKIN='#E2B48F',HAIR='#A39A90';
+function rosa(x,y,s,mood,t){ // y = línea del mesón; mood: tired | ok | happy | surprised
+  let o='';const br=1+.012*Math.sin(t*2.4);
+  o+=`<g transform="translate(${x} ${y}) scale(${s}) scale(1 ${br}) translate(${-x} ${-y})">`;
+  o+=`<rect x="${x-118}" y="${y-250}" width="236" height="300" rx="96" fill="${E800}"/>`;
+  o+=`<rect x="${x-72}" y="${y-190}" width="144" height="230" rx="20" fill="${PAPEL}"/><rect x="${x-40}" y="${y-110}" width="80" height="44" rx="10" fill="none" stroke="#BEB8AE" stroke-width="4"/>`;
+  o+=`<rect x="${x-20}" y="${y-282}" width="40" height="40" fill="${SKIN}"/>`;
+  const hy=y-330;
+  o+=`<circle cx="${x+6}" cy="${hy-92}" r="36" fill="${HAIR}"/><circle cx="${x}" cy="${hy}" r="80" fill="${SKIN}"/>`;
+  o+=`<path d="M${x-82} ${hy+6}A82 82 0 0 1 ${x+82} ${hy+6}Q${x+40} ${hy-46} ${x-82} ${hy+6}Z" fill="${HAIR}"/>`;
+  o+=`<circle cx="${x-46}" cy="${hy+30}" r="13" fill="${E}" opacity=".35"/><circle cx="${x+46}" cy="${hy+30}" r="13" fill="${E}" opacity=".35"/>`;
+  const blink=(t%3.7<.13)?.15:1;
+  [-30,30].forEach(dx=>{const ex=x+dx,ey=hy+8;
+    if(mood==='tired') o+=`<path d="M${ex-9} ${ey+2}h18" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>`;
+    else if(mood==='happy') o+=`<path d="M${ex-9} ${ey+4}q9 -10 18 0" stroke="${INK}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+    else o+=`<ellipse cx="${ex}" cy="${ey}" rx="${mood==='surprised'?7:5.5}" ry="${(mood==='surprised'?9:7)*blink}" fill="${INK}"/>`;
+    o+=`<circle cx="${ex}" cy="${ey}" r="22" fill="none" stroke="${INK}" stroke-width="5"/>`;});
+  o+=`<path d="M${x-8} ${hy+8}h16" stroke="${INK}" stroke-width="5"/>`;
+  if(mood==='happy') o+=`<path d="M${x-18} ${hy+44}q18 16 36 0" stroke="${INK}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+  else if(mood==='surprised') o+=`<ellipse cx="${x}" cy="${hy+48}" rx="9" ry="11" fill="${INK}"/>`;
+  else o+=`<path d="M${x-14} ${hy+48}${mood==='tired'?'q14 -6 28 0':'h28'}" stroke="${INK}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+  o+='</g>';return o;}
+function rosaArms(x,y,s,phone,t,buzz=0){ // brazos y teléfono (delante del mesón)
+  const px=x+80*s,py=y-120*s+buzz;let o='';
+  o+=`<path d="M${x-96*s} ${y-150*s}Q${x-60*s} ${y-40*s} ${px-20*s} ${py+20*s}" stroke="${E800}" stroke-width="${46*s}" fill="none" stroke-linecap="round"/>`;
+  o+=`<path d="M${x+96*s} ${y-150*s}Q${x+110*s} ${y-60*s} ${px+18*s} ${py+24*s}" stroke="${E800}" stroke-width="${46*s}" fill="none" stroke-linecap="round"/>`;
+  if(phone){o+=`<g transform="rotate(${buzz*1.5} ${px} ${py})"><rect x="${px-34*s}" y="${py-60*s}" width="${68*s}" height="${120*s}" rx="${12*s}" fill="${INK}"/><rect x="${px-34*s}" y="${py-60*s}" width="${68*s}" height="${120*s}" rx="${12*s}" fill="${INK}"/><rect x="${px-27*s}" y="${py-52*s}" width="${54*s}" height="${100*s}" rx="${7*s}" fill="${CIELO}"/></g>`;}
+  o+=`<circle cx="${px-20*s}" cy="${py+22*s}" r="${24*s}" fill="${SKIN}"/><circle cx="${px+18*s}" cy="${py+26*s}" r="${24*s}" fill="${SKIN}"/>`;
+  return o;}
+function shelves(t){let o='';const S=[[60,700],[60,930],[60,1160]];
+  o+=`<rect x="40" y="560" width="680" height="640" rx="10" fill="#E6DED1"/>`;
+  S.forEach(([x,y],r)=>{o+=`<rect x="40" y="${y}" width="680" height="16" fill="${WOOD_D}"/>`;
+    const R=_rng(31+r);let cx=70;
+    while(cx<680){const k=Math.floor(R()*4),w=k===0?70:k===1?60:k===2?90:54;
+      if(k===0){const c=[E,CIELO,SAGE2,PAPEL][Math.floor(R()*4)];o+=`<rect x="${cx}" y="${y-82}" width="${w}" height="82" rx="8" fill="${c}" stroke="${INK}" stroke-width="3"/><rect x="${cx}" y="${y-82}" width="${w}" height="16" rx="6" fill="#5C534A"/>`;}
+      if(k===1){o+=`<rect x="${cx}" y="${y-96}" width="${w}" height="96" rx="12" fill="${CIELO}" opacity=".85" stroke="${INK}" stroke-width="3"/>`;for(let d=0;d<6;d++)o+=`<circle cx="${cx+12+(d%3)*18}" cy="${y-18-Math.floor(d/3)*16}" r="5" fill="#5C534A"/>`;o+=`<rect x="${cx-2}" y="${y-106}" width="${w+4}" height="14" rx="5" fill="#5C534A"/>`;}
+      if(k===2){o+=`<rect x="${cx}" y="${y-70}" width="${w}" height="70" rx="4" fill="${PAPEL}" stroke="${INK}" stroke-width="3"/><rect x="${cx+14}" y="${y-48}" width="${w-28}" height="12" rx="3" fill="#BEB8AE"/>`;}
+      if(k===3){o+=`<rect x="${cx+22}" y="${y-110}" width="12" height="110" rx="4" fill="${WOOD}"/><rect x="${cx+2}" y="${y-118}" width="52" height="26" rx="6" fill="#5C534A"/>`;}
+      cx+=w+14+R()*14;}});
+  return o;}
+function audioPill(x,y,k,sec){if(k<=0)return '';const s=eback(clamp(k));let o=`<g transform="translate(${x} ${y}) scale(${s})"><rect x="-110" y="-32" width="220" height="64" rx="32" fill="${CIELO}" stroke="${INK}" stroke-width="3"/><path d="M-82 -14l22 14l-22 14z" fill="${INK}"/>`;
+  for(let i=0;i<9;i++){const h=8+((i*37+sec*11)%22);o+=`<rect x="${-46+i*12}" y="${-h/2}" width="6" height="${h}" rx="3" fill="${INK}"/>`;}
+  return o+tx(`0:${String(sec).padStart(2,'0')}`,92,8,{anchor:'end',size:18,font:'JBM',weight:400,fill:INK})+'</g>';}
+const ROSA_PILLS=(()=>{const R=_rng(2026),a=[];for(let i=0;i<14;i++)a.push({x:560+R()*400,y:660+R()*560,t:.9+i*.22,sec:Math.floor(4+R()*50),bin:R()<.8?0:(R()<.6?1:2)});return a;})();
+window.rosa01=(t)=>{DEFS='';GID=0;
+  const svg=document.getElementById('stage');svg.setAttribute('width',CW);svg.setAttribute('height',CH);svg.setAttribute('viewBox',`0 0 ${CW} ${CH}`);
+  const C=1500,night=t<16.5;let o='';
+  if(t<21.5){
+    o+=`<rect width="${CW}" height="${CH}" fill="${lgrad([[0,night?'#E2DACD':PAPEL],[1,night?'#CFC6B8':BG]])}"/>`;
+    o+=shelves(t);
+    o+= night? nightWindow(780,600,240,300,t,8) : dayWindow(780,600,240,300,t,{frame:8});
+    o+=`<path d="M${540} 560v30" stroke="#5C534A" stroke-width="4"/><path d="M490 590h100l-20 30h-60z" fill="#5C534A"/><circle cx="540" cy="650" r="${night?230:0}" fill="${rgrad([[0,E,.22],[1,E,0]])}"/>`;
+    // Rosa detrás del mesón
+    const mood=t<6.4?'tired':t<9.2?'surprised':t<12.4?'ok':'happy';
+    o+=rosa(330,C,1,mood,t);
+    // mesón
+    o+=`<rect x="0" y="${C}" width="${CW}" height="34" fill="${WOOD}"/><rect x="0" y="${C}" width="${CW}" height="8" fill="${WOOD_D}"/><rect x="0" y="${C+34}" width="${CW}" height="420" fill="${E800}"/>`;
+    for(let x=60;x<1080;x+=240)o+=`<rect x="${x}" y="${C+70}" width="190" height="300" rx="14" fill="none" stroke="#7E3216" stroke-width="5"/>`;
+    const buzz=t>.9&&t<4.0?3*Math.sin(t*60)*(Math.sin(t*3)>0?1:0):0;
+    o+=rosaArms(330,C,1,t<12.0,t,buzz);
+    o+=catLying(140,C,.85,t,t>3.2&&t<4.6?Math.sin(Math.PI*(t-3.2)/1.4):0);
+    // fase 1: los audios se acumulan
+    let n=0;ROSA_PILLS.forEach(p=>{if(t>=p.t)n++;});
+    if(t<7.2){ROSA_PILLS.forEach(p=>{let k=appear(t,p.t,.3);if(t>5.4){const m=eio(prog(t,5.4+p.bin*.15,6.4+p.bin*.15));const bx=[640,800,940][p.bin];if(m>0){o+=`<g opacity="${1-m}">`+audioPill(lerp(p.x,bx,m),lerp(p.y,1180,m),k*(1-m*.6),p.sec)+'</g>';return;}}o+=audioPill(p.x,p.y,k,p.sec);});
+      const cnt=Math.round(lerp(1,40,clamp((t-.9)/3.4)));const bk=appear(t,.9,.3)*(1-prog(t,5.2,5.5));
+      if(bk>0)o+=`<g opacity="${bk}" transform="translate(470 1240) scale(${eback(bk)})"><circle r="60" fill="${E}" stroke="${INK}" stroke-width="6"/>${tx(String(cnt),0,22,{anchor:'middle',size:58,weight:700})}</g>`;}
+    // fase 2: Punto ordena por tema (barras)
+    if(t>=5.2&&t<12.0){const k=appear(t,5.4,.4)*(1-prog(t,11.6,12.0));
+      [['¿Precio?',32],['¿Tienen…?',5],['¿Horario?',3]].forEach(([l,v],i)=>{const x=[640,800,940][i],h=440*v/32*eout(prog(t,6.0+i*.15,7.0+i*.15));
+        o+=`<g opacity="${k}"><rect x="${x-56}" y="${1230-h}" width="112" height="${h}" rx="14" fill="${i===0?E:CIELO}" stroke="${INK}" stroke-width="4"/>`+tx(String(Math.round(v*clamp((t-6.0)/1))),x,1218-h,{anchor:'middle',size:44,weight:700})+tx(l,x,1270,{anchor:'middle',size:24,font:'JBM',weight:400})+'</g>';});}
+    // fase 3: catálogo + respuestas rápidas en el teléfono grande
+    if(t>=12.0){const k=appear(t,12.0,.5);const X=560,Y=570,W=440,H=660;
+      o+=`<g opacity="${k}" transform="translate(0 ${30*(1-k)})"><rect x="${X}" y="${Y}" width="${W}" height="${H}" rx="48" fill="${INK}"/><rect x="${X+16}" y="${Y+16}" width="${W-32}" height="${H-32}" rx="36" fill="${BG}"/>`;
+      o+=tx('Ferretería Doña Rosa',X+W/2,Y+70,{anchor:'middle',size:26,font:'Manrope',weight:700});
+      const q=appear(t,12.5,.3);o+=`<g opacity="${q}"><rect x="${X+36}" y="${Y+100}" width="300" height="64" rx="20" fill="${PAPEL}"/>${tx('¿Precio del martillo?',X+56,Y+141,{size:24,font:'Manrope',weight:500})}</g>`;
+      const ch=appear(t,13.4,.3);if(ch>0){o+=chip(X+40,Y+H-110,190,58,'/precios',{k:ch,fill:E,size:24});}
+      const tap=prog(t,14.0,14.5);if(tap>0&&tap<1)o+=`<circle cx="${X+135}" cy="${Y+H-81}" r="${20+50*eout(tap)}" fill="none" stroke="${INK}" stroke-width="4" opacity="${1-tap}"/>`;
+      const cat=appear(t,14.5,.4);if(cat>0){o+=`<g opacity="${cat}" transform="translate(0 ${16*(1-cat)})"><rect x="${X+40}" y="${Y+184}" width="360" height="320" rx="20" fill="${E}" opacity=".15"/><rect x="${X+40}" y="${Y+184}" width="360" height="320" rx="20" fill="none" stroke="${INK}" stroke-width="3"/>`+tx('Catálogo',X+62,Y+222,{size:24,font:'Manrope',weight:700});
+        [['Martillo','$8.990'],['Tornillos x100','$1.290'],['Pintura 1 gal','$14.990'],['Huincha 5 m','$5.990']].forEach(([a,b],i)=>{const yy=Y+262+i*60;o+=`<rect x="${X+58}" y="${yy-22}" width="38" height="38" rx="8" fill="${[E,CIELO,SAGE2,PAPEL][i]}" stroke="${INK}" stroke-width="2"/>`+tx(a,X+108,yy+4,{size:22,font:'Manrope',weight:600})+tx(b,X+384,yy+4,{anchor:'end',size:22,font:'JBM',weight:400});});o+='</g>';}
+      o+=check(X+W-60,Y+H-81,clamp((t-15.0)/.35))+'</g>';}
+    // Punto
+    let st={ey:-6,ty:-4*Math.sin(TAU*t/2.2)};
+    const pin=eback(clamp((t-4.6)/.5));
+    if(t<6.6&&t>=4.6){st={eyes:'round',lines:1-prog(t,5.0,5.4),ex:-14,ey:-8};}
+    if(t>=6.6&&t<9.0){st={eyes:'round',ex:-6,ey:-14};}
+    if(t>=9.0&&t<12.0){st={ex:10,ey:-10,dots:[0,1,2].map(j=>clamp((t-9.2-j*.2)/.15))};}
+    if(t>=12.0&&t<15.0){st={ex:-12,ey:-10};}
+    if(t>=15.0)st=celebrate(t,15.0);
+    if(pin>0) o+=`<g transform="translate(870 ${C}) scale(${pin}) translate(-870 ${-C})"><ellipse cx="870" cy="${C+4}" rx="100" ry="9" fill="${INK}" opacity=".18"/>${puntoAt(870,C-104,104,st)}</g>`;
+    // textos
+    const pill='EL BARRIO DE PUNTO · EP. 01';o+=`<rect x="64" y="110" width="${pill.length*20.6+64}" height="64" rx="32" fill="${E}"/>`+tx(pill,96,153,{size:30,font:'JBM',weight:400,ls:1});
+    const ph=[[.2,4.4,[['Son las 22:47.',INK],['Doña Rosa sigue',INK],['respondiendo precios.',E]]],
+              [4.6,8.6,[['Punto cuenta',INK],['los audios…',E]]],
+              [8.8,11.8,[['8 de cada 10',E],['son la misma',INK],['pregunta.',INK]]],
+              [12.0,16.4,[['Sin IA:',INK],['catálogo + respuestas',E],['rápidas.',E]]],
+              [16.6,21.3,[['Doña Rosa ahora',INK],['cierra a las 19:00.',E]]]];
+    ph.forEach(([a,b,lines])=>{const k=Math.min(appear(t,a,.4),1-prog(t,b-.25,b));if(k<=0)return;lines.forEach(([l,c],i)=>o+=tx(l,64,290+i*96,{size:84,weight:600,ls:-2.5,fill:c,op:k,dy:16*(1-appear(t,a,.4))}));});
+    o+=tx('WhatsApp Business ya trae las dos funciones.',64,540,{size:30,font:'Manrope',weight:600,fill:'#3F3A34',op:Math.min(appear(t,13.0),1-prog(t,16.1,16.4))});
+    const wo=prog(t,21.1,21.5);if(wo>0)o+=`<rect x="0" y="${lerp(CH,0,eio(wo))}" width="${CW}" height="${CH}" fill="${INK}"/>`;
+  } else {
+    o+=`<rect width="${CW}" height="${CH}" fill="${INK}"/>`+stars(t,30,700,4);
+    const a=appear(t,21.7),b=appear(t,22.8);
+    ['A veces no necesitas','tecnología nueva.'].forEach((l,i)=>o+=tx(l,64,330+i*104,{size:88,weight:600,ls:-2.5,fill:PAPEL,op:a,dy:18*(1-a)}));
+    ['Necesitas mirar','qué se repite.'].forEach((l,i)=>o+=tx(l,64,580+i*104,{size:88,weight:600,ls:-2.5,fill:E,op:b,dy:18*(1-b)}));
+    const C2=1480;o+=`<rect x="0" y="${C2}" width="${CW}" height="30" fill="${WOOD}"/><rect x="0" y="${C2+30}" width="${CW}" height="420" fill="${NIGHT2}"/>`;
+    o+=rosa(330,C2,.82,'happy',t);o+=rosaArms(330,C2,.82,false,t);
+    o+=catSit(130,C2,.7,t,{look:1});
+    o+=puntoAt(820,C2-110,110,t>23.6?celebrate(t,23.6):{eyes:'happy'});
+    o+=txr([['¿Te pasa? ',PAPEL],['Cuéntanos qué pregunta te repiten más.',PAPEL]],64,1640,{size:36,weight:600,op:appear(t,24.4)});
+    o+=tx('El barrio de Punto · Ep. 01',64,1760,{size:26,font:'JBM',weight:400,fill:'#BEB8AE',op:appear(t,25.0)})+tx('interforma.digital',64,1812,{size:26,font:'JBM',weight:400,fill:E,op:appear(t,25.3)});
+  }
+  svg.innerHTML=`<defs>${DEFS}</defs>`+o;};
 
 window.ready=document.fonts.ready.then(()=>Promise.all([document.fonts.load('500 80px Outfit'),document.fonts.load('500 40px Manrope'),document.fonts.load('30px JBM')]));
 </script>
