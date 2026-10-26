@@ -40,3 +40,25 @@
 
 **Estado:** Aprobado
 **Motivo:** estabilidad y previsibilidad durante la implementación. La versión instalada (4.16.x) no se actualiza a Astro 5.x ni superiores durante Release 0. Las actualizaciones de versión mayor se evalúan como un ADR separado al inicio de Sprint 1.
+
+## ADR-009 — Identidad de marca 2026
+
+**Estado:** Aprobado (registrado retroactivamente el 2026-10-26)
+**Motivo:** dar más energía visual a la marca.
+**Decisión:** el acento pasa de Signal Blue a **Energía `#EE6E43`** con neutros piedra cálida; titulares en Outfit, cuerpo en Manrope y datos en JetBrains Mono, autoalojadas; isotipo **Transforma** y logotipo «interforma» en minúsculas; **Punto** como mascota, separada del logo oficial. La fuente de verdad de valores es el bloque *IDENTIDAD 2026* de `src/styles/tokens.css`. Implementado en PR #8 a #11.
+**Pendiente:** reescribir el cuerpo de `DESIGN.md`, que todavía describe el sistema azul.
+
+## ADR-010 — Arquitectura de Interforma Agents
+
+**Estado:** Aprobado (registrado retroactivamente el 2026-10-26)
+**Motivo:** ofrecer agentes que el equipo del cliente pueda supervisar y tomar en cualquier momento, con un canal estable y oficial.
+**Decisión:** Meta WhatsApp Cloud API oficial (no conectores no oficiales) → Chatwoot como bandeja compartida → n8n autoalojado como *Agent Bot* → Claude API, con Redis para el historial y un CRM (Twenty en la implementación de referencia) como fuente central de datos comerciales. Toda acción sensible (cotizaciones, descuentos, reservas) requiere aprobación humana. Detalle en `docs/agentes/arquitectura.md`.
+**Regla:** este repositorio solo guarda la arquitectura a nivel de componentes. Secretos, IDs y exportaciones de workflows nunca se versionan aquí.
+**Relación con ADR-005:** el sitio de Interforma sigue sin integraciones reales; ADR-010 aplica a implementaciones para clientes y al futuro agente propio.
+
+## ADR-011 — Activos de clientes servidos desde `public/`
+
+**Estado:** Propuesto — requiere revisión
+**Contexto:** informes mensuales, propuestas comerciales, planes y landings de clientes se publican como HTML estáticos en `public/informes/`, `public/propuestas/`, `public/clientes/` y `public/agente-medic-home/`. Es rápido de compartir, pero quedan en un repositorio público, sin `noindex`, y con `robots.txt` abierto. Algunos incluyen montos facturados.
+**Propuesta:** (a) en el corto plazo, `noindex, nofollow` vía header `X-Robots-Tag` en `vercel.json` y `Disallow` en `robots.txt` para esas rutas; (b) en el mediano plazo, moverlos a un repositorio privado o a un portal con acceso (por ejemplo, el portal de reportes de clientes).
+**Decisión:** pendiente.

@@ -62,30 +62,51 @@ Comportamiento por entorno:
 
 ## Catálogo de eventos
 
+> **Revisado contra el código el 2026-10-26.** El catálogo anterior describía eventos de los componentes legados (`hero_cta`, `click_secondary_cta`, `menu_open`, `contact_start`, `contact_whatsapp`, `click_email`), eliminados en el PR #4. Hoy ninguno se envía.
+
 ### Navegación
 
 | Evento | Trigger | Props |
 |--------|---------|-------|
-| `nav_click` | Clic en link de nav (desktop o mobile) | `destination`, `placement` (`header_desktop` \| `mobile_menu`), `event` |
-| `menu_open` | Apertura del menú mobile | `placement: 'header'` |
-| `click_secondary_cta` | Clic en "Ver el método" del Hero | `destination: '#metodo'`, `placement: 'hero'` |
+| `nav_click` | Clic en un link del menú **móvil** | `destination`, `placement: 'mobile_menu'` |
+| `method_detail_open` | «Ver el método en detalle» en `/#metodo` | `placement: 'home_method'` |
+| `method_detail_back` | «← Volver al inicio» en `/metodo` | `page: 'metodo'` |
+| `method_diagram_fullscreen` | «Abrir en pantalla completa» en `/metodo` | `page: 'metodo'` |
+| `agents_flow_open` | «Ver el flujo en detalle» en `/#agentes` | `placement: 'home_agents'` |
+| `agents_flow_back` | «← Volver al inicio» en `/agentes/flujo` | `page: 'agentes_flujo'` |
+| `agents_flow_fullscreen` | «Abrir en pantalla completa» en `/agentes/flujo` | `page: 'agentes_flujo'` |
+| `agents_flow_to_landing` | «Ver Interforma Agents» en `/agentes/flujo` | `page: 'agentes_flujo'` |
 
 ### WhatsApp
 
 | Evento | Trigger | Props |
 |--------|---------|-------|
-| `hero_cta` | Clic en CTA principal del Hero | `placement: 'hero'`, `label` |
-| `click_whatsapp` | Clic en WhatsApp desde Header | `placement: 'header'` |
-| `click_whatsapp` | Clic en WhatsApp desde CTA Section | `placement: 'cta_section'` |
-| `click_whatsapp` | Clic en botón flotante | `placement: 'float'` |
-| `contact_whatsapp` | Clic en WhatsApp desde sección Contacto | `placement: 'contact'` |
+| `click_whatsapp` | Botón de WhatsApp del Header | `placement: 'header'` |
+| `click_whatsapp` | Botón flotante | `placement: 'float'` |
+| `click_whatsapp` | Botón dentro del saludo de Punto | `placement: 'punto_bubble'` |
+| `punto_bubble_view` | Aparece el saludo «¿Conversamos?» (una vez por sesión, a los 6 s) | `path` |
+| `punto_bubble_dismiss` | El visitante cierra el saludo (× o Escape) | — |
 
-### Contacto
+### Sin tracking (pendiente)
 
-| Evento | Trigger | Props |
-|--------|---------|-------|
-| `contact_start` | Sección Contacto llega al viewport (30%) | `page_path` |
-| `click_email` | Clic en link de email | `placement: 'contact'` |
+`AGENTS.md` exige que todo CTA tenga tracking. Faltan:
+
+| Elemento | Archivo | Evento sugerido |
+|---|---|---|
+| CTA principal del Hero (`wa.me`) | `src/sections/HeroSection.astro` | `click_whatsapp` · `placement: 'hero'` |
+| «Ver el método» del Hero | `src/sections/HeroSection.astro` | `nav_click` · `placement: 'hero'` |
+| CTA final azul (`wa.me`) | `src/sections/CtaSection.astro` | `click_whatsapp` · `placement: 'cta_section'` |
+| `WhatsAppButton` (declara `data-track-event` pero nada lo escucha) | `src/components/composite/WhatsAppButton.astro` | `click_whatsapp` · `placement` por página |
+| Links de la nav en desktop | `src/components/layout/Header.astro` | `nav_click` · `placement: 'header_desktop'` |
+| «Ver Interforma Agents» del home | `src/sections/AgentsSection.astro` | `agents_landing_open` |
+| CTA de `/agentes` (hero y `mailto`) | `src/sections/agentes/*` | `agents_pilot_cta` · `placement` |
+
+### Otras herramientas
+
+| Herramienta | Dónde | Nota |
+|---|---|---|
+| Microsoft Clarity | `Base.astro` | Heatmaps y grabaciones; ID con fallback |
+| Metricool | `Base.astro` (PR #13) | Píxel de seguimiento para redes; ID fijo en el código |
 
 ### Scroll
 
