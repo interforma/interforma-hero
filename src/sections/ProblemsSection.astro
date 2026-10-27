@@ -298,10 +298,8 @@ const gear = Array.from({ length: 8 }, (_, i) => {
   .ps-stage {
     margin: 0;
     position: relative;
-    background: var(--paper);
-    border: 1px solid var(--gray-200);
-    border-radius: var(--radius-card-lg);
-    overflow: hidden;
+    /* Sin caja: la animación vive sobre el fondo de la página (Papel) */
+    background: transparent;
   }
   .ps-svg { display: block; width: 100%; height: auto; }
 
@@ -398,7 +396,7 @@ const gear = Array.from({ length: 8 }, (_, i) => {
     padding: 14px 18px 16px;
     transition: background .25s, border-color .25s;
   }
-  .ps-step[aria-current='step'] { background: var(--white); border-color: var(--gray-200); }
+  .ps-step[aria-current='step'] { background: transparent; border-color: transparent; }
   .ps-step__btn {
     all: unset;
     cursor: pointer;
