@@ -170,7 +170,7 @@ const gear = Array.from({ length: 8 }, (_, i) => {
             <text x="0" y="-4" text-anchor="middle" class="ps-label ps-label--ink ps-label--sm">TALLA</text>
             <text x="0" y="16" text-anchor="middle" class="ps-label ps-label--ink ps-label--sm">ÚNICA</text>
           </g>
-          <g data-s5-bump class="ps-spark"><path d="M650 190l14-10M654 214h18M650 238l14 10" /></g>
+          <g data-s5-bump class="ps-spark"><path d="M532 196l-14-10M528 220h-18M532 244l-14 10" /></g>
         </g>
 
         <!-- ── 06 · Sistemas que no se integran ─────────── -->
@@ -572,7 +572,7 @@ const gear = Array.from({ length: 8 }, (_, i) => {
         });
         const tries = [seg(p, 0.12, 0.42), seg(p, 0.48, 0.78)];
         s6.bridges.forEach((br, i) => {
-          const k = Math.sin(Math.PI * tries[i]) * 0.86;
+          const k = Math.min(1, 2.5 * Math.sin(Math.PI * tries[i])) * 0.86;
           const [x1, y1, x2, y2] = i === 0 ? [460, 158, 580, 158] : [620, 206, 560, 268];
           br.setAttribute('x2', String(mix(x1, x2, k)));
           br.setAttribute('y2', String(mix(y1, y2, k)));
