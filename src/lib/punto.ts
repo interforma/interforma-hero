@@ -17,7 +17,8 @@ export type PuntoExpr =
   | 'trabaja'
   | 'sorpresa'
   | 'celebra'
-  | 'uy';
+  | 'uy'
+  | 'duerme';
 
 export interface PuntoOptions {
   /** Ancho y alto en px. */
@@ -53,6 +54,10 @@ function eyes(expr: PuntoExpr, alive: boolean): string {
       return `<path d="M70 102l12-14 12 14M106 102l12-14 12 14" stroke="${INK}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`;
     case 'uy':
       return blink(ovalEyes(82, 118, 114, 8, 12));
+    case 'duerme':
+      // Ojos cerrados: arcos curvos hacia abajo
+      return `<path d="M66 104 q16 12 32 0" stroke="${INK}" stroke-width="7" stroke-linecap="round" fill="none"/>` +
+             `<path d="M102 104 q16 12 32 0" stroke="${INK}" stroke-width="7" stroke-linecap="round" fill="none"/>`;
     case 'atento':
     case 'saluda':
     default: {
@@ -82,6 +87,13 @@ function extras(expr: PuntoExpr): string {
       );
     case 'uy':
       return `<path d="M156 56q-9 14 0 20q9-6 0-20z" fill="${CIELO}" stroke="${INK}" stroke-width="2.5" stroke-linejoin="round"/>`;
+    case 'duerme':
+      // Zzz flotando en diagonal
+      return (
+        `<text class="punto-zzz" x="152" y="72" font-family="sans-serif" font-size="18" font-weight="bold" fill="${INK}" opacity="0">Z</text>` +
+        `<text class="punto-zzz" style="animation-delay:.7s" x="164" y="52" font-family="sans-serif" font-size="13" font-weight="bold" fill="${INK}" opacity="0">z</text>` +
+        `<text class="punto-zzz" style="animation-delay:1.4s" x="174" y="36" font-family="sans-serif" font-size="9" font-weight="bold" fill="${INK}" opacity="0">z</text>`
+      );
     default:
       return '';
   }

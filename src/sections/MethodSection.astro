@@ -1,15 +1,20 @@
 ---
 import Eyebrow from '@components/base/Eyebrow.astro';
 import SectionHeading from '@components/base/SectionHeading.astro';
+import { puntoSvg, type PuntoExpr } from '@lib/punto';
 
 const steps = [
-  { num: '01', title: 'Diagnóstico',    deliverable: 'Hoja de ruta priorizada',                      delay: '0',   barColor: '#BEB8AE', barDelay: '0s'   },
-  { num: '02', title: 'Diseño',         deliverable: 'Blueprint de procesos y propuesta tecnológica', delay: '60',  barColor: '#C9A796', barDelay: '0.9s' },
-  { num: '03', title: 'Implementación', deliverable: 'Sistema en producción y documentación',          delay: '120', barColor: '#D4957D', barDelay: '1.8s' },
-  { num: '04', title: 'Integración',    deliverable: 'Flujos integrados y datos unificados',           delay: '180', barColor: '#DF8466', barDelay: '2.7s' },
-  { num: '05', title: 'Adopción',       deliverable: 'Equipo capacitado y protocolo de uso',           delay: '240', barColor: '#E87653', barDelay: '3.6s' },
-  { num: '06', title: 'Optimización',   deliverable: 'Métricas y ciclo de mejora continua',            delay: '300', barColor: '#EE6E43', barDelay: '4.5s' },
+  { num: '01', title: 'Diagnóstico',    deliverable: 'Hoja de ruta priorizada',                      delay: '0',   barColor: '#BEB8AE', barDelay: '0s',   expr: 'escucha'  as PuntoExpr },
+  { num: '02', title: 'Diseño',         deliverable: 'Blueprint de procesos y propuesta tecnológica', delay: '60',  barColor: '#C9A796', barDelay: '0.9s', expr: 'piensa'   as PuntoExpr },
+  { num: '03', title: 'Implementación', deliverable: 'Sistema en producción y documentación',          delay: '120', barColor: '#D4957D', barDelay: '1.8s', expr: 'trabaja'  as PuntoExpr },
+  { num: '04', title: 'Integración',    deliverable: 'Flujos integrados y datos unificados',           delay: '180', barColor: '#DF8466', barDelay: '2.7s', expr: 'trabaja'  as PuntoExpr },
+  { num: '05', title: 'Adopción',       deliverable: 'Equipo capacitado y protocolo de uso',           delay: '240', barColor: '#E87653', barDelay: '3.6s', expr: 'celebra'  as PuntoExpr },
+  { num: '06', title: 'Optimización',   deliverable: 'Métricas y ciclo de mejora continua',            delay: '300', barColor: '#EE6E43', barDelay: '4.5s', expr: 'sorpresa' as PuntoExpr },
 ];
+
+// Todas las expresiones pre-renderizadas
+const exprs: PuntoExpr[] = ['atento', 'saluda', 'escucha', 'piensa', 'trabaja', 'celebra', 'sorpresa', 'uy', 'duerme'];
+const opts = { size: 128, decor: true, alive: true };
 ---
 
 <div class="method-wrap" data-animate>
@@ -26,9 +31,16 @@ const steps = [
           Seis etapas, cada una con un entregable concreto y una decisión antes de pasar a la siguiente.
         </p>
       </div>
-      <p class="method__tagline" aria-hidden="true">
-        El proceso manda.<br /><span class="method__tagline-accent">La herramienta sirve.</span>
-      </p>
+      <div class="method__mascot" aria-hidden="true">
+        <div class="method__mascot-wrap" id="punto-method">
+          {exprs.map((expr) => (
+            <div class="punto-expr" data-expr={expr} set:html={puntoSvg(expr, opts)} />
+          ))}
+        </div>
+        <p class="method__tagline">
+          El proceso manda.<br /><span class="method__tagline-accent">La herramienta sirve.</span>
+        </p>
+      </div>
     </div>
 
     <!-- Progress bars + step cards -->
@@ -70,6 +82,195 @@ const steps = [
   import { track } from '@lib/analytics/track';
   document.querySelector<HTMLAnchorElement>('[data-track-event="method_detail_open"]')
     ?.addEventListener('click', () => track('method_detail_open', { placement: 'home_method' }));
+
+  // ── Punto emociones ────────────────────────────────────
+  const wrap    = document.querySelector<HTMLElement>('#punto-method');
+  const section = document.querySelector<HTMLElement>('.method');
+  const cards   = document.querySelectorAll<HTMLElement>('.method__card');
+  if (wrap && section) {
+
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Helper: cambiar expresión con mini-pop
+  let current = 'atento';
+  function setExpr(expr: string) {
+    if (expr === current) return;
+    const prev = wrap.querySelector<HTMLElement>('.punto-expr.is-active');
+    const next = wrap.querySelector<HTMLElement>(`.punto-expr[data-expr="${expr}"]`);
+    if (!next) return;
+    prev?.classList.remove('is-active', 'is-entering');
+    next.classList.add('is-active', 'is-entering');
+    next.addEventListener('animationend', () => next.classList.remove('is-entering'), { once: true });
+    current = expr;
+  }
+
+  // Inicio: saluda al entrar en viewport, luego vuelve a atento
+  const observer = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      setExpr('atento'); // mostrar desde el inicio
+      setTimeout(() => setExpr('saluda'), 400);
+      setTimeout(() => setExpr('atento'), 2200);
+      observer.disconnect();
+    }
+  }, { threshold: 0.3 });
+  observer.observe(section);
+
+  // Expresión inicial visible
+  const initial = wrap.querySelector<HTMLElement>('.punto-expr[data-expr="atento"]');
+  initial?.classList.add('is-active');
+
+  // Hover en tarjetas → cambiar expresión
+  const exprMap: Record<number, string> = { 0:'escucha', 1:'piensa', 2:'trabaja', 3:'trabaja', 4:'celebra', 5:'sorpresa' };
+  cards.forEach((card, i) => {
+    card.addEventListener('mouseenter', () => setExpr(exprMap[i] ?? 'atento'));
+    card.addEventListener('mouseleave', () => setExpr('atento'));
+  });
+
+  // Hover sobre Punto mismo → celebra + balanceo pendular
+  const mascotWrap = document.querySelector<HTMLElement>('.method__mascot-wrap');
+  let isHoveringPunto = false;
+
+  function getBodyGroup(expr: string) {
+    return wrap.querySelector<SVGGElement>(`.punto-expr[data-expr="${expr}"] .punto-bob, .punto-expr[data-expr="${expr}"] .punto-sway`);
+  }
+
+  function startSway(expr: string) {
+    const g = getBodyGroup(expr);
+    if (!g) return;
+    g.classList.remove('punto-bob');
+    g.classList.add('punto-sway');
+    // punto-sway dura 3 ciclos (2.7s) y para solo; lo reiniciamos al entrar de nuevo
+    // Forzar reinicio de animación con reflow
+    void (g as HTMLElement).offsetWidth;
+  }
+
+  function stopSway(expr: string) {
+    const g = getBodyGroup(expr);
+    if (!g) return;
+    g.classList.remove('punto-sway');
+    g.classList.add('punto-bob');
+    void (g as HTMLElement).offsetWidth;
+  }
+
+  mascotWrap?.addEventListener('mouseenter', () => {
+    isHoveringPunto = true;
+    wakeUp();
+    setExpr('celebra');
+    startSway('celebra');
+  });
+  mascotWrap?.addEventListener('mouseleave', () => {
+    isHoveringPunto = false;
+    stopSway('celebra');
+    setExpr('sorpresa');
+    setTimeout(() => { if (!isHoveringPunto) setExpr('atento'); }, 900);
+  });
+
+  // Hover en CTA → uy
+  const cta = document.querySelector<HTMLElement>('.method__more-link');
+  cta?.addEventListener('mouseenter', () => setExpr('uy'));
+  cta?.addEventListener('mouseleave', () => setExpr('atento'));
+
+  // Idle activo: cada 3-5s muestra un gesto breve mientras no hay interacción con tarjetas
+  // Secuencia narrativa: piensa → escucha → saluda → piensa → trabaja → escucha…
+  const idleSequence = ['piensa', 'escucha', 'saluda', 'piensa', 'trabaja', 'escucha', 'uy', 'piensa'];
+  let idleIndex = 0;
+  let idleTimer: ReturnType<typeof setTimeout>;
+
+  function scheduleIdle() {
+    clearTimeout(idleTimer);
+    // Tiempo aleatorio entre 3 y 5 segundos para que se sienta orgánico
+    const delay = 3000 + Math.random() * 2000;
+    idleTimer = setTimeout(() => {
+      if (current === 'atento' && !isHoveringPunto) {
+        const next = idleSequence[idleIndex % idleSequence.length];
+        idleIndex++;
+        setExpr(next);
+        // Cada gesto dura entre 1.2 y 2s según la expresión
+        const hold = next === 'saluda' ? 2000 : next === 'trabaja' ? 1800 : 1400;
+        setTimeout(() => { if (!isHoveringPunto) setExpr('atento'); }, hold);
+      }
+      scheduleIdle();
+    }, delay);
+  }
+
+  // ── Dormir si no hay interacción por 12s ──────────────
+  let sleepTimer: ReturnType<typeof setTimeout>;
+  let sleeping = false;
+  let sleepSince = 0;
+  const MIN_SLEEP_MS = 3500; // mínimo de sueño antes de poder despertar
+
+  function wakeUp() {
+    if (!sleeping) return;
+    if (Date.now() - sleepSince < MIN_SLEEP_MS) return; // demasiado pronto
+    sleeping = false;
+    setExpr('sorpresa');
+    setTimeout(() => setExpr('atento'), 1200);
+    scheduleSleep();
+  }
+
+  function scheduleSleep() {
+    clearTimeout(sleepTimer);
+    sleepTimer = setTimeout(() => {
+      if (!isHoveringPunto) {
+        sleeping = true;
+        sleepSince = Date.now();
+        setExpr('duerme');
+      }
+    }, 12000);
+  }
+
+  // Solo despierta con movimiento deliberado (no microjitter)
+  let lastX = 0, lastY = 0;
+  section.addEventListener('mousemove', (e) => {
+    const moved = Math.abs(e.clientX - lastX) + Math.abs(e.clientY - lastY);
+    lastX = e.clientX; lastY = e.clientY;
+    if (moved > 6) { // umbral para ignorar micromovimientos
+      wakeUp();
+      scheduleSleep();
+    }
+    if (current === 'atento') scheduleIdle();
+  }, { passive: true });
+
+  // Arrancar timers
+  scheduleIdle();
+  scheduleSleep();
+
+  // Eye-tracking: movemos el SVG completo levemente (evita conflicto con punto-look/punto-blink)
+  if (!reduced) {
+    let rafId = 0;
+    let targetTx = 0, targetTy = 0, currentTx = 0, currentTy = 0;
+
+    function lerp(a: number, b: number, t: number) { return a + (b - a) * t; }
+
+    function animateEyes() {
+      currentTx = lerp(currentTx, targetTx, 0.12);
+      currentTy = lerp(currentTy, targetTy, 0.12);
+      const svg = wrap.querySelector<SVGSVGElement>('.punto-expr.is-active .punto');
+      if (svg) {
+        svg.style.transform = `translate(${currentTx.toFixed(2)}px, ${currentTy.toFixed(2)}px)`;
+      }
+      rafId = requestAnimationFrame(animateEyes);
+    }
+    rafId = requestAnimationFrame(animateEyes);
+
+    section.addEventListener('mousemove', (e) => {
+      const pr   = wrap.getBoundingClientRect();
+      const cx   = pr.left + pr.width / 2;
+      const cy   = pr.top  + pr.height / 2;
+      const dx   = e.clientX - cx;
+      const dy   = e.clientY - cy;
+      const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+      const mag  = Math.min(dist / 100, 1) * 4;
+      targetTx   = (dx / dist) * mag;
+      targetTy   = (dy / dist) * mag;
+    }, { passive: true });
+
+    section.addEventListener('mouseleave', () => {
+      targetTx = 0;
+      targetTy = 0;
+    });
+  } // end eye-tracking
+  } // end if wrap && section
 </script>
 
 <style>
@@ -111,18 +312,70 @@ const steps = [
     color: var(--stone);
   }
 
+  /* ── Mascot + tagline ───────────────────────────────── */
+  .method__mascot {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .method__mascot-wrap {
+    position: relative;
+    width: 128px;
+    height: 128px;
+    overflow: visible;
+  }
+
+  /* Todas las expresiones apiladas, solo la activa visible */
+  .punto-expr {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    /* Solo opacity — sin transform para no chocar con punto-bob/punto-look */
+    transition: opacity 180ms ease;
+  }
+
+  .punto-expr.is-active {
+    opacity: 1;
+  }
+
+  /* Pop suave solo en el SVG, no en el wrapper (evita chocar con punto-bob) */
+  @keyframes puntoFaceIn {
+    0%   { transform: scale(0.82); }
+    65%  { transform: scale(1.06); }
+    100% { transform: scale(1); }
+  }
+
+  .punto-expr.is-entering .punto {
+    animation: puntoFaceIn 260ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  .method__mascot-wrap .punto {
+    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.45));
+  }
+
   .method__tagline {
     margin: 0;
     font-family: var(--font-family-heading);
-    font-size: var(--font-size-heading-lg); /* 24px */
+    font-size: var(--font-size-heading-lg);
     font-weight: var(--font-weight-heading);
     letter-spacing: -0.02em;
     text-align: right;
     line-height: 1.3;
-    flex-shrink: 0;
   }
 
   .method__tagline-accent { color: var(--dark-accent); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .punto-expr { transition: opacity 100ms ease; }
+    .punto-expr.is-entering .punto { animation: none; }
+  }
 
   /* ── Stages wrapper ──────────────────────────────────── */
   .method__stages {
@@ -180,6 +433,59 @@ const steps = [
     display: flex;
     flex-direction: column;
     gap: 10px;
+    position: relative;
+    overflow: visible;
+  }
+
+  /* ── Punto en tarjeta ────────────────────────────────── */
+  .method__card-punto {
+    position: absolute;
+    top: -36px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* Entrada: spring bounce con overshoot */
+  @keyframes puntoIn {
+    0%   { opacity: 0; transform: translateX(-50%) translateY(20px) scale(0.55); }
+    55%  { opacity: 1; transform: translateX(-50%) translateY(-10px) scale(1.18); }
+    72%  { transform: translateX(-50%) translateY(4px) scale(0.93); }
+    86%  { transform: translateX(-50%) translateY(-4px) scale(1.05); }
+    94%  { transform: translateX(-50%) translateY(1px) scale(0.98); }
+    100% { transform: translateX(-50%) translateY(0) scale(1); }
+  }
+
+  /* Idle: pequeño bob una vez asentado */
+  @keyframes puntoBob {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%       { transform: translateX(-50%) translateY(-5px); }
+  }
+
+  .method__card:hover .method__card-punto,
+  .method__card.punto-visible .method__card-punto {
+    animation: puntoIn 500ms cubic-bezier(0.22, 1, 0.36, 1) forwards,
+               puntoBob 2s ease-in-out 520ms infinite;
+  }
+
+  /* Salida rápida al quitar hover */
+  .method__card-punto {
+    transition: opacity 120ms ease;
+  }
+  .method__card:not(:hover):not(.punto-visible) .method__card-punto {
+    opacity: 0;
+    animation: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .method__card:hover .method__card-punto,
+    .method__card.punto-visible .method__card-punto {
+      animation: none;
+      opacity: 1;
+      transform: translateX(-50%) translateY(0) scale(1);
+    }
   }
 
   .method__card-num {
