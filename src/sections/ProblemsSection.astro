@@ -78,7 +78,8 @@ const gear = Array.from({ length: 8 }, (_, i) => {
         <!-- Marcador de escena -->
         <text class="ps-mono ps-counter" x="32" y="44" data-counter></text>
 
-        <!-- Suelo -->
+        <!-- Escenas 01–06 + suelo: un solo grupo que se reubica en vertical -->
+        <g data-props>
         <line x1="32" y1="400" x2="768" y2="400" class="ps-floor" />
 
         <!-- ── 01 · Tecnología que nadie usa ─────────────── -->
@@ -193,14 +194,37 @@ const gear = Array.from({ length: 8 }, (_, i) => {
           <line x1="460" y1="158" x2="460" y2="158" class="ps-bridge" data-s6-bridge="0" />
           <line x1="620" y1="206" x2="620" y2="206" class="ps-bridge" data-s6-bridge="1" />
         </g>
+        </g>
 
         <!-- ── Cierre ───────────────────────────────────── -->
         <g class="ps-scene" data-scene="6">
-          <text x="292" y="206" class="ps-claim">No falla la tecnología.</text>
-          <text x="292" y="252" class="ps-claim ps-claim--accent">Falla lo que ocurre alrededor.</text>
+          <g class="ps-h">
+            <text x="292" y="206" class="ps-claim">No falla la tecnología.</text>
+            <text x="292" y="252" class="ps-claim ps-claim--accent">Falla lo que ocurre alrededor.</text>
+          </g>
+          <g class="ps-v" text-anchor="middle">
+            <text x="225" y="410" class="ps-claim ps-claim--v">No falla</text>
+            <text x="225" y="452" class="ps-claim ps-claim--v">la tecnología.</text>
+            <text x="225" y="512" class="ps-claim ps-claim--v ps-claim--accent">Falla lo que ocurre</text>
+            <text x="225" y="554" class="ps-claim ps-claim--v ps-claim--accent">alrededor.</text>
+          </g>
           <g data-s7-arrow transform="translate(296 300)">
-            <text x="38" y="5" class="ps-mono ps-mono--sm">El Método empieza aquí</text>
+            <text x="38" y="5" class="ps-mono ps-mono--sm" data-s7-arrow-text>El Método empieza aquí</text>
             <path d="M0 -6l10 10 10-10" class="ps-chevron" transform="translate(4 0)" />
+          </g>
+        </g>
+
+        <!-- Solo en el reel para redes (?ps-render=reel): título, subtítulos y marca -->
+        <g class="ps-social" aria-hidden="true">
+          <text x="225" y="58" text-anchor="middle" class="ps-social__eyebrow">EL PROBLEMA DE FONDO</text>
+          <text x="225" y="100" text-anchor="middle" class="ps-social__title">¿Le suena familiar?</text>
+          <g data-social-cap>
+            <text x="225" y="694" text-anchor="middle" class="ps-social__num" data-cap-num></text>
+            <text x="225" y="726" text-anchor="middle" class="ps-social__cap" data-cap-title></text>
+            <text x="225" y="754" text-anchor="middle" class="ps-social__body" data-cap-body></text>
+          </g>
+          <g data-social-brand>
+            <text x="225" y="742" text-anchor="middle" class="ps-social__brand">interforma.digital</text>
           </g>
         </g>
 
@@ -213,6 +237,10 @@ const gear = Array.from({ length: 8 }, (_, i) => {
           <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" class="ps-ico-pause"><rect x="2" y="1" width="3.5" height="12" rx="1"/><rect x="8.5" y="1" width="3.5" height="12" rx="1"/></svg>
           <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" class="ps-ico-play"><path d="M3 1.5v11l9-5.5z"/></svg>
           <span data-toggle-label>Pausar</span>
+        </button>
+        <button type="button" class="ps-toggle" data-sound aria-pressed="false">
+          <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1 5h3l4-3v10L4 9H1z"/><path class="ps-wave" d="M10 4.5q2 2.5 0 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span data-sound-label>Activar sonido</span>
         </button>
       </figcaption>
     </figure>
@@ -278,7 +306,9 @@ const gear = Array.from({ length: 8 }, (_, i) => {
   .ps-svg { display: block; width: 100%; height: auto; }
 
   .ps-controls { position: absolute; right: 16px; bottom: 14px; display: none; }
-  .is-ready .ps-controls { display: block; }
+  .is-ready .ps-controls { display: flex; gap: 8px; }
+  .ps-wave { opacity: .35; }
+  .ps-toggle[data-sound][aria-pressed='true'] .ps-wave { opacity: 1; }
   .ps-toggle {
     display: inline-flex; align-items: center; gap: 8px;
     padding: 8px 14px;
@@ -336,6 +366,21 @@ const gear = Array.from({ length: 8 }, (_, i) => {
   .ps-datum { fill: var(--brand-500); }
   .ps-bridge { stroke: var(--ink); stroke-width: 5; stroke-dasharray: 7 6; stroke-linecap: round; }
   .ps-claim { font: 500 31px var(--font-family-heading); fill: var(--ink); letter-spacing: -.02em; }
+  .ps-claim--v { font-size: 36px; }
+
+  /* Variantes de composición: horizontal (escritorio) y vertical (móvil y reel) */
+  .ps-v, .ps-social { display: none; }
+  .ps-svg.is-v .ps-v { display: inline; }
+  .ps-svg.is-v .ps-h { display: none; }
+  .ps-svg.is-social .ps-social { display: inline; }
+  .ps-svg.is-social .ps-counter { display: none; }
+  .ps-svg.is-social :global(.ps-layer) { transition: none; }
+  .ps-social__eyebrow { font: 500 13px var(--font-family-ui); letter-spacing: .1em; fill: var(--primary-500); }
+  .ps-social__title { font: 500 38px var(--font-family-heading); letter-spacing: -.02em; fill: var(--ink); }
+  .ps-social__num { font: 500 14px var(--font-family-mono); fill: var(--primary-500); }
+  .ps-social__cap { font: 500 25px var(--font-family-heading); letter-spacing: -.01em; fill: var(--ink); }
+  .ps-social__body { font: 400 15px var(--font-family-ui); fill: var(--gray-700); }
+  .ps-social__brand { font: 600 20px var(--font-family-ui); fill: var(--ink); letter-spacing: .01em; }
   .ps-claim--accent { fill: var(--brand-800); }
   /* Las capas de Punto llegan por set:html: necesitan :global */
   :global(.ps-layer) { opacity: 0; transition: opacity .18s ease; }
@@ -407,7 +452,7 @@ const gear = Array.from({ length: 8 }, (_, i) => {
     .ps-step { padding: 12px 14px 14px; }
     .ps-step__title { font-size: 16px; }
     .ps-counter { display: none; }
-    .ps-controls { right: 10px; bottom: 8px; }
+    .ps-controls { right: auto; left: 10px; top: 10px; bottom: auto; }
     .ps-toggle { padding: 8px; }
     .ps-toggle span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   }
@@ -425,6 +470,19 @@ const gear = Array.from({ length: 8 }, (_, i) => {
   // Duración de cada escena en segundos: 6 problemas + cierre.
   const DUR = [4.6, 4.6, 5.0, 4.4, 4.6, 4.8, 5.2];
   const TOTAL = DUR.reduce((a, b) => a + b, 0);
+
+  // Efectos de sonido: [escena, progreso, efecto]. design/motion/audio_problemas.py
+  // usa esta misma lista para el reel; si cambia aquí, cambia allá.
+  type Sfx = 'thump' | 'pop' | 'swish' | 'tick' | 'bonk' | 'snap' | 'chime';
+  const EVENTS: [number, number, Sfx][] = [
+    [0, 0.24, 'thump'], [0, 0.5, 'pop'],
+    [1, 0.04, 'swish'], [1, 0.42, 'swish'], [1, 0.55, 'pop'],
+    [2, 0.1, 'tick'], [2, 0.18, 'tick'], [2, 0.26, 'tick'], [2, 0.34, 'pop'], [2, 0.58, 'tick'], [2, 0.68, 'tick'], [2, 0.78, 'tick'],
+    ...[1, 2, 3, 4, 5, 6, 7, 8].map((k): [number, number, Sfx] => [3, 0.05 + (k * 0.8) / 9, 'tick']),
+    [4, 0.28, 'bonk'], [4, 0.31, 'pop'], [4, 0.66, 'bonk'],
+    [5, 0.4, 'snap'], [5, 0.76, 'snap'], [5, 0.77, 'pop'],
+    [6, 0.1, 'chime'],
+  ];
   const START = DUR.map((_, i) => DUR.slice(0, i).reduce((a, b) => a + b, 0));
 
   const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));
@@ -451,6 +509,87 @@ const gear = Array.from({ length: 8 }, (_, i) => {
     const toggle = q<HTMLButtonElement>('[data-toggle]');
     const toggleLabel = q<HTMLSpanElement>('[data-toggle-label]');
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const svg = q<SVGSVGElement>('.ps-svg');
+    const props = q<SVGGElement>('[data-props]');
+    const social = new URLSearchParams(location.search).get('ps-render') === 'reel';
+    const capNum = q<SVGTextElement>('[data-cap-num]');
+    const capTitle = q<SVGTextElement>('[data-cap-title]');
+    const capBody = q<SVGTextElement>('[data-cap-body]');
+    const capGroup = q<SVGGElement>('[data-social-cap]');
+    const brand = q<SVGGElement>('[data-social-brand]');
+    const titles = steps.map((st) => st.querySelector('.ps-step__btn span:last-child')!.textContent!.trim());
+    const bodies = steps.map((st) => st.querySelector('.ps-step__body')!.textContent!.trim());
+
+    // ── Composición: horizontal en escritorio, vertical en móvil y en el reel ─
+    const LAYOUTS = {
+      h: { vb: '0 0 800 460', props: '', punto: [143, 253, 1], arrow: [296, 300] },
+      v: { vb: '0 40 450 640', props: 'translate(-265.5 249.5) scale(0.9)', punto: [225, 200, 1.15], arrow: [112, 610] },
+      reel: { vb: '0 0 450 800', props: 'translate(-265.5 268) scale(0.9)', punto: [225, 228, 1.12], arrow: [112, 610] },
+    };
+    const mqV = window.matchMedia('(max-width: 640px)');
+    let L = LAYOUTS.h;
+    function applyLayout() {
+      L = social ? LAYOUTS.reel : mqV.matches ? LAYOUTS.v : LAYOUTS.h;
+      svg.setAttribute('viewBox', L.vb);
+      svg.classList.toggle('is-v', L !== LAYOUTS.h);
+      svg.classList.toggle('is-social', social);
+      props.setAttribute('transform', L.props);
+    }
+    applyLayout();
+    mqV.addEventListener('change', () => { applyLayout(); render(performance.now() / 1000); });
+
+    // ── Sonido (apagado por defecto; se activa con el botón) ─
+    let audio: AudioContext | null = null;
+    let master: GainNode | null = null;
+    let soundOn = false;
+    function tone(f1: number, f2: number, d: number, type: OscillatorType, vol: number, delay = 0) {
+      if (!audio || !master) return;
+      const t0 = audio.currentTime + delay;
+      const o = audio.createOscillator();
+      const g = audio.createGain();
+      o.type = type;
+      o.frequency.setValueAtTime(f1, t0);
+      o.frequency.exponentialRampToValueAtTime(f2, t0 + d);
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(vol, t0 + 0.008);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + d);
+      o.connect(g).connect(master);
+      o.start(t0);
+      o.stop(t0 + d + 0.02);
+    }
+    function swish() {
+      if (!audio || !master) return;
+      const d = 0.35;
+      const buf = audio.createBuffer(1, Math.floor(audio.sampleRate * d), audio.sampleRate);
+      const ch = buf.getChannelData(0);
+      for (let i = 0; i < ch.length; i++) ch[i] = (Math.random() * 2 - 1) * Math.sin((Math.PI * i) / ch.length) ** 2;
+      const src = audio.createBufferSource();
+      const bp = audio.createBiquadFilter();
+      const g = audio.createGain();
+      src.buffer = buf;
+      bp.type = 'bandpass';
+      bp.frequency.value = 1800;
+      g.gain.value = 0.25;
+      src.connect(bp).connect(g).connect(master);
+      src.start();
+    }
+    const SFX: Record<Sfx, () => void> = {
+      thump: () => tone(150, 55, 0.3, 'sine', 0.9),
+      pop: () => tone(520, 880, 0.12, 'sine', 0.45),
+      swish,
+      tick: () => tone(2400, 1800, 0.035, 'triangle', 0.12),
+      bonk: () => tone(240, 150, 0.16, 'triangle', 0.6),
+      snap: () => tone(1100, 280, 0.09, 'square', 0.12),
+      chime: () => { tone(784, 780, 0.9, 'sine', 0.3); tone(1175, 1170, 1.1, 'sine', 0.2, 0.12); },
+    };
+    const EVENT_T = EVENTS.map(([sc, pp, fx]) => [START[sc] + pp * DUR[sc], fx] as const);
+    function playBetween(a: number, b: number) {
+      if (!soundOn) return;
+      for (const [et, fx] of EVENT_T) {
+        const hit = a <= b ? et > a && et <= b : et > a || et <= b; // cruza el inicio del loop
+        if (hit) SFX[fx]();
+      }
+    }
 
     // ── Punto ───────────────────────────────────────────────
     let currentExpr = '';
@@ -464,7 +603,8 @@ const gear = Array.from({ length: 8 }, (_, i) => {
       // Pequeño rebote al cambiar de expresión (0,3 s).
       const k = reduced ? 1 : clamp((now - exprChangedAt) / 0.3);
       const s = 1 + 0.07 * Math.sin(Math.PI * k);
-      punto.setAttribute('transform', `translate(${x + 143} ${y + 253}) scale(${s}) translate(-143 -253)`);
+      const [px, py, ps] = L.punto;
+      punto.setAttribute('transform', `translate(${x + px} ${y + py}) scale(${ps * s}) translate(-143 -253)`);
     }
 
     // ── Escenas: cada una recibe p (0 → 1) y el tiempo global ─
@@ -583,7 +723,7 @@ const gear = Array.from({ length: 8 }, (_, i) => {
       (p, now) => {
         s7.arrow.style.opacity = String(seg(p, 0.35, 0.5));
         const bob = reduced ? 0 : Math.sin(now * 4) * 4;
-        s7.arrow.setAttribute('transform', `translate(296 ${300 + bob})`);
+        s7.arrow.setAttribute('transform', `translate(${L.arrow[0]} ${L.arrow[1] + bob})`);
         setPunto('atento', 0, 0, now);
       },
     ];
@@ -621,13 +761,35 @@ const gear = Array.from({ length: 8 }, (_, i) => {
         }
       }
       bars.forEach((b, k) => (b.style.transform = `scaleX(${k === i ? p : 0})`));
+
+      // Reel: subtítulo de la escena y marca en el cierre.
+      if (social) {
+        const fade = Math.min(seg(p, 0.02, 0.1), 1 - seg(p, 0.92, 0.99));
+        if (i < 6) {
+          capNum.textContent = `${String(i + 1).padStart(2, '0')} / 06`;
+          capTitle.textContent = titles[i];
+          // Ajuste a líneas de ~42 caracteres.
+          const lines: string[] = [''];
+          for (const w of bodies[i].split(' ')) {
+            if ((lines[lines.length - 1] + ' ' + w).trim().length > 42) lines.push(w);
+            else lines[lines.length - 1] = (lines[lines.length - 1] + ' ' + w).trim();
+          }
+          capBody.innerHTML = lines.map((ln, k) => `<tspan x="225" dy="${k ? 21 : 0}">${ln}</tspan>`).join('');
+        }
+        capGroup.style.opacity = i < 6 ? String(fade) : '0';
+        brand.style.opacity = i === 6 ? String(seg(p, 0.45, 0.6)) : '0';
+      }
     }
 
     function frame(ms: number) {
       const now = ms / 1000;
       const dt = last ? Math.min(0.1, now - last) : 0;
       last = now;
-      if (playing && visible) t = (t + dt) % TOTAL;
+      if (playing && visible) {
+        const prev = t;
+        t = (t + dt) % TOTAL;
+        playBetween(prev, t);
+      }
       render(now);
       if (visible) requestAnimationFrame(frame);
       else last = 0;
@@ -668,6 +830,35 @@ const gear = Array.from({ length: 8 }, (_, i) => {
       { threshold: 0.35 },
     );
     io.observe(root);
+
+    // Sonido: el navegador solo permite audio tras un gesto del usuario.
+    const soundBtn = q<HTMLButtonElement>('[data-sound]');
+    const soundLabel = q<HTMLSpanElement>('[data-sound-label]');
+    soundBtn.addEventListener('click', async () => {
+      soundOn = !soundOn;
+      if (soundOn && !audio) {
+        audio = new AudioContext();
+        master = audio.createGain();
+        master.gain.value = 0.35;
+        master.connect(audio.destination);
+      }
+      if (audio) await (soundOn ? audio.resume() : audio.suspend());
+      if (soundOn) SFX.pop();
+      soundBtn.setAttribute('aria-pressed', String(soundOn));
+      soundLabel.textContent = soundOn ? 'Silenciar' : 'Activar sonido';
+      track('problems_sound', { state: soundOn ? 'on' : 'off' });
+    });
+
+    // Modo reel (?ps-render=reel): el renderizador fija el tiempo cuadro a cuadro.
+    if (social) {
+      setPlaying(false);
+      (window as unknown as { psRender: (time: number) => void; psTotal: number }).psRender = (time: number) => {
+        t = time % TOTAL;
+        render(time);
+      };
+      (window as unknown as { psTotal: number }).psTotal = TOTAL;
+      q<SVGTextElement>('[data-s7-arrow-text]').textContent = 'Conozca el Método Interforma';
+    }
 
     if (reduced) setPlaying(false);
     root.classList.add('is-ready');

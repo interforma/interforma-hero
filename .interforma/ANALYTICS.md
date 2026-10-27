@@ -101,6 +101,7 @@ Comportamiento por entorno:
 | `problems_scene_view` | Primera vez que se ve cada escena en la visita | `scene` (`1`–`6` \| `'cierre'`) |
 | `problems_chip_click` | Clic en un problema de la lista | `scene` |
 | `problems_toggle` | Pausar o reanudar | `state` (`pause` \| `play`) |
+| `problems_sound` | Activar o silenciar el sonido (apagado por defecto) | `state` (`on` \| `off`) |
 
 **KPI sugerido:** porcentaje de visitas que llegan a `scene: 'cierre'` (vieron la historia completa).
 
