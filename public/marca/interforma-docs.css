@@ -1,0 +1,83 @@
+/*
+ * interforma-docs.css — Identidad Interforma 2026 para documentos HTML
+ * sueltos (informes, propuestas, diagramas) que viven en public/ y no
+ * pasan por el layout de Astro.
+ *
+ * Uso:  <link rel="stylesheet" href="/marca/interforma-docs.css">
+ * Valores: mismos que src/styles/tokens.css (bloque IDENTIDAD 2026).
+ * Reglas: DESIGN.md. Si cambia la marca, actualizar los dos archivos.
+ */
+
+@font-face {
+  font-family: 'Outfit Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('/fonts/marca/outfit-latin-wght-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Manrope Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  src: url('/fonts/marca/manrope-latin-wght-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('/fonts/marca/jetbrains-mono-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url('/fonts/marca/jetbrains-mono-latin-500-normal.woff2') format('woff2');
+}
+
+:root {
+  /* Marca */
+  --if-energia:     #EE6E43;  /* superficies y acentos; texto encima siempre Umbra */
+  --if-energia-400: #F2906D;
+  --if-energia-600: #D9582E;  /* texto naranja ≥ 24 px sobre claro */
+  --if-energia-800: #9A3D1A;  /* texto o foco naranja sobre claro (5,4:1) */
+  --if-energia-900: #7A2F13;
+  --if-energia-50:  #FBE6DC;
+  --if-energia-100: #F7CDBB;
+  --if-umbra:       #281F18;  /* texto principal y fondos oscuros */
+  --if-papel:       #F2F1EE;  /* superficie */
+  --if-piedra-clara:#E4E3DF;  /* fondo de página */
+  --if-piedra:      #BEB8AE;
+  --if-piedra-700:  #5C564E;  /* texto secundario */
+  --if-piedra-500:  #8F887E;  /* texto terciario */
+  --if-borde:       #D0CCC4;
+  --if-cielo:       #CCE2ED;
+
+  /* Semánticos (estados) */
+  --if-ok:       #18794E;  --if-ok-50:     #EFFAF6;
+  --if-alerta:   #A35200;  --if-alerta-50: #FFF8ED;
+  --if-error:    #C53030;  --if-error-50:  #FFF0F0;
+
+  /* Tipografía */
+  --if-font-heading: 'Outfit Variable', 'Outfit', system-ui, sans-serif;
+  --if-font-body:    'Manrope Variable', 'Manrope', system-ui, -apple-system, sans-serif;
+  --if-font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+}
+
+::selection { background: var(--if-energia-100); color: var(--if-umbra); }
+
+:focus-visible { outline: 2px solid var(--if-energia-800); outline-offset: 2px; }
+
+/* Firma de marca para el pie o la cabecera de un documento */
+.if-firma {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--if-font-body);
+  font-weight: 600;
+  color: var(--if-umbra);
+  text-decoration: none;
+}
+.if-firma img { width: 20px; height: 20px; }

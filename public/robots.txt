@@ -2,4 +2,9 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
+# Los documentos de clientes (/informes, /propuestas, /clientes,
+# /agente-medic-home) no se bloquean aquí a propósito: llevan
+# noindex (meta y header X-Robots-Tag) y Google necesita poder
+# leerlo para sacarlos del índice. Ver ADR-011.
+
 Sitemap: https://interforma.digital/sitemap-index.xml

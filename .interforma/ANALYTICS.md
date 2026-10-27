@@ -62,30 +62,53 @@ Comportamiento por entorno:
 
 ## Catálogo de eventos
 
+> **Revisado contra el código el 2026-10-26.** El catálogo anterior describía eventos de los componentes legados (`hero_cta`, `click_secondary_cta`, `menu_open`, `contact_start`, `contact_whatsapp`, `click_email`), eliminados en el PR #4. Hoy ninguno se envía.
+
 ### Navegación
 
 | Evento | Trigger | Props |
 |--------|---------|-------|
-| `nav_click` | Clic en link de nav (desktop o mobile) | `destination`, `placement` (`header_desktop` \| `mobile_menu`), `event` |
-| `menu_open` | Apertura del menú mobile | `placement: 'header'` |
-| `click_secondary_cta` | Clic en "Ver el método" del Hero | `destination: '#metodo'`, `placement: 'hero'` |
+| `nav_click` | Clic en un link de la nav (desktop o móvil) | `destination`, `placement` (`header_desktop` \| `mobile_menu`) |
+| `nav_click` | «Ver el método →» del Hero | `destination: '#metodo'`, `placement: 'hero'` |
+| `nav_click` | «Cómo funciona» del hero de `/agentes` | `destination: '#como'`, `placement: 'agentes_hero'` |
+| `agents_landing_open` | «Ver Interforma Agents» en `/#agentes` | `placement: 'home_agents'` |
+| `method_detail_open` | «Ver el método en detalle» en `/#metodo` | `placement: 'home_method'` |
+| `method_detail_back` | «← Volver al inicio» en `/metodo` | `page: 'metodo'` |
+| `method_diagram_fullscreen` | «Abrir en pantalla completa» en `/metodo` | `page: 'metodo'` |
+| `agents_flow_open` | «Ver el flujo en detalle» en `/#agentes` | `placement: 'home_agents'` |
+| `agents_flow_back` | «← Volver al inicio» en `/agentes/flujo` | `page: 'agentes_flujo'` |
+| `agents_flow_fullscreen` | «Abrir en pantalla completa» en `/agentes/flujo` | `page: 'agentes_flujo'` |
+| `agents_flow_to_landing` | «Ver Interforma Agents» en `/agentes/flujo` | `page: 'agentes_flujo'` |
 
 ### WhatsApp
 
 | Evento | Trigger | Props |
 |--------|---------|-------|
-| `hero_cta` | Clic en CTA principal del Hero | `placement: 'hero'`, `label` |
-| `click_whatsapp` | Clic en WhatsApp desde Header | `placement: 'header'` |
-| `click_whatsapp` | Clic en WhatsApp desde CTA Section | `placement: 'cta_section'` |
-| `click_whatsapp` | Clic en botón flotante | `placement: 'float'` |
-| `contact_whatsapp` | Clic en WhatsApp desde sección Contacto | `placement: 'contact'` |
+| `click_whatsapp` | Botón de WhatsApp del Header | `placement: 'header'` |
+| `click_whatsapp` | CTA principal del Hero | `placement: 'hero'` |
+| `click_whatsapp` | CTA final del home | `placement: 'cta_section'` |
+| `click_whatsapp` | `WhatsAppButton` (CTA de `/metodo` y `/agentes/flujo`) | `placement` (`metodo_cta` \| `agentes_flujo_cta`), `page_path` |
+| `click_whatsapp` | «Hablar con ventas» en `/agentes` | `placement: 'agentes_cta'`, `page: 'agentes'` |
+| `click_whatsapp` | Botón flotante | `placement: 'float'` |
+| `click_whatsapp` | Botón dentro del saludo de Punto | `placement: 'punto_bubble'` |
+| `punto_bubble_view` | Aparece el saludo «¿Conversamos?» (una vez por sesión, a los 6 s) | `path` |
+| `punto_bubble_dismiss` | El visitante cierra el saludo (× o Escape) | — |
 
-### Contacto
+### Interforma Agents (conversión)
 
 | Evento | Trigger | Props |
 |--------|---------|-------|
-| `contact_start` | Sección Contacto llega al viewport (30%) | `page_path` |
-| `click_email` | Clic en link de email | `placement: 'contact'` |
+| `agents_pilot_cta` | «Agendar piloto» del hero de `/agentes` (lleva a `#empezar`) | `placement: 'agentes_hero'`, `page: 'agentes'` |
+| `agents_pilot_cta` | «Agendar piloto» del CTA final (abre la agenda de Cal.com) | `placement: 'agentes_cta_agenda'`, `page: 'agentes'` |
+
+**KPI sugerido:** `agents_pilot_cta` con `placement: 'agentes_cta_agenda'` + `click_whatsapp` con `placement: 'agentes_cta'`, dividido por las visitas a `/agentes`.
+
+### Otras herramientas
+
+| Herramienta | Dónde | Nota |
+|---|---|---|
+| Microsoft Clarity | `Base.astro` | Heatmaps y grabaciones; ID con fallback |
+| Metricool | `Base.astro` (PR #13) | Píxel de seguimiento para redes; ID fijo en el código |
 
 ### Scroll
 
