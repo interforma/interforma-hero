@@ -84,10 +84,12 @@ const opts = { size: 128, decor: true, alive: true };
     ?.addEventListener('click', () => track('method_detail_open', { placement: 'home_method' }));
 
   // ── Punto emociones ────────────────────────────────────
-  const wrap    = document.querySelector<HTMLElement>('#punto-method');
+  const wrapEl  = document.querySelector<HTMLElement>('#punto-method');
   const section = document.querySelector<HTMLElement>('.method');
   const cards   = document.querySelectorAll<HTMLElement>('.method__card');
-  if (wrap && section) {
+  if (wrapEl && section) {
+  // Referencia no nula para las funciones internas (TS no conserva el narrowing).
+  const wrap: HTMLElement = wrapEl;
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -141,7 +143,7 @@ const opts = { size: 128, decor: true, alive: true };
     g.classList.add('punto-sway');
     // punto-sway dura 3 ciclos (2.7s) y para solo; lo reiniciamos al entrar de nuevo
     // Forzar reinicio de animación con reflow
-    void (g as HTMLElement).offsetWidth;
+    void g.getBoundingClientRect(); // fuerza reflow para reiniciar la animación
   }
 
   function stopSway(expr: string) {
@@ -149,7 +151,7 @@ const opts = { size: 128, decor: true, alive: true };
     if (!g) return;
     g.classList.remove('punto-sway');
     g.classList.add('punto-bob');
-    void (g as HTMLElement).offsetWidth;
+    void g.getBoundingClientRect(); // fuerza reflow para reiniciar la animación
   }
 
   mascotWrap?.addEventListener('mouseenter', () => {

@@ -94,6 +94,17 @@ Comportamiento por entorno:
 | `punto_bubble_view` | Aparece el saludo «¿Conversamos?» (una vez por sesión, a los 6 s) | `path` |
 | `punto_bubble_dismiss` | El visitante cierra el saludo (× o Escape) | — |
 
+### Sección «¿Le suena familiar?» (animación de Punto)
+
+| Evento | Trigger | Props |
+|--------|---------|-------|
+| `problems_scene_view` | Primera vez que se ve cada escena en la visita | `scene` (`1`–`6` \| `'cierre'`) |
+| `problems_chip_click` | Clic en un problema de la lista | `scene` |
+| `problems_toggle` | Pausar o reanudar | `state` (`pause` \| `play`) |
+| `problems_sound` | Activar o silenciar el sonido (apagado por defecto) | `state` (`on` \| `off`) |
+
+**KPI sugerido:** porcentaje de visitas que llegan a `scene: 'cierre'` (vieron la historia completa).
+
 ### Interforma Agents (conversión)
 
 | Evento | Trigger | Props |

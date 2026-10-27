@@ -17,6 +17,8 @@ Todo se dibuja con código: `engine.html` contiene un motor SVG que dibuja cualq
 | `audio_reel03.py` | Cap. 03: rasgueo tipo ukelele, silbido y palmas a 104 bpm (18 s) |
 | `audio_reel05.py` | Cap. 05: latido tenso que se vuelve bossa a 112 bpm (23 s) |
 | `audio_rosa01.py` | El barrio de Punto · Ep. 01: acordeón de noche que se vuelve cumbia suave a 100 bpm (28 s) |
+| `audio_problemas.py` | «¿Le suena familiar?»: lo-fi en re menor a 96 bpm que resuelve a fa mayor en el cierre (34,7 s); efectos con la misma lista de eventos que el sitio |
+| `render_problemas.mjs` | Renderiza el reel «¿Le suena familiar?» desde el componente real del sitio (ver abajo) |
 | `stickers.py` | Genera los 6 stickers WebP de WhatsApp |
 | `fonts/` | Outfit, Manrope y JetBrains Mono (licencia OFL), versionadas para que cualquier sesión pueda renderizar |
 | `../../scripts/isotipo-gif.py` | GIF del isotipo para la firma de correo |
@@ -46,6 +48,26 @@ Desde octubre de 2026 las piezas viven en «El barrio de Punto»: fondos con pro
 - El gato del barrio (personaje fijo): `catLying` (duerme y despierta), `catSit`, `catWalk`. El perro se descartó en la revisión del 26/10.
 - Degradados y recortes: `lgrad`, `rgrad`, `clip` (llenan `DEFS`; cada función de pieza parte con `DEFS='';GID=0` y termina con `<defs>${DEFS}</defs>`).
 - Paleta de naturaleza, siempre apagada para no competir con Energía: `SAGE`, `SAGE2`, `SAGE_L`, `GROUND_L`, `HILL_C`, `WOOD`, y de noche `NIGHT1..3`.
+
+### «¿Le suena familiar?» (sitio + reel)
+
+Esta pieza no vive en `engine.html`: es el componente `src/sections/ProblemsSection.astro`, el mismo que se ve en el home. Así el sitio y el reel nunca se desfasan.
+
+- En escritorio se ve horizontal (800×460); en móvil, vertical (450×640).
+- Con `?ps-render=reel` pasa a 9:16 con título, subtítulo de cada problema y la marca al cierre, y expone `window.psRender(t)` para dibujar cualquier instante.
+- Duración de las escenas: `DUR` del componente. Efectos de sonido: `EVENTS` del componente, repetidos en `audio_problemas.py`. Si cambia uno, se cambia el otro.
+
+```bash
+pnpm build && python3 -m http.server 4321 --directory dist &   # sitio local
+cd design/motion
+npm i playwright && npx playwright install chromium            # una vez
+node render_problemas.mjs http://localhost:4321 sheet out/revision   # 14 cuadros para revisar
+node render_problemas.mjs http://localhost:4321 frames out/problemas
+python3 audio_problemas.py
+ffmpeg -y -i audio_problemas.wav -af loudnorm=I=-14:TP=-1.5:LRA=11 audio-norm.wav
+ffmpeg -y -framerate 30 -i out/problemas/f%05d.jpg -i audio-norm.wav -map 0:v -map 1:a \
+  -c:v libx264 -crf 18 -preset veryfast -pix_fmt yuv420p -c:a aac -b:a 192k -shortest -movflags +faststart le-suena-familiar.mp4
+```
 
 ## Preparar (una vez)
 
