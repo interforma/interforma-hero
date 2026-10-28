@@ -102,6 +102,15 @@ Antes de renderizar todo, revisa con una hoja de contacto: `VH=1350 python3 rend
 
 Copia la función `cap04` en `engine.html` y cambia textos, expresiones de Punto y tiempos. Mantén la estructura de la serie: portada en Umbra con chip «CAP. NN · PILAR» → barrido Energía → tres viñetas numeradas → barrido Umbra → cierre con la idea fuerza y el adelanto del capítulo siguiente. Si cambian los tiempos, ajusta los efectos en una copia de `audio_cap04.py`.
 
+## Regla de producción
+
+Toda animación nueva para publicar se entrega en su ficha del Calendario RRSS de Notion, con el video incrustado como bloque de video, el copy de Instagram (Copy y Copy completo) y un copy de LinkedIn propio, y respeta la línea gráfica de las animaciones. La lista completa está en la página de Notion «Reglas de producción · Animaciones de Punto», dentro de *Estrategia digital y RRSS*. En resumen:
+
+- Reel 1080×1920, chip de la serie arriba a la izquierda, gancho en los primeros 2–3 s, cierre en Umbra con idea fuerza, pregunta e interforma.digital.
+- Escenarios del barrio en capas (nada de fondos planos), el gato en cada pieza, Punto con una emoción clara por escena.
+- Música original distinta en cada pieza, efectos sincronizados, −14 LUFS.
+- En las notas de Notion no se escriben nombres de archivo con extensión: Notion convierte «.mp4» en un enlace roto.
+
 ## Flujo semanal
 
 Cada domingo se producen las cinco publicaciones de lunes a viernes a partir del calendario de RRSS en Notion. Los videos y portadas quedan en Google Drive y la ficha de Notion pasa a «Revisión». Sergio revisa, pide cambios si hace falta y publica. Todas las piezas son reels 9:16 con música original y sonido ambiente cuando hay escenario.
