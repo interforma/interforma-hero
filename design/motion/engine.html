@@ -1360,6 +1360,117 @@ window.rosa01=(t)=>{DEFS='';GID=0;
     o+=tx('El barrio de Punto · Ep. 01',64,1760,{size:26,font:'JBM',weight:400,fill:'#BEB8AE',op:appear(t,25.0)})+tx('interforma.digital',64,1812,{size:26,font:'JBM',weight:400,fill:E,op:appear(t,25.3)});
   }
   svg.innerHTML=`<defs>${DEFS}</defs>`+o;};
+/* ---------- Cap. 04 v2 · ¿Qué es un agente de IA? «Hoy llega alguien nuevo al equipo» (9:16, 27 s) ----------
+   La cámara recorre la oficina por estaciones; el exterior de las ventanas se mueve al 40 % (profundidad). */
+const A4_ST=[540,1620,2700,3780], A4_T=[5.8,11.8,17.6], A4_P=[[600,1400,110],[1400,1400,100],[2720,1400,100],[3470,1400,100]], FLOOR4=1500;
+function a4seg(t){let i=0;for(let k=0;k<3;k++)if(t>=A4_T[k])i=k+1;return i;}
+function a4cam(t){let x=0;for(let k=0;k<3;k++){const p=eio(prog(t,A4_T[k]-.9,A4_T[k]));x=lerp(x,A4_ST[k+1]-540,p);}return x;}
+function a4punto(t){let [x,y,r]=A4_P[0];let hop=0,moving=false;
+  for(let k=0;k<3;k++){const p=prog(t,A4_T[k]-.9,A4_T[k]);if(p>0){const e=eio(p);x=lerp(A4_P[k][0],A4_P[k+1][0],e);r=lerp(A4_P[k][2],A4_P[k+1][2],e);if(p<1){hop=Math.abs(Math.sin(Math.PI*p*3))*70;moving=true;}}}
+  if(t<1.6) {x=600;r=0;}
+  else if(t<2.5){const e=eout(prog(t,1.6,2.5));x=lerp(540,600,e);r=lerp(50,110,e);hop=Math.sin(Math.PI*prog(t,1.6,2.5))*60;}
+  return {x,y:FLOOR4-r,r,hop,moving};}
+function exterior4(t){let o=`<rect x="-300" y="300" width="5000" height="1300" fill="${lgrad([[0,CIELO],[.7,'#F4E6D8'],[1,'#F2DCC6']])}"/>`;
+  o+=`<circle cx="1500" cy="640" r="70" fill="${E}" opacity=".9"/><circle cx="1500" cy="640" r="170" fill="${rgrad([[0,E,.3],[1,E,0]])}"/>`;
+  o+=hill(860,26,140,1,HILL_C,-300,4600,1600)+hill(930,20,100,3,SAGE_L,-300,4600,1600);
+  [80,420,760,1180,1560,1900,2300,2650,3050].forEach((x,i)=>{o+=i%3===1?house(x,960,110,80,i%2?E800:INK,0):tree(x,975,.9+.2*(i%2));});
+  o+=hill(1000,14,70,5,SAGE,-300,4600,1600)+`<g transform="translate(${-t*30} 0)">${birds(t,620)}</g>`;return o;}
+window.cap04v2=(t)=>{DEFS='';GID=0;
+  const svg=document.getElementById('stage');svg.setAttribute('width',CW);svg.setAttribute('height',CH);svg.setAttribute('viewBox',`0 0 ${CW} ${CH}`);
+  const cam=a4cam(t),seg=a4seg(t);let o='';
+  if(t<23.0){
+    const WIN=[[780,560,300,420],[1300,540,640,460],[2290,560,320,380],[3290,540,360,460]],DOOR=[400,1000,280,500];
+    const doorOpen=eio(prog(t,.9,1.5));
+    const cp=clip(WIN.map(([x,y,w,h])=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="14"/>`).join('')+`<rect x="${DOOR[0]}" y="${DOOR[1]}" width="${DOOR[2]}" height="${DOOR[3]}"/>`);
+    o+=`<g transform="translate(${-cam} 0)">`;
+    o+=`<rect x="-200" y="0" width="4800" height="${FLOOR4}" fill="${lgrad([[0,PAPEL],[1,'#E3DED6']])}"/>`;
+    o+=`<g ${cp}><g transform="translate(${cam*.6} 0)">${exterior4(t)}</g></g>`;
+    WIN.forEach(([x,y,w,h])=>o+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="14" fill="none" stroke="${INK}" stroke-width="10"/><line x1="${x+w/2}" y1="${y}" x2="${x+w/2}" y2="${y+h}" stroke="${INK}" stroke-width="6"/><rect x="${x-14}" y="${y+h}" width="${w+28}" height="14" rx="4" fill="${WOOD_D}"/>`);
+    // puerta de entrada
+    o+=`<rect x="${DOOR[0]-14}" y="${DOOR[1]-14}" width="${DOOR[2]+28}" height="${DOOR[3]+14}" fill="none" stroke="${INK}" stroke-width="12"/>`;
+    o+=`<g transform="translate(${DOOR[0]} 0) scale(${1-doorOpen*.82} 1) translate(${-DOOR[0]} 0)"><rect x="${DOOR[0]}" y="${DOOR[1]}" width="${DOOR[2]}" height="${DOOR[3]}" fill="${E800}"/><circle cx="${DOOR[0]+DOOR[2]-36}" cy="${DOOR[1]+260}" r="12" fill="${PAPEL}"/></g>`;
+    o+=`<rect x="420" y="905" width="240" height="62" rx="12" fill="${INK}"/>`+tx('BIENVENIDO',540,946,{anchor:'middle',size:26,font:'JBM',weight:400,fill:PAPEL,ls:2});
+    // piso
+    o+=`<rect x="-200" y="${FLOOR4}" width="4800" height="440" fill="${lgrad([[0,'#D9D2C6'],[1,'#CBC3B6']])}"/><rect x="-200" y="${FLOOR4}" width="4800" height="10" fill="#BEB8AE"/>`;
+    for(let x=-200;x<4600;x+=180)o+=`<line x1="${x}" y1="${FLOOR4+10}" x2="${x-120}" y2="1920" stroke="#C3BBAE" stroke-width="3"/>`;
+    // estación 1 · recepción: bandejas
+    o+=`<rect x="1600" y="1330" width="420" height="22" rx="6" fill="${WOOD}"/><rect x="1620" y="1352" width="380" height="148" fill="${WOOD_D}"/>`;
+    const TR=['Hora','Cotizar','Despacho'];TR.forEach((l,i)=>{const x=1640+i*125;o+=`<path d="M${x} 1330l10 -44h90l10 44z" fill="${CIELO}" stroke="${INK}" stroke-width="4"/>`+tx(l,x+55,1375,{anchor:'middle',size:20,font:'JBM',weight:400,fill:PAPEL});});
+    // estación 2 · archivo + reglas + impresora + calendario
+    o+=`<rect x="2330" y="1000" width="230" height="500" rx="10" fill="#5C534A"/>`;[0,1,2].forEach(i=>{const y=1020+i*160;const op=i===1?eout(prog(t,12.6,13.0))*(1-prog(t,15.6,16.0)):0;o+=`<rect x="${2348+op*0}" y="${y}" width="194" height="140" rx="8" fill="${BG}" transform="translate(${op*70} 0)"/><rect x="${2420}" y="${y+60}" width="50" height="14" rx="7" fill="${INK}" transform="translate(${op*70} 0)"/>`;});
+    o+=`<rect x="2880" y="1330" width="260" height="20" rx="6" fill="${WOOD}"/><rect x="2900" y="1350" width="14" height="150" fill="${WOOD_D}"/><rect x="3106" y="1350" width="14" height="150" fill="${WOOD_D}"/>`;
+    o+=`<rect x="2930" y="1230" width="170" height="100" rx="16" fill="${INK}"/><rect x="2950" y="1250" width="130" height="10" rx="5" fill="#5C534A"/>`;
+    const pr=eout(prog(t,15.0,15.8));if(pr>0)o+=`<g transform="translate(0 ${-110*pr})"><rect x="2960" y="1250" width="110" height="${120*pr+10}" fill="${PAPEL}" stroke="${INK}" stroke-width="3"/>${tx('COTIZACIÓN',3015,1280,{anchor:'middle',size:13,font:'JBM',weight:400,fill:E800,op:pr})}<rect x="2975" y="1292" width="80" height="6" fill="#BEB8AE" opacity="${pr}"/><rect x="2975" y="1306" width="60" height="6" fill="#BEB8AE" opacity="${pr}"/></g>`;
+    o+=`<rect x="2640" y="980" width="200" height="200" rx="14" fill="${PAPEL}" stroke="${INK}" stroke-width="5"/><rect x="2640" y="980" width="200" height="44" rx="14" fill="${E}"/>`;
+    for(let r=0;r<3;r++)for(let c=0;c<4;c++){const on=r===1&&c===2&&t>15.8;o+=`<rect x="${2658+c*45}" y="${1040+r*44}" width="34" height="32" rx="6" fill="${on?E:BG}"/>`;}
+    if(t>15.8)o+=check(2776,1092,clamp((t-15.8)/.35));
+    o+=catLying(2445,1000,.8,t,t>13.0&&t<14.2?Math.sin(Math.PI*(t-13.0)/1.2):0);
+    // estación 3 · escritorio de Carla
+    o+=`<rect x="3700" y="1330" width="460" height="22" rx="6" fill="${WOOD}"/><rect x="3720" y="1352" width="16" height="148" fill="${WOOD_D}"/><rect x="4124" y="1352" width="16" height="148" fill="${WOOD_D}"/>`;
+    const turn=eout(prog(t,20.6,21.0));
+    o+=`<g transform="translate(3960 0) scale(${lerp(1,-1,0)} 1) translate(-3960 0)">${person(3960,1300,160,'#5C534A')}</g>`;
+    o+=`<path d="M3880 1330l12 -70h110l12 70z" fill="${INK}"/><rect x="3900" y="1268" width="94" height="54" rx="4" fill="${CIELO}"/>`;
+    const bell=t>20.2&&t<20.8?Math.sin((t-20.2)*60)*6:0;o+=`<g transform="rotate(${bell} 3790 1330)"><path d="M3760 1330a30 30 0 0 1 60 0z" fill="${E}" stroke="${INK}" stroke-width="4"/><circle cx="3790" cy="1296" r="6" fill="${INK}"/></g>`;
+    if(t>20.2&&t<21.0)o+=tx('¡ding!',3790,1250,{anchor:'middle',size:36,weight:700,fill:E800,op:Math.sin(Math.PI*prog(t,20.2,21.0))});
+    o+=tx('Carla · ventas',3930,1575,{anchor:'middle',size:28,font:'JBM',weight:400,fill:'#5C534A'});
+    if(t>21.6)o+=check(4040,1120,clamp((t-21.6)/.35));
+    o+=plant(4250,1500,1.1)+plant(220,1500,1.0)+plant(2230,1500,.9);
+    // gato: recibe a Punto en la entrada, después camina a la estación 3
+    if(t<17.0){const sn=prog(t,2.4,3.4);if(t<2.4) o+=catSit(260,FLOOR4,.95,t,{look:1,perk:t>1.0?1:0});
+      else if(t<3.4) o+=catWalk(lerp(260,420,sn),FLOOR4,.95,t);
+      else if(seg===0) o+=catSit(420,FLOOR4,.95,t,{look:1});}
+    if(t>=17.0&&t<17.9) o+=catWalk(lerp(2520,3230,prog(t,17.0,17.9)),FLOOR4,.95,t);
+    if(t>=17.9) o+=catSit(3260,FLOOR4,.95,t,{look:1,perk:t>20.2&&t<21?1:0});
+    o+='</g>';
+    // Punto (espacio de cámara)
+    const P=a4punto(t);const sx=P.x-cam,sy=P.y-P.hop;
+    let st={ey:-6,ty:-4*Math.sin(TAU*t/2.2)};
+    if(P.moving) st={eyes:'happy'};
+    else if(seg===0){if(t>=2.5&&t<3.6){st={ex:-16,ey:2};} if(t>=3.6)st={eyes:'happy'};}
+    else if(seg===1){st={ex:14,ey:-14};if(t>9.8&&t<11.0)st={eyes:'happy'};}
+    else if(seg===2){st={ex:14,ey:-12};if(t>12.6&&t<14.6)st={ex:12,ey:-10,dots:[0,1,2].map(j=>clamp((t-12.7-j*.18)/.15))};if(t>=14.6)st={eyes:'happy'};}
+    else if(seg===3){st={ex:14,ey:-8};if(t>18.8&&t<20.2){st={eyes:'low',sweat:(t-18.8)%.7/.7,ex:6,ey:-4};}if(t>=20.2&&t<21.6)st={ex:16,ey:0};if(t>=21.6)st={eyes:'happy'};}
+    if(P.r>0){o+=`<ellipse cx="${sx}" cy="${FLOOR4+4}" rx="${P.r*.85}" ry="${P.r*.09}" fill="${INK}" opacity=".18"/>`+puntoAt(sx,sy,P.r,st);
+      if(seg===1&&!P.moving)o+=`<path d="M${sx-P.r*.95} ${sy-P.r*.1}A${P.r} ${P.r} 0 0 1 ${sx+P.r*.95} ${sy-P.r*.1}" fill="none" stroke="${INK}" stroke-width="10"/><rect x="${sx-P.r*1.1}" y="${sy-P.r*.25}" width="${P.r*.3}" height="${P.r*.45}" rx="10" fill="${INK}"/><path d="M${sx-P.r*.95} ${sy+P.r*.18}q20 40 70 44" stroke="${INK}" stroke-width="6" fill="none"/>`;
+      const bk=t>3.6?1:eback(clamp((t-3.2)/.4));if(bk>0){const bx=sx+P.r*.2,by=sy+P.r*.42;o+=`<g transform="translate(${bx} ${by}) scale(${bk*P.r/110})"><path d="M-24 -26L0 -6L24 -26" stroke="${E800}" stroke-width="4" fill="none"/><rect x="-34" y="-8" width="68" height="52" rx="8" fill="${PAPEL}" stroke="${INK}" stroke-width="3"/><rect x="-34" y="-8" width="68" height="14" rx="6" fill="${E}"/>${tx('AGENTE IA',0,24,{anchor:'middle',size:11,font:'JBM',weight:400,fill:INK})}</g>`;}}
+    o+=`<g transform="translate(${-cam*1.3} 0)" opacity=".95">`+[[150,1.9],[1180,1.7],[2060,2.0],[3060,1.8],[4300,1.9]].map(([x,sc])=>plant(x,1995,sc)).join('')+'</g>';
+    // mensajes que entran por la ventana (estación 1)
+    const MS4=[['¿Tienen hora mañana?',6.4,0],['Quiero cotizar 40 usuarios.',7.6,1],['¿Hacen despacho?',8.8,2]];
+    MS4.forEach(([l,t0,i])=>{const a=prog(t,t0,t0+.6),b=prog(t,t0+1.3,t0+1.8);if(a<=0||b>=1)return;const w=l.length*17+50;
+      const x0=1820-cam,y0=700,x1=1440-cam,y1=1130,x2=1695+i*125-cam,y2=1290;
+      let x=lerp(x0,x1,eout(a)),y=lerp(y0,y1,eout(a))-80*Math.sin(Math.PI*a),s=1;if(b>0){x=lerp(x1,x2,eio(b));y=lerp(y1,y2,eio(b));s=lerp(1,.15,b);}
+      o+=`<g transform="translate(${x} ${y}) scale(${s})"><rect x="${-w/2}" y="-34" width="${w}" height="68" rx="22" fill="${CIELO}" stroke="${INK}" stroke-width="3"/>${tx(l,0,10,{anchor:'middle',size:28,font:'Manrope',weight:600})}</g>`;});
+    // tarjeta de reglas (estación 2)
+    const rk=appear(t,12.9,.4)*(1-prog(t,17.0,17.4));
+    if(rk>0){const X=2620-cam;o+=`<g opacity="${rk}" transform="translate(0 ${20*(1-rk)})"><rect x="${X}" y="560" width="420" height="340" rx="24" fill="${PAPEL}" stroke="${INK}" stroke-width="5"/>`+tx('TUS REGLAS',X+34,612,{size:24,font:'JBM',weight:400,fill:E800,ls:2});
+      [['Precio de lista',13.4],['Horario: 9 a 19 h',13.9],['Descuento máx. 10 %',14.4]].forEach(([l,tc],i)=>{const y=680+i*76;o+=tx(l,X+34,y+10,{size:30,font:'Manrope',weight:600})+`<line x1="${X+34}" y1="${y+34}" x2="${X+386}" y2="${y+34}" stroke="#BEB8AE" stroke-width="2"/>`+check(X+374,y,clamp((t-tc)/.35));});o+='</g>';}
+    // descuento (estación 3)
+    const dk=appear(t,18.6,.35)*(1-prog(t,22.4,22.8));
+    if(dk>0){o+=`<g opacity="${dk}"><rect x="${3290-cam}" y="1060" width="500" height="80" rx="24" fill="${CIELO}" stroke="${INK}" stroke-width="3"/>${tx('¿Me hacen 20 % de descuento?',3540-cam,1112,{anchor:'middle',size:30,font:'Manrope',weight:600})}</g>`;}
+    const fk=prog(t,21.0,21.6);if(fk>0&&fk<1){const x=lerp(3470,3900,eio(fk))-cam,y=lerp(1330,1200,eio(fk))-90*Math.sin(Math.PI*fk);o+=`<g transform="translate(${x} ${y}) rotate(${-10+20*fk})"><rect x="-50" y="-34" width="100" height="68" rx="8" fill="${E}" stroke="${INK}" stroke-width="4"/><rect x="-50" y="-44" width="44" height="16" rx="5" fill="${E}" stroke="${INK}" stroke-width="4"/>${tx('contexto',0,8,{anchor:'middle',size:16,font:'JBM',weight:400})}</g>`;}
+    // textos en pantalla
+    const pill='CAP. 04 · PUNTO EXPLICA';o+=`<rect x="64" y="110" width="${pill.length*20.6+64}" height="64" rx="32" fill="${E}"/>`+tx(pill,96,153,{size:30,font:'JBM',weight:400,ls:1});
+    const H=[[.3,3.6,null,[['Hoy llega alguien',INK],['nuevo al equipo.',E]],''],[3.8,5.5,null,[['Se llama Punto.',INK],['Es un agente de IA.',E]],''],
+      [6.0,11.4,1,[['Escucha',INK]],'Lee cada mensaje y entiende qué necesitan.'],[12.0,17.2,2,[['Revisa tus reglas',INK],['y actúa',E]],'Cotiza y agenda con lo que tú definiste.'],
+      [17.8,22.6,3,[['¿No sabe?',INK],['Pide ayuda.',E]],'Le pasa el caso a una persona, con contexto.']];
+    H.forEach(([a,b,n,lines,sub])=>{const k=Math.min(appear(t,a,.4),1-prog(t,b-.3,b));if(k<=0)return;let x=64;
+      if(n){o+=`<g opacity="${k}"><circle cx="106" cy="${268}" r="42" fill="${INK}"/>${tx(String(n),106,285,{anchor:'middle',size:46,weight:600,fill:PAPEL})}</g>`;x=170;}
+      lines.forEach(([l,c],i)=>o+=tx(l,x,295+i*96,{size:86,weight:600,ls:-2.5,fill:c,op:k,dy:14*(1-appear(t,a,.4))}));
+      if(sub)o+=tx(sub,64,295+lines.length*96-10+(lines.length===1?20:0),{size:32,font:'Manrope',weight:600,fill:'#3F3A34',op:k});});
+    const wo=prog(t,22.6,23.0);if(wo>0)o+=`<rect x="0" y="${lerp(CH,0,eio(wo))}" width="${CW}" height="${CH}" fill="${INK}"/>`;
+  } else {
+    o+=`<rect width="${CW}" height="${CH}" fill="${INK}"/>`+stars(t,30,800,6);
+    const a=appear(t,23.2),b=appear(t,24.1);
+    ['Un agente de IA','no reemplaza','a tu equipo.'].forEach((l,i)=>o+=tx(l,64,320+i*104,{size:94,weight:600,fill:PAPEL,ls:-3,op:a,dy:20*(1-a)}));
+    ['Se suma a él.'].forEach((l,i)=>o+=tx(l,64,660,{size:94,weight:600,fill:E,ls:-3,op:b,dy:20*(1-b)}));
+    o+=`<rect x="0" y="1480" width="${CW}" height="440" fill="${NIGHT2}"/>`;
+    const st=t>24.8?celebrate(t,24.8):{eyes:'happy'};o+=puntoAt(640,1480-130,130,st);
+    o+=`<g transform="translate(${640+130*.2} ${1350+130*.42}) scale(${130/110})"><path d="M-24 -26L0 -6L24 -26" stroke="${E800}" stroke-width="4" fill="none"/><rect x="-34" y="-8" width="68" height="52" rx="8" fill="${PAPEL}" stroke="${INK}" stroke-width="3"/><rect x="-34" y="-8" width="68" height="14" rx="6" fill="${E}"/>${tx('AGENTE IA',0,24,{anchor:'middle',size:11,font:'JBM',weight:400,fill:INK})}</g>`;
+    o+=catSit(330,1480,1.0,t,{look:1});
+    o+=tx('¿Qué tarea le darías a Punto',64,1640,{size:40,weight:600,fill:PAPEL,op:appear(t,25.0)})+tx('en su primer día?',64,1692,{size:40,weight:600,fill:E,op:appear(t,25.0)});
+    o+=tx('interforma.digital',64,1812,{size:26,font:'JBM',weight:400,fill:E,op:appear(t,25.6)});
+  }
+  svg.innerHTML=`<defs>${DEFS}</defs>`+o;};
 
 window.ready=document.fonts.ready.then(()=>Promise.all([document.fonts.load('500 80px Outfit'),document.fonts.load('500 40px Manrope'),document.fonts.load('30px JBM')]));
 </script>

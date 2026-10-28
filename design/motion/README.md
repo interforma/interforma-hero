@@ -16,6 +16,7 @@ Todo se dibuja con código: `engine.html` contiene un motor SVG que dibuja cualq
 | `audio_metodo.py` | Método Interforma: lo-fi por capas a 96 bpm, sube de Fa a Sol en la etapa 6 (48 s) |
 | `audio_reel03.py` | Cap. 03: rasgueo tipo ukelele, silbido y palmas a 104 bpm (18 s) |
 | `audio_reel05.py` | Cap. 05: latido tenso que se vuelve bossa a 112 bpm (23 s) |
+| `audio_cap04v2.py` | Cap. 04 v2: swing jazzero a 126 bpm con vibráfono y trompeta con sordina (27 s) |
 | `audio_rosa01.py` | El barrio de Punto · Ep. 01: acordeón de noche que se vuelve cumbia suave a 100 bpm (28 s) |
 | `audio_problemas.py` | «¿Le suena familiar?»: lo-fi en re menor a 96 bpm que resuelve a fa mayor en el cierre (34,7 s); efectos con la misma lista de eventos que el sitio |
 | `render_problemas.mjs` | Renderiza el reel «¿Le suena familiar?» desde el componente real del sitio (ver abajo) |
@@ -29,7 +30,8 @@ Todo se dibuja con código: `engine.html` contiene un motor SVG que dibuja cualq
 | --- | --- | --- |
 | `story(t)` | Cap. 01 · La semilla (raíces v2) | 1080×1920, 50 s |
 | `reel(t)` | Presentación de Punto | 1080×1920, 15 s |
-| `cap04(t)` | Cap. 04 · ¿Qué es un agente de IA? | 1080×1350, 25 s |
+| `cap04(t)` | Cap. 04 · ¿Qué es un agente de IA? (v1, plana) | 1080×1350, 25 s |
+| `cap04v2(t)` | Cap. 04 v2 · «Hoy llega alguien nuevo al equipo»: recorrido con paneo por la oficina, ventanas con parallax al 40 %, plantas en primer plano al 130 %, Punto con credencial, el gato y Carla | 1080×1920, 27 s |
 | `metodo(t)` | El Método Interforma: 6 etapas, 6 emociones | 1080×1920, 48 s |
 | `clinica(t)` / `automotora(t)` | Punto en acción, versión plana | 1080×1920, 34,5 s |
 | `clinica2(t)` / `automotora2(t)` | Punto en acción con escenarios del barrio (recepción con el gato, patio de autos de noche) | 1080×1920, 34,5 s |
