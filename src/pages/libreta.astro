@@ -83,6 +83,81 @@ const app = {
       </figure>
     </section>
 
+    <!-- Mosaico de funciones -->
+    <section class="lf-sec" aria-labelledby="lf-func">
+      <div class="lf-sec__head">
+        <Eyebrow>Lo que hace</Eyebrow>
+        <SectionHeading size="lg" id="lf-func">Más que una libreta: un entrenador en el bolsillo.</SectionHeading>
+      </div>
+      <ul class="bento" role="list" aria-label="Funciones de Libreta de Fierros">
+        <li class="bento__tile bento__tile--coach">
+          <div class="bento__punto" aria-hidden="true">
+            <svg viewBox="0 0 200 200"><circle cx="100" cy="108" r="72" fill="#EE6E43" /><g class="bento__eyes" fill="#281F18"><ellipse cx="82" cy="100" rx="9" ry="16" /><ellipse cx="118" cy="100" rx="9" ry="16" /></g></svg>
+          </div>
+          <span class="bento__tag">Entrenador con IA</span>
+          <h3 class="bento__h">Un entrenador que conoce tus series.</h3>
+          <ul class="bento__list" role="list">
+            <li>Al cerrar la sesión, un logro concreto y una propuesta para la próxima.</li>
+            <li>Respuestas a tus dudas de cada ejercicio, con tus pesos y tus últimas sesiones.</li>
+            <li>Un balance al terminar cada bloque: qué avanzó, qué cuidar, qué sigue.</li>
+            <li>Orientación si algo molesta, siempre como guía y no como diagnóstico.</li>
+          </ul>
+          <p class="bento__bubble">Subiste a 95 lb en prensa sin que te costara. La próxima, prueba 100.</p>
+        </li>
+
+        <li class="bento__tile bento__tile--food">
+          <div class="bento__food-row">
+            <div class="bento__plate" aria-hidden="true">
+              <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="#F2F1EE" /><circle cx="60" cy="60" r="40" fill="none" stroke="#D0CCC4" stroke-width="2" /><circle cx="46" cy="52" r="14" fill="#BEB8AE" /><circle cx="72" cy="50" r="11" fill="#EE6E43" /><circle cx="62" cy="76" r="13" fill="#CCE2ED" /></svg>
+              <span class="bento__shutter"></span>
+            </div>
+            <div class="bento__food-copy">
+              <span class="bento__tag">Comida con una foto</span>
+              <h3 class="bento__h">Le sacas una foto al plato y te dice cuánto suma.</h3>
+              <p class="bento__p">Reconoce el plato o lee la etiqueta y estima calorías, proteína y gramos. Te muestra «Lo que vi» para que corrijas lo que se le escapó.</p>
+            </div>
+          </div>
+          <ul class="bento__chips" role="list" aria-label="Lo que calcula"><li>kcal</li><li>Proteína</li><li>Gramos por porción</li><li>Frutas y verduras</li></ul>
+        </li>
+
+        <li class="bento__tile bento__tile--machine">
+          <span class="bento__icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg></span>
+          <span class="bento__tag">Catálogo de máquinas</span>
+          <h3 class="bento__h bento__h--sm">¿Una máquina que no conoces? Sácale una foto.</h3>
+          <p class="bento__p">Te explica cómo se usa y la guarda en tu catálogo con su guía paso a paso y una alternativa si está ocupada.</p>
+        </li>
+
+        <li class="bento__tile bento__tile--units">
+          <span class="bento__tag">Libras o kilos</span>
+          <p class="bento__units"><span>95 lb</span><span class="bento__units-sub">≈ 43,1 kg</span></p>
+          <p class="bento__p">Anotas como marca la máquina y ves la equivalencia al lado.</p>
+        </li>
+
+        <li class="bento__tile bento__tile--onboard">
+          <div class="bento__onboard-head">
+            <span class="bento__tag">Bienvenida</span>
+            <span class="bento__soon">Próximamente</span>
+          </div>
+          <h3 class="bento__h bento__h--sm">Unas preguntas al empezar y tu plan queda a tu medida.</h3>
+          <ol class="bento__steps" role="list">
+            <li>Sobre ti</li><li>Tu cuerpo</li><li>Tu objetivo</li><li>Tu experiencia</li><li>Tu semana</li><li>Tu salud</li><li>Tu gimnasio</li><li class="is-last">Tu plan</li>
+          </ol>
+        </li>
+
+        <li class="bento__tile bento__tile--pro">
+          <span class="bento__tag">Tu profesional manda</span>
+          <h3 class="bento__h bento__h--sm">Si tu nutricionista te dio metas, la app usa esas.</h3>
+          <p class="bento__p">Anotas tus controles y la orientación los toma en cuenta.</p>
+        </li>
+
+        <li class="bento__tile bento__tile--progress">
+          <span class="bento__tag">Progreso</span>
+          <h3 class="bento__h bento__h--sm">Récords, pesos y fotos de tu avance.</h3>
+          <span class="bento__spark" aria-hidden="true"><svg viewBox="0 0 128 40" preserveAspectRatio="none"><polyline points="0,34 20,30 40,31 60,22 80,18 100,12 120,6" fill="none" stroke="#281F18" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><circle cx="120" cy="6" r="5" fill="#EE6E43" /></svg></span>
+        </li>
+      </ul>
+    </section>
+
     <!-- Seis momentos -->
     <section id="como" class="lf-sec" aria-labelledby="lf-como">
       <div class="lf-sec__head">
@@ -353,6 +428,86 @@ const app = {
   .lf-moment__p { margin: 0; font-size: var(--font-size-body-md); line-height: 1.6; color: var(--gray-500); }
   .lf-note { margin: 0; font-size: var(--font-size-body-sm); line-height: 1.55; color: var(--gray-500); max-width: 720px; }
 
+
+  /* Mosaico */
+  .bento {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(220px, auto);
+    gap: 16px;
+  }
+  .bento__tile {
+    position: relative; overflow: hidden;
+    border-radius: var(--radius-card-lg); padding: 28px;
+    display: flex; flex-direction: column; gap: 12px;
+    background: var(--white); border: 1px solid var(--gray-200); color: var(--ink);
+  }
+  .bento__tag {
+    align-self: flex-start;
+    font-family: var(--font-family-mono); font-size: var(--font-size-label-md);
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--primary-500);
+  }
+  .bento__h { margin: 0; font-family: var(--font-family-heading); font-weight: var(--font-weight-heading); font-size: clamp(1.5rem, 2.2vw, 1.875rem); line-height: 1.15; letter-spacing: -0.025em; text-wrap: balance; }
+  .bento__h--sm { font-size: 1.25rem; line-height: 1.22; }
+  .bento__p { margin: 0; font-size: 0.9375rem; line-height: 1.55; color: var(--gray-500); }
+
+  .bento__tile--coach { grid-column: span 2; grid-row: span 2; background: var(--ink); border-color: var(--ink); color: var(--white); padding: 36px; }
+  .bento__tile--coach .bento__tag { color: var(--dark-accent); }
+  .bento__punto { width: 92px; height: 92px; margin-bottom: 4px; }
+  .bento__punto svg { width: 100%; height: 100%; display: block; overflow: visible; }
+  .bento__eyes { transform-box: fill-box; transform-origin: center; animation: bento-blink 4.6s infinite; }
+  @keyframes bento-blink { 0%, 94%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.12); } }
+  .bento__list { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: var(--font-size-body-md); line-height: 1.5; color: var(--stone); }
+  .bento__list li { padding-left: 22px; position: relative; }
+  .bento__list li::before { content: ''; position: absolute; left: 0; top: 0.55em; width: 10px; height: 10px; border-radius: 3px; background: var(--brand-500); }
+  .bento__bubble {
+    margin: auto 0 0; align-self: flex-start; max-width: 420px;
+    background: var(--white); color: var(--ink);
+    padding: 14px 18px; border-radius: 4px 18px 18px 18px;
+    font-size: var(--font-size-body-md); line-height: 1.45;
+  }
+
+  .bento__tile--food { grid-column: span 2; background: var(--brand-50); border-color: var(--primary-100); }
+  .bento__food-row { display: flex; gap: 20px; align-items: flex-start; }
+  .bento__food-copy { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .bento__plate { position: relative; width: 104px; height: 104px; flex-shrink: 0; }
+  .bento__plate svg { width: 100%; height: 100%; display: block; }
+  .bento__shutter { position: absolute; inset: -6px; border: 3px solid var(--ink); border-radius: 18px; animation: bento-focus 3.2s ease-in-out infinite; }
+  @keyframes bento-focus { 0%, 100% { transform: scale(1); opacity: .9; } 50% { transform: scale(.92); opacity: .5; } }
+  .bento__chips { list-style: none; margin: auto 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .bento__chips li { font-family: var(--font-family-mono); font-size: var(--font-size-label-md); padding: 6px 12px; border-radius: var(--radius-badge); background: var(--white); color: var(--ink); }
+
+  .bento__tile--machine { background: var(--sky); border-color: var(--sky); }
+  .bento__icon { width: 48px; height: 48px; border-radius: 14px; background: var(--ink); color: var(--white); display: flex; align-items: center; justify-content: center; }
+
+  .bento__tile--units { background: var(--brand-500); border-color: var(--brand-500); }
+  .bento__tile--units .bento__tag { color: var(--ink); }
+  .bento__tile--units .bento__p { color: var(--ink); }
+  .bento__units { margin: 0; display: flex; flex-direction: column; gap: 4px; font-family: var(--font-family-heading); font-weight: var(--font-weight-heading); font-size: 3.25rem; line-height: 1; letter-spacing: -0.035em; color: var(--ink); }
+  .bento__units-sub { font-size: 1.5rem; letter-spacing: -0.02em; }
+
+  .bento__tile--onboard { grid-column: span 2; background: var(--paper); }
+  .bento__onboard-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .bento__soon { font-size: var(--font-size-label-md); font-weight: var(--font-weight-semibold); padding: 4px 10px; border-radius: var(--radius-badge); background: var(--color-warning-50); color: var(--color-warning-500); }
+  .bento__steps { list-style: none; margin: auto 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; counter-reset: paso; }
+  .bento__steps li {
+    counter-increment: paso;
+    font-size: 0.875rem; font-weight: var(--font-weight-medium);
+    padding: 7px 12px; border-radius: var(--radius-badge);
+    background: var(--white); border: 1px solid var(--gray-200);
+  }
+  .bento__steps li::before { content: counter(paso); font-family: var(--font-family-mono); font-size: var(--font-size-label-md); color: var(--primary-500); margin-right: 6px; }
+  .bento__steps li.is-last { background: var(--ink); border-color: var(--ink); color: var(--white); }
+  .bento__steps li.is-last::before { color: var(--dark-accent); }
+
+  .bento__tile--progress { background: var(--stone); border-color: var(--stone); }
+  .bento__tile--progress .bento__tag { color: var(--ink); }
+  .bento__spark { margin-top: auto; height: 56px; display: block; }
+  .bento__spark svg { width: 100%; height: 100%; display: block; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bento__eyes, .bento__shutter { animation: none; }
+  }
+
   /* Letra grande */
   .lf-read {
     background: var(--ink); color: var(--white);
@@ -408,6 +563,8 @@ const app = {
 
   @media (max-width: 1024px) {
     .lf-moments { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .bento__tile--coach { grid-row: span 1; }
   }
   @media (max-width: 860px) {
     .lf-hero, .lf-read, .lf-wait { grid-template-columns: 1fr; }
@@ -416,6 +573,17 @@ const app = {
   }
   @media (max-width: 640px) {
     .lf { gap: 72px; padding-inline: var(--spacing-5); }
+    /* Mosaico → fila deslizable */
+    .bento {
+      display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px;
+      margin-inline: calc(-1 * var(--spacing-5)); padding: 0 var(--spacing-5) 8px;
+      scrollbar-width: none;
+    }
+    .bento::-webkit-scrollbar { display: none; }
+    .bento__tile { flex: 0 0 84%; scroll-snap-align: center; padding: 24px; }
+    .bento__tile--coach { padding: 24px; }
+    .bento__food-row { flex-direction: column; }
+    .bento__plate { width: 80px; height: 80px; }
     .lf-moments { grid-template-columns: 1fr; }
     .lf-moment { flex-direction: row; align-items: flex-start; gap: 18px; }
     .lf-moment .lf-phone { width: 42%; flex-shrink: 0; padding: 5px; border-radius: 18px; }
