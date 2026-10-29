@@ -9,19 +9,20 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600&display=swap">
 <style>
   :root {
-    --navy:       #152D3E;
-    --orange:     #F45B35;
-    --green:      #1A9E6E;
-    --yellow:     #D4820A;
-    --blue:       #1A6FA3;
-    --bg:         #F7F8FA;
-    --bg-white:   #FFFFFF;
-    --fg:         #152D3E;
-    --fg-mid:     #4A5E6C;
-    --fg-soft:    #7A8E99;
-    --border:     #D6DDE2;
+    --navy:         #152D3E;
+    --orange:       #F45B35;
+    --green:        #1A9E6E;
+    --yellow:       #D4820A;
+    --blue:         #1A6FA3;
+    --bg:           #F7F8FA;
+    --bg-white:     #FFFFFF;
+    --fg:           #152D3E;
+    --fg-mid:       #4A5E6C;
+    --fg-soft:      #7A8E99;
+    --border:       #D6DDE2;
     --border-light: #EBF0F3;
-    --card-shadow: 0 1px 4px rgba(21,45,62,.07), 0 4px 16px rgba(21,45,62,.05);
+    --shadow:       0 1px 3px rgba(21,45,62,.06), 0 4px 14px rgba(21,45,62,.05);
+    --shadow-sm:    0 1px 2px rgba(21,45,62,.06);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,16 +34,15 @@
     font-family: 'Inter', system-ui, sans-serif;
     font-size: .9375rem;
     line-height: 1.6;
-    padding-inline: 20px;
+    padding-inline: 24px;
     padding-block: env(safe-area-inset-top, 0px) env(safe-area-inset-bottom, 0px);
     min-height: 100dvh;
   }
 
-  /* ── Layout ── */
   .wrap {
-    max-width: 960px;
+    max-width: 980px;
     margin-inline: auto;
-    padding-block: 40px 80px;
+    padding-block: 44px 80px;
   }
 
   /* ── Topbar ── */
@@ -51,69 +51,65 @@
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 36px;
-  }
-  .topbar-left {
-    display: flex;
-    align-items: center;
     gap: 14px;
+    margin-bottom: 40px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
   }
-  .f5-logo-mark {
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .f5-logo-mark { flex-shrink: 0; display: flex; align-items: center; }
+  .f5-logo-mark img { height: 42px; width: auto; }
+  .divider-v {
+    width: 1px; height: 32px;
+    background: var(--border);
     flex-shrink: 0;
-    display: flex;
-    align-items: center;
-  }
-  .f5-logo-mark img {
-    height: 44px;
-    width: auto;
   }
   .topbar-title h1 {
-    font-size: 1rem;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.05rem;
     font-weight: 600;
     color: var(--fg);
-    line-height: 1.2;
+    line-height: 1.25;
   }
   .topbar-title p {
-    font-size: .78rem;
+    font-size: .75rem;
     color: var(--fg-soft);
-    margin-top: 1px;
+    margin-top: 2px;
+    letter-spacing: .01em;
   }
   .badge-live {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    font-size: .72rem;
+    gap: 7px;
+    font-size: .7rem;
     font-weight: 600;
-    letter-spacing: .08em;
+    letter-spacing: .09em;
     text-transform: uppercase;
     color: var(--green);
-    background: #E8F7F2;
-    border: 1px solid #A8DFC9;
-    border-radius: 20px;
-    padding: 4px 10px;
+    background: #EBF7F3;
+    border: 1px solid #B8DDD0;
+    border-radius: 4px;
+    padding: 5px 12px;
   }
-  .badge-live::before {
-    content: '';
+  .badge-live-dot {
     width: 6px; height: 6px;
     background: var(--green);
     border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
+    animation: blink 2.2s ease-in-out infinite;
   }
-  @keyframes pulse {
+  @keyframes blink {
     0%, 100% { opacity: 1; }
-    50% { opacity: .4; }
+    50% { opacity: .35; }
   }
 
   /* ── Section label ── */
   .section-label {
-    font-size: .7rem;
+    font-size: .68rem;
     font-weight: 700;
-    letter-spacing: .12em;
+    letter-spacing: .14em;
     text-transform: uppercase;
     color: var(--fg-soft);
-    margin-bottom: 12px;
-    padding-left: 2px;
+    margin-bottom: 14px;
   }
 
   /* ── KPI row ── */
@@ -121,21 +117,17 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 12px;
-    margin-bottom: 28px;
+    margin-bottom: 32px;
   }
-  @media (max-width: 680px) {
-    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (max-width: 380px) {
-    .kpi-grid { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 680px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 360px) { .kpi-grid { grid-template-columns: 1fr; } }
 
   .kpi-card {
     background: var(--bg-white);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 18px 20px;
-    box-shadow: var(--card-shadow);
+    border-radius: 10px;
+    padding: 18px 20px 16px;
+    box-shadow: var(--shadow-sm);
     position: relative;
     overflow: hidden;
   }
@@ -143,144 +135,141 @@
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 3px;
+    height: 2.5px;
     background: var(--accent, var(--orange));
-    border-radius: 12px 12px 0 0;
+    border-radius: 10px 10px 0 0;
   }
   .kpi-label {
-    font-size: .75rem;
+    font-size: .72rem;
     font-weight: 500;
     color: var(--fg-soft);
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     letter-spacing: .02em;
   }
   .kpi-value {
-    font-size: 2rem;
+    font-size: 1.95rem;
     font-weight: 700;
     color: var(--fg);
     line-height: 1;
     font-variant-numeric: tabular-nums;
     letter-spacing: -.04em;
+    font-family: 'Playfair Display', Georgia, serif;
   }
   .kpi-sub {
-    font-size: .75rem;
+    font-size: .72rem;
     color: var(--fg-soft);
-    margin-top: 5px;
+    margin-top: 6px;
+    line-height: 1.35;
   }
   .kpi-card.orange { --accent: var(--orange); }
   .kpi-card.green  { --accent: var(--green);  }
   .kpi-card.blue   { --accent: var(--blue);   }
   .kpi-card.yellow { --accent: var(--yellow); }
 
-  /* ── Two-col layout ── */
+  /* ── Two-col ── */
   .two-col {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
     margin-bottom: 28px;
   }
-  @media (max-width: 640px) {
-    .two-col { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
 
-  /* ── Card base ── */
+  /* ── Cards ── */
   .card {
     background: var(--bg-white);
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 12px;
     padding: 22px 24px;
-    box-shadow: var(--card-shadow);
+    box-shadow: var(--shadow);
   }
-  .card-title {
-    font-size: .82rem;
-    font-weight: 600;
-    color: var(--fg);
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .card-title .icon {
-    width: 24px; height: 24px;
-    background: var(--bg);
-    border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: .85rem;
-  }
-
-  /* ── Funnel ── */
-  .funnel {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .funnel-row {
+  .card-header {
     display: flex;
     align-items: center;
     gap: 10px;
+    margin-bottom: 18px;
   }
+  .card-icon {
+    width: 28px; height: 28px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .card-icon svg { display: block; }
+  .card-header-text {
+    font-size: .82rem;
+    font-weight: 600;
+    color: var(--fg);
+    letter-spacing: -.01em;
+  }
+
+  /* ── Funnel ── */
+  .funnel { display: flex; flex-direction: column; gap: 7px; }
+  .funnel-row { display: flex; align-items: center; gap: 10px; }
   .funnel-label {
-    font-size: .78rem;
+    font-size: .76rem;
     color: var(--fg-mid);
-    width: 100px;
+    width: 108px;
     flex-shrink: 0;
   }
   .funnel-bar-wrap {
-    flex: 1;
-    height: 8px;
+    flex: 1; height: 7px;
     background: var(--bg);
     border-radius: 4px;
     overflow: hidden;
+    border: 1px solid var(--border-light);
   }
   .funnel-bar {
     height: 100%;
     border-radius: 4px;
     background: var(--bar-color, var(--orange));
-    transition: width .6s ease;
   }
   .funnel-count {
-    font-size: .78rem;
+    font-size: .76rem;
     font-weight: 600;
     color: var(--fg);
     font-variant-numeric: tabular-nums;
-    width: 28px;
+    width: 24px;
     text-align: right;
+    flex-shrink: 0;
+  }
+  .funnel-note {
+    font-size: .7rem;
+    color: var(--fg-soft);
+    margin-top: 14px;
+    line-height: 1.45;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-light);
   }
 
-  /* ── Próximas acciones ── */
-  .action-list {
+  /* ── Hitos / acciones ── */
+  .hitos { display: flex; flex-direction: column; gap: 8px; }
+  .hito-item {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .action-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 10px 12px;
+    gap: 12px;
+    padding: 10px 14px;
     background: var(--bg);
     border-radius: 8px;
-    border-left: 3px solid var(--item-color, var(--orange));
+    border: 1px solid var(--border-light);
+    border-left: 3px solid var(--item-color, var(--border));
   }
-  .action-day {
-    font-size: .7rem;
+  .hito-semana {
+    font-size: .67rem;
     font-weight: 700;
-    color: var(--item-color, var(--orange));
+    color: var(--item-color, var(--fg-soft));
     text-transform: uppercase;
-    letter-spacing: .06em;
+    letter-spacing: .07em;
     white-space: nowrap;
     padding-top: 1px;
-    min-width: 32px;
+    min-width: 38px;
   }
-  .action-text {
-    font-size: .8rem;
-    color: var(--fg-mid);
-    line-height: 1.4;
-  }
-  .action-text strong {
+  .hito-body { font-size: .78rem; color: var(--fg-mid); line-height: 1.4; }
+  .hito-body strong {
     display: block;
-    color: var(--fg);
     font-weight: 500;
+    color: var(--fg);
     margin-bottom: 1px;
   }
 
@@ -288,51 +277,41 @@
   .full-card {
     background: var(--bg-white);
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 12px;
     padding: 24px 28px;
-    box-shadow: var(--card-shadow);
+    box-shadow: var(--shadow);
     margin-bottom: 28px;
   }
-  .full-card .card-title {
-    margin-bottom: 20px;
-  }
 
-  /* ── Calendario / Timeline ── */
+  /* ── Timeline ── */
   .timeline {
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 0;
   }
   .timeline::before {
     content: '';
     position: absolute;
-    left: 76px;
-    top: 20px;
-    bottom: 20px;
+    left: 80px;
+    top: 16px; bottom: 16px;
     width: 1px;
     background: var(--border);
   }
-
-  .tl-week {
+  .tl-row {
     display: flex;
-    gap: 0;
     position: relative;
   }
-  .tl-week + .tl-week {
-    margin-top: 4px;
-  }
-
+  .tl-row + .tl-row { margin-top: 2px; }
   .tl-left {
-    width: 76px;
+    width: 80px;
     flex-shrink: 0;
-    padding: 14px 16px 14px 0;
+    padding: 13px 20px 13px 0;
     text-align: right;
     position: relative;
     z-index: 1;
   }
-  .tl-week-label {
-    font-size: .68rem;
+  .tl-lbl {
+    font-size: .66rem;
     font-weight: 700;
     letter-spacing: .08em;
     text-transform: uppercase;
@@ -340,142 +319,134 @@
   }
   .tl-dot {
     position: absolute;
-    right: -5px;
-    top: 18px;
+    right: -5px; top: 16px;
     width: 10px; height: 10px;
     background: var(--bg-white);
-    border: 2px solid var(--dot-color, var(--border));
+    border: 2px solid var(--dot-c, var(--border));
     border-radius: 50%;
     z-index: 2;
   }
-  .tl-dot.filled {
-    background: var(--dot-color, var(--orange));
-    border-color: var(--dot-color, var(--orange));
+  .tl-dot.solid {
+    background: var(--dot-c, var(--border));
   }
-
   .tl-right {
     flex: 1;
-    padding: 10px 0 10px 24px;
+    padding: 8px 0 8px 24px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 5px;
   }
-
   .tl-tag {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: .73rem;
-    font-weight: 500;
-    border-radius: 6px;
-    padding: 5px 10px;
+    font-size: .71rem;
+    font-weight: 600;
+    letter-spacing: .03em;
+    border-radius: 5px;
+    padding: 4px 10px;
     width: fit-content;
-    background: var(--tag-bg, #EBF0F3);
-    color: var(--tag-fg, var(--fg-mid));
-    border: 1px solid var(--tag-border, var(--border));
+    background: var(--tb, #EBF0F3);
+    color: var(--tc, var(--fg-mid));
+    border: 1px solid var(--tbr, var(--border));
   }
-  .tl-tag.orange { --tag-bg:#FEF0EC; --tag-fg:var(--orange); --tag-border:#FAC5B5; }
-  .tl-tag.blue   { --tag-bg:#E8F2F9; --tag-fg:var(--blue);   --tag-border:#A8CCDF; }
-  .tl-tag.green  { --tag-bg:#E8F7F2; --tag-fg:var(--green);  --tag-border:#A8DFC9; }
-  .tl-tag.navy   { --tag-bg:#E8EDF0; --tag-fg:var(--navy);   --tag-border:#B0C0C9; }
-  .tl-tag.yellow { --tag-bg:#FEF5E7; --tag-fg:var(--yellow); --tag-border:#F0CC8A; }
+  .tl-tag.orange { --tb:#FEF0EC; --tc:var(--orange); --tbr:#FAC5B5; }
+  .tl-tag.blue   { --tb:#E8F2F9; --tc:var(--blue);   --tbr:#A8CCDF; }
+  .tl-tag.green  { --tb:#E8F7F2; --tc:var(--green);  --tbr:#A8DFC9; }
+  .tl-tag.navy   { --tb:#E8EDF0; --tc:var(--navy);   --tbr:#B0C0C9; }
+  .tl-tag.yellow { --tb:#FEF5E7; --tc:var(--yellow); --tbr:#F0CC8A; }
 
   .tl-desc {
-    font-size: .78rem;
+    font-size: .77rem;
     color: var(--fg-soft);
     line-height: 1.45;
   }
 
-  /* ── Contacto table ── */
-  .contact-table-wrap {
-    overflow-x: auto;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: .8rem;
-  }
+  /* ── Tabla ── */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: .79rem; }
   thead th {
-    font-size: .68rem;
-    font-weight: 700;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: var(--fg-soft);
-    text-align: left;
+    font-size: .67rem; font-weight: 700;
+    letter-spacing: .09em; text-transform: uppercase;
+    color: var(--fg-soft); text-align: left;
     padding: 0 12px 10px 0;
     border-bottom: 1px solid var(--border);
   }
   tbody td {
-    padding: 10px 12px 10px 0;
+    padding: 9px 12px 9px 0;
     border-bottom: 1px solid var(--border-light);
-    color: var(--fg-mid);
-    vertical-align: middle;
+    color: var(--fg-mid); vertical-align: middle;
   }
   tbody tr:last-child td { border-bottom: none; }
   tbody tr:hover td { background: var(--bg); }
-  .td-company { font-weight: 500; color: var(--fg); }
-  .td-rubro {
-    font-size: .74rem;
-    color: var(--fg-soft);
-  }
+  .td-co { font-weight: 500; color: var(--fg); }
+  .td-rb { font-size: .72rem; color: var(--fg-soft); }
 
-  .status-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: .7rem;
-    font-weight: 600;
-    border-radius: 20px;
-    padding: 3px 8px;
-    white-space: nowrap;
+  .pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: .68rem; font-weight: 600;
+    border-radius: 20px; padding: 3px 8px; white-space: nowrap;
   }
-  .status-pill.new      { background:#E8F2F9; color:var(--blue); }
-  .status-pill.contact  { background:#FEF0EC; color:var(--orange); }
-  .status-pill.reply    { background:#FEF5E7; color:var(--yellow); }
-  .status-pill.meeting  { background:#E8F7F2; color:var(--green); }
-  .status-pill.discarded{ background:#F0F0F0; color:var(--fg-soft); }
-
-  .status-pill::before {
-    content: '';
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: currentColor;
+  .pill::before {
+    content: ''; width: 5px; height: 5px;
+    border-radius: 50%; background: currentColor;
   }
+  .pill.new      { background:#E8F2F9; color:var(--blue); }
+  .pill.contact  { background:#FEF0EC; color:var(--orange); }
+  .pill.reply    { background:#FEF5E7; color:var(--yellow); }
+  .pill.meeting  { background:#E8F7F2; color:var(--green); }
+  .pill.discarded{ background:#F0F0F0; color:var(--fg-soft); }
 
-  /* ── Reporte quincenal ── */
-  .report-row {
+  /* ── Reporte ── */
+  .report-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
   }
-  @media (max-width: 580px) {
-    .report-row { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 560px) { .report-grid { grid-template-columns: 1fr; } }
   .report-item {
     background: var(--bg);
-    border-radius: 8px;
     border: 1px solid var(--border);
+    border-radius: 8px;
     padding: 14px 16px;
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
+    display: flex; align-items: flex-start; gap: 12px;
   }
-  .report-icon {
-    font-size: 1.2rem;
+  .report-ic {
+    width: 32px; height: 32px;
+    background: var(--bg-white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
-    margin-top: 1px;
   }
-  .report-item-title {
+  .report-ic svg { display: block; }
+  .report-title {
+    font-size: .77rem; font-weight: 600; color: var(--fg); margin-bottom: 3px;
+  }
+  .report-desc {
+    font-size: .72rem; color: var(--fg-soft); line-height: 1.4;
+  }
+
+  /* ── Phase banner (pre-launch) ── */
+  .phase-banner {
+    background: #FEF5E7;
+    border: 1px solid #F0CC8A;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 28px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .phase-banner-icon {
+    width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px;
+  }
+  .phase-banner-text {
     font-size: .78rem;
-    font-weight: 600;
-    color: var(--fg);
-    margin-bottom: 2px;
+    color: #7A5200;
+    line-height: 1.45;
   }
-  .report-item-desc {
-    font-size: .73rem;
-    color: var(--fg-soft);
-    line-height: 1.4;
-  }
+  .phase-banner-text strong { font-weight: 600; }
 
   /* ── Footer ── */
   .footer {
@@ -489,23 +460,20 @@
     gap: 8px;
   }
   .footer-brand {
-    font-size: .75rem;
-    font-weight: 600;
-    letter-spacing: .08em;
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .1em;
     text-transform: uppercase;
     color: var(--orange);
   }
-  .footer-note {
-    font-size: .72rem;
-    color: var(--fg-soft);
-  }
+  .footer-note { font-size: .7rem; color: var(--fg-soft); }
 
   @media (max-width: 480px) {
     .wrap { padding-block: 28px 60px; }
-    .card  { padding: 18px 16px; }
-    .full-card { padding: 18px 16px; }
-    .timeline::before { left: 62px; }
-    .tl-left { width: 62px; }
+    body { padding-inline: 16px; }
+    .card, .full-card { padding: 18px 16px; }
+    .timeline::before { left: 64px; }
+    .tl-left { width: 64px; }
   }
 </style>
 </head>
@@ -515,13 +483,31 @@
   <!-- Topbar -->
   <div class="topbar">
     <div class="topbar-left">
-      <div class="f5-logo-mark"><img src="data:image/png;base64,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" alt="F5 Estudio Contable"></div>
+      <div class="f5-logo-mark">
+        <img src="data:image/png;base64,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" alt="F5 Estudio Contable">
+      </div>
+      <div class="divider-v"></div>
       <div class="topbar-title">
-        <h1>Panel de Captación B2B · LinkedIn + Meta</h1>
-        <p>F5 Estudio Contable · 1 Nov – 31 Dic 2026</p>
+        <h1>Panel de Captación B2B</h1>
+        <p>F5 Estudio Contable &middot; LinkedIn + Meta &middot; Nov &ndash; Dic 2026</p>
       </div>
     </div>
-    <div class="badge-live">En proceso</div>
+    <div class="badge-live">
+      <span class="badge-live-dot"></span>
+      En curso
+    </div>
+  </div>
+
+  <!-- Phase banner: setup -->
+  <div class="phase-banner">
+    <svg class="phase-banner-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="10" cy="10" r="9" stroke="#D4820A" stroke-width="1.5"/>
+      <path d="M10 6v4.5l2.5 2.5" stroke="#D4820A" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <div class="phase-banner-text">
+      <strong>Fase 0 en curso: configuración de canales.</strong>
+      Antes de iniciar el outreach se crean y verifican los perfiles de LinkedIn y Meta (Facebook/Instagram). Los KPIs comienzan a actualizarse desde la Semana 1.
+    </div>
   </div>
 
   <!-- KPIs -->
@@ -529,124 +515,126 @@
   <div class="kpi-grid">
     <div class="kpi-card orange">
       <div class="kpi-label">Empresas contactadas</div>
-      <div class="kpi-value">—</div>
-      <div class="kpi-sub">Meta: 40 / mes · Inicio 1 Nov</div>
+      <div class="kpi-value">&mdash;</div>
+      <div class="kpi-sub">Meta: 30&ndash;40 contactos directos</div>
     </div>
     <div class="kpi-card yellow">
       <div class="kpi-label">Respuestas recibidas</div>
-      <div class="kpi-value">—</div>
-      <div class="kpi-sub">Tasa esperada: ~20%</div>
+      <div class="kpi-value">&mdash;</div>
+      <div class="kpi-sub">Tasa esperada LinkedIn: ~20%</div>
     </div>
     <div class="kpi-card blue">
       <div class="kpi-label">Reuniones agendadas</div>
-      <div class="kpi-value">—</div>
-      <div class="kpi-sub">Meta: 3–5 al mes</div>
+      <div class="kpi-value">&mdash;</div>
+      <div class="kpi-sub">Meta: 3&ndash;5 en 60 días</div>
     </div>
     <div class="kpi-card green">
       <div class="kpi-label">Clientes ganados</div>
-      <div class="kpi-value">—</div>
-      <div class="kpi-sub">Meta: 1–2 en 60 días</div>
+      <div class="kpi-value">&mdash;</div>
+      <div class="kpi-sub">Meta conservadora: 1&ndash;2</div>
     </div>
   </div>
 
-  <!-- Funnel + Próximas acciones -->
+  <!-- Funnel + Hitos -->
   <div class="two-col">
 
-    <!-- Funnel de conversión -->
+    <!-- Embudo -->
     <div class="card">
-      <div class="card-title">
-        <span class="icon">🔽</span>
-        Embudo de captación
+      <div class="card-header">
+        <div class="card-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 2h12l-4.5 5.5V12L5.5 13V7.5L1 2z" stroke="#4A5E6C" stroke-width="1.2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="card-header-text">Embudo de captación</span>
       </div>
       <div class="funnel">
         <div class="funnel-row">
-          <span class="funnel-label">Prospectados</span>
+          <span class="funnel-label">Prospectos</span>
           <div class="funnel-bar-wrap">
-            <div class="funnel-bar" style="width:100%; --bar-color: #152D3E;"></div>
+            <div class="funnel-bar" style="width:100%; --bar-color:#152D3E;"></div>
           </div>
-          <span class="funnel-count">80</span>
+          <span class="funnel-count">40</span>
         </div>
         <div class="funnel-row">
           <span class="funnel-label">Contactados</span>
           <div class="funnel-bar-wrap">
-            <div class="funnel-bar" style="width:75%; --bar-color: var(--orange);"></div>
+            <div class="funnel-bar" style="width:80%; --bar-color:var(--orange);"></div>
           </div>
-          <span class="funnel-count">60</span>
+          <span class="funnel-count">32</span>
         </div>
         <div class="funnel-row">
           <span class="funnel-label">Respondieron</span>
           <div class="funnel-bar-wrap">
-            <div class="funnel-bar" style="width:37%; --bar-color: var(--yellow);"></div>
+            <div class="funnel-bar" style="width:20%; --bar-color:var(--yellow);"></div>
           </div>
-          <span class="funnel-count">30</span>
+          <span class="funnel-count">8</span>
         </div>
         <div class="funnel-row">
           <span class="funnel-label">Reunión</span>
           <div class="funnel-bar-wrap">
-            <div class="funnel-bar" style="width:12%; --bar-color: var(--blue);"></div>
+            <div class="funnel-bar" style="width:10%; --bar-color:var(--blue);"></div>
           </div>
-          <span class="funnel-count">10</span>
+          <span class="funnel-count">4</span>
         </div>
         <div class="funnel-row">
           <span class="funnel-label">Cerrado</span>
           <div class="funnel-bar-wrap">
-            <div class="funnel-bar" style="width:5%; --bar-color: var(--green);"></div>
+            <div class="funnel-bar" style="width:5%; --bar-color:var(--green);"></div>
           </div>
-          <span class="funnel-count">4</span>
+          <span class="funnel-count">2</span>
         </div>
       </div>
-      <p style="font-size:.72rem; color:var(--fg-soft); margin-top:14px;">
-        Proyección acumulada a 60 días (LinkedIn + Meta). Los valores reales se actualizan cada 15 días.
+      <p class="funnel-note">
+        Proyección conservadora a 60 días (LinkedIn directo). Meta/Instagram suma alcance publicitario adicional &mdash; se mide por separado.
       </p>
     </div>
 
-    <!-- Próximas acciones -->
+    <!-- Hitos por semana -->
     <div class="card">
-      <div class="card-title">
-        <span class="icon">🎯</span>
-        Próximas acciones
+      <div class="card-header">
+        <div class="card-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="2" width="12" height="11" rx="1.5" stroke="#4A5E6C" stroke-width="1.2"/>
+            <path d="M4 1v2M10 1v2M1 5.5h12" stroke="#4A5E6C" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="card-header-text">Hitos por semana</span>
       </div>
-      <div class="action-list">
-        <div class="action-item" style="--item-color: var(--orange);">
-          <span class="action-day">1 Nov</span>
-          <div class="action-text">
-            <strong>Arranque — CRM + lista de prospectos</strong>
-            Activación Brevo, 80 empresas segmentadas. Jonathan aprueba el perfil ideal.
+      <div class="hitos">
+        <div class="hito-item" style="--item-color:var(--yellow);">
+          <span class="hito-semana">Sem 0</span>
+          <div class="hito-body">
+            <strong>Configuración de canales</strong>
+            Creación y verificación de perfiles Meta (Facebook/Instagram). Conexión Gmail &rarr; CRM Brevo. Lista inicial de 40 prospectos.
           </div>
         </div>
-        <div class="action-item" style="--item-color: var(--orange);">
-          <span class="action-day">3 Nov</span>
-          <div class="action-text">
-            <strong>Primera tanda — LinkedIn + Meta (Facebook/Instagram)</strong>
-            20 contactos vía LinkedIn y pauta segmentada en Meta. Registro de cada interacción en el CRM.
+        <div class="hito-item" style="--item-color:var(--orange);">
+          <span class="hito-semana">Sem 1</span>
+          <div class="hito-body">
+            <strong>Primera tanda &mdash; LinkedIn + Meta</strong>
+            15&ndash;20 mensajes LinkedIn + pauta Meta activada. Registro en CRM de cada interacción.
           </div>
         </div>
-        <div class="action-item" style="--item-color: var(--yellow);">
-          <span class="action-day">10 Nov</span>
-          <div class="action-text">
-            <strong>Seguimiento semana 1</strong>
-            Revisión de respuestas, reenvío a quien no contestó, agenda de reuniones.
+        <div class="hito-item" style="--item-color:var(--yellow);">
+          <span class="hito-semana">Sem 2</span>
+          <div class="hito-body">
+            <strong>Seguimiento + Reporte #1</strong>
+            Revisión de respuestas, agenda de reuniones. Jonathan recibe Reporte Quincenal.
           </div>
         </div>
-        <div class="action-item" style="--item-color: var(--blue);">
-          <span class="action-day">15 Nov</span>
-          <div class="action-text">
-            <strong>Reporte quincenal #1</strong>
-            Jonathan recibe resumen por WhatsApp: embudo actualizado y plan semana 3–4.
+        <div class="hito-item" style="--item-color:var(--blue);">
+          <span class="hito-semana">Sem 3</span>
+          <div class="hito-body">
+            <strong>Segunda tanda &mdash; nuevos prospectos</strong>
+            Ajuste de mensaje según aprendizajes semana 1. Reuniones activas del primer grupo.
           </div>
         </div>
-        <div class="action-item" style="--item-color: var(--green);">
-          <span class="action-day">17 Nov</span>
-          <div class="action-text">
-            <strong>Segunda tanda — LinkedIn + Meta (Facebook/Instagram)</strong>
-            20 empresas nuevas. Optimización de anuncios Meta según resultados de semana 1.
-          </div>
-        </div>
-        <div class="action-item" style="--item-color: var(--navy);">
-          <span class="action-day">30 Nov</span>
-          <div class="action-text">
-            <strong>Reporte mensual + decisión mes 2</strong>
-            Resultados del mes 1, ajuste de segmento y confirmación de continuidad.
+        <div class="hito-item" style="--item-color:var(--navy);">
+          <span class="hito-semana">Sem 4</span>
+          <div class="hito-body">
+            <strong>Cierre mes 1 + decisión</strong>
+            Informe completo. Revisión conjunta y confirmación de ajustes para mes 2.
           </div>
         </div>
       </div>
@@ -654,232 +642,254 @@
 
   </div>
 
-  <!-- Calendario del proceso (Timeline) -->
+  <!-- Calendarización -->
   <div class="full-card">
-    <div class="card-title">
-      <span class="icon">📅</span>
-      Calendarización del proceso — 60 días
+    <div class="card-header" style="margin-bottom:20px;">
+      <div class="card-icon">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="1" y="2" width="12" height="11" rx="1.5" stroke="#4A5E6C" stroke-width="1.2"/>
+          <path d="M4 1v2M10 1v2M1 5.5h12" stroke="#4A5E6C" stroke-width="1.2" stroke-linecap="round"/>
+          <circle cx="4.5" cy="8.5" r=".8" fill="#4A5E6C"/>
+          <circle cx="7" cy="8.5" r=".8" fill="#4A5E6C"/>
+          <circle cx="9.5" cy="8.5" r=".8" fill="#4A5E6C"/>
+        </svg>
+      </div>
+      <span class="card-header-text">Calendarización del proceso &mdash; 60 d&iacute;as</span>
     </div>
 
     <div class="timeline">
 
-      <!-- Semana 0 -->
-      <div class="tl-week">
+      <div class="tl-row">
         <div class="tl-left">
-          <div class="tl-week-label">1 Nov</div>
-          <div class="tl-dot filled" style="--dot-color: var(--orange);"></div>
+          <span class="tl-lbl">Sem 0</span>
+          <div class="tl-dot solid" style="--dot-c:var(--yellow);"></div>
         </div>
         <div class="tl-right">
-          <span class="tl-tag orange">🚀 Arranque</span>
-          <p class="tl-desc">Activación del CRM (Brevo), conexión con Gmail, listado inicial de 80 prospectos segmentados por rubro y tamaño. Jonathan aprueba el perfil de empresa ideal.</p>
+          <span class="tl-tag yellow">Configuraci&oacute;n</span>
+          <p class="tl-desc">Creaci&oacute;n de perfiles Meta (Facebook &amp; Instagram Business), conexi&oacute;n Gmail con Brevo, y construcci&oacute;n de la lista inicial de 40 prospectos segmentados. Jonathan aprueba el perfil de empresa ideal.</p>
         </div>
       </div>
 
-      <!-- Semana 1 -->
-      <div class="tl-week">
+      <div class="tl-row">
         <div class="tl-left">
-          <div class="tl-week-label">3–7 Nov</div>
-          <div class="tl-dot filled" style="--dot-color: var(--orange);"></div>
+          <span class="tl-lbl">Sem 1</span>
+          <div class="tl-dot solid" style="--dot-c:var(--orange);"></div>
         </div>
         <div class="tl-right">
-          <span class="tl-tag orange">📤 Primera tanda · 20 contactos</span>
-          <p class="tl-desc">Mensajes LinkedIn personalizados + pauta en Meta (Facebook/Instagram) segmentada por rubro y tamaño. Seguimiento de apertura y respuesta. Registro en CRM.</p>
+          <span class="tl-tag orange">Primera tanda &middot; 15&ndash;20 contactos</span>
+          <p class="tl-desc">Mensajes LinkedIn personalizados al primer grupo de prospectos. Activaci&oacute;n de pauta Meta segmentada por rubro y tama&ntilde;o de empresa. Registro de cada interacci&oacute;n en el CRM.</p>
         </div>
       </div>
 
-      <!-- Semana 2 -->
-      <div class="tl-week">
+      <div class="tl-row">
         <div class="tl-left">
-          <div class="tl-week-label">10–14 Nov</div>
-          <div class="tl-dot" style="--dot-color: var(--yellow);"></div>
+          <span class="tl-lbl">Sem 2</span>
+          <div class="tl-dot" style="--dot-c:var(--yellow);"></div>
         </div>
         <div class="tl-right">
-          <span class="tl-tag yellow">🔁 Seguimiento + Reporte #1</span>
-          <p class="tl-desc">Seguimiento a quienes no respondieron. Agenda de reuniones con interesados. Jonathan recibe el <strong>Reporte Quincenal #1</strong> el 15 Nov con estado del embudo.</p>
+          <span class="tl-tag yellow">Seguimiento + Reporte #1</span>
+          <p class="tl-desc">Seguimiento a quienes no respondieron. Agenda de reuniones con interesados. Jonathan recibe el <strong>Reporte Quincenal #1</strong> con estado del embudo y plan de la semana siguiente.</p>
         </div>
       </div>
 
-      <!-- Semana 3 -->
-      <div class="tl-week">
+      <div class="tl-row">
         <div class="tl-left">
-          <div class="tl-week-label">17–21 Nov</div>
-          <div class="tl-dot" style="--dot-color: var(--blue);"></div>
+          <span class="tl-lbl">Sem 3</span>
+          <div class="tl-dot" style="--dot-c:var(--blue);"></div>
         </div>
         <div class="tl-right">
-          <span class="tl-tag blue">📤 Segunda tanda · 20 contactos</span>
-          <p class="tl-desc">Nuevo lote de prospectos. Ajuste de mensaje LinkedIn y creatividad Meta según resultados semana 1. Reuniones del primer grupo en curso.</p>
+          <span class="tl-tag blue">Segunda tanda &middot; nuevos prospectos</span>
+          <p class="tl-desc">Nuevo lote de prospectos LinkedIn. Ajuste de creatividades Meta seg&uacute;n resultados de semana 1. Reuniones de presentaci&oacute;n en curso con el primer grupo.</p>
         </div>
       </div>
 
-      <!-- Semana 4 -->
-      <div class="tl-week">
+      <div class="tl-row">
         <div class="tl-left">
-          <div class="tl-week-label">24–28 Nov</div>
-          <div class="tl-dot" style="--dot-color: var(--blue);"></div>
+          <span class="tl-lbl">Sem 4</span>
+          <div class="tl-dot" style="--dot-c:var(--navy);"></div>
         </div>
         <div class="tl-right">
-          <span class="tl-tag blue">🤝 Reuniones activas</span>
-          <p class="tl-desc">Reuniones de presentación con leads interesados. Jonathan participa directamente. Se registra el resultado de cada reunión en el CRM.</p>
+          <span class="tl-tag navy">Cierre mes 1 + revisi&oacute;n</span>
+          <p class="tl-desc">Informe completo: empresas contactadas, tasa de respuesta, reuniones realizadas. Revisi&oacute;n conjunta y decisi&oacute;n de ajustes para el mes 2.</p>
         </div>
       </div>
 
-      <!-- Mes 1 — Hito -->
-      <div class="tl-week">
+      <div class="tl-row">
         <div class="tl-left">
-          <div class="tl-week-label">30 Nov</div>
-          <div class="tl-dot" style="--dot-color: var(--navy); border-width: 2.5px;"></div>
+          <span class="tl-lbl">Sem 5</span>
+          <div class="tl-dot" style="--dot-c:var(--orange);"></div>
         </div>
         <div class="tl-right">
-          <span class="tl-tag navy">📊 Reporte mes 1 + revisión</span>
-          <p class="tl-desc">Informe completo: empresas contactadas, tasa de respuesta, reuniones, cierres. Revisión conjunta y decisión de ajustes para diciembre.</p>
+          <span class="tl-tag orange">Tercer ciclo &middot; nuevos prospectos</span>
+          <p class="tl-desc">Nuevo lote LinkedIn + remarketing Meta a quienes interactuaron sin convertir. Incorpora todos los aprendizajes del mes 1.</p>
         </div>
       </div>
 
-      <!-- Semana 5 -->
-      <div class="tl-week">
+      <div class="tl-row">
         <div class="tl-left">
-          <div class="tl-week-label">1–5 Dic</div>
-          <div class="tl-dot" style="--dot-color: var(--orange);"></div>
+          <span class="tl-lbl">Sem 6</span>
+          <div class="tl-dot" style="--dot-c:var(--yellow);"></div>
         </div>
         <div class="tl-right">
-          <span class="tl-tag orange">📤 Tercer ciclo · 20 contactos</span>
-          <p class="tl-desc">Nuevo lote LinkedIn + remarketing Meta a quienes interactuaron sin convertir. Incorpora aprendizajes del mes 1.</p>
+          <span class="tl-tag yellow">Seguimiento + Reporte #2</span>
+          <p class="tl-desc">Jonathan recibe el <strong>Reporte Quincenal #2</strong>. Ajuste fino del segmento si la tasa de respuesta no alcanza el 15%.</p>
         </div>
       </div>
 
-      <!-- Semana 6 -->
-      <div class="tl-week">
+      <div class="tl-row">
         <div class="tl-left">
-          <div class="tl-week-label">8–12 Dic</div>
-          <div class="tl-dot" style="--dot-color: var(--yellow);"></div>
+          <span class="tl-lbl">Sem 7&ndash;8</span>
+          <div class="tl-dot" style="--dot-c:var(--green);"></div>
         </div>
         <div class="tl-right">
-          <span class="tl-tag yellow">🔁 Seguimiento + Reporte #2</span>
-          <p class="tl-desc">Jonathan recibe el <strong>Reporte Quincenal #2</strong> el 15 Dic. Ajuste fino de segmento si la tasa de respuesta no alcanza el 15%.</p>
+          <span class="tl-tag green">Cierre y negociaci&oacute;n</span>
+          <p class="tl-desc">Reuniones de cierre con los leads m&aacute;s avanzados. Env&iacute;o de propuestas de servicios contables. Seguimiento a decisiones pendientes.</p>
         </div>
       </div>
 
-      <!-- Semana 7–8 -->
-      <div class="tl-week">
+      <div class="tl-row">
         <div class="tl-left">
-          <div class="tl-week-label">15–26 Dic</div>
-          <div class="tl-dot" style="--dot-color: var(--green);"></div>
+          <span class="tl-lbl">Sem 9</span>
+          <div class="tl-dot solid" style="--dot-c:var(--green);"></div>
         </div>
         <div class="tl-right">
-          <span class="tl-tag green">🤝 Cierre y negociación</span>
-          <p class="tl-desc">Reuniones de cierre con leads más avanzados. Envío de propuestas de servicios contables. Seguimiento a decisiones pendientes.</p>
-        </div>
-      </div>
-
-      <!-- Mes 2 — Cierre -->
-      <div class="tl-week">
-        <div class="tl-left">
-          <div class="tl-week-label">31 Dic</div>
-          <div class="tl-dot filled" style="--dot-color: var(--green);"></div>
-        </div>
-        <div class="tl-right">
-          <span class="tl-tag green">✅ Informe final + decisión</span>
-          <p class="tl-desc">Cierre del piloto de 60 días. Informe de resultados: clientes ganados, pipeline activo, lecciones aprendidas. Decisión sobre continuidad o expansión.</p>
+          <span class="tl-tag green">Informe final + decisi&oacute;n</span>
+          <p class="tl-desc">Cierre del piloto de 60 d&iacute;as. Informe de resultados: clientes ganados, pipeline activo, lecciones aprendidas. Decisi&oacute;n sobre continuidad o expansi&oacute;n del programa.</p>
         </div>
       </div>
 
     </div>
   </div>
 
-  <!-- Contactos en seguimiento -->
+  <!-- Empresas en seguimiento -->
   <div class="full-card">
-    <div class="card-title">
-      <span class="icon">🏢</span>
-      Empresas en seguimiento
+    <div class="card-header" style="margin-bottom:20px;">
+      <div class="card-icon">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="3" width="10" height="10" rx="1.2" stroke="#4A5E6C" stroke-width="1.2"/>
+          <path d="M5 3V1.5M9 3V1.5M2 6.5h10" stroke="#4A5E6C" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M4.5 9h5M4.5 11h3" stroke="#4A5E6C" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="card-header-text">Empresas en seguimiento</span>
     </div>
-    <div class="contact-table-wrap">
+    <div class="table-wrap">
       <table>
         <thead>
           <tr>
             <th>Empresa</th>
             <th>Rubro</th>
             <th>Contacto</th>
+            <th>Canal</th>
             <th>Estado</th>
             <th>Última acción</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="td-company">Constructora Valdés Ltda.</td>
-            <td class="td-rubro">Construcción</td>
+            <td class="td-co">Constructora Valdés Ltda.</td>
+            <td class="td-rb">Construcción</td>
             <td>Jorge Valdés</td>
-            <td><span class="status-pill reply">Respondió</span></td>
-            <td style="font-size:.75rem; color:var(--fg-soft);">Reunión 6 Nov</td>
+            <td><span style="font-size:.7rem;color:var(--blue);">LinkedIn</span></td>
+            <td><span class="pill reply">Respondió</span></td>
+            <td style="font-size:.73rem;color:var(--fg-soft);">Sem 1</td>
           </tr>
           <tr>
-            <td class="td-company">Importadora Beltec</td>
-            <td class="td-rubro">Comercio / Import.</td>
+            <td class="td-co">Importadora Beltec</td>
+            <td class="td-rb">Comercio</td>
             <td>María Paz Rojas</td>
-            <td><span class="status-pill contact">Contactado</span></td>
-            <td style="font-size:.75rem; color:var(--fg-soft);">Seguimiento 8 Nov</td>
+            <td><span style="font-size:.7rem;color:var(--orange);">Meta</span></td>
+            <td><span class="pill contact">Contactado</span></td>
+            <td style="font-size:.73rem;color:var(--fg-soft);">Sem 1</td>
           </tr>
           <tr>
-            <td class="td-company">Clínica Dental SonrieYa</td>
-            <td class="td-rubro">Salud</td>
-            <td>Dr. Mauricio Leiva</td>
-            <td><span class="status-pill meeting">Reunión agendada</span></td>
-            <td style="font-size:.75rem; color:var(--fg-soft);">Zoom 10 Nov · 10:00</td>
+            <td class="td-co">Clínica Dental OralPro</td>
+            <td class="td-rb">Salud</td>
+            <td>Dr. Fernández</td>
+            <td><span style="font-size:.7rem;color:var(--blue);">LinkedIn</span></td>
+            <td><span class="pill meeting">Reunión agendada</span></td>
+            <td style="font-size:.73rem;color:var(--fg-soft);">Sem 2</td>
           </tr>
           <tr>
-            <td class="td-company">LogiCentro Norte</td>
-            <td class="td-rubro">Logística</td>
-            <td>Francisca Muñoz</td>
-            <td><span class="status-pill contact">Contactado</span></td>
-            <td style="font-size:.75rem; color:var(--fg-soft);">Enviado 3 Nov</td>
+            <td class="td-co">Transportes Ruiz &amp; Cía.</td>
+            <td class="td-rb">Logística</td>
+            <td>Ana Ruiz</td>
+            <td><span style="font-size:.7rem;color:var(--blue);">LinkedIn</span></td>
+            <td><span class="pill new">Por contactar</span></td>
+            <td style="font-size:.73rem;color:var(--fg-soft);">Sem 2</td>
           </tr>
           <tr>
-            <td class="td-company">Arquitecta Vidal & Asoc.</td>
-            <td class="td-rubro">Servicios Prof.</td>
-            <td>Camila Vidal</td>
-            <td><span class="status-pill new">Prospecto</span></td>
-            <td style="font-size:.75rem; color:var(--fg-soft);">Contacto 11 Nov</td>
+            <td class="td-co">Agrícola Don Pedro</td>
+            <td class="td-rb">Agricultura</td>
+            <td>Pedro Soto</td>
+            <td><span style="font-size:.7rem;color:var(--orange);">Meta</span></td>
+            <td><span class="pill contact">Contactado</span></td>
+            <td style="font-size:.73rem;color:var(--fg-soft);">Sem 1</td>
           </tr>
           <tr>
-            <td class="td-company">Distribuidora El Roble</td>
-            <td class="td-rubro">Alimentación</td>
+            <td class="td-co">Distribuidora El Roble</td>
+            <td class="td-rb">Alimentación</td>
             <td>Luis Arredondo</td>
-            <td><span class="status-pill discarded">Sin interés</span></td>
-            <td style="font-size:.75rem; color:var(--fg-soft);">Respondió 4 Nov</td>
+            <td><span style="font-size:.7rem;color:var(--blue);">LinkedIn</span></td>
+            <td><span class="pill discarded">Sin interés</span></td>
+            <td style="font-size:.73rem;color:var(--fg-soft);">Sem 1</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <p style="font-size:.72rem; color:var(--fg-soft); margin-top:16px;">
-      Datos de ejemplo para mostrar el funcionamiento. El panel se actualiza con información real cada 15 días.
+    <p style="font-size:.7rem;color:var(--fg-soft);margin-top:14px;">
+      Datos de ejemplo para mostrar el funcionamiento. Se actualiza con información real cada semana.
     </p>
   </div>
 
-  <!-- Mecánica de reporte -->
+  <!-- Cómo te informamos -->
   <div class="full-card">
-    <div class="card-title">
-      <span class="icon">📬</span>
-      Cómo te mantenemos informado
+    <div class="card-header" style="margin-bottom:20px;">
+      <div class="card-icon">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1.5 10.5V12l2-1.5H12a.5.5 0 0 0 .5-.5V2.5A.5.5 0 0 0 12 2H2a.5.5 0 0 0-.5.5V10a.5.5 0 0 0 .5.5h-.5z" stroke="#4A5E6C" stroke-width="1.2" stroke-linejoin="round"/>
+          <path d="M4.5 6h5M4.5 8h3" stroke="#4A5E6C" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="card-header-text">C&oacute;mo te mantenemos informado</span>
     </div>
-    <div class="report-row">
+    <div class="report-grid">
       <div class="report-item">
-        <span class="report-icon">📊</span>
+        <div class="report-ic">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1.5" y="1.5" width="13" height="13" rx="2" stroke="#4A5E6C" stroke-width="1.3"/>
+            <path d="M5 11V8M8 11V5M11 11V9" stroke="#4A5E6C" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+        </div>
         <div>
-          <div class="report-item-title">Reporte quincenal</div>
-          <div class="report-item-desc">Cada 15 días recibes un resumen por WhatsApp con el estado del embudo, respuestas y próximos pasos.</div>
+          <div class="report-title">Reporte quincenal</div>
+          <div class="report-desc">Cada dos semanas recibes un resumen con el estado del embudo, respuestas y plan de las siguientes semanas.</div>
         </div>
       </div>
       <div class="report-item">
-        <span class="report-icon">🔔</span>
+        <div class="report-ic">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13z" stroke="#4A5E6C" stroke-width="1.3"/>
+            <path d="M8 5v3.5l2 2" stroke="#4A5E6C" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+        </div>
         <div>
-          <div class="report-item-title">Alertas inmediatas</div>
-          <div class="report-item-desc">Cuando hay una reunión agendada o un prospecto muy interesado, te avisamos de inmediato por WhatsApp.</div>
+          <div class="report-title">Alertas inmediatas</div>
+          <div class="report-desc">Cuando hay una reuni&oacute;n agendada o un prospecto muy interesado, te avisamos de inmediato por WhatsApp.</div>
         </div>
       </div>
       <div class="report-item">
-        <span class="report-icon">🔗</span>
+        <div class="report-ic">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="#4A5E6C" stroke-width="1.3"/>
+            <circle cx="5" cy="8" r="1.2" fill="#4A5E6C"/>
+            <path d="M7.5 8h4" stroke="#4A5E6C" stroke-width="1.3" stroke-linecap="round"/>
+            <path d="M7.5 10.5h2" stroke="#4A5E6C" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+        </div>
         <div>
-          <div class="report-item-title">Este panel</div>
-          <div class="report-item-desc">Acceso permanente a este dashboard para ver el estado en cualquier momento, sin necesidad de esperar el reporte.</div>
+          <div class="report-title">Este panel</div>
+          <div class="report-desc">Acceso permanente para ver el estado del proceso en cualquier momento, sin esperar el reporte.</div>
         </div>
       </div>
     </div>
@@ -888,7 +898,7 @@
   <!-- Footer -->
   <div class="footer">
     <span class="footer-brand">Interforma Digital</span>
-    <span class="footer-note">Panel privado · F5 Estudio Contable · 2026</span>
+    <span class="footer-note">Panel privado &middot; F5 Estudio Contable &middot; 2026</span>
   </div>
 
 </div>
