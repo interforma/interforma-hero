@@ -79,6 +79,9 @@ Comportamiento por entorno:
 | `case_filter` | Filtro por tipo en la sección Casos | `filter`, `placement: 'home_cases' \| 'cases_page'` |
 | `case_open` | Clic en una tarjeta con página de caso | `case` (id del caso), `placement` |
 | `case_site_open` | «Ver sitio» de un caso sin página propia | `case`, `placement` |
+| `libreta_cta_waitlist` | «Avísame cuando abra» en el hero de `/libreta` | `placement: 'libreta_hero'` |
+| `libreta_waitlist_submit` | Envío del formulario de lista de espera | `result: 'ok' \| 'duplicate' \| 'error'` |
+| `libreta_trailer_sound` | Activar el sonido del tráiler en `/libreta` | `placement: 'libreta_hero'` |
 | `agents_flow_back` | «← Volver al inicio» en `/agentes/flujo` | `page: 'agentes_flujo'` |
 | `agents_flow_fullscreen` | «Abrir en pantalla completa» en `/agentes/flujo` | `page: 'agentes_flujo'` |
 | `agents_flow_to_landing` | «Ver Interforma Agents» en `/agentes/flujo` | `page: 'agentes_flujo'` |

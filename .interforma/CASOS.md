@@ -17,7 +17,7 @@ Formato único de tarjeta, siempre en este orden:
 4. **Cliente · sector**: nombre solo con autorización del cliente.
 5. **Prueba**: un hecho comprobable (`valor` corto + `etiqueta`).
 6. **Stack**: máximo cuatro tecnologías.
-7. **Enlace**: «Ver caso» si el archivo tiene `detalle`; «Ver sitio» si solo tiene `sitio`; nada en otro caso.
+7. **Enlace**: «Ver caso» si el archivo tiene `detalle`; «Ver proyecto» si tiene `pagina` (página propia, p. ej. `/libreta`); «Ver sitio» si solo tiene `sitio`; nada en otro caso.
 
 `sitios` (varios sitios construidos por Interforma) agrega cápsulas con enlace en la tarjeta y, si traen `logo`,
 una franja de logos en la página del caso. Los logos van en `public/casos/<caso>/`, en monocromo Umbra

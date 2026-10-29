@@ -37,7 +37,12 @@ export async function getCasos(): Promise<Caso[]> {
 }
 
 export function casoHref(caso: Caso): string | undefined {
-  return caso.data.detalle ? `/casos/${caso.id}` : undefined;
+  if (caso.data.detalle) return `/casos/${caso.id}`;
+  return caso.data.pagina;
+}
+
+export function casoLinkLabel(caso: Caso): string {
+  return caso.data.detalle ? 'Ver caso' : 'Ver proyecto';
 }
 
 /** Testimonios aprobados por el cliente; los borradores nunca se publican. */
