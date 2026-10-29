@@ -2,6 +2,14 @@
 
 Registro de cambios por fecha. Para el detalle, ver el PR indicado.
 
+## 2026-10-28 — Landing de Libreta de Fierros
+
+- Nueva página `/libreta`: tráiler de 30 s (exportado de la pieza «Un día con la Libreta»), seis momentos con pantallas reales, sección de letra grande, «Y además» y lista de espera.
+- Lista de espera: solo correo, guardado en la tabla `lista_espera` del Supabase de la app (solo inserción pública). Consultar en el editor SQL del proyecto de la Libreta.
+- Tarjeta de la app enlazada con «Ver proyecto» y la línea «Lista de espera abierta para la beta»; campo `pagina` en la colección.
+- Política de privacidad: uso del correo de la lista de espera.
+- Eventos `libreta_cta_waitlist`, `libreta_waitlist_submit` y `libreta_trailer_sound`.
+
 ## 2026-10-28 — Caso Grupo Borie con sus marcas
 
 - Tarjeta de Grupo Borie con cápsulas a bmgroup.cl, agenciaborie.cl, firstcargo.cl y bmtransport.cl («Sitios construidos por Interforma»).

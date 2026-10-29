@@ -1,0 +1,430 @@
+---
+import Base from '@layouts/Base.astro';
+import JsonLd from '@components/utility/JsonLd.astro';
+import Eyebrow from '@components/base/Eyebrow.astro';
+import SectionHeading from '@components/base/SectionHeading.astro';
+import StatusBadge from '@components/composite/StatusBadge.astro';
+
+const momentos = [
+  { n: '01', chip: 'Qué hacer hoy', h: 'Tu rutina del día, lista.', p: 'Abres la app y ya sabes qué toca, en qué orden y con qué peso.', img: 'hoy' },
+  { n: '02', chip: 'Cómo se hace', h: 'Cada máquina, paso a paso.', p: 'Una guía corta para cada ejercicio, y qué hacer si la máquina está ocupada.', img: 'guia' },
+  { n: '03', chip: 'Cuánto peso', h: 'Te dice cuándo subir.', p: 'Si completaste las repeticiones sin que te costara, te propone el siguiente paso.', img: 'sugerencia' },
+  { n: '04', chip: 'Cuánto descansar', h: 'Te avisa cuándo seguir.', p: 'Marcas la serie con un toque y el descanso corre solo.', img: 'serie1-hecha' },
+  { n: '05', chip: 'Tus dudas', h: 'Un entrenador que te responde.', p: 'Preguntas por un ejercicio y la respuesta conoce tus series y tus últimas sesiones.', img: 'entrenador' },
+  { n: '06', chip: 'Para ver bien', h: 'Letra grande, si la necesitas.', p: 'Normal, Grande o Muy grande: toda la app cambia de tamaño con un toque.', img: 'perfil-muy' },
+];
+
+const ademas = [
+  { chip: 'Comida', h: 'Lo que comes, con una foto.', img: 'comida' },
+  { chip: 'Progreso', h: 'Tus pesos, semana a semana.', img: 'progreso' },
+  { chip: 'Plan', h: 'Tu semana, ordenada.', img: 'plan' },
+];
+
+const app = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Libreta de Fierros',
+  url: 'https://interforma.digital/libreta',
+  applicationCategory: 'HealthApplication',
+  operatingSystem: 'Web (instalable en el teléfono)',
+  inLanguage: 'es-CL',
+  description:
+    'App de registro de gimnasio pensada para usarse con una mano: rutina del día, peso en libras o kilos, descansos, progreso y letra grande para personas mayores. En beta.',
+  creator: { '@id': 'https://interforma.digital/#organization' },
+};
+---
+<Base
+  title="Libreta de Fierros — Tu gimnasio entero, en una libreta"
+  description="App de entrenamiento clara y fácil de leer, también para personas mayores: rutina del día, peso en lb o kg, descansos y progreso. Está en beta; deja tu correo y te avisamos."
+  canonical="https://interforma.digital/libreta"
+>
+  <JsonLd schema={app} />
+
+  <div class="lf">
+    <!-- Hero -->
+    <section class="lf-hero" aria-labelledby="lf-title">
+      <div class="lf-hero__copy">
+        <div class="lf-hero__meta">
+          <Eyebrow>Laboratorio Interforma</Eyebrow>
+          <StatusBadge estado="Beta" />
+        </div>
+        <h1 id="lf-title" class="lf-hero__title">Tu gimnasio entero, <span>en una libreta.</span></h1>
+        <p class="lf-hero__lead">
+          <strong>Libreta de Fierros</strong> es una app para registrar tu entrenamiento con una mano, entre serie y serie:
+          qué toca hoy, cuánto peso en libras o kilos, cuánto descansar y cómo vas avanzando. Pensada para quien recién empieza
+          y para quien vuelve al gimnasio después de años.
+        </p>
+        <div class="lf-hero__ctas">
+          <a href="#lista" class="lf-btn lf-btn--primary" data-track="libreta_cta_waitlist">Avísame cuando abra</a>
+          <a href="#como" class="lf-btn lf-btn--ghost">Ver cómo funciona</a>
+        </div>
+      </div>
+
+      <figure class="lf-video">
+        <video
+          class="lf-video__el"
+          src="/libreta/trailer.mp4"
+          poster="/libreta/trailer-poster.webp"
+          autoplay muted loop playsinline preload="metadata"
+          aria-label="Tráiler de 30 segundos: Punto recorre las pestañas Hoy, Comida, Progreso, Plan y Perfil de la app"
+          data-libreta-video
+        ></video>
+        <div class="lf-video__controls">
+          <button type="button" class="lf-video__btn" data-video-toggle aria-label="Pausar el video">
+            <svg class="i-pause" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" /></svg>
+            <svg class="i-play" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" /></svg>
+          </button>
+          <button type="button" class="lf-video__btn lf-video__btn--wide" data-video-sound aria-pressed="false">
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H3v6h3l5 4V5z" /><path class="i-wave" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" /></svg>
+            <span data-sound-label>Activar sonido</span>
+          </button>
+        </div>
+        <figcaption class="sr-only">Pantallas reales de la app con una cuenta de demostración.</figcaption>
+      </figure>
+    </section>
+
+    <!-- Seis momentos -->
+    <section id="como" class="lf-sec" aria-labelledby="lf-como">
+      <div class="lf-sec__head">
+        <Eyebrow>Cómo funciona</Eyebrow>
+        <SectionHeading size="lg" id="lf-como">Cada duda del gimnasio, respondida en el momento.</SectionHeading>
+      </div>
+      <ol class="lf-moments" role="list">
+        {momentos.map((m) => (
+          <li class="lf-moment" data-animate>
+            <div class="lf-phone"><img src={`/libreta/${m.img}.webp`} alt={`Pantalla de la app: ${m.h}`} width="520" height="1000" loading="lazy" decoding="async" /></div>
+            <div class="lf-moment__text">
+              <span class="lf-chip">{m.n} · {m.chip}</span>
+              <h3 class="lf-moment__h">{m.h}</h3>
+              <p class="lf-moment__p">{m.p}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <p class="lf-note">Las pantallas son de la app real con una cuenta de demostración. La guía y las respuestas del entrenador las redacta la IA para cada persona, a partir de sus propios registros.</p>
+    </section>
+
+    <!-- Letra grande -->
+    <section class="lf-read" aria-labelledby="lf-read">
+      <div class="lf-read__copy">
+        <Eyebrow variant="dark-accent">Pensada para leer bien</Eyebrow>
+        <SectionHeading size="lg" variant="inverse" id="lf-read">La misma pantalla, a tu medida.</SectionHeading>
+        <ul class="lf-read__list" role="list">
+          <li><b>Tres tamaños de letra.</b> Toda la app crece, no solo los títulos.</li>
+          <li><b>Una mano basta.</b> Botones grandes y un + o − en vez de escribir.</li>
+          <li><b>Libras o kilos.</b> Como marque la máquina, con la equivalencia al lado.</li>
+          <li><b>Sin señal, igual funciona.</b> Guarda en el teléfono y sincroniza después.</li>
+        </ul>
+      </div>
+      <div class="lf-read__compare">
+        <figure><div class="lf-phone"><img src="/libreta/hoy.webp" alt="Pantalla Hoy con letra normal" width="520" height="1000" loading="lazy" decoding="async" /></div><figcaption>Normal</figcaption></figure>
+        <figure><div class="lf-phone"><img src="/libreta/hoy-muy.webp" alt="Pantalla Hoy con letra muy grande" width="520" height="1000" loading="lazy" decoding="async" /></div><figcaption>Muy grande</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- Y además -->
+    <section class="lf-sec" aria-labelledby="lf-mas">
+      <div class="lf-sec__head">
+        <Eyebrow>Y además</Eyebrow>
+        <SectionHeading size="lg" id="lf-mas">Todo en una sola libreta.</SectionHeading>
+      </div>
+      <ul class="lf-more" role="list">
+        {ademas.map((a) => (
+          <li class="lf-more__item" data-animate>
+            <div class="lf-phone lf-phone--sm"><img src={`/libreta/${a.img}.webp`} alt={`Pantalla ${a.chip}: ${a.h}`} width="520" height="1000" loading="lazy" decoding="async" /></div>
+            <span class="lf-chip">{a.chip}</span>
+            <p class="lf-more__h">{a.h}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- Lista de espera -->
+    <section id="lista" class="lf-wait" aria-labelledby="lf-wait">
+      <div class="lf-wait__copy">
+        <Eyebrow variant="dark-accent">Beta</Eyebrow>
+        <SectionHeading size="lg" id="lf-wait">Estamos terminando de probarla en el gimnasio.</SectionHeading>
+        <p>Deja tu correo y te enviamos el enlace para usarla cuando abramos la beta. Tu opinión va a decidir cómo sigue.</p>
+      </div>
+      <form class="lf-form" data-waitlist novalidate>
+        <label for="lf-email" class="lf-form__label">Tu correo</label>
+        <div class="lf-form__row">
+          <input id="lf-email" name="email" type="email" inputmode="email" autocomplete="email" required maxlength="254" placeholder="nombre@correo.cl" class="lf-form__input" aria-describedby="lf-form-help lf-form-msg" />
+          <button type="submit" class="lf-btn lf-btn--ink" data-submit>Avísame</button>
+        </div>
+        <p id="lf-form-help" class="lf-form__help">
+          Solo lo usaremos para enviarte el enlace de la beta. Puedes pedir que lo borremos cuando quieras.
+          <a href="/privacidad">Política de privacidad</a>.
+        </p>
+        <p id="lf-form-msg" class="lf-form__msg" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <p class="lf-disclaimer">
+      Libreta de Fierros es una guía de entrenamiento, no un diagnóstico. Ante dolor fuerte o persistente, consulta con un kinesiólogo o médico.
+      <a href="/casos">Ver otros proyectos de Interforma</a>.
+    </p>
+  </div>
+</Base>
+
+<script>
+  import { track } from '@lib/analytics/track';
+  import { libreta } from '@config/libreta';
+
+  /* Video: pausa / sonido; respeta reducción de movimiento */
+  const video = document.querySelector<HTMLVideoElement>('[data-libreta-video]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-video-toggle]');
+  const sound = document.querySelector<HTMLButtonElement>('[data-video-sound]');
+  const soundLabel = document.querySelector<HTMLElement>('[data-sound-label]');
+  if (video && toggle && sound) {
+    const sync = () => {
+      toggle.classList.toggle('is-paused', video.paused);
+      toggle.setAttribute('aria-label', video.paused ? 'Reproducir el video' : 'Pausar el video');
+    };
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) video.pause();
+    video.addEventListener('play', sync);
+    video.addEventListener('pause', sync);
+    sync();
+    toggle.addEventListener('click', () => (video.paused ? video.play() : video.pause()));
+    sound.addEventListener('click', () => {
+      video.muted = !video.muted;
+      if (!video.muted) {
+        video.currentTime = 0;
+        video.play();
+        track('libreta_trailer_sound', { placement: 'libreta_hero' });
+      }
+      sound.setAttribute('aria-pressed', String(!video.muted));
+      if (soundLabel) soundLabel.textContent = video.muted ? 'Activar sonido' : 'Silenciar';
+    });
+  }
+
+  document.querySelectorAll<HTMLAnchorElement>('[data-track="libreta_cta_waitlist"]').forEach((a) =>
+    a.addEventListener('click', () => track('libreta_cta_waitlist', { placement: 'libreta_hero' })),
+  );
+
+  /* Lista de espera */
+  const form = document.querySelector<HTMLFormElement>('[data-waitlist]');
+  const cfg = { url: libreta.supabaseUrl, key: libreta.supabasePublishableKey };
+  if (form) {
+    const input = form.querySelector<HTMLInputElement>('input[name="email"]')!;
+    const btn = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+    const msg = form.querySelector<HTMLElement>('.lf-form__msg')!;
+    const say = (text: string, tone: 'ok' | 'error') => {
+      msg.textContent = text;
+      msg.dataset.tone = tone;
+    };
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = input.value.trim();
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || email.length > 254) {
+        input.setAttribute('aria-invalid', 'true');
+        say('Revisa el correo: parece que le falta algo.', 'error');
+        input.focus();
+        return;
+      }
+      input.removeAttribute('aria-invalid');
+      btn.disabled = true;
+      btn.textContent = 'Enviando…';
+      try {
+        const res = await fetch(`${cfg.url}/rest/v1/lista_espera`, {
+          method: 'POST',
+          headers: { apikey: cfg.key, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+          body: JSON.stringify({ email, origen: 'landing' }),
+        });
+        if (res.ok || res.status === 409) {
+          form.classList.add('is-done');
+          say(res.status === 409 ? 'Ese correo ya estaba en la lista. Te avisamos apenas abra.' : 'Listo, quedaste en la lista. Te avisamos apenas abra la beta.', 'ok');
+          input.value = '';
+          track('libreta_waitlist_submit', { result: res.status === 409 ? 'duplicate' : 'ok' });
+        } else {
+          throw new Error(String(res.status));
+        }
+      } catch {
+        say('No pudimos guardar tu correo. Intenta de nuevo en un momento.', 'error');
+        track('libreta_waitlist_submit', { result: 'error' });
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Avísame';
+      }
+    });
+  }
+</script>
+
+<style>
+  .lf {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 32px clamp(20px, 5.5vw, 80px) 0;
+    display: flex;
+    flex-direction: column;
+    gap: 96px;
+  }
+
+  /* Hero */
+  .lf-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: clamp(32px, 6vw, 96px);
+    align-items: center;
+  }
+  .lf-hero__copy { display: flex; flex-direction: column; gap: 22px; }
+  .lf-hero__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .lf-hero__title {
+    margin: 0;
+    font-family: var(--font-family-heading);
+    font-weight: var(--font-weight-heading);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+  .lf-hero__title span { color: var(--primary-500); }
+  .lf-hero__lead { margin: 0; font-size: var(--font-size-body-xl); line-height: 1.6; color: var(--gray-500); max-width: 560px; }
+  .lf-hero__lead strong { color: var(--ink); font-weight: var(--font-weight-semibold); }
+  .lf-hero__ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+
+  .lf-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 52px; padding: 0 26px;
+    border-radius: 28px;
+    font: inherit; font-size: var(--font-size-body-md); font-weight: var(--font-weight-semibold);
+    text-decoration: none; cursor: pointer; border: 2px solid transparent;
+    transition: background var(--duration-fast) var(--easing-default), border-color var(--duration-fast) var(--easing-default);
+  }
+  .lf-btn:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 3px; }
+  .lf-btn--primary { background: var(--color-action-bg); color: var(--color-action-text); }
+  .lf-btn--primary:hover { background: var(--color-action-bg-hover); }
+  .lf-btn--ghost { color: var(--ink); border-color: var(--gray-200); background: var(--white); }
+  .lf-btn--ghost:hover { border-color: var(--gray-400); }
+  .lf-btn--ink { background: var(--ink); color: var(--white); }
+  .lf-btn--ink:hover { background: var(--gray-800); }
+  .lf-btn--ink:disabled { opacity: .6; cursor: progress; }
+
+  .lf-video { margin: 0; justify-self: center; width: min(100%, 380px); display: flex; flex-direction: column; gap: 12px; }
+  .lf-video__el {
+    display: block; width: 100%; aspect-ratio: 9 / 16; object-fit: cover;
+    border-radius: 24px; background: var(--ink);
+    box-shadow: 0 0 0 1px var(--gray-200), var(--shadow-lg);
+  }
+  .lf-video__controls { display: flex; gap: 8px; justify-content: center; }
+  .lf-video__btn {
+    min-width: 44px; min-height: 44px; padding: 0 12px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    border-radius: 9999px; border: 1px solid var(--gray-200); background: var(--white); color: var(--ink);
+    font: inherit; font-size: var(--font-size-body-sm); font-weight: var(--font-weight-medium); cursor: pointer;
+  }
+  .lf-video__btn:hover { border-color: var(--gray-400); }
+  .lf-video__btn:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; }
+  .lf-video__btn--wide { padding: 0 16px; }
+  .lf-video__btn .i-play { display: none; }
+  .lf-video__btn.is-paused .i-play { display: block; }
+  .lf-video__btn.is-paused .i-pause { display: none; }
+  .lf-video__btn[aria-pressed='false'] .i-wave { opacity: .35; }
+
+  /* Secciones */
+  .lf-sec { display: flex; flex-direction: column; gap: 40px; }
+  .lf-sec__head { display: flex; flex-direction: column; gap: 14px; max-width: 760px; }
+
+  .lf-chip {
+    align-self: flex-start;
+    font-family: var(--font-family-mono); font-size: var(--font-size-label-md);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    background: var(--brand-500); color: var(--ink);
+    padding: 5px 12px; border-radius: var(--radius-badge);
+  }
+
+  .lf-phone {
+    background: var(--ink); padding: 8px; border-radius: 30px;
+    box-shadow: var(--shadow-lg);
+  }
+  .lf-phone img { display: block; width: 100%; height: auto; border-radius: 23px; }
+  .lf-phone--sm { border-radius: 26px; }
+  .lf-phone--sm img { border-radius: 19px; }
+
+  .lf-moments {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 32px;
+  }
+  .lf-moment { display: flex; flex-direction: column; gap: 20px; }
+  .lf-moment .lf-phone { width: min(100%, 260px); }
+  .lf-moment__text { display: flex; flex-direction: column; gap: 10px; }
+  .lf-moment__h { margin: 0; font-family: var(--font-family-heading); font-weight: var(--font-weight-heading); font-size: 1.5rem; line-height: 1.2; letter-spacing: -0.02em; color: var(--ink); }
+  .lf-moment__p { margin: 0; font-size: var(--font-size-body-md); line-height: 1.6; color: var(--gray-500); }
+  .lf-note { margin: 0; font-size: var(--font-size-body-sm); line-height: 1.55; color: var(--gray-500); max-width: 720px; }
+
+  /* Letra grande */
+  .lf-read {
+    background: var(--ink); color: var(--white);
+    border-radius: 24px; padding: clamp(32px, 5vw, 64px);
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: center;
+  }
+  .lf-read__copy { display: flex; flex-direction: column; gap: 18px; }
+  .lf-read__list { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 14px; font-size: var(--font-size-body-lg); line-height: 1.55; color: var(--stone); }
+  .lf-read__list b { color: var(--white); font-weight: var(--font-weight-semibold); }
+  .lf-read__compare { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .lf-read__compare figure { margin: 0; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+  .lf-read__compare .lf-phone { background: var(--gray-800); box-shadow: none; width: 100%; }
+  .lf-read__compare figcaption { font-family: var(--font-family-mono); font-size: var(--font-size-label-md); letter-spacing: 0.08em; text-transform: uppercase; color: var(--stone); }
+
+  /* Y además */
+  .lf-more { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+  .lf-more__item { display: flex; flex-direction: column; gap: 14px; }
+  .lf-more__item .lf-phone { width: min(100%, 220px); }
+  .lf-more__h { margin: 0; font-family: var(--font-family-heading); font-weight: var(--font-weight-heading); font-size: 1.25rem; letter-spacing: -0.02em; color: var(--ink); }
+
+  /* Lista de espera */
+  .lf-wait {
+    background: var(--brand-500); color: var(--ink);
+    border-radius: 24px; padding: clamp(32px, 5vw, 64px);
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: center;
+  }
+  .lf-wait :global(.eyebrow--dark-accent) { color: var(--ink); }
+  .lf-wait__copy { display: flex; flex-direction: column; gap: 16px; }
+  .lf-wait__copy p { margin: 0; font-size: var(--font-size-body-lg); line-height: 1.6; color: var(--ink); }
+  .lf-form { display: flex; flex-direction: column; gap: 10px; }
+  .lf-form__label { font-weight: var(--font-weight-semibold); color: var(--ink); }
+  .lf-form__row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .lf-form__input {
+    flex: 1 1 240px; min-width: 0; min-height: 52px; padding: 0 18px;
+    border-radius: 14px; border: 2px solid var(--ink); background: var(--white); color: var(--ink);
+    font: inherit; font-size: var(--font-size-body-md);
+  }
+  .lf-form__input:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+  .lf-form__input[aria-invalid='true'] { border-color: var(--primary-900); }
+  .lf-form__help { margin: 0; font-size: var(--font-size-body-sm); line-height: 1.5; color: var(--ink); }
+  .lf-form__help a { color: var(--ink); text-decoration: underline; }
+  .lf-form__msg { margin: 0; min-height: 1.5em; font-weight: var(--font-weight-semibold); color: var(--ink); }
+  .lf-form__msg[data-tone='error'] { color: var(--primary-900); }
+  .lf-form.is-done .lf-form__msg { background: var(--white); border-radius: 12px; padding: 12px 16px; }
+
+  .lf-disclaimer { margin: -48px 0 0; font-size: var(--font-size-body-sm); line-height: 1.55; color: var(--gray-500); max-width: 760px; }
+  .lf-disclaimer a { color: var(--primary-500); }
+
+  /* Animate */
+  body.animations-ready [data-animate]:not(.is-visible) { opacity: 0; transform: translateY(14px); transition: opacity .7s var(--ease-default), transform .7s var(--ease-default); }
+  [data-animate].is-visible { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { [data-animate] { transform: none; } }
+
+  @media (max-width: 1024px) {
+    .lf-moments { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 860px) {
+    .lf-hero, .lf-read, .lf-wait { grid-template-columns: 1fr; }
+    .lf-hero__copy { order: 1; }
+    .lf-video { order: 2; }
+  }
+  @media (max-width: 640px) {
+    .lf { gap: 72px; padding-inline: var(--spacing-5); }
+    .lf-moments { grid-template-columns: 1fr; }
+    .lf-moment { flex-direction: row; align-items: flex-start; gap: 18px; }
+    .lf-moment .lf-phone { width: 42%; flex-shrink: 0; padding: 5px; border-radius: 18px; }
+    .lf-moment .lf-phone img { border-radius: 14px; }
+    .lf-moment__h { font-size: 1.25rem; }
+    .lf-more { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .lf-more__item .lf-phone { padding: 4px; border-radius: 14px; }
+    .lf-more__item .lf-phone img { border-radius: 11px; }
+    .lf-more__h { font-size: 0.95rem; }
+    .lf-disclaimer { margin-top: -32px; }
+  }
+</style>

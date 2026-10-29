@@ -1,7 +1,7 @@
 ---
 import CaseVisual from '@components/composite/CaseVisual.astro';
 import StatusBadge from '@components/composite/StatusBadge.astro';
-import { tipoLabel, casoHref, type Caso } from '@lib/casos';
+import { tipoLabel, casoHref, casoLinkLabel, type Caso } from '@lib/casos';
 
 export interface Props {
   caso: Caso;
@@ -62,7 +62,7 @@ const sitioHost = d.sitio ? new URL(d.sitio).host.replace(/^www\./, '') : undefi
 
     {href ? (
       <span class="case-card__cta" aria-hidden="true">
-        Ver caso
+        {casoLinkLabel(caso)}
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
       </span>
     ) : d.sitio ? (

@@ -28,6 +28,8 @@ const casos = defineCollection({
     stack: z.array(z.string()).max(4),
     /** Sitio público del proyecto, cuando existe (un solo enlace «Ver sitio»). */
     sitio: z.string().url().optional(),
+    /** Página propia del proyecto en este sitio (p. ej. /libreta): enlace «Ver proyecto». */
+    pagina: z.string().startsWith('/').optional(),
     /** Varios sitios construidos por Interforma: cápsulas en la tarjeta y logos en la página del caso. */
     sitios: z
       .array(z.object({ nombre: z.string(), url: z.string().url(), logo: z.string().optional() }))
