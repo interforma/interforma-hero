@@ -1,0 +1,260 @@
+---
+import Base from '@layouts/Base.astro';
+import JsonLd from '@components/utility/JsonLd.astro';
+import Eyebrow from '@components/base/Eyebrow.astro';
+import StatusBadge from '@components/composite/StatusBadge.astro';
+import CaseVisual from '@components/composite/CaseVisual.astro';
+import TestimonialStrip from '@components/composite/TestimonialStrip.astro';
+import CtaSection from '../../sections/CtaSection.astro';
+import { getCasos, tipoLabel, casoHref, type Caso } from '@lib/casos';
+
+export async function getStaticPaths() {
+  const casos = await getCasos();
+  return casos
+    .filter((c) => c.data.detalle)
+    .map((caso) => ({ params: { slug: caso.id }, props: { caso, todos: casos } }));
+}
+
+interface Props {
+  caso: Caso;
+  todos: Caso[];
+}
+const { caso, todos } = Astro.props;
+const d = caso.data;
+const det = d.detalle!;
+const url = `https://interforma.digital/casos/${caso.id}`;
+
+const conDetalle = todos.filter((c) => c.data.detalle);
+const idx = conDetalle.findIndex((c) => c.id === caso.id);
+const siguiente = conDetalle.length > 1 ? conDetalle[(idx + 1) % conDetalle.length] : undefined;
+
+const testimonio = d.testimonio?.aprobado ? [d.testimonio] : [];
+const radios = [3, 9, 15, 9999, 9999, 9999];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  '@id': `${url}#caso`,
+  name: d.titulo,
+  description: det.resumen,
+  url,
+  inLanguage: 'es-CL',
+  genre: tipoLabel[d.tipo],
+  about: { '@type': 'Organization', name: d.cliente },
+  creator: { '@id': 'https://interforma.digital/#organization' },
+  keywords: d.stack.join(', '),
+};
+---
+<Base
+  title={`${d.cliente}: ${d.titulo.replace(/\.$/, '')} — Casos Interforma`}
+  description={det.resumen}
+  canonical={url}
+  og={{ type: 'article' }}
+>
+  <JsonLd schema={schema} />
+
+  <article class="cs">
+    <header class="cs__hero">
+      <nav aria-label="Ruta" class="cs__crumbs">
+        <a href="/casos">Casos</a><span aria-hidden="true">/</span><span>{tipoLabel[d.tipo]}</span>
+      </nav>
+      <Eyebrow>{tipoLabel[d.tipo]} · {d.sector}</Eyebrow>
+      <h1 class="cs__title">{d.titulo}</h1>
+      <p class="cs__lead">{det.resumen}</p>
+    </header>
+
+    <dl class="cs__facts">
+      <div><dt>Cliente</dt><dd>{d.cliente}</dd></div>
+      <div><dt>Servicio</dt><dd>{det.servicio}</dd></div>
+      <div>
+        <dt>Estado</dt>
+        <dd class="cs__state"><StatusBadge estado={d.estado} />{det.estadoDesde && <span>{det.estadoDesde}</span>}</dd>
+      </div>
+      <div>
+        <dt>Stack</dt>
+        <dd><ul class="cs__stack" aria-label="Tecnologías">{d.stack.map((s) => <li>{s}</li>)}</ul></dd>
+      </div>
+    </dl>
+
+    {d.tipo === 'agente' && d.conversacion ? (
+      <figure class="cs__chat" aria-label="Ejemplo de conversación con el agente">
+        {d.conversacion.map((b) => <p class={`cs__bubble cs__bubble--${b.de}`}>{b.texto}</p>)}
+        <span class="cs__chip">Lead registrado en CRM</span>
+      </figure>
+    ) : (
+      <div class="cs__visual"><CaseVisual tipo={d.tipo} conversacion={d.conversacion} etiquetaDatos={d.etiquetaDatos} /></div>
+    )}
+
+    <section class="cs__block cs__block--split" aria-labelledby="cs-reto">
+      <div class="cs__head">
+        <p class="cs__num">01 · El reto</p>
+        <h2 id="cs-reto" class="cs__h2">{det.reto.titulo}</h2>
+      </div>
+      <div class="cs__prose">
+        {det.reto.parrafos.map((p, i) => <p class={i > 0 ? 'is-muted' : undefined}>{p}</p>)}
+      </div>
+    </section>
+
+    <section class="cs__block" aria-labelledby="cs-solucion">
+      <div class="cs__head">
+        <p class="cs__num">02 · Lo que hicimos</p>
+        <h2 id="cs-solucion" class="cs__h2">{det.solucion.titulo}</h2>
+      </div>
+      <ol class="cs__steps" role="list">
+        {det.solucion.pasos.map((p, i) => (
+          <li class="cs__step">
+            <span class:list={['cs__mark', { 'cs__mark--last': i === det.solucion.pasos.length - 1 }]} style={`border-radius: ${radios[i] ?? 9999}px`} aria-hidden="true"></span>
+            <span class="cs__step-n">Paso {i + 1}</span>
+            <h3 class="cs__step-t">{p.titulo}</h3>
+            <p class="cs__step-p">{p.texto}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="cs__block" aria-labelledby="cs-hoy">
+      <div class="cs__head">
+        <p class="cs__num">03 · Cómo funciona hoy</p>
+        <h2 id="cs-hoy" class="cs__h2">Lo que cambió en la operación.</h2>
+      </div>
+      <ul class="cs__proofs" role="list">
+        {det.pruebas.map((p, i) => (
+          <li class:list={['cs__proof', { 'cs__proof--dark': i === 0 }]}>
+            <span class="cs__proof-v">{p.valor}</span>
+            <span class="cs__proof-l">{p.etiqueta}</span>
+          </li>
+        ))}
+      </ul>
+      <div class="cs__ba">
+        <div class="cs__ba-item"><span class="cs__ba-k">Antes</span><p>{det.antes}</p></div>
+        <div class="cs__ba-item cs__ba-item--now"><span class="cs__ba-k">Ahora</span><p>{det.ahora}</p></div>
+      </div>
+    </section>
+
+    {testimonio.length > 0 && <TestimonialStrip items={testimonio} />}
+
+    <nav class="cs__pager" aria-label="Otros casos">
+      <a href="/casos">← Todos los casos</a>
+      {siguiente && siguiente.id !== caso.id && (
+        <a href={casoHref(siguiente)}>Siguiente: {siguiente.data.cliente} →</a>
+      )}
+    </nav>
+  </article>
+
+  <CtaSection />
+</Base>
+
+<style>
+  .cs {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 40px clamp(20px, 5.5vw, 48px) 0;
+    display: flex;
+    flex-direction: column;
+    gap: 72px;
+  }
+
+  .cs__hero { display: flex; flex-direction: column; gap: 20px; }
+  .cs__crumbs {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-label-md);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+  }
+  .cs__crumbs a { color: var(--gray-500); }
+  .cs__crumbs a:hover { color: var(--ink); }
+  .cs__title {
+    margin: 0;
+    font-family: var(--font-family-heading);
+    font-weight: var(--font-weight-heading);
+    font-size: clamp(2.25rem, 5.2vw, 4rem);
+    line-height: 1.04;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    max-width: 960px;
+    text-wrap: balance;
+  }
+  .cs__lead { margin: 0; font-size: var(--font-size-body-xl); line-height: 1.6; color: var(--gray-500); max-width: 760px; }
+
+  .cs__facts {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+  }
+  .cs__facts > div { padding: 20px 24px; display: flex; flex-direction: column; gap: 8px; border-right: 1px solid var(--gray-100); }
+  .cs__facts > div:last-child { border-right: 0; }
+  .cs__facts dt { font-family: var(--font-family-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-500); }
+  .cs__facts dd { margin: 0; font-weight: var(--font-weight-semibold); color: var(--ink); }
+  .cs__state { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+  .cs__state > span:last-child { font-size: 0.8125rem; font-weight: 400; color: var(--gray-500); }
+  .cs__stack { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .cs__stack li { font-family: var(--font-family-mono); font-size: 11px; font-weight: 400; padding: 5px 10px; border-radius: var(--radius-badge); background: var(--paper); }
+
+  .cs__chat {
+    margin: 0;
+    background: var(--sky);
+    border-radius: var(--radius-card-lg);
+    padding: clamp(24px, 6vw, 72px);
+    display: flex; flex-direction: column; gap: 12px;
+    line-height: 1.45;
+  }
+  .cs__bubble { margin: 0; max-width: 520px; padding: 14px 18px; }
+  .cs__bubble--cliente { align-self: flex-start; background: var(--white); color: var(--ink); border-radius: 4px 18px 18px 18px; }
+  .cs__bubble--agente  { align-self: flex-end; background: var(--ink); color: var(--white); border-radius: 18px 4px 18px 18px; }
+  .cs__chip {
+    align-self: flex-end;
+    background: var(--brand-500); color: var(--ink);
+    padding: 8px 14px; border-radius: var(--radius-badge);
+    font-family: var(--font-family-mono); font-size: var(--font-size-label-md);
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .cs__visual { border-radius: var(--radius-card-lg); overflow: hidden; }
+
+  .cs__block { display: flex; flex-direction: column; gap: 32px; }
+  .cs__block--split { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+  .cs__head { display: flex; flex-direction: column; gap: 12px; }
+  .cs__num { margin: 0; font-family: var(--font-family-mono); font-size: var(--font-size-label-md); letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary-500); }
+  .cs__h2 { margin: 0; font-family: var(--font-family-heading); font-weight: var(--font-weight-heading); font-size: clamp(1.625rem, 2.6vw, 2rem); line-height: 1.15; letter-spacing: -0.02em; color: var(--ink); text-wrap: balance; }
+  .cs__prose { display: flex; flex-direction: column; gap: 16px; font-size: 1.0625rem; line-height: 1.65; color: var(--ink); }
+  .cs__prose p { margin: 0; }
+  .cs__prose .is-muted { color: var(--gray-500); }
+
+  .cs__steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+  .cs__step { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-card); padding: 24px; display: flex; flex-direction: column; gap: 12px; }
+  .cs__mark { width: 32px; height: 32px; background: var(--ink); }
+  .cs__mark--last { background: var(--brand-500); }
+  .cs__step-n { font-family: var(--font-family-mono); font-size: var(--font-size-label-md); text-transform: uppercase; color: var(--gray-500); }
+  .cs__step-t { margin: 0; font-size: 1rem; font-weight: var(--font-weight-semibold); color: var(--ink); }
+  .cs__step-p { margin: 0; font-size: 0.9375rem; line-height: 1.55; color: var(--gray-500); }
+
+  .cs__proofs { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  .cs__proof { background: var(--white); border: 1px solid var(--gray-200); border-radius: 12px; padding: 28px 24px; display: flex; flex-direction: column; gap: 10px; }
+  .cs__proof-v { font-family: var(--font-family-heading); font-weight: var(--font-weight-heading); font-size: 3rem; line-height: 1; letter-spacing: -0.035em; color: var(--ink); }
+  .cs__proof-l { font-size: var(--font-size-body-sm); line-height: 1.5; color: var(--gray-500); }
+  .cs__proof--dark { background: var(--ink); border-color: var(--ink); }
+  .cs__proof--dark .cs__proof-v { color: var(--dark-accent); }
+  .cs__proof--dark .cs__proof-l { color: var(--stone); }
+
+  .cs__ba { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+  .cs__ba-item { border-top: 1px solid var(--gray-200); padding-top: 20px; display: flex; flex-direction: column; gap: 8px; }
+  .cs__ba-item--now { border-top: 2px solid var(--brand-500); }
+  .cs__ba-k { font-family: var(--font-family-mono); font-size: var(--font-size-label-md); letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-500); }
+  .cs__ba-item--now .cs__ba-k { color: var(--primary-500); }
+  .cs__ba-item p { margin: 0; font-size: 1.0625rem; line-height: 1.6; color: var(--ink); }
+
+  .cs__pager { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; border-top: 1px solid var(--gray-200); padding-top: 28px; font-weight: var(--font-weight-semibold); }
+  .cs__pager a { color: var(--primary-500); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+  .cs__pager a:hover { color: var(--primary-600); }
+
+  @media (max-width: 640px) {
+    .cs { gap: 56px; }
+    .cs__facts > div { border-right: 0; border-bottom: 1px solid var(--gray-100); }
+    .cs__facts > div:last-child { border-bottom: 0; }
+  }
+</style>

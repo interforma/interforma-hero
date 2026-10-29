@@ -1,0 +1,128 @@
+---
+/**
+ * Ilustración fija por tipo de caso. Uniforma las tarjetas aunque no haya
+ * capturas autorizadas por el cliente. Decorativa: aria-hidden.
+ */
+import type { TipoCaso } from '@lib/casos';
+
+export interface Props {
+  tipo: TipoCaso;
+  conversacion?: { de: 'cliente' | 'agente'; texto: string }[];
+  etiquetaDatos?: string;
+}
+const { tipo, conversacion = [], etiquetaDatos } = Astro.props;
+const burbujas = conversacion.slice(0, 2);
+const radios = [3, 9, 15, 9999, 3, 9, 15, 9999];
+const fondos = ['ink', 'white', 'stone', 'brand', 'white', 'brand', 'ink', 'sky'];
+const barras = [34, 48, 41, 62, 70, 92];
+---
+<div class={`cv cv--${tipo}`} aria-hidden="true">
+  {tipo === 'agente' && (
+    <div class="cv__chat">
+      {burbujas.map((b) => <p class={`cv__bubble cv__bubble--${b.de}`}>{b.texto}</p>)}
+      <span class="cv__typing"><span></span><span></span><span></span></span>
+    </div>
+  )}
+
+  {tipo === 'web' && (
+    <div class="cv__browser">
+      <div class="cv__bar"><span></span><span></span><span></span></div>
+      <div class="cv__page">
+        <span class="cv__line cv__line--title"></span>
+        <span class="cv__line" style="width: 90%"></span>
+        <span class="cv__line" style="width: 60%"></span>
+        <span class="cv__pill"></span>
+      </div>
+    </div>
+  )}
+
+  {tipo === 'marketing' && (
+    <div class="cv__posts">
+      {radios.map((r, i) => <span class={`cv__post cv__post--${fondos[i]}`} style={`border-radius: ${r}px`}></span>)}
+    </div>
+  )}
+
+  {tipo === 'datos' && (
+    <div class="cv__data">
+      {etiquetaDatos && <span class="cv__data-label">{etiquetaDatos}</span>}
+      <div class="cv__bars">
+        {barras.map((h, i) => <span class={`cv__b cv__b--${i}`} style={`height: ${h}%`}></span>)}
+      </div>
+    </div>
+  )}
+
+  {tipo === 'app' && (
+    <div class="cv__phone">
+      <span class="cv__phone-label">Hoy</span>
+      <span class="cv__phone-num">135 lb</span>
+      <span class="cv__phone-sub">≈ 61 kg</span>
+      <span class="cv__progress"><span></span></span>
+      <span class="cv__phone-btn"></span>
+    </div>
+  )}
+</div>
+
+<style>
+  .cv {
+    height: 208px;
+    box-sizing: border-box;
+    overflow: hidden;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .cv--agente    { background: var(--sky); padding: 24px; display: flex; }
+  .cv--web       { background: var(--stone); padding: 28px 32px 0; display: flex; align-items: flex-end; }
+  .cv--marketing { background: var(--brand-50); padding: 28px; display: flex; align-items: center; }
+  .cv--datos     { background: var(--ink); padding: 24px 28px; }
+  .cv--app       { background: var(--paper); padding-top: 24px; display: flex; align-items: flex-end; justify-content: center; }
+
+  /* Agente */
+  .cv__chat { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+  .cv__bubble { margin: 0; max-width: 80%; padding: 10px 14px; }
+  .cv__bubble--cliente { align-self: flex-start; background: var(--white); color: var(--ink); border-radius: 4px 14px 14px 14px; }
+  .cv__bubble--agente  { align-self: flex-end; background: var(--ink); color: var(--white); border-radius: 14px 4px 14px 14px; }
+  .cv__typing { align-self: flex-start; display: flex; gap: 4px; background: var(--white); padding: 12px 14px; border-radius: 4px 14px 14px 14px; }
+  .cv__typing span { width: 6px; height: 6px; border-radius: 9999px; background: var(--gray-400); }
+  .cv__typing span:last-child { background: var(--brand-500); }
+
+  /* Web */
+  .cv__browser { flex: 1; height: 100%; background: var(--white); border-radius: 10px 10px 0 0; display: flex; flex-direction: column; }
+  .cv__bar { display: flex; gap: 6px; padding: 10px 12px; border-bottom: 1px solid var(--gray-200); }
+  .cv__bar span { width: 8px; height: 8px; border-radius: 9999px; background: var(--gray-200); }
+  .cv__page { padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; }
+  .cv__line { display: block; height: 8px; border-radius: 3px; background: var(--gray-200); }
+  .cv__line--title { width: 70%; height: 14px; background: var(--ink); }
+  .cv__pill { width: 96px; height: 24px; border-radius: 28px; background: var(--brand-500); margin-top: 4px; }
+
+  /* Marketing */
+  .cv__posts { flex: 1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .cv__post { aspect-ratio: 1; }
+  .cv__post--ink   { background: var(--ink); }
+  .cv__post--white { background: var(--white); }
+  .cv__post--stone { background: var(--stone); }
+  .cv__post--brand { background: var(--brand-500); }
+  .cv__post--sky   { background: var(--sky); }
+
+  /* Datos */
+  .cv__data { height: 100%; display: flex; flex-direction: column; gap: 16px; }
+  .cv__data-label { font-family: var(--font-family-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--stone); }
+  .cv__bars { flex: 1; display: flex; align-items: flex-end; gap: 10px; border-bottom: 1px solid var(--gray-500); }
+  .cv__b { flex: 1; border-radius: 3px 3px 0 0; background: var(--gray-500); }
+  .cv__b--2, .cv__b--3 { background: var(--gray-400); }
+  .cv__b--4 { background: var(--stone); }
+  .cv__b--5 { background: var(--brand-500); }
+
+  /* App */
+  .cv__phone {
+    width: 128px; height: 184px; box-sizing: border-box;
+    background: var(--white); border: 3px solid var(--ink); border-bottom: 0;
+    border-radius: 24px 24px 0 0; padding: 18px 14px 0;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .cv__phone-label { font-family: var(--font-family-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-500); }
+  .cv__phone-num { font-family: var(--font-family-heading); font-size: 26px; line-height: 1; letter-spacing: -0.03em; color: var(--ink); }
+  .cv__phone-sub { font-size: 11px; color: var(--gray-500); }
+  .cv__progress { height: 8px; border-radius: 9999px; background: var(--gray-200); overflow: hidden; }
+  .cv__progress span { display: block; width: 68%; height: 100%; background: var(--brand-500); }
+  .cv__phone-btn { height: 28px; border-radius: var(--radius-btn); background: var(--ink); margin-top: 4px; }
+</style>

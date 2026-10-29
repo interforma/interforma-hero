@@ -1,0 +1,206 @@
+---
+import Eyebrow from '@components/base/Eyebrow.astro';
+import SectionHeading from '@components/base/SectionHeading.astro';
+import CaseCard from '@components/composite/CaseCard.astro';
+import TestimonialStrip from '@components/composite/TestimonialStrip.astro';
+import { getCasos, filtros, testimoniosAprobados } from '@lib/casos';
+
+export interface Props {
+  /** h1 en /casos, h2 en la home. */
+  headingAs?: 'h1' | 'h2';
+  placement?: string;
+}
+const { headingAs = 'h2', placement = 'home_cases' } = Astro.props;
+
+const casos = await getCasos();
+const testimonios = testimoniosAprobados(casos);
+const conteo = (id: string) =>
+  id === 'todos' ? casos.length : casos.filter((c) => c.data.tipo === id).length;
+const filtrosVisibles = filtros.filter((f) => conteo(f.id) > 0);
+---
+
+<div class="cases-wrap" data-animate>
+  <section id="casos" class="cases" aria-labelledby="cases-heading" data-placement={placement}>
+
+    <div class="cases__header">
+      <div class="cases__lead">
+        <Eyebrow>Casos</Eyebrow>
+        <SectionHeading size={headingAs === 'h1' ? 'xl' : 'lg'} id="cases-heading" as={headingAs}>
+          Trabajo real, en empresas reales.
+        </SectionHeading>
+        <p class="cases__sub">
+          Web, agentes de IA, marketing, datos y producto. Cada caso cuenta el problema,
+          lo que hicimos y cómo funciona hoy.
+        </p>
+      </div>
+      <p class="cases__count" aria-live="polite"><span data-cases-visible>{casos.length}</span> de {casos.length} casos</p>
+    </div>
+
+    <div class="cases__filters" role="group" aria-label="Filtrar casos por tipo de proyecto">
+      {filtrosVisibles.map((f, i) => (
+        <button type="button" class="cases__filter" data-filter={f.id} aria-pressed={i === 0 ? 'true' : 'false'}>
+          {f.label}<span class="cases__filter-count">{conteo(f.id)}</span>
+        </button>
+      ))}
+    </div>
+
+    <ul class="cases__grid" role="list">
+      {casos.map((caso, i) => (
+        <li class="cases__item" data-tipo={caso.data.tipo} data-animate data-delay={String((i % 3) * 80)}>
+          <CaseCard caso={caso} />
+        </li>
+      ))}
+    </ul>
+
+    <TestimonialStrip items={testimonios} />
+
+  </section>
+</div>
+
+<script>
+  import { track } from '@lib/analytics/track';
+
+  document.querySelectorAll<HTMLElement>('.cases').forEach((root) => {
+    const placement = root.dataset.placement ?? 'home_cases';
+    const buttons = Array.from(root.querySelectorAll<HTMLButtonElement>('.cases__filter'));
+    const items = Array.from(root.querySelectorAll<HTMLElement>('.cases__item'));
+    const visibleEl = root.querySelector<HTMLElement>('[data-cases-visible]');
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.filter ?? 'todos';
+        buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+        let visibles = 0;
+        items.forEach((li) => {
+          const show = id === 'todos' || li.dataset.tipo === id;
+          li.hidden = !show;
+          if (show) {
+            visibles++;
+            li.classList.add('is-visible');
+          }
+        });
+        if (visibleEl) visibleEl.textContent = String(visibles);
+        track('case_filter', { filter: id, placement });
+      });
+    });
+
+    root.querySelectorAll<HTMLAnchorElement>('[data-case-open]').forEach((a) =>
+      a.addEventListener('click', () => track('case_open', { case: a.dataset.caseOpen ?? '', placement })),
+    );
+    root.querySelectorAll<HTMLAnchorElement>('[data-case-site]').forEach((a) =>
+      a.addEventListener('click', () => track('case_site_open', { case: a.dataset.caseSite ?? '', placement })),
+    );
+  });
+</script>
+
+<style>
+  .cases-wrap {
+    margin: 96px clamp(20px, 5.5vw, 80px) 0;
+  }
+
+  .cases {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: var(--container-max);
+    margin: 0 auto;
+  }
+
+  .cases__header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+  }
+
+  .cases__lead {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1 1 520px;
+    max-width: 760px;
+  }
+
+  .cases__sub {
+    margin: 0;
+    font-size: var(--font-size-body-lg);
+    line-height: 1.65;
+    color: var(--gray-500);
+  }
+
+  .cases__count {
+    margin: 0;
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-label-md);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+  }
+
+  .cases__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .cases__filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: var(--radius-badge);
+    border: 1px solid var(--gray-200);
+    background: var(--white);
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--font-size-body-sm);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: background var(--duration-fast) var(--easing-default), border-color var(--duration-fast) var(--easing-default);
+  }
+  .cases__filter:hover { border-color: var(--gray-400); }
+  .cases__filter:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; }
+  .cases__filter[aria-pressed='true'] {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--white);
+  }
+
+  .cases__filter-count {
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-label-md);
+    color: var(--gray-500);
+  }
+  .cases__filter[aria-pressed='true'] .cases__filter-count { color: var(--stone); }
+
+  .cases__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+  }
+  .cases__item[hidden] { display: none; }
+
+  /* ── Animate ─────────────────────────────────────────── */
+  body.animations-ready [data-animate]:not(.is-visible) {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity .7s var(--ease-default), transform .7s var(--ease-default);
+  }
+  [data-animate].is-visible { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    [data-animate] { transform: none; }
+  }
+
+  @media (max-width: 1024px) {
+    .cases__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 640px) {
+    .cases-wrap { margin: 72px var(--spacing-5) 0; }
+    .cases__grid { grid-template-columns: 1fr; }
+  }
+</style>

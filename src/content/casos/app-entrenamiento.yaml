@@ -1,0 +1,10 @@
+orden: 6
+tipo: app
+estado: Beta
+titulo: Una app de entrenamiento clara, pensada también para personas mayores.
+cliente: Laboratorio Interforma
+sector: Producto propio · fitness
+prueba:
+  valor: Beta
+  etiqueta: en uso real en el gimnasio
+stack: [Claude API]

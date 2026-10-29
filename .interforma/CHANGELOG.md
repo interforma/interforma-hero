@@ -2,6 +2,14 @@
 
 Registro de cambios por fecha. Para el detalle, ver el PR indicado.
 
+## 2026-10-28 — Casos y testimonios
+
+- **Nueva sección Casos** en la home (`/#casos`), listado en `/casos` y página de caso en `/casos/first-cargo`; «Casos» en la navegación.
+- Colección de contenido `casos` (YAML en `src/content/casos/`) con formato único: tipo, estado, título de resultado, cliente · sector, prueba verificable, stack y enlace. Reglas en `.interforma/CASOS.md`.
+- Seis casos: First Cargo (agente), F5 Contadores (web, fase 2 desde noviembre), Grupo Borie (marketing), Medic-Home (agente en desarrollo), portal de reportes (datos) y app de entrenamiento (beta).
+- Testimonios con aprobación del cliente: el borrador de First Cargo queda guardado y oculto hasta que se apruebe.
+- Eventos `case_filter`, `case_open` y `case_site_open`; `llms.txt` con `/casos`; datos estructurados `ItemList` y `CreativeWork`.
+
 ## 2026-10-26 — Identidad 2026 en todo y correcciones
 
 - **Sistema de diseño:** `DESIGN.md` reescrito con la identidad 2026; fuentes Plus Jakarta Sans, Inter y Host Grotesk retiradas (código y dependencias); botones primarios en Energía con texto Umbra en `Button` y `WhatsAppButton`; foco en Energía 800; botones de `/agentes` con radio de marca; grises fríos reemplazados en Método y en la demo de Agentes.
