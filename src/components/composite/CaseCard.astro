@@ -1,0 +1,203 @@
+---
+import CaseVisual from '@components/composite/CaseVisual.astro';
+import StatusBadge from '@components/composite/StatusBadge.astro';
+import { tipoLabel, casoHref, type Caso } from '@lib/casos';
+
+export interface Props {
+  caso: Caso;
+  headingLevel?: 'h3' | 'h2';
+}
+const { caso, headingLevel: H = 'h3' } = Astro.props;
+const d = caso.data;
+const href = casoHref(caso);
+const sitioHost = d.sitio ? new URL(d.sitio).host.replace(/^www\./, '') : undefined;
+---
+<article class="case-card" data-tipo={d.tipo}>
+  <CaseVisual tipo={d.tipo} conversacion={d.conversacion} etiquetaDatos={d.etiquetaDatos} />
+
+  <div class="case-card__body">
+    <div class="case-card__meta">
+      <span class="case-card__tipo">{tipoLabel[d.tipo]}</span>
+      <StatusBadge estado={d.estado} />
+    </div>
+
+    <H class="case-card__title">
+      {href ? <a href={href} class="case-card__link" data-case-open={caso.id}>{d.titulo}</a> : d.titulo}
+    </H>
+
+    <p class="case-card__client">{d.cliente} · {d.sector}</p>
+
+    {d.proximaFase && (
+      <p class="case-card__next">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        {d.proximaFase}
+      </p>
+    )}
+
+    <p class="case-card__proof">
+      <span class="case-card__proof-value">{d.prueba.valor}</span>
+      <span class="case-card__proof-label">{d.prueba.etiqueta}</span>
+    </p>
+
+    <ul class="case-card__stack" aria-label="Tecnologías">
+      {d.stack.map((s) => <li>{s}</li>)}
+    </ul>
+
+    {href ? (
+      <span class="case-card__cta" aria-hidden="true">
+        Ver caso
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+      </span>
+    ) : d.sitio ? (
+      <a href={d.sitio} class="case-card__cta case-card__cta--ext" target="_blank" rel="noopener" data-case-site={caso.id}>
+        Ver sitio · {sitioHost}
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8" /></svg>
+      </a>
+    ) : null}
+  </div>
+</article>
+
+<style>
+  .case-card {
+    position: relative;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: transform .25s var(--ease-default), box-shadow .25s, border-color .25s;
+  }
+  .case-card:has(.case-card__link):hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-100);
+  }
+
+  .case-card__body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    flex-grow: 1;
+  }
+
+  .case-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .case-card__tipo {
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-label-md);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--primary-500);
+  }
+
+  .case-card__title {
+    margin: 0;
+    font-family: var(--font-family-heading);
+    font-weight: var(--font-weight-heading);
+    font-size: 1.375rem;
+    line-height: 1.22;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+
+  /* Toda la tarjeta es clicable a través del enlace del título */
+  .case-card__link { color: inherit; text-decoration: none; }
+  .case-card__link::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+  .case-card__link:focus-visible { outline: none; }
+  .case-card:has(.case-card__link:focus-visible) {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 3px;
+  }
+
+  .case-card__client {
+    margin: 0;
+    font-size: var(--font-size-body-sm);
+    line-height: 1.5;
+    color: var(--gray-500);
+  }
+
+  .case-card__next {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--ink);
+    background: var(--brand-50);
+    border-radius: 8px;
+    padding: 8px 12px;
+  }
+  .case-card__next svg { color: var(--primary-600); flex-shrink: 0; }
+
+  .case-card__proof {
+    margin: 0;
+    border-top: 1px solid var(--gray-200);
+    padding-top: 14px;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .case-card__proof-value {
+    font-family: var(--font-family-heading);
+    font-weight: var(--font-weight-heading);
+    font-size: 2.25rem;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+    color: var(--ink);
+  }
+  .case-card__proof-label {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--gray-500);
+  }
+
+  .case-card__stack {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .case-card__stack li {
+    font-family: var(--font-family-mono);
+    font-size: 11px;
+    padding: 5px 10px;
+    border-radius: var(--radius-badge);
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .case-card__cta {
+    margin-top: auto;
+    padding-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    font-weight: var(--font-weight-semibold);
+    font-size: 0.9375rem;
+    color: var(--primary-500);
+    text-decoration: none;
+    align-self: flex-start;
+  }
+  .case-card__cta--ext { position: relative; z-index: 1; }
+  .case-card__cta--ext:hover { color: var(--primary-600); }
+  .case-card__cta--ext:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; border-radius: 4px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .case-card:has(.case-card__link):hover { transform: none; }
+  }
+</style>

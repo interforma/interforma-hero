@@ -1,0 +1,10 @@
+orden: 3
+tipo: marketing
+estado: En curso
+titulo: Contenido y campañas para las marcas de un holding logístico.
+cliente: Grupo Borie
+sector: Logística
+prueba:
+  valor: '4'
+  etiqueta: marcas del holding con una línea de contenido común
+stack: [Meta Ads, LinkedIn Ads, Notion]

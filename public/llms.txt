@@ -45,6 +45,8 @@ Seis etapas con entregables concretos y decisión de continuidad entre cada una:
 - https://interforma.digital/metodo — El Método Interforma: las 6 etapas en detalle
 - https://interforma.digital/agentes — Interforma Agents: agentes de IA con un piloto de 30 días
 - https://interforma.digital/agentes/flujo — Flujo del agente de WhatsApp paso a paso
+- https://interforma.digital/casos — Casos de clientes y proyectos: web, agentes de IA, marketing, datos y producto
+- https://interforma.digital/casos/first-cargo — Caso First Cargo: agente de WhatsApp que atiende, cotiza y registra leads
 - https://interforma.digital/privacidad — Política de privacidad
 
 ## Uso de esta información

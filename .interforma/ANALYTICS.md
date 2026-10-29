@@ -76,6 +76,9 @@ Comportamiento por entorno:
 | `method_detail_back` | «← Volver al inicio» en `/metodo` | `page: 'metodo'` |
 | `method_diagram_fullscreen` | «Abrir en pantalla completa» en `/metodo` | `page: 'metodo'` |
 | `agents_flow_open` | «Ver el flujo en detalle» en `/#agentes` | `placement: 'home_agents'` |
+| `case_filter` | Filtro por tipo en la sección Casos | `filter`, `placement: 'home_cases' \| 'cases_page'` |
+| `case_open` | Clic en una tarjeta con página de caso | `case` (id del caso), `placement` |
+| `case_site_open` | «Ver sitio» de un caso sin página propia | `case`, `placement` |
 | `agents_flow_back` | «← Volver al inicio» en `/agentes/flujo` | `page: 'agentes_flujo'` |
 | `agents_flow_fullscreen` | «Abrir en pantalla completa» en `/agentes/flujo` | `page: 'agentes_flujo'` |
 | `agents_flow_to_landing` | «Ver Interforma Agents» en `/agentes/flujo` | `page: 'agentes_flujo'` |
