@@ -47,6 +47,7 @@ Seis etapas con entregables concretos y decisión de continuidad entre cada una:
 - https://interforma.digital/agentes/flujo — Flujo del agente de WhatsApp paso a paso
 - https://interforma.digital/casos — Casos de clientes y proyectos: web, agentes de IA, marketing, datos y producto
 - https://interforma.digital/casos/first-cargo — Caso First Cargo: agente de WhatsApp que atiende, cotiza y registra leads
+- https://interforma.digital/casos/grupo-borie — Caso Grupo Borie: sitios, contenido y campañas para las cuatro marcas del holding
 - https://interforma.digital/privacidad — Política de privacidad
 
 ## Uso de esta información

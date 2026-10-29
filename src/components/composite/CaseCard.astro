@@ -43,6 +43,23 @@ const sitioHost = d.sitio ? new URL(d.sitio).host.replace(/^www\./, '') : undefi
       {d.stack.map((s) => <li>{s}</li>)}
     </ul>
 
+    {d.sitios && d.sitios.length > 0 && (
+      <div class="case-card__sites">
+        <p class="case-card__sites-label">Sitios construidos por Interforma</p>
+        <ul class="case-card__sites-list">
+          {d.sitios.map((s) => (
+            <li>
+              <a href={s.url} target="_blank" rel="noopener" class="case-card__site" data-case-site={caso.id}>
+                {new URL(s.url).host.replace(/^www\./, '')}
+                <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8" /></svg>
+                <span class="sr-only">(sitio de {s.nombre}, abre en una pestaña nueva)</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+
     {href ? (
       <span class="case-card__cta" aria-hidden="true">
         Ver caso
@@ -196,6 +213,35 @@ const sitioHost = d.sitio ? new URL(d.sitio).host.replace(/^www\./, '') : undefi
   .case-card__cta--ext { position: relative; z-index: 1; }
   .case-card__cta--ext:hover { color: var(--primary-600); }
   .case-card__cta--ext:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; border-radius: 4px; }
+
+  .case-card__sites { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 8px; }
+  .case-card__sites-label {
+    margin: 0;
+    font-family: var(--font-family-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+  }
+  .case-card__sites-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .case-card__site {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 32px;
+    padding: 0 12px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-badge);
+    background: var(--white);
+    font-size: 0.8125rem;
+    font-weight: var(--font-weight-medium);
+    color: var(--ink);
+    text-decoration: none;
+    transition: border-color var(--duration-fast) var(--easing-default), color var(--duration-fast) var(--easing-default);
+  }
+  .case-card__site svg { color: var(--primary-500); }
+  .case-card__site:hover { border-color: var(--primary-500); color: var(--primary-500); }
+  .case-card__site:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; }
 
   @media (prefers-reduced-motion: reduce) {
     .case-card:has(.case-card__link):hover { transform: none; }

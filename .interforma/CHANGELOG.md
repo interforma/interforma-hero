@@ -2,6 +2,12 @@
 
 Registro de cambios por fecha. Para el detalle, ver el PR indicado.
 
+## 2026-10-28 — Caso Grupo Borie con sus marcas
+
+- Tarjeta de Grupo Borie con cápsulas a bmgroup.cl, agenciaborie.cl, firstcargo.cl y bmtransport.cl («Sitios construidos por Interforma»).
+- Nueva página `/casos/grupo-borie` con franja de logos en monocromo Umbra y enlace a cada sitio.
+- Campo `sitios` en la colección; `antes` y `ahora` pasan a ser opcionales.
+
 ## 2026-10-28 — Casos y testimonios
 
 - **Nueva sección Casos** en la home (`/#casos`), listado en `/casos` y página de caso en `/casos/first-cargo`; «Casos» en la navegación.
