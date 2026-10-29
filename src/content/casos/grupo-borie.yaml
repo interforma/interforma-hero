@@ -1,0 +1,57 @@
+orden: 3
+tipo: marketing
+estado: En curso
+titulo: Sitios, contenido y campañas para las cuatro marcas de un holding.
+cliente: Grupo Borie
+sector: Logística y comercio exterior
+prueba:
+  valor: '4'
+  etiqueta: sitios construidos y una línea de contenido común
+stack: [Meta Ads, LinkedIn Ads, Notion]
+sitios:
+  - nombre: BM Group
+    url: https://www.bmgroup.cl/
+    logo: /casos/grupo-borie/logo-bm-group.png
+  - nombre: Agencia Borie
+    url: https://www.agenciaborie.cl/
+    logo: /casos/grupo-borie/logo-agencia-borie.png
+  - nombre: First Cargo
+    url: https://www.firstcargo.cl/
+    logo: /casos/grupo-borie/logo-firstcargo.png
+  - nombre: BM Transport
+    url: https://www.bmtransport.cl/
+    logo: /casos/grupo-borie/logo-bmtransport.png
+detalle:
+  resumen: >-
+    Grupo Borie reúne a BM Group, Agencia Borie, First Cargo y BM Transport. Construimos el
+    sitio de cada marca y llevamos su contenido y sus campañas con una misma línea, con
+    WhatsApp como canal de cotización.
+  servicio: Web + marketing digital
+  estadoDesde: Servicio mensual
+  reto:
+    titulo: Cuatro marcas, una sola voz.
+    parrafos:
+      - >-
+        El holding trabaja en comercio exterior, agenciamiento de aduana y transporte, con
+        marcas que hablan a clientes distintos pero comparten equipo y canales.
+      - >-
+        Cada marca necesitaba su propio sitio y su propio contenido, sin perder la coherencia
+        del grupo.
+  solucion:
+    titulo: Un sistema de marcas, no cuatro proyectos sueltos.
+    pasos:
+      - titulo: Un sitio por marca
+        texto: El sitio corporativo de BM Group y los de Agencia Borie, First Cargo y BM Transport, enlazados entre sí.
+      - titulo: Calendario de contenido
+        texto: Planificación editorial en Notion para todas las marcas, con diseño y publicación coordinados.
+      - titulo: Campañas en LinkedIn y Meta
+        texto: Campañas orientadas a pedir cotizaciones, con WhatsApp como canal de contacto.
+      - titulo: Seguimiento mensual
+        texto: Píxel de Meta configurado e informe de resultados para el cliente cada mes.
+  pruebas:
+    - valor: '4'
+      etiqueta: sitios construidos por Interforma, uno por marca
+    - valor: '39'
+      etiqueta: publicaciones planificadas entre mayo y agosto 2026
+    - valor: Mensual
+      etiqueta: informe de resultados para el cliente

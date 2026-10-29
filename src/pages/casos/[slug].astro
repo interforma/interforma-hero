@@ -30,6 +30,7 @@ const siguiente = conDetalle.length > 1 ? conDetalle[(idx + 1) % conDetalle.leng
 
 const testimonio = d.testimonio?.aprobado ? [d.testimonio] : [];
 const radios = [3, 9, 15, 9999, 9999, 9999];
+const tieneLogos = !!d.sitios?.some((m) => m.logo);
 
 const schema = {
   '@context': 'https://schema.org',
@@ -76,14 +77,30 @@ const schema = {
       </div>
     </dl>
 
+    {tieneLogos && d.sitios && (
+      <section class="cs__brands" aria-labelledby="cs-marcas">
+        <p id="cs-marcas" class="cs__num">Marcas del holding · sitios construidos por Interforma</p>
+        <ul class="cs__brands-list" role="list">
+          {d.sitios.map((m) => (
+            <li>
+              <a href={m.url} target="_blank" rel="noopener" class="cs__brand" data-case-site={caso.id}>
+                {m.logo ? <img src={m.logo} alt={m.nombre} loading="lazy" height="48" /> : <span>{m.nombre}</span>}
+                <span class="cs__brand-url">{new URL(m.url).host.replace(/^www\./, '')} ↗</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
     {d.tipo === 'agente' && d.conversacion ? (
       <figure class="cs__chat" aria-label="Ejemplo de conversación con el agente">
         {d.conversacion.map((b) => <p class={`cs__bubble cs__bubble--${b.de}`}>{b.texto}</p>)}
         <span class="cs__chip">Lead registrado en CRM</span>
       </figure>
-    ) : (
+    ) : !tieneLogos ? (
       <div class="cs__visual"><CaseVisual tipo={d.tipo} conversacion={d.conversacion} etiquetaDatos={d.etiquetaDatos} /></div>
-    )}
+    ) : null}
 
     <section class="cs__block cs__block--split" aria-labelledby="cs-reto">
       <div class="cs__head">
@@ -125,10 +142,12 @@ const schema = {
           </li>
         ))}
       </ul>
-      <div class="cs__ba">
-        <div class="cs__ba-item"><span class="cs__ba-k">Antes</span><p>{det.antes}</p></div>
-        <div class="cs__ba-item cs__ba-item--now"><span class="cs__ba-k">Ahora</span><p>{det.ahora}</p></div>
-      </div>
+      {det.antes && det.ahora && (
+        <div class="cs__ba">
+          <div class="cs__ba-item"><span class="cs__ba-k">Antes</span><p>{det.antes}</p></div>
+          <div class="cs__ba-item cs__ba-item--now"><span class="cs__ba-k">Ahora</span><p>{det.ahora}</p></div>
+        </div>
+      )}
     </section>
 
     {testimonio.length > 0 && <TestimonialStrip items={testimonio} />}
@@ -143,6 +162,15 @@ const schema = {
 
   <CtaSection />
 </Base>
+
+<script>
+  import { track } from '@lib/analytics/track';
+  document.querySelectorAll<HTMLAnchorElement>('.cs [data-case-site]').forEach((a) =>
+    a.addEventListener('click', () =>
+      track('case_site_open', { case: a.dataset.caseSite ?? '', destination: a.href, placement: 'case_page' }),
+    ),
+  );
+</script>
 
 <style>
   .cs {
@@ -214,6 +242,23 @@ const schema = {
     font-family: var(--font-family-mono); font-size: var(--font-size-label-md);
     letter-spacing: 0.06em; text-transform: uppercase;
   }
+  .cs__brands { display: flex; flex-direction: column; gap: 16px; }
+  .cs__brands-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  .cs__brand {
+    height: 100%;
+    box-sizing: border-box;
+    display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 18px;
+    padding: 24px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-card);
+    text-decoration: none;
+    transition: border-color .25s, box-shadow .25s;
+  }
+  .cs__brand img { height: 40px; width: auto; max-width: 100%; object-fit: contain; object-position: left; }
+  .cs__brand-url { font-family: var(--font-family-mono); font-size: var(--font-size-label-md); color: var(--primary-500); }
+  .cs__brand:hover { border-color: var(--primary-100); box-shadow: var(--shadow-lg); }
+  .cs__brand:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; }
   .cs__visual { border-radius: var(--radius-card-lg); overflow: hidden; }
 
   .cs__block { display: flex; flex-direction: column; gap: 32px; }

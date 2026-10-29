@@ -19,6 +19,10 @@ Formato único de tarjeta, siempre en este orden:
 6. **Stack**: máximo cuatro tecnologías.
 7. **Enlace**: «Ver caso» si el archivo tiene `detalle`; «Ver sitio» si solo tiene `sitio`; nada en otro caso.
 
+`sitios` (varios sitios construidos por Interforma) agrega cápsulas con enlace en la tarjeta y, si traen `logo`,
+una franja de logos en la página del caso. Los logos van en `public/casos/<caso>/`, en monocromo Umbra
+(dos tonos: `ink` y `gray-500`), alto 96 px, para que no se vean como estampillas.
+
 ## Regla de la prueba
 
 La tarjeta muestra hechos, no promesas: plazo, alcance, tiempo en operación, sitio en vivo o

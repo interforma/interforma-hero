@@ -26,8 +26,13 @@ const casos = defineCollection({
     prueba,
     proximaFase: z.string().optional(),
     stack: z.array(z.string()).max(4),
-    /** Sitio público del proyecto, cuando existe. */
+    /** Sitio público del proyecto, cuando existe (un solo enlace «Ver sitio»). */
     sitio: z.string().url().optional(),
+    /** Varios sitios construidos por Interforma: cápsulas en la tarjeta y logos en la página del caso. */
+    sitios: z
+      .array(z.object({ nombre: z.string(), url: z.string().url(), logo: z.string().optional() }))
+      .max(6)
+      .optional(),
     /** Burbujas de la ilustración de los casos de agente. */
     conversacion: z
       .array(z.object({ de: z.enum(['cliente', 'agente']), texto: z.string() }))
@@ -44,8 +49,8 @@ const casos = defineCollection({
           pasos: z.array(z.object({ titulo: z.string(), texto: z.string() })).min(2).max(6),
         }),
         pruebas: z.array(prueba).min(1).max(4),
-        antes: z.string(),
-        ahora: z.string(),
+        antes: z.string().optional(),
+        ahora: z.string().optional(),
       })
       .optional(),
     /** Solo se muestra en el sitio cuando el cliente aprobó el texto final. */
