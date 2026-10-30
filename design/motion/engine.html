@@ -1471,6 +1471,160 @@ window.cap04v2=(t)=>{DEFS='';GID=0;
     o+=tx('interforma.digital',64,1812,{size:26,font:'JBM',weight:400,fill:E,op:appear(t,25.6)});
   }
   svg.innerHTML=`<defs>${DEFS}</defs>`+o;};
+/* ---------- Cap. 10 · Punto explica: ¿Cómo se envía un HSM? (reel 9:16, 44 s) ----------
+   Punto dibuja el proceso en una pizarra de la oficina. Pasos: opt-in, plantilla aprobada, variables,
+   envío por API y estados, respuestas y ventana de 24 h, métricas. */
+const HS_T=[4.6,10.4,16.4,22.2,28.6,34.6,39.6]; // inicio de cada paso y del cierre
+const BLUE='#4E97C4';
+function hsStep(t){let i=-1;HS_T.forEach((x,k)=>{if(t>=x)i=k;});return i;}
+function tick(x,y,n,col,k=1){if(k<=0)return '';let o='';for(let j=0;j<n;j++)o+=`<path d="M${x+j*12-10} ${y}l7 7l14 -15" stroke="${col}" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="${k}"/>`;return o;}
+function arrowR(x1,y,x2,k,col=INK){if(k<=0)return '';const x=lerp(x1,x2,k);let o=`<line x1="${x1}" y1="${y}" x2="${x}" y2="${y}" stroke="${col}" stroke-width="6" stroke-linecap="round" stroke-dasharray="2 14"/>`;if(k>.9)o+=`<path d="M${x2-18} ${y-16}l18 16l-18 16" stroke="${col}" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;return o;}
+function miniPhone(x,y,w,h,inner){return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${w*.14}" fill="${INK}"/><rect x="${x+8}" y="${y+8}" width="${w-16}" height="${h-16}" rx="${w*.1}" fill="${BG}"/>`+inner;}
+function hsBoard(i,u,t){ // contenido de la pizarra del paso i (u = tiempo local)
+  let o='';const A=(a,d=.35)=>appear(u,a,d);
+  if(i===0){ // opt-in
+    o+=miniPhone(130,640,260,440,'');
+    o+=tx('Formulario web',260,712,{anchor:'middle',size:22,font:'JBM',weight:400,fill:MUTED});
+    const ck=prog(u,1.0,1.3);o+=`<rect x="160" y="760" width="200" height="40" rx="8" fill="${PAPEL}" stroke="${INK}" stroke-width="3"/>`+tx('Ana Pérez',176,788,{size:22,font:'Manrope',weight:600});
+    o+=`<rect x="160" y="820" width="200" height="40" rx="8" fill="${PAPEL}" stroke="${INK}" stroke-width="3"/>`+tx('+56 9 …',176,848,{size:22,font:'Manrope',weight:600});
+    o+=`<rect x="160" y="890" width="34" height="34" rx="6" fill="${ck>0?E:PAPEL}" stroke="${INK}" stroke-width="3"/>`+(ck>0?`<path d="M168 907l7 7l13 -14" stroke="${INK}" stroke-width="4" fill="none"/>`:'');
+    o+=tx('Acepto recibir',206,904,{size:20,font:'Manrope',weight:600})+tx('mensajes por',206,926,{size:20,font:'Manrope',weight:600})+tx('WhatsApp',206,948,{size:20,font:'Manrope',weight:600});
+    o+=`<rect x="170" y="990" width="180" height="50" rx="25" fill="${INK}"/>`+tx('Enviar',260,1023,{anchor:'middle',size:22,font:'Manrope',weight:700,fill:PAPEL});
+    // contactos → base con permiso
+    const C=[['Ana',true,1.5],['Luis',true,2.0],['Pedro',false,2.5]];
+    C.forEach(([n,ok,tc],k)=>{const a=A(tc),y=700+k*120;if(a<=0)return;const mv=ok?eio(prog(u,tc+.9,tc+1.5)):0;
+      const x=lerp(470,700,mv),yy=lerp(y,1066+k*100,mv);
+      o+=`<g opacity="${a}"><rect x="${x}" y="${yy}" width="210" height="84" rx="16" fill="${PAPEL}" stroke="${INK}" stroke-width="3"/><circle cx="${x+42}" cy="${yy+42}" r="24" fill="${ok?E:'#BEB8AE'}"/>`+tx(n,x+80,yy+52,{size:30,font:'Manrope',weight:700});
+      o+= ok? `<g transform="translate(${x+182} ${yy+20})">${check(0,0,clamp((u-tc-.3)/.3))}</g>` : `<path d="M${x+10} ${yy+42}L${x+200} ${yy+42}" stroke="${E}" stroke-width="6" opacity="${A(tc+.4)}"/>`+tx('no aceptó',x+105,yy+112,{anchor:'middle',size:22,font:'JBM',weight:400,fill:E800,op:A(tc+.5)});
+      o+='</g>';});
+    const bk=A(3.0);if(bk>0)o+=`<g opacity="${bk}"><rect x="680" y="1048" width="250" height="270" rx="20" fill="none" stroke="${INK}" stroke-width="4" stroke-dasharray="12 10"/>${tx('BASE CON PERMISO',805,1302,{anchor:'middle',size:19,font:'JBM',weight:400,fill:E800})}</g>`;
+  }
+  if(i===1){ // plantilla y aprobación
+    const a=A(.2);o+=`<g opacity="${a}"><rect x="130" y="640" width="560" height="460" rx="24" fill="${PAPEL}" stroke="${INK}" stroke-width="4"/>`+tx('PLANTILLA',160,690,{size:22,font:'JBM',weight:400,fill:E800,ls:2});
+    o+=chip(500,662,170,46,'UTILIDAD',{k:A(.6),fill:CIELO,size:20});
+    o+=`<rect x="160" y="730" width="500" height="150" rx="18" fill="${BG}"/>`+txr([['Hola '],['{{1}}',E800,700],[', te recordamos']],184,784,{size:28})+txr([['tu hora del '],['{{2}}',E800,700],['.']],184,826,{size:28});
+    o+=chip(160,900,240,58,'Confirmo',{k:1,size:24})+chip(420,900,240,58,'Reagendar',{k:1,size:24})+tx('Responde BAJA para no recibir más.',160,1010,{size:20,font:'Manrope',fill:MUTED})+'</g>';
+    o+=arrowR(710,870,800,eout(prog(u,1.4,1.9)));
+    const m=A(1.9);o+=`<g opacity="${m}"><rect x="810" y="780" width="160" height="180" rx="20" fill="${INK}"/>${tx('META',890,840,{anchor:'middle',size:30,font:'JBM',weight:400,fill:PAPEL})}${tx('revisa',890,880,{anchor:'middle',size:24,font:'Manrope',weight:600,fill:PAPEL})}`;
+    const sp=u*240;o+=`<g transform="translate(890 920) rotate(${sp})"><path d="M-16 0a16 16 0 1 1 16 16" stroke="${E}" stroke-width="5" fill="none" stroke-linecap="round"/></g></g>`;
+    const s1=A(2.4)*(1-prog(u,3.7,3.9)),s2=prog(u,3.9,4.2);
+    if(s1>0)o+=`<g opacity="${s1}" transform="rotate(-8 410 1170)"><rect x="250" y="1130" width="320" height="76" rx="12" fill="none" stroke="${MUTED}" stroke-width="6"/>${tx('EN REVISIÓN',410,1182,{anchor:'middle',size:34,font:'JBM',weight:400,fill:MUTED})}</g>`;
+    if(s2>0){const sc=lerp(1.6,1,eout(s2));o+=`<g opacity="${s2}" transform="translate(410 1170) rotate(-8) scale(${sc}) translate(-410 -1170)"><rect x="250" y="1130" width="320" height="76" rx="12" fill="none" stroke="${E}" stroke-width="7"/>${tx('APROBADA',410,1182,{anchor:'middle',size:38,font:'JBM',weight:400,fill:E})}</g>`;}
+    o+=tx('Categorías: Marketing · Utilidad · Autenticación',540,1300,{anchor:'middle',size:24,font:'JBM',weight:400,fill:INK,op:A(4.3)});
+  }
+  if(i===2){ // variables
+    const a=A(.2);o+=`<g opacity="${a}"><rect x="120" y="660" width="380" height="270" rx="16" fill="${PAPEL}" stroke="${INK}" stroke-width="4"/>`;
+    o+=`<line x1="120" y1="720" x2="500" y2="720" stroke="${INK}" stroke-width="3"/><line x1="290" y1="660" x2="290" y2="930" stroke="#BEB8AE" stroke-width="2"/>`;
+    o+=tx('{{1}} nombre',140,702,{size:22,font:'JBM',weight:400,fill:E800})+tx('{{2}} hora',306,702,{size:22,font:'JBM',weight:400,fill:E800});
+    [['Ana','lun 10:00'],['Luis','mar 12:30'],['Rosa','mié 09:15']].forEach(([n,h],k)=>{const y=770+k*60,kk=A(.6+k*.3);o+=tx(n,140,y,{size:28,font:'Manrope',weight:600,op:kk})+tx(h,306,y,{size:28,font:'Manrope',weight:600,op:kk});});
+    o+='</g>';
+    o+=`<g opacity="${A(.4)}"><rect x="580" y="660" width="380" height="140" rx="16" fill="${BG}" stroke="${INK}" stroke-width="3"/>`+txr([['Hola '],['{{1}}',E800,700],[', tu hora']],600,716,{size:24})+txr([['es el '],['{{2}}',E800,700],['.']],600,756,{size:24})+'</g>';
+    // flechas que inyectan y mensajes personalizados
+    [['Ana','lun 10:00'],['Luis','mar 12:30'],['Rosa','mié 09:15']].forEach(([n,h],k)=>{const tc=1.8+k*.9,y=890+k*140;const ak=eout(prog(u,tc,tc+.4));
+      o+=`<path d="M500 ${770+k*60-10}C 540 ${770+k*60-10}, 540 ${y+40}, ${lerp(500,590,ak)} ${y+40}" stroke="${E}" stroke-width="5" fill="none" stroke-dasharray="2 12" stroke-linecap="round" opacity="${ak}"/>`;
+      const bk=A(tc+.35);if(bk>0)o+=`<g opacity="${bk}" transform="translate(${16*(1-bk)} 0)"><rect x="600" y="${y}" width="360" height="94" rx="20" fill="${CIELO}" stroke="${INK}" stroke-width="3"/>`+txr([['Hola '],[n,INK,800],[', tu hora']],622,y+40,{size:24})+txr([['es el '],[h,INK,800],['.']],622,y+74,{size:24})+'</g>';});
+  }
+  if(i===3){ // API y estados
+    const a=A(.2);o+=`<g opacity="${a}"><rect x="120" y="660" width="220" height="150" rx="18" fill="${PAPEL}" stroke="${INK}" stroke-width="4"/>${tx('TU SISTEMA',230,720,{anchor:'middle',size:22,font:'JBM',weight:400,fill:E800})}${tx('CRM · n8n',230,764,{anchor:'middle',size:26,font:'Manrope',weight:700})}</g>`;
+    o+=arrowR(350,735,430,eout(prog(u,.6,1.0)));
+    const b=A(1.0);o+=`<g opacity="${b}"><path d="M470 780a50 50 0 0 1 30 -90a70 70 0 0 1 130 10a50 50 0 0 1 20 80z" fill="${INK}"/>${tx('API de',560,735,{anchor:'middle',size:22,font:'Manrope',weight:700,fill:PAPEL})}${tx('WhatsApp',560,762,{anchor:'middle',size:22,font:'Manrope',weight:700,fill:PAPEL})}</g>`;
+    o+=arrowR(670,735,740,eout(prog(u,1.4,1.8)));
+    // tres teléfonos con sus estados
+    const ST=[[2.2,2.9,3.6,false],[2.4,3.1,4.6,false],[2.6,99,99,true]];
+    ST.forEach(([s,d,r,fail],k)=>{const x=760+((k%2)*0),y=650+k*200;const pk=A(1.8+k*.15);if(pk<=0)return;
+      o+=`<g opacity="${pk}">`+miniPhone(760,y,200,180,'')+`<rect x="780" y="${y+30}" width="160" height="56" rx="12" fill="${PAPEL}"/>`+tx(['Ana','Luis','Pedro'][k],792,y+66,{size:22,font:'Manrope',weight:700});
+      const st=u<s?0:u<d?1:u<r?2:3;
+      if(fail&&u>=s+.6) o+=tx('⚠ fallido',860,y+130,{anchor:'middle',size:24,font:'Manrope',weight:700,fill:E800});
+      else if(st>0) o+=tick(880,y+118,st===1?1:2,st===3?BLUE:MUTED);
+      o+='</g>';});
+    const lg=A(4.4);o+=`<g opacity="${lg}"><rect x="120" y="880" width="560" height="420" rx="18" fill="${PAPEL}" stroke="${INK}" stroke-width="3"/>${tx('ESTADOS',150,930,{size:22,font:'JBM',weight:400,fill:E800,ls:2})}`+
+      tick(170,990,1,MUTED)+tx('enviado',230,1004,{size:28,font:'Manrope',weight:600})+tick(170,1070,2,MUTED)+tx('entregado',230,1084,{size:28,font:'Manrope',weight:600})+tick(170,1150,2,BLUE)+tx('leído',230,1164,{size:28,font:'Manrope',weight:600})+tx('⚠',165,1244,{size:30,weight:700,fill:E800})+tx('fallido (número inválido)',230,1244,{size:28,font:'Manrope',weight:600})+'</g>';
+  }
+  if(i===4){ // respuesta y ventana 24 h
+    const a=A(.2);o+=`<g opacity="${a}">`+miniPhone(130,640,360,680,'');
+    o+=`<rect x="158" y="690" width="300" height="200" rx="18" fill="${PAPEL}"/>`+tx('Hola Ana, tu hora',178,740,{size:24,font:'Manrope',weight:600})+tx('es el lun 10:00.',178,772,{size:24,font:'Manrope',weight:600});
+    const tp=prog(u,1.2,1.6);o+=chip(178,800,130,52,'Confirmo',{k:1,fill:tp>0?mix(PAPEL,E,tp):PAPEL,size:20})+chip(318,800,130,52,'Reagendar',{k:1,size:20});
+    if(tp>0&&tp<1)o+=`<circle cx="243" cy="826" r="${16+40*eout(tp)}" fill="none" stroke="${INK}" stroke-width="4" opacity="${1-tp}"/>`;
+    const rp=A(1.7);if(rp>0)o+=`<g opacity="${rp}"><rect x="290" y="920" width="170" height="60" rx="18" fill="${CIELO}"/>${tx('Confirmo',375,958,{anchor:'middle',size:24,font:'Manrope',weight:700})}</g>`;
+    const r2=A(3.2);if(r2>0)o+=`<g opacity="${r2}"><rect x="158" y="1010" width="300" height="100" rx="18" fill="${PAPEL}"/>${tx('¡Gracias! ¿Te',178,1050,{size:22,font:'Manrope',weight:600})}${tx('mando la dirección?',178,1082,{size:22,font:'Manrope',weight:600})}</g>`;
+    o+='</g>';
+    // reloj de 24 h
+    const rk=A(2.0);if(rk>0){const fr=clamp((u-2.2)/3.2);const ang=fr*TAU;const cx=760,cy=900,R=150;
+      o+=`<g opacity="${rk}"><circle cx="${cx}" cy="${cy}" r="${R}" fill="${PAPEL}" stroke="${INK}" stroke-width="5"/>`;
+      if(fr>0)o+=`<path d="M${cx} ${cy-R+18}A${R-18} ${R-18} 0 ${fr>.5?1:0} 1 ${cx+Math.sin(ang)*(R-18)} ${cy-Math.cos(ang)*(R-18)}" stroke="${fr<.98?E:MUTED}" stroke-width="22" fill="none" stroke-linecap="round"/>`;
+      o+=tx(fr<.98?'24 h':'0 h',cx,cy+18,{anchor:'middle',size:56,weight:700})+'</g>';
+      o+=tx(fr<.98?'Ventana abierta:':'Ventana cerrada:',760,1110,{anchor:'middle',size:28,font:'Manrope',weight:700,fill:fr<.98?INK:E800,op:rk})+tx(fr<.98?'conversación libre':'solo plantillas',760,1150,{anchor:'middle',size:28,font:'Manrope',weight:600,op:rk});
+      o+=tx('(Punto o una persona)',760,1192,{anchor:'middle',size:22,font:'JBM',weight:400,fill:MUTED,op:rk*(fr<.98?1:0)});}
+  }
+  if(i===5){ // métricas
+    const K=[['ENVIADOS','500',''],['ENTREGADOS','97','%'],['LEÍDOS','82','%'],['RESPONDIERON','41','%']];
+    K.forEach(([l,v,s],k)=>{const x=130+(k%2)*420,y=650+Math.floor(k/2)*280,a=A(.2+k*.25);if(a<=0)return;const n=Math.round(parseInt(v)*eout(clamp((u-.4-k*.25)/1.2)));
+      o+=`<g opacity="${a}"><rect x="${x}" y="${y}" width="400" height="250" rx="22" fill="${k===3?E:PAPEL}" stroke="${INK}" stroke-width="4"/>${tx(l,x+30,y+56,{size:22,font:'JBM',weight:400,fill:k===3?INK:E800,ls:2})}${tx(n+s,x+30,y+190,{size:104,weight:700,ls:-3})}</g>`;});
+    o+=tx('Bajas: 1 %   ·   Cifras de ejemplo',540,1270,{anchor:'middle',size:26,font:'JBM',weight:400,fill:MUTED,op:A(2.2)});
+  }
+  return o;}
+window.hsm10=(t)=>{DEFS='';GID=0;
+  const svg=document.getElementById('stage');svg.setAttribute('width',CW);svg.setAttribute('height',CH);svg.setAttribute('viewBox',`0 0 ${CW} ${CH}`);
+  const FL=1640;let o='';
+  if(t<HS_T[6]){
+    // oficina con profundidad
+    o+=`<rect width="${CW}" height="${CH}" fill="${lgrad([[0,PAPEL],[1,'#E2DDD5']])}"/>`;
+    o+=dayWindow(980,520,240,520,t,{frame:9});
+    o+=`<rect x="0" y="${FL}" width="${CW}" height="300" fill="${lgrad([[0,'#D9D2C6'],[1,'#CBC3B6']])}"/><rect x="0" y="${FL}" width="${CW}" height="8" fill="#BEB8AE"/>`;
+    for(let x=-100;x<1200;x+=170)o+=`<line x1="${x}" y1="${FL+8}" x2="${x-90}" y2="1920" stroke="#C3BBAE" stroke-width="3"/>`;
+    // pizarra
+    o+=`<rect x="70" y="${560}" width="940" height="840" rx="20" fill="#FFFFFF" stroke="${INK}" stroke-width="12"/><rect x="60" y="1400" width="960" height="22" rx="6" fill="#BEB8AE"/>`;
+    o+=`<rect x="110" y="1384" width="60" height="16" rx="5" fill="${E}"/><rect x="180" y="1384" width="60" height="16" rx="5" fill="${INK}"/><rect x="250" y="1378" width="90" height="22" rx="5" fill="${CIELO}"/>`;
+    o+=`<rect x="460" y="1422" width="14" height="${FL-1422}" fill="#5C534A"/><rect x="606" y="1422" width="14" height="${FL-1422}" fill="#5C534A"/>`;
+    // contenido del paso + borrado entre pasos
+    const i=hsStep(t);
+    if(i>=0&&i<6){const u=t-HS_T[i],end=HS_T[i+1];const fade=1-prog(t,end-.55,end-.2);
+      o+=`<g opacity="${fade}">${hsBoard(i,u,t)}</g>`;
+      const ew=prog(t,end-.55,end-.1);if(ew>0&&ew<1){const ex=lerp(980,90,eio(ew));o+=`<rect x="${ex-60}" y="${600+Math.sin(ew*TAU*3)*200+300}" width="120" height="70" rx="12" fill="${CIELO}" stroke="${INK}" stroke-width="4"/><rect x="${ex-60}" y="${600+Math.sin(ew*TAU*3)*200+300}" width="120" height="24" rx="10" fill="#5C534A"/>`;}}
+    else if(t<HS_T[0]){const a=appear(t,1.6,.5);o+=`<g opacity="${a}">`+tx('¿Envío masivo',540,880,{anchor:'middle',size:72,weight:600,fill:INK})+tx('por WhatsApp',540,970,{anchor:'middle',size:72,weight:600,fill:INK})+tx('sin que te bloqueen?',540,1060,{anchor:'middle',size:72,weight:600,fill:E})+'</g>';
+      const sw=prog(t,3.9,4.5);if(sw>0&&sw<1){const ex=lerp(980,90,eio(sw));o+=`<rect x="${ex-60}" y="${900+Math.sin(sw*TAU*3)*150}" width="120" height="70" rx="12" fill="${CIELO}" stroke="${INK}" stroke-width="4"/>`;}
+      if(t>3.9)o=o.replace(/<g opacity="([\d.]+)">(<text[^]*?sin que te bloqueen\?<\/text>)<\/g>/,(m,op,inner)=>`<g opacity="${(1-prog(t,3.9,4.4))*parseFloat(op)}">${inner}</g>`);}
+    // mueble con el gato y planta
+    o+=`<rect x="40" y="1470" width="260" height="${FL-1470}" rx="10" fill="${WOOD_D}"/><rect x="40" y="1470" width="260" height="16" rx="6" fill="${WOOD}"/>`;
+    o+=catSit(170,1470,.85,t,{look:1,perk:[4.6,10.4,16.4,22.2,28.6,34.6].some(x=>t>x&&t<x+.6)?1:0});
+    // Punto con plumón
+    let st={ex:-14,ey:-10,ty:-4*Math.sin(TAU*t/2.2)};
+    if(t<1.6) st={eyes:'line',ey:4};
+    if(t>=1.6&&t<4.6){st={eyes:'round',ex:-12,ey:-12};if(t>2.4)st={ex:-12,ey:-12};}
+    const draw=hsStep(t)>=0&&hsStep(t)<6;const ui=draw?t-HS_T[hsStep(t)]:0;
+    if(draw&&ui<1.0){st={eyes:'happy'};st.ty=-14*Math.abs(Math.sin(ui*TAU));}
+    if(hsStep(t)===1&&t-HS_T[1]>3.9&&t-HS_T[1]<4.8) st=celebrate(t,HS_T[1]+3.9);
+    if(hsStep(t)===3&&t-HS_T[3]>3.2&&t-HS_T[3]<4.2) st={eyes:'low',sweat:(t%1),ex:-10,ey:-8};
+    if(hsStep(t)===5&&t-HS_T[5]>1.8) st=celebrate(t,HS_T[5]+1.8);
+    o+=`<ellipse cx="900" cy="${FL+6}" rx="105" ry="10" fill="${INK}" opacity=".18"/>`+puntoAt(900,FL-112,112,st);
+    const mx=1010,my=FL-90;o+=`<g transform="rotate(${25+8*Math.sin(t*6)} ${mx} ${my})"><rect x="${mx-12}" y="${my-70}" width="24" height="80" rx="8" fill="${E}" stroke="${INK}" stroke-width="3"/><rect x="${mx-12}" y="${my-70}" width="24" height="20" rx="6" fill="${INK}"/></g>`;
+    o+=`<g>${plant(1085,1960,1.6)}</g>`;
+    // textos superiores
+    const pill='CAP. 10 · PUNTO EXPLICA';o+=`<rect x="64" y="70" width="${pill.length*20.6+64}" height="64" rx="32" fill="${E}"/>`+tx(pill,96,113,{size:30,font:'JBM',weight:400,ls:1});
+    const H=[[.2,4.4,0,'Así funciona un HSM','El mensaje plantilla de WhatsApp para empresas.'],
+      [4.6,10.2,1,'Solo a quien aceptó','Opt-in: el cliente autoriza que le escribas.'],
+      [10.4,16.2,2,'Plantilla aprobada','Meta revisa cada plantilla y su categoría.'],
+      [16.4,22.0,3,'Variables','{{1}}, {{2}}… se llenan con los datos de cada contacto.'],
+      [22.2,28.4,4,'Envío por API y estados','WhatsApp informa qué pasó con cada mensaje.'],
+      [28.6,34.4,5,'Respuesta y ventana de 24 h','Si responde, se puede conversar libremente.'],
+      [34.6,39.4,6,'Mide','Entregados, leídos, respuestas y bajas.']];
+    H.forEach(([a,b,n,title,sub])=>{const k=Math.min(appear(t,a,.4),1-prog(t,b-.25,b));if(k<=0)return;let x=64;
+      if(n){o+=`<g opacity="${k}"><circle cx="106" cy="230" r="42" fill="${INK}"/>${tx(String(n),106,247,{anchor:'middle',size:46,weight:600,fill:PAPEL})}</g>`;x=170;}
+      o+=tx(title,x,258,{size:title.length>22?62:76,weight:600,ls:-2,op:k,dy:12*(1-appear(t,a,.4))})+tx(sub,64,340,{size:31,font:'Manrope',weight:600,fill:'#3F3A34',op:k});});
+    // sub de la portada: «HSM = Highly Structured Message»
+    o+=tx('HSM = mensaje plantilla aprobado',64,420,{size:28,font:'JBM',weight:400,fill:E800,op:Math.min(appear(t,.8),1-prog(t,4.1,4.4))});
+    const wo=prog(t,HS_T[6]-.4,HS_T[6]);if(wo>0)o+=`<rect x="0" y="${lerp(CH,0,eio(wo))}" width="${CW}" height="${CH}" fill="${INK}"/>`;
+  } else {
+    const T=HS_T[6];o+=`<rect width="${CW}" height="${CH}" fill="${INK}"/>`+stars(t,26,700,9);
+    const a=appear(t,T+.2),b=appear(t,T+1.0);
+    ['Masivo','no es spam.'].forEach((l,i)=>o+=tx(l,64,330+i*110,{size:100,weight:600,fill:PAPEL,ls:-3,op:a,dy:20*(1-a)}));
+    ['Con permiso, plantilla','aprobada y datos limpios.'].forEach((l,i)=>o+=tx(l,64,600+i*80,{size:64,weight:600,fill:E,ls:-2,op:b,dy:16*(1-b)}));
+    o+=`<rect x="0" y="1480" width="${CW}" height="440" fill="${NIGHT2}"/>`;
+    o+=puntoAt(760,1480-130,130,t>T+1.8?celebrate(t,T+1.8):{eyes:'happy'})+catSit(420,1480,1.0,t,{look:1});
+    o+=txr([['¿Lo quieres para tu empresa? ',PAPEL],['Escríbenos RAÍZ.',E,700]],64,1640,{size:34,op:appear(t,T+2.2)});
+    o+=tx('Cap. 10 · Punto explica',64,1760,{size:26,font:'JBM',weight:400,fill:'#BEB8AE',op:appear(t,T+2.6)})+tx('interforma.digital',64,1812,{size:26,font:'JBM',weight:400,fill:E,op:appear(t,T+2.8)});
+  }
+  svg.innerHTML=`<defs>${DEFS}</defs>`+o;};
 
 window.ready=document.fonts.ready.then(()=>Promise.all([document.fonts.load('500 80px Outfit'),document.fonts.load('500 40px Manrope'),document.fonts.load('30px JBM')]));
 </script>
