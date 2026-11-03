@@ -1,0 +1,195 @@
+"""Música y efectos · El barrio de Punto Ep. 02, cuidadoras (34,2 s), original y sintetizada.
+Afro-funk a 108 bpm en C mayor: kick sincopado, congas, guitarra en contratiempo, marimba y metales."""
+import numpy as np
+from scipy.signal import fftconvolve, butter, sosfilt
+from scipy.io import wavfile
+
+SR = 48000; DUR = 34.2; N = int(SR * DUR)
+L = np.zeros(N); R = np.zeros(N); rng = np.random.default_rng(11)
+hz = lambda m: 440.0 * 2 ** ((m - 69) / 12)
+
+def put(sig, t0, pan=0.0):
+    i = int(t0 * SR)
+    if i >= N or i < 0: return
+    sig = sig[: N - i]
+    L[i:i+len(sig)] += sig * np.cos((pan + 1) * np.pi / 4)
+    R[i:i+len(sig)] += sig * np.sin((pan + 1) * np.pi / 4)
+
+def pluck(m, amp=.2, dec=1.0, bright=1.0):
+    f = hz(m); t = np.arange(int(dec * 2.5 * SR)) / SR
+    s = sum(a * np.sin(2*np.pi*f*k*(1+.0004*k*k)*t) * np.exp(-t/dec*(1+(k-1)*.9/bright))
+            for k, a in enumerate([1, .45, .22, .12, .06], start=1))
+    return amp * s * np.minimum(1, t / .003)
+
+def marimba(m, amp=.15, dec=.35):
+    f = hz(m); t = np.arange(int(dec * 4 * SR)) / SR
+    s = np.sin(2*np.pi*f*t)*np.exp(-t/dec) + .35*np.sin(2*np.pi*f*4*t)*np.exp(-t/(dec*.25))
+    return amp * s * np.minimum(1, t / .002)
+
+def bell(m, amp=.08, dec=1.2):
+    f = hz(m); t = np.arange(int(dec * 3 * SR)) / SR
+    s = sum(a*np.sin(2*np.pi*f*r*t)*np.exp(-t/(dec*d)) for r, a, d in [(1,1,1),(2.76,.4,.5),(5.4,.2,.3)])
+    return amp * s
+
+def pad(ms, t0, t1, amp=.05, a=.6, r=.8, bright=3):
+    t = np.arange(int((t1 - t0 + r) * SR)) / SR; s = np.zeros_like(t)
+    for m in ms:
+        for d in (-.07, .07):
+            for k in range(1, bright + 1):
+                s += np.sin(2*np.pi*hz(m+d)*k*t + rng.uniform(0, 6)) / k**1.6
+    s /= len(ms) * 2
+    e = np.ones_like(t); na = int(a*SR); e[:na] = np.linspace(0, 1, na)**2
+    r0 = int((t1-t0)*SR); e[r0:] = np.linspace(1, 0, len(e)-r0)**2
+    put(amp * s * e, t0)
+
+def glide(t0, f0, f1, d, amp=.1, shape=np.sin):
+    t = np.arange(int(d*SR)) / SR; f = np.linspace(f0, f1, len(t))
+    put(amp * shape(2*np.pi*np.cumsum(f)/SR) * np.sin(np.pi*t/d), t0)
+
+def swoosh(t0, d=.45, amp=.12):
+    n = int(d*SR); x = rng.standard_normal(n)
+    sos = butter(2, [600, 5000], btype='band', fs=SR, output='sos'); x = sosfilt(sos, x)
+    e = np.sin(np.pi*np.linspace(0, 1, n))**2; put(amp * x * e / np.max(np.abs(x)), t0)
+
+def click(t0, amp=.05, f=2400):
+    t = np.arange(int(.03*SR)) / SR; put(amp*np.sin(2*np.pi*f*t)*np.exp(-t*180), t0)
+
+def buzz(t0):
+    for k in range(3):
+        t = np.arange(int(.14*SR)) / SR
+        s = np.sign(np.sin(2*np.pi*170*t)) * .5 + np.sin(2*np.pi*340*t) * .5
+        sos = butter(2, 900, fs=SR, output='sos')
+        put(.07 * sosfilt(sos, s) * np.sin(np.pi*t/.14), t0 + k*.19)
+
+def thump(t0, amp=.25):
+    t = np.arange(int(.4*SR)) / SR; f = 110*np.exp(-t*10) + 48
+    put(amp*np.sin(2*np.pi*np.cumsum(f)/SR)*np.exp(-t*9), t0)
+
+from scipy.signal import sawtooth
+ML = np.zeros(N); MR = np.zeros(N)   # bus musical (se le aplica sidechain)
+def putm(sig, t0, pan=0.0):
+    i = int(t0 * SR)
+    if i >= N or i < 0: return
+    sig = sig[: N - i]
+    ML[i:i+len(sig)] += sig * np.cos((pan + 1) * np.pi / 4)
+    MR[i:i+len(sig)] += sig * np.sin((pan + 1) * np.pi / 4)
+KICKS = []
+def kick(t0, amp=.5):
+    KICKS.append(t0); t = np.arange(int(.42*SR)) / SR; f = 46 + 120*np.exp(-t*28)
+    s = np.sin(2*np.pi*np.cumsum(f)/SR) * np.exp(-t*7.5); s[:int(.004*SR)] += rng.standard_normal(int(.004*SR))*.3
+    put(amp * s, t0)
+def clap(t0, amp=.16, pan=0):
+    n = int(.22*SR); x = rng.standard_normal(n); sos = butter(2, [900, 4200], btype='band', fs=SR, output='sos'); x = sosfilt(sos, x)
+    t = np.arange(n)/SR; e = np.exp(-t*22)
+    for d in (.0, .011, .022): e += np.where(t >= d, np.exp(-(t-d)*90), 0)*.6
+    put(amp * x * e / 3, t0, pan)
+def hat(t0, amp=.05, open_=False, pan=.2):
+    d = .2 if open_ else .045; n = int(d*SR); x = rng.standard_normal(n)
+    x = sosfilt(butter(2, 7000, btype='high', fs=SR, output='sos'), x); t = np.arange(n)/SR
+    put(amp * x * np.exp(-t*(14 if open_ else 90)), t0, pan)
+def shaker(t0, amp=.035, pan=-.3):
+    n = int(.07*SR); x = rng.standard_normal(n); x = sosfilt(butter(2, [4000, 11000], btype='band', fs=SR, output='sos'), x)
+    t = np.arange(n)/SR; put(amp * x * np.sin(np.pi*t/.07)**2, t0, pan)
+def conga(t0, f=210, amp=.16, pan=.4):
+    t = np.arange(int(.3*SR))/SR; ff = f*(1+.25*np.exp(-t*40)); put(amp*np.sin(2*np.pi*np.cumsum(ff)/SR)*np.exp(-t*14), t0, pan)
+def rim(t0, amp=.08, pan=-.1):
+    t = np.arange(int(.05*SR))/SR; s = np.sin(2*np.pi*1700*t)*np.exp(-t*120) + rng.standard_normal(len(t))*np.exp(-t*200)*.4
+    put(amp*s, t0, pan)
+def sawbass(m, t0, d, amp=.16, cut=520):
+    t = np.arange(int(d*SR))/SR; s = sawtooth(2*np.pi*hz(m)*t)*.6 + np.sin(2*np.pi*hz(m)*t)
+    s = sosfilt(butter(2, cut, fs=SR, output='sos'), s); e = np.minimum(1, t/.004) * np.exp(-t*3) * np.minimum(1, (d-t)/.02)
+    putm(amp * s * e, t0)
+def stab(ms, t0, d=.22, amp=.06, cut=2600, pan=0):
+    t = np.arange(int(d*SR))/SR; s = sum(sawtooth(2*np.pi*hz(m+dt)*t) for m in ms for dt in (-.06, .06)) / (2*len(ms))
+    s = sosfilt(butter(2, cut, fs=SR, output='sos'), s); e = np.minimum(1, t/.003)*np.exp(-t*9)
+    putm(amp * s * e, t0, pan)
+def brass(ms, t0, d=.35, amp=.07, pan=0):
+    t = np.arange(int(d*SR))/SR; s = sum(sawtooth(2*np.pi*hz(m)*t*(1+.003*np.sin(2*np.pi*5*t))) for m in ms)/len(ms)
+    br = sosfilt(butter(2, 3200, fs=SR, output='sos'), s); dk = sosfilt(butter(2, 800, fs=SR, output='sos'), s)
+    w = np.exp(-t*9); e = np.minimum(1, t/.02)*np.minimum(1, (d-t)/.05)
+    putm(amp * (br*w + dk*(1-w)) * e, t0, pan)
+def riser(t0, d, amp=.08):
+    n = int(d*SR); x = rng.standard_normal(n); t = np.arange(n)/SR; out = np.zeros(n)
+    for k in range(0, n, 2400):
+        f = 400 + 7000*(k/n)**2; out[k:k+2400] = sosfilt(butter(2, [f, min(f*2.2, 20000)], btype='band', fs=SR, output='sos'), x[k:k+2400])
+    put(amp * out * (t/d)**2, t0)
+def duck_and_mix(depth=.55, rel=.18):
+    g = np.ones(N)
+    for k in KICKS:
+        i = int(k*SR); n = int(rel*2.5*SR); t = np.arange(n)/SR
+        seg = 1 - depth*np.exp(-t/rel*1.0); j = min(N, i+n); g[i:j] = np.minimum(g[i:j], seg[:j-i])
+    L[:] += ML*g; R[:] += MR*g
+# ---------- Ep. 02 · Cuidadoras: afro-funk a 108 bpm en C mayor ----------
+BEAT = 60/108; BAR = 4*BEAT; S16 = BEAT/4
+PROG = [(48, 52, 55), (45, 48, 52), (41, 45, 48), (43, 47, 50)]   # C Am F G
+T = [5.4, 11.2, 17.6, 23.6, 29.0]; TO = 34.2
+# 0–5.4: noche, pulso suave (shaker + bajo) y el teléfono vibrando
+t = .0; b = 0
+while t < T[0] - 1e-6:
+    ch = PROG[(b//4) % 4]
+    for q in range(4): shaker(t + q*S16, .02 if q % 2 else .03)
+    if b % 4 == 0: put(pluck(ch[0]-12, .13, .6, .7), t)
+    if b % 4 == 2: put(pluck(ch[0]-12, .1, .4, .7), t + BEAT/2)
+    if b % 2 == 1: put(marimba(ch[b % 3]+24, .05), t + BEAT/2, pan=.35)
+    t += BEAT; b += 1
+for k in range(6): buzz(.8 + k*.7)
+for x in (.9, 1.6, 2.3, 3.0): glide(x, 700, 1200, .08, .06)
+# 5.4: el aviso tarde — se corta el groove, acorde menor
+put(marimba(64, .14, .5), 5.6); put(marimba(60, .14, .6), 5.85); thump(5.6, .2)
+pad([45, 52, 57, 60], 5.6, 10.6, amp=.045, a=.4, r=.6, bright=2)
+t = 6.6
+while t < 10.9: rim(t, .05); shaker(t + BEAT/2, .025); t += BEAT
+put(marimba(64, .14, .4), 7.0); thump(7.0, .15)                          # «SIN CUIDADORA»
+riser(9.6, 1.6, .07)
+# 11.2–29: groove completo
+t = T[1]; b = 0
+KP = [0, 6, 8, 11]                                                          # kick sincopado en 16avos
+CP = [3, 7, 10, 14]                                                         # congas
+while t < T[4] - 1e-6:
+    bar = b // 4; ch = PROG[bar % 4]
+    if b % 4 == 0:
+        for q in KP: kick(t + q*S16, .42)
+        for q in CP: conga(t + q*S16, [210, 280, 210, 320][CP.index(q)], .12, pan=.45)
+        for bb in (1, 3): clap(t + bb*BEAT, .12)
+        # bajo
+        for q, m, d in [(0, ch[0]-12, 2), (3, ch[0]-12, 1), (6, ch[2]-24, 2), (10, ch[0]-12, 1), (12, ch[1]-12, 2), (14, ch[0]-12, 1)]:
+            sawbass(m, t + q*S16, d*S16*.9, .19, 700)
+        # guitarra en contratiempos
+        for q in (2, 6, 10, 14): putm(sum(pluck(m+12, .045, .12, 2.2) for m in ch), t + q*S16, pan=-.35)
+        # gancho de marimba
+        hook = [(0, ch[2]+12), (3, ch[0]+24), (6, ch[1]+24), (8, ch[2]+12), (11, ch[0]+24)]
+        if bar % 2 == 1: hook = [(0, ch[1]+24), (2, ch[2]+24), (5, ch[0]+24), (9, ch[2]+12), (12, ch[1]+24)]
+        for q, m in hook: putm(marimba(m, .07, .25), t + q*S16, pan=.3)
+        # metales en el reemplazo y en el exterior
+        if t >= T[2]:
+            for q in (0, 3): brass([m+12 for m in ch], t + q*S16 + (BAR/2 if bar % 2 else 0), .22, .06)
+        if bar % 4 == 0: pad(list(ch) + [ch[0]+12], t, t + 4*BAR - .2, amp=.025, a=.3, r=.4)
+    for q in range(4): shaker(t + q*S16, .03 if q == 2 else .018)
+    hat(t + BEAT/2, .03, pan=.2)
+    t += BEAT; b += 1
+for x in T[1:4]: swoosh(x - .35, .45, .1)
+# efectos de escena
+put(bell(86, .05, .7), 11.3)                                                # Punto aparece
+glide(11.35, 400, 900, .16, .08)
+click(12.3, .06, 2200); put(marimba(67, .1, .35), 12.4)                    # toca «No puedo»
+for j in range(5):
+    tc = 11.2 + .8 + j*.45
+    if j == 2: thump(tc, .12); put(marimba(60, .08, .3), tc)
+    else: put(marimba(72 + [0, 4, 0, 7, 9][j], .09, .3), tc); click(tc, .04)
+click(19.6, .06, 2200); put(bell(84, .06, .8), 19.8); put(bell(88, .05, .8), 19.86)   # Asignar
+glide(20.4, 500, 900, .12, .06); put(marimba(79, .09, .3), 20.0)
+glide(25.6, 600, 1100, .1, .07); put(bell(84, .05, .8), 25.6)              # aviso a la familia
+# outro
+kick(T[4], .5); brass([60, 64, 67, 72], T[4], .6, .08)
+pad([36, 48, 52, 55, 60, 64], T[4], T[4] + 3.4, amp=.07, a=.2, r=1.2, bright=4)
+for j, m in enumerate([72, 76, 79, 84, 88]): put(bell(m, .045, 1.2), T[4] + 1.8 + j*.07, pan=(j-2)/3)
+for q in range(8): shaker(T[4] + 1.8 + q*BEAT/2, .02)
+duck_and_mix(.6, .16)
+def ir(seed, secs=1.4):
+    g = np.random.default_rng(seed); t = np.arange(int(secs*SR))/SR
+    x = g.standard_normal(len(t))*np.exp(-t*4); x = sosfilt(butter(1, 6000, fs=SR, output='sos'), x)
+    return x/np.sqrt(np.sum(x**2))
+oL = L*.9 + fftconvolve(L, ir(5))[:N]*.22; oR = R*.9 + fftconvolve(R, ir(6))[:N]*.22
+fade = np.ones(N); fo = int((DUR-1.4)*SR); fade[fo:] = np.linspace(1, 0, N-fo)**1.5
+out = np.stack([oL*fade, oR*fade], 1); out *= .89/np.max(np.abs(out))
+wavfile.write('audio_cuidadoras.wav', SR, (out*32767).astype(np.int16)); print('ok')
