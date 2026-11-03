@@ -1626,6 +1626,303 @@ window.hsm10=(t)=>{DEFS='';GID=0;
   }
   svg.innerHTML=`<defs>${DEFS}</defs>`+o;};
 
+/* ---------- Caso real · First Cargo (reel 9:16, 37 s) ----------
+   Puerto con profundidad: cielo → cerros → mar con barco → grúas → muelle con contenedores, Punto y el gato.
+   Solo hechos verificados: un número y un inbox para tres empresas, el bot distingue por tipo de solicitud,
+   pide datos, crea el lead en el CRM (Twenty), correo de confirmación genérico, ~9 de 10 conversaciones sin
+   intervención humana, recordatorio a los 15 días sin respuesta. */
+const FC_T=[5.0,11.0,17.0,23.0,28.6,32.6];
+function container(x,y,w,h,col,sw=3){let o=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${col}" stroke="${INK}" stroke-width="${sw}"/>`;
+  const n=Math.floor(w/18);for(let i=1;i<n;i++)o+=`<line x1="${(x+i*w/n).toFixed(1)}" y1="${y+5}" x2="${(x+i*w/n).toFixed(1)}" y2="${y+h-5}" stroke="${INK}" stroke-width="2" opacity=".25"/>`;return o;}
+function crane(x,y,s,col,tr=0,drop=0,cc=null){
+  let o=`<g stroke="${col}" stroke-width="${10*s}" fill="none" stroke-linecap="round" stroke-linejoin="round">`;
+  o+=`<path d="M${x-60*s} ${y}L${x-60*s} ${y-300*s}M${x+60*s} ${y}L${x+60*s} ${y-300*s}M${x-60*s} ${y-150*s}L${x+60*s} ${y-150*s}M${x-60*s} ${y-150*s}L${x+60*s} ${y-300*s}"/>`;
+  o+=`<path d="M${x-210*s} ${y-300*s}L${x+280*s} ${y-300*s}M${x-60*s} ${y-300*s}L${x} ${y-390*s}L${x+60*s} ${y-300*s}M${x} ${y-390*s}L${x+270*s} ${y-300*s}M${x} ${y-390*s}L${x-200*s} ${y-300*s}"/></g>`;
+  const hx=x+tr*s,hy=y-300*s+drop*s;
+  o+=`<rect x="${hx-18*s}" y="${y-310*s}" width="${36*s}" height="${18*s}" fill="${col}"/><line x1="${hx}" y1="${y-292*s}" x2="${hx}" y2="${hy}" stroke="${col}" stroke-width="${3*s}"/>`;
+  if(cc)o+=container(hx-60*s,hy,120*s,48*s,cc,2);return o;}
+function truck(x,y,s,cab,cc,t){ // x = parachoques delantero, y = suelo
+  let o=`<ellipse cx="${x-190*s}" cy="${y}" rx="${230*s}" ry="${10*s}" fill="${INK}" opacity=".18"/>`;
+  o+=`<rect x="${x-400*s}" y="${y-52*s}" width="${310*s}" height="${16*s}" fill="${INK}"/>`+container(x-392*s,y-176*s,290*s,124*s,cc,3*s);
+  o+=`<path d="M${x-100*s} ${y-36*s}L${x-100*s} ${y-168*s}L${x-34*s} ${y-168*s}L${x} ${y-104*s}L${x} ${y-36*s}Z" fill="${cab}" stroke="${INK}" stroke-width="${4*s}" stroke-linejoin="round"/>`;
+  o+=`<path d="M${x-84*s} ${y-154*s}L${x-40*s} ${y-154*s}L${x-16*s} ${y-108*s}L${x-84*s} ${y-108*s}Z" fill="${CIELO}" stroke="${INK}" stroke-width="${3*s}"/>`;
+  o+=`<rect x="${x-8*s}" y="${y-70*s}" width="${10*s}" height="${16*s}" rx="${3*s}" fill="${PAPEL}"/>`;
+  [x-62*s,x-300*s,x-352*s].forEach(cx=>{const cy=y-26*s;o+=`<circle cx="${cx}" cy="${cy}" r="${26*s}" fill="${INK}"/><g transform="rotate(${(t*420)%360} ${cx} ${cy})"><circle cx="${cx}" cy="${cy}" r="${10*s}" fill="${BG}"/><rect x="${cx-2.5*s}" y="${cy-22*s}" width="${5*s}" height="${10*s}" fill="${BG}"/></g>`;});
+  return o;}
+function fcPort(t,night=false){
+  const cam=t*9;let o='';
+  o+=`<rect width="${CW}" height="${CH}" fill="${night?lgrad([[0,NIGHT3],[.6,NIGHT1],[1,'#4A3A2E']]):lgrad([[0,CIELO],[.5,'#EEE6DC'],[.62,'#F4E2D0']])}"/>`;
+  if(night)o+=stars(t,40,1000,12)+moon(860,760,40);
+  else o+=`<circle cx="860" cy="1010" r="220" fill="${rgrad([[0,E,.3],[1,E,0]])}"/><circle cx="860" cy="1010" r="64" fill="${E}" opacity=".92"/>`;
+  o+=`<g transform="translate(${-cam*.15} 0)">${hill(1090,34,160,1,night?NIGHT2:HILL_C,-200,1700,1300)}${hill(1110,18,90,3,night?NIGHT1:'#C3D6CE',-200,1700,1300)}</g>`;
+  o+=`<rect x="0" y="1120" width="${CW}" height="200" fill="${night?lgrad([[0,'#2E3B44'],[1,'#3B4A54']]):lgrad([[0,'#9FC3D6'],[1,'#BCD6E2']])}"/>`;
+  for(let i=0;i<9;i++){const xx=(((i*170-t*24)%1300)+1300)%1300-110;o+=`<path d="M${xx} ${1150+(i%3)*44}h${50+(i%2)*30}" stroke="${PAPEL}" stroke-width="4" stroke-linecap="round" opacity="${night?.25:.55}"/>`;}
+  // barco lejano que entra
+  const bx=lerp(1200,640,eout(clamp(t/30)))-cam*.3;
+  o+=`<g transform="translate(${bx} 0)"><path d="M-230 1136L230 1136L196 1178L-196 1178Z" fill="${night?NIGHT3:INK}"/>`;
+  [[-200,E],[-150,CIELO],[-100,SAGE2],[-50,E800],[0,PAPEL],[50,E],[100,CIELO]].forEach(([dx,c],k)=>{const h=k%2?50:28;o+=`<rect x="${dx}" y="${1136-h}" width="48" height="${h}" fill="${night?mix(c,NIGHT1,.6):c}" stroke="${INK}" stroke-width="2"/>`;});
+  o+=`<rect x="160" y="1066" width="44" height="70" fill="${night?NIGHT1:PAPEL}" stroke="${INK}" stroke-width="2"/><rect x="170" y="1078" width="24" height="10" fill="${night?E:CIELO}"/></g>`;
+  // grúas (plano medio): una carga un contenedor en bucle
+  const cyc=(t%8)/8,tr=lerp(220,-140,eio(clamp(cyc*2.2))),dr=cyc<.45?lerp(40,150,Math.sin(Math.PI*clamp(cyc/.45))):60;
+  o+=`<g transform="translate(${-cam*.5} 0)">${crane(230,1330,.95,night?'#6A5A4C':'#5C534A',tr,dr,E)}${crane(1010,1330,.78,night?'#56483C':'#857A6F',120,60,null)}</g>`;
+  // muelle
+  o+=`<rect x="0" y="1320" width="${CW}" height="600" fill="${night?lgrad([[0,'#3A2E25'],[1,NIGHT2]]):lgrad([[0,'#DCD5C9'],[1,'#C9C0B2']])}"/><rect x="0" y="1320" width="${CW}" height="10" fill="${night?NIGHT1:'#BEB8AE'}"/>`;
+  for(let x=-200;x<1300;x+=180){const xx=x-((cam*1.2)%180);o+=`<line x1="${xx}" y1="1330" x2="${xx-120}" y2="1920" stroke="${night?'#2C231C':'#C3BBAE'}" stroke-width="3"/>`;}
+  o+=`<path d="M0 1700H${CW}" stroke="${night?'#5C534A':PAPEL}" stroke-width="8" stroke-dasharray="60 50" opacity=".7"/>`;
+  return o;}
+function fcStack(night){ // pila de contenedores en primer plano (izq.)
+  const d=c=>night?mix(c,NIGHT1,.55):c;let o='';
+  o+=container(30,1484,250,116,d(E800))+container(290,1484,250,116,d(CIELO))+container(110,1368,250,116,d(E))+`<rect x="20" y="1600" width="530" height="14" fill="${INK}" opacity=".18"/>`;
+  o+=tx('FC',150,1450,{size:34,font:'JBM',weight:400,fill:night?'#BEB8AE':PAPEL,op:.8});return o;}
+function fcBadge(x,y,n,k){if(k<=0)return '';return `<g transform="translate(${x} ${y}) scale(${eback(clamp(k))})"><circle r="44" fill="${E}" stroke="${INK}" stroke-width="5"/>${tx(String(n),0,16,{anchor:'middle',size:44,weight:700})}</g>`;}
+const FC_MSG=[['¿Cotizan aduana?','06:12',0],['Flete Shanghái → San Antonio','09:40',1],['Camión a Antofagasta','13:05',2],['¿Hacen todo el proceso?','18:27',3],['Importar 1 contenedor','23:51',1]];
+const FC_LANE=['ADUANA','T. INTERNACIONAL','T. LOCAL','INTEGRAL'];
+function fcPanel(t){ // tarjeta grande a la derecha (x 500–1016, y 610–1250)
+  let o='';const X=500,Y=610,W=516,H=640;
+  const i=FC_T.findIndex((a,k)=>t>=a&&t<(FC_T[k+1]||99));const ph=t<FC_T[0]?-1:i;
+  const box=(k,fill=PAPEL)=>`<g opacity="${k}" transform="translate(0 ${24*(1-k)})"><rect x="${X}" y="${Y}" width="${W}" height="${H}" rx="40" fill="${fill}" stroke="${INK}" stroke-width="6"/>`;
+  if(ph===-1||ph===0){ // teléfono: llegan consultas; en fase 0 se ordenan por tipo
+    const k=appear(t,.5,.4);o+=`<g opacity="${k}"><rect x="${X+40}" y="${Y-10}" width="${W-80}" height="${H+20}" rx="50" fill="${INK}"/><rect x="${X+56}" y="${Y+6}" width="${W-112}" height="${H-12}" rx="38" fill="${BG}"/>`;
+    o+=tx('WhatsApp · Grupo Borie',X+W/2,Y+62,{anchor:'middle',size:22,font:'JBM',weight:400,fill:MUTED});
+    if(ph===-1){FC_MSG.forEach(([m,h],j)=>{const a=appear(t,.9+j*.55,.3);if(a<=0)return;const y=Y+96+j*102;
+        o+=`<g opacity="${a}" transform="translate(${-20*(1-a)} 0)"><rect x="${X+76}" y="${y}" width="${W-152}" height="84" rx="18" fill="${PAPEL}"/>`+tx(m,X+96,y+40,{size:m.length>22?21:24,font:'Manrope',weight:600})+tx(h,X+W-96,y+70,{anchor:'end',size:18,font:'JBM',weight:400,fill:MUTED})+'</g>';});}
+    else{ // ordenar en carriles
+      FC_LANE.forEach((l,j)=>{const a=appear(t,FC_T[0]+.3+j*.15,.3);const y=Y+110+j*124;
+        let n=0;FC_MSG.forEach(([m,h,ln],q)=>{if(ln===j&&t>FC_T[0]+1.4+q*.5)n++;});
+        o+=`<g opacity="${a}"><rect x="${X+76}" y="${y}" width="${W-152}" height="100" rx="20" fill="${j===1?E:PAPEL}" stroke="${INK}" stroke-width="3"/>`+tx(l,X+100,y+60,{size:24,font:'JBM',weight:400})+fcBadge(X+W-120,y+50,n,n>0?appear(t,FC_T[0]+1.4,.3):0)+'</g>';});
+      FC_MSG.forEach(([m,h,ln],q)=>{const s=FC_T[0]+1.0+q*.5,p=eio(prog(t,s,s+.5));if(p<=0||p>=1)return;const y0=Y+96+q*102,y1=Y+110+ln*124;
+        o+=`<g opacity="${1-p*.6}" transform="translate(${lerp(0,30,p)} ${lerp(y0,y1,p)-y0}) scale(1)"><rect x="${X+76}" y="${y0}" width="${W-152}" height="84" rx="18" fill="${CIELO}" stroke="${INK}" stroke-width="2"/>`+tx(m,X+96,y0+50,{size:21,font:'Manrope',weight:600})+'</g>';});}
+    o+='</g>';}
+  if(ph===1){const k=appear(t,FC_T[1],.4);o+=box(k)+tx('SOLICITUD',X+40,Y+64,{size:24,font:'JBM',weight:400,fill:E800,ls:2});
+    const F=[['Servicio','Transporte internacional'],['Origen → destino','Shanghái → San Antonio'],['Carga','1 contenedor 40’'],['Correo','recibido']];
+    F.forEach(([a,b],j)=>{const s=FC_T[1]+.6+j*1.05,y=Y+120+j*120;const ty=typed([b],t,s,s+.6)[0];
+      o+=tx(a,X+40,y+20,{size:22,font:'JBM',weight:400,fill:MUTED,op:appear(t,s-.2,.3)});
+      o+=`<rect x="${X+36}" y="${y+34}" width="${W-150}" height="58" rx="12" fill="${BG}" opacity="${appear(t,s-.2,.3)}"/>`+tx(ty,X+56,y+74,{size:26,font:'Manrope',weight:700});
+      o+=check(X+W-66,y+62,clamp((t-s-.65)/.3));});
+    o+=tx('Punto pregunta lo justo, en orden.',X+40,Y+H-40,{size:22,font:'Manrope',weight:600,fill:MUTED,op:appear(t,FC_T[1]+4.8)})+'</g>';}
+  if(ph===2){const k=appear(t,FC_T[2],.4);o+=box(k)+tx('CRM · OPORTUNIDADES',X+40,Y+64,{size:24,font:'JBM',weight:400,fill:E800,ls:2});
+    const S=['Lead captado','Cotización enviada','En negociación','Ganada','Perdida'];
+    S.forEach((s,j)=>{const y=Y+90+j*66;o+=`<rect x="${X+36}" y="${y}" width="${W-72}" height="54" rx="14" fill="${j===0?mix(PAPEL,E,.18*appear(t,FC_T[2]+1.6)):BG}" stroke="${INK}" stroke-width="${j===0?3:0}"/>`+tx(s,X+58,y+36,{size:24,font:'Manrope',weight:j===0?700:600,fill:j===0?INK:MUTED});});
+    // la tarjeta del lead entra a «Lead captado»
+    const p=eback(clamp((t-FC_T[2]-.8)/.7));if(t>FC_T[2]+.8){const x=lerp(X+W+60,X+W-250,clamp(p));
+      o+=`<g transform="translate(${x} ${Y+80})"><rect width="210" height="74" rx="14" fill="${E}" stroke="${INK}" stroke-width="4"/>${tx('Nuevo lead',16,32,{size:21,font:'Manrope',weight:700})}${tx('WHATSAPP_BOT',16,58,{size:15,font:'JBM',weight:400})}</g>`;}
+    // correo automático
+    const m=appear(t,FC_T[2]+2.6,.4);if(m>0){const y=Y+H-200;o+=`<g opacity="${m}" transform="translate(0 ${20*(1-m)})"><rect x="${X+36}" y="${y}" width="${W-72}" height="164" rx="18" fill="${CIELO}" stroke="${INK}" stroke-width="3"/>`;
+      o+=`<rect x="${X+60}" y="${y+26}" width="58" height="40" rx="6" fill="${PAPEL}" stroke="${INK}" stroke-width="3"/><path d="M${X+60} ${y+28}l29 20l29 -20" stroke="${INK}" stroke-width="3" fill="none"/>`;
+      o+=tx('Correo automático',X+134,y+54,{size:22,font:'JBM',weight:400,fill:E800})+tx('Recibimos tu solicitud. Un ejecutivo',X+60,y+104,{size:22,font:'Manrope',weight:600})+tx('te confirma en 24 h hábiles.',X+60,y+136,{size:22,font:'Manrope',weight:600})+'</g>';}
+    o+='</g>';}
+  if(ph===3){const k=appear(t,FC_T[3],.4);o+=box(k);
+    const n=Math.round(9*eout(clamp((t-FC_T[3]-.4)/1.2)));
+    o+=tx('~'+n,X+40,Y+210,{size:190,weight:700,ls:-6})+tx('de 10',X+300,Y+210,{size:64,weight:600,fill:E800});
+    o+=tx('conversaciones se resuelven',X+40,Y+272,{size:28,font:'Manrope',weight:700})+tx('sin intervención humana.',X+40,Y+310,{size:28,font:'Manrope',weight:700});
+    for(let j=0;j<10;j++){const cx=X+78+(j%5)*90,cy=Y+400+Math.floor(j/5)*104,a=appear(t,FC_T[3]+.6+j*.12,.25);
+      if(j<9)o+=`<g opacity="${a}"><circle cx="${cx}" cy="${cy}" r="34" fill="${E}"/><ellipse cx="${cx-10}" cy="${cy-4}" rx="4.5" ry="8" fill="${INK}"/><ellipse cx="${cx+10}" cy="${cy-4}" rx="4.5" ry="8" fill="${INK}"/></g>`;
+      else o+=`<g opacity="${a}">${person(cx,cy+8,46,INK)}</g>`;}
+    o+=tx('La décima pasa a un ejecutivo.',X+40,Y+H-44,{size:22,font:'Manrope',weight:600,fill:MUTED,op:appear(t,FC_T[3]+2.4)})+'</g>';}
+  if(ph===4){const k=appear(t,FC_T[4],.4);o+=box(k)+tx('SEGUIMIENTO',X+40,Y+64,{size:24,font:'JBM',weight:400,fill:E800,ls:2});
+    const L=[['Día 0','Cotización enviada',0],['Día 15','Sin respuesta',.9],['Día 15','Recordatorio automático',1.8]];
+    o+=`<line x1="${X+70}" y1="${Y+130}" x2="${X+70}" y2="${lerp(Y+130,Y+470,eout(prog(t,FC_T[4]+.3,FC_T[4]+2.2)))}" stroke="${INK}" stroke-width="6" stroke-linecap="round"/>`;
+    L.forEach(([d,l,dt],j)=>{const a=appear(t,FC_T[4]+.4+dt,.3),y=Y+140+j*160;
+      o+=`<g opacity="${a}"><circle cx="${X+70}" cy="${y}" r="20" fill="${j===2?E:j===1?'#BEB8AE':PAPEL}" stroke="${INK}" stroke-width="4"/>`+tx(d,X+110,y-6,{size:22,font:'JBM',weight:400,fill:E800})+tx(l,X+110,y+30,{size:30,font:'Manrope',weight:700})+'</g>';});
+    o+=tx('El lead no se cierra: se insiste.',X+40,Y+H-50,{size:24,font:'Manrope',weight:700,op:appear(t,FC_T[4]+2.6)})+'</g>';}
+  return o;}
+window.firstcargo=(t)=>{DEFS='';GID=0;
+  const svg=document.getElementById('stage');svg.setAttribute('width',CW);svg.setAttribute('height',CH);svg.setAttribute('viewBox',`0 0 ${CW} ${CH}`);
+  const T=FC_T[5];let o='';
+  if(t<T){
+    o+=fcPort(t);o+=fcStack(false);
+    const perk=FC_T.slice(0,5).some(x=>t>x&&t<x+.6)?1:0;
+    o+=catSit(250,1368,.8,t,{look:1,perk});
+    o+=fcPanel(t);
+    // Punto en el muelle
+    let st={ex:12,ey:-12,ty:-4*Math.sin(TAU*t/2.2)};
+    if(t<1.0)st={eyes:'line',ey:4};
+    else if(t<FC_T[0]){st={eyes:'round',ex:16,ey:-14,lines:t>1.2&&t<2.0?1:0};}
+    else if(t<FC_T[1]){const u=(t-FC_T[0]);st={eyes:'happy',ty:-16*Math.abs(Math.sin(u*TAU*.9))};}
+    else if(t<FC_T[2]){st={ex:14,ey:-10,dots:[0,1,2].map(j=>.3+.7*(.5+.5*Math.sin(t*6-j)))};}
+    else if(t<FC_T[3]){st=t>FC_T[2]+1.4&&t<FC_T[2]+3.6?celebrate(t,FC_T[2]+1.4):{ex:14,ey:-10};}
+    else if(t<FC_T[4]){st={eyes:'happy',ty:-6*Math.abs(Math.sin(t*3))};}
+    else {st={ex:14,ey:-12,flick:t>FC_T[4]+2.0?1:0};}
+    const pin=t<1.0?eback(clamp(t/.6)):1;
+    o+=`<g transform="translate(760 1660) scale(${pin}) translate(-760 -1660)"><ellipse cx="760" cy="1662" rx="106" ry="10" fill="${INK}" opacity=".18"/>${puntoAt(760,1660-110,110,st)}</g>`;
+    // camión que cruza en primer plano
+    const trk=[[0,4.6],[23.2,27.4]];trk.forEach(([a,b])=>{if(t>a&&t<b){const x=lerp(-460,1560,(t-a)/(b-a));o+=truck(x,1890,.95,E,CIELO,t);}});
+    // textos
+    const pill='PUNTO EN ACCIÓN · CASO REAL';o+=`<rect x="64" y="100" width="${pill.length*20.6+64}" height="64" rx="32" fill="${E}"/>`+tx(pill,96,143,{size:30,font:'JBM',weight:400,ls:1});
+    const ph=[[.2,4.8,[['Un solo WhatsApp.',INK],['Tres empresas.',INK],['Consultas a toda hora.',E]]],
+      [5.0,10.8,[['Punto entiende',INK],['qué necesita',INK],['cada cliente.',E]]],
+      [11.0,16.8,[['Pide los datos',INK],['para cotizar.',E]]],
+      [17.0,22.8,[['El lead entra solo',INK],['al CRM.',E]]],
+      [23.0,28.4,[['El equipo entra',INK],['solo cuando',INK],['hace falta.',E]]],
+      [28.6,32.3,[['15 días sin respuesta',INK],['no es un no.',E]]]];
+    ph.forEach(([a,b,lines])=>{const k=Math.min(appear(t,a,.4),1-prog(t,b-.25,b));if(k<=0)return;lines.forEach(([l,c],i)=>o+=tx(l,64,280+i*92,{size:l.length>19?74:80,weight:600,ls:-2.5,fill:c,op:k,dy:16*(1-appear(t,a,.4))}));});
+    const subs=[[.9,4.8,'First Cargo · Grupo Borie'],[5.4,10.8,'Aduana, transporte o servicio integral.'],[17.4,22.8,'Y el cliente recibe confirmación por correo.'],[28.9,32.3,'Recordatorio antes de dar el lead por perdido.']];
+    subs.forEach(([a,b,s])=>o+=tx(s,64,560,{size:30,font:'Manrope',weight:600,fill:'#3F3A34',op:Math.min(appear(t,a),1-prog(t,b-.25,b))}));
+    const wo=prog(t,T-.4,T);if(wo>0)o+=`<rect x="0" y="${lerp(CH,0,eio(wo))}" width="${CW}" height="${CH}" fill="${INK}"/>`;
+  } else {
+    o+=fcPort(t,true);o+=`<rect width="${CW}" height="${CH}" fill="${INK}" opacity=".55"/>`;o+=fcStack(true);
+    o+=catSit(250,1368,.8,t,{look:1});
+    const a=appear(t,T+.2),b=appear(t,T+1.0);
+    ['Caso real.'].forEach((l,i)=>o+=tx(l,64,330,{size:110,weight:600,ls:-3,fill:PAPEL,op:a,dy:20*(1-a)}));
+    ['WhatsApp + IA + CRM','en operación para','First Cargo.'].forEach((l,i)=>o+=tx(l,64,470+i*82,{size:70,weight:600,ls:-2,fill:i===2?E:PAPEL,op:b,dy:16*(1-b)}));
+    o+=puntoAt(760,1660-120,120,t>T+1.6?celebrate(t,T+1.6):{eyes:'happy'});
+    o+=txr([['¿Lo quieres para tu empresa? ',PAPEL],['Escríbenos RAÍZ.',E,700]],64,1790,{size:34,op:appear(t,T+2.0)});
+    o+=tx('Punto en acción · interforma.digital',64,1856,{size:26,font:'JBM',weight:400,fill:'#BEB8AE',op:appear(t,T+2.4)});
+  }
+  svg.innerHTML=`<defs>${DEFS}</defs>`+o;};
+
+/* ---------- El barrio de Punto · Ep. 02 · Las cuidadoras de Carmen (reel 9:16, 34 s) · CASO DE EJEMPLO ----------
+   Carmen coordina cuidadoras a domicilio. Interior con pizarra de turnos y ventana (noche → tarde),
+   luego exterior del barrio por la mañana: la cuidadora llega a la casa. Sin datos clínicos. */
+const CU_T=[5.4,11.2,17.6,23.6,29.0];
+function persona(x,y,s,mood,t,{shirt=SAGE2,hair=INK,glasses=false,bun=false}={}){ // y = línea del escritorio
+  let o='';const br=1+.012*Math.sin(t*2.4);
+  o+=`<g transform="translate(${x} ${y}) scale(${s}) scale(1 ${br}) translate(${-x} ${-y})">`;
+  o+=`<rect x="${x-118}" y="${y-250}" width="236" height="300" rx="96" fill="${shirt}"/>`;
+  o+=`<path d="M${x-40} ${y-250}L${x} ${y-200}L${x+40} ${y-250}" fill="${PAPEL}"/>`;
+  o+=`<rect x="${x-20}" y="${y-282}" width="40" height="40" fill="${SKIN}"/>`;
+  const hy=y-330;
+  if(bun)o+=`<circle cx="${x}" cy="${hy-96}" r="34" fill="${hair}"/>`;
+  else o+=`<path d="M${x-92} ${hy+60}Q${x-100} ${hy-70} ${x} ${hy-88}Q${x+100} ${hy-70} ${x+92} ${hy+60}Z" fill="${hair}"/>`;
+  o+=`<circle cx="${x}" cy="${hy}" r="80" fill="${SKIN}"/>`;
+  o+=`<path d="M${x-84} ${hy+4}A84 84 0 0 1 ${x+84} ${hy+4}Q${x+30} ${hy-40} ${x-10} ${hy-30}Q${x-50} ${hy-20} ${x-84} ${hy+4}Z" fill="${hair}"/>`;
+  o+=`<circle cx="${x-46}" cy="${hy+30}" r="13" fill="${E}" opacity=".35"/><circle cx="${x+46}" cy="${hy+30}" r="13" fill="${E}" opacity=".35"/>`;
+  const blink=(t%3.3<.13)?.15:1;
+  [-30,30].forEach(dx=>{const ex=x+dx,ey=hy+8;
+    if(mood==='tired') o+=`<path d="M${ex-9} ${ey+2}h18" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>`;
+    else if(mood==='happy') o+=`<path d="M${ex-9} ${ey+4}q9 -10 18 0" stroke="${INK}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+    else o+=`<ellipse cx="${ex}" cy="${ey}" rx="${mood==='surprised'?7:5.5}" ry="${(mood==='surprised'?9:7)*blink}" fill="${INK}"/>`;
+    if(glasses)o+=`<circle cx="${ex}" cy="${ey}" r="22" fill="none" stroke="${INK}" stroke-width="5"/>`;});
+  if(mood==='happy') o+=`<path d="M${x-18} ${hy+44}q18 16 36 0" stroke="${INK}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+  else if(mood==='surprised') o+=`<ellipse cx="${x}" cy="${hy+48}" rx="9" ry="11" fill="${INK}"/>`;
+  else o+=`<path d="M${x-14} ${hy+48}${mood==='tired'?'q14 -6 28 0':'h28'}" stroke="${INK}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+  o+='</g>';return o;}
+function personaArms(x,y,s,phone,t,buzz=0,sleeve=SAGE2){
+  const px=x+80*s,py=y-120*s+buzz;let o='';
+  o+=`<path d="M${x-96*s} ${y-150*s}Q${x-60*s} ${y-40*s} ${px-20*s} ${py+20*s}" stroke="${sleeve}" stroke-width="${46*s}" fill="none" stroke-linecap="round"/>`;
+  o+=`<path d="M${x+96*s} ${y-150*s}Q${x+110*s} ${y-60*s} ${px+18*s} ${py+24*s}" stroke="${sleeve}" stroke-width="${46*s}" fill="none" stroke-linecap="round"/>`;
+  if(phone)o+=`<g transform="rotate(${buzz*1.5} ${px} ${py})"><rect x="${px-34*s}" y="${py-60*s}" width="${68*s}" height="${120*s}" rx="${12*s}" fill="${INK}"/><rect x="${px-27*s}" y="${py-52*s}" width="${54*s}" height="${100*s}" rx="${7*s}" fill="${CIELO}"/></g>`;
+  o+=`<circle cx="${px-20*s}" cy="${py+22*s}" r="${24*s}" fill="${SKIN}"/><circle cx="${px+18*s}" cy="${py+26*s}" r="${24*s}" fill="${SKIN}"/>`;return o;}
+function walker(x,y,s,t,{shirt=CIELO,hair=E800,bag=E}={}){ // persona caminando de perfil hacia la derecha; y = suelo
+  const st=Math.sin(t*8),bob=Math.abs(Math.cos(t*8))*6*s;let o=`<ellipse cx="${x}" cy="${y+2}" rx="${54*s}" ry="${7*s}" fill="${INK}" opacity=".16"/>`;
+  [[1],[-1]].forEach(([ph])=>o+=`<line x1="${x}" y1="${y-110*s}" x2="${x+26*s*st*ph}" y2="${y}" stroke="${INK}" stroke-width="${20*s}" stroke-linecap="round"/>`);
+  o+=`<rect x="${x-34*s}" y="${y-250*s-bob}" width="${68*s}" height="${150*s}" rx="${30*s}" fill="${shirt}"/>`;
+  o+=`<line x1="${x}" y1="${y-220*s-bob}" x2="${x-26*s*st}" y2="${y-130*s-bob}" stroke="${shirt}" stroke-width="${20*s}" stroke-linecap="round"/>`;
+  o+=`<rect x="${x-16*s+(-26*s*st)}" y="${y-140*s-bob}" width="${52*s}" height="${44*s}" rx="${10*s}" fill="${bag}" stroke="${INK}" stroke-width="${3*s}"/>`;
+  const hx=x+6*s,hy=y-296*s-bob;o+=`<circle cx="${hx}" cy="${hy}" r="${40*s}" fill="${SKIN}"/><path d="M${hx-42*s} ${hy+4*s}A42 42 0 0 1 ${hx+42*s} ${hy-6*s}Q${hx} ${hy-20*s} ${hx-42*s} ${hy+4*s}Z" fill="${hair}"/><circle cx="${hx-34*s}" cy="${hy-6*s}" r="${18*s}" fill="${hair}"/>`;
+  o+=`<circle cx="${hx+20*s}" cy="${hy+2*s}" r="${4.5*s}" fill="${INK}"/><path d="M${hx+14*s} ${hy+18*s}q8 5 16 0" stroke="${INK}" stroke-width="${3*s}" fill="none" stroke-linecap="round"/>`;return o;}
+const CU_SH=[['Ana','Fam. Soto','08:00'],['Bea','Fam. Rojas','09:00'],['Luz','Fam. Díaz','08:30'],['Mía','Fam. Pérez','14:00'],['Sol','Fam. Vera','20:00']];
+function cuBoard(t){ // pizarra de turnos en la pared (x 500–1016, y 610–1250)
+  const X=500,Y=610,W=516,H=640;let o=`<rect x="${X}" y="${Y}" width="${W}" height="${H}" rx="22" fill="#FFFFFF" stroke="${INK}" stroke-width="10"/><rect x="${X-6}" y="${Y+H}" width="${W+12}" height="18" rx="6" fill="#BEB8AE"/>`;
+  o+=tx('TURNOS · MAÑANA',X+36,Y+62,{size:24,font:'JBM',weight:400,fill:E800,ls:2});
+  const ph=CU_T.findIndex((a,k)=>t>=a&&t<(CU_T[k+1]||99));const p=t<CU_T[0]?-1:ph;
+  const repl=t>CU_T[2]+2.2; // Paula reemplaza a Luz
+  CU_SH.forEach(([n,f,h],j)=>{const y=Y+92+j*104;const a=appear(t,.4+j*.18,.3);if(a<=0)return;
+    let fill=PAPEL,name=n,state='';
+    if(j===2&&t>CU_T[0]+1.6&&!repl){fill=mix(PAPEL,E,.45);state='alert';}
+    if(j===2&&repl){name='Paula';fill=mix(PAPEL,SAGE2,.35);}
+    o+=`<g opacity="${a}"><rect x="${X+30}" y="${y}" width="${W-60}" height="86" rx="16" fill="${fill}" stroke="${INK}" stroke-width="3"/><circle cx="${X+76}" cy="${y+43}" r="24" fill="${[E,CIELO,SAGE2,E800,'#BEB8AE'][j]}"/>`;
+    o+=tx(name,X+114,y+38,{size:26,font:'Manrope',weight:700})+tx(f+' · '+h,X+114,y+70,{size:22,font:'Manrope',weight:500,fill:MUTED});
+    if(state==='alert')o+=tx('SIN CUIDADORA',X+W-46,y+54,{anchor:'end',size:18,font:'JBM',weight:400,fill:INK});
+    // estados de confirmación (fase 2 en adelante)
+    if(p>=1){const tc=CU_T[1]+.8+j*.45;const k=clamp((t-tc)/.3);
+      if(j!==2||repl) o+=check(X+W-66,y+43,j===2?clamp((t-CU_T[2]-2.4)/.3):k);
+      else if(k>0) o+=`<g transform="translate(${X+W-66} ${y+43}) scale(${eback(k)})"><circle r="22" fill="${INK}"/><path d="M-8 -8l16 16M8 -8l-16 16" stroke="${PAPEL}" stroke-width="5" stroke-linecap="round"/></g>`;}
+    o+='</g>';});
+  return o;}
+function cuPhone(t){ // chat grande sobre la pizarra en fases 1–3
+  let o='';const X=540,Y=640,W=440,H=580;const ph=CU_T.findIndex((a,k)=>t>=a&&t<(CU_T[k+1]||99));
+  const show=(a,b)=>Math.min(appear(t,a,.35),1-prog(t,b-.3,b));
+  const open=(k)=>`<g opacity="${k}" transform="translate(0 ${30*(1-k)})"><rect x="${X}" y="${Y}" width="${W}" height="${H}" rx="46" fill="${INK}"/><rect x="${X+14}" y="${Y+14}" width="${W-28}" height="${H-28}" rx="34" fill="${BG}"/>`;
+  if(ph===0){const k=show(CU_T[0]+.2,CU_T[0]+1.6);if(k>0){o+=open(k)+tx('Luz · 22:10',X+W/2,Y+64,{anchor:'middle',size:22,font:'JBM',weight:400,fill:MUTED});
+      o+=`<rect x="${X+40}" y="${Y+100}" width="${W-80}" height="120" rx="20" fill="${PAPEL}"/>`+tx('Carmen, mañana',X+64,Y+150,{size:28,font:'Manrope',weight:600})+tx('no puedo ir. Perdón.',X+64,Y+190,{size:28,font:'Manrope',weight:600})+'</g>';}}
+  if(ph===1){ // Punto confirma el día antes, 18:00
+    const k=show(CU_T[1]+.1,CU_T[1]+2.6);if(k>0){o+=open(k)+tx('Punto → Luz · 18:00',X+W/2,Y+64,{anchor:'middle',size:22,font:'JBM',weight:400,fill:MUTED});
+      o+=`<rect x="${X+40}" y="${Y+100}" width="${W-80}" height="164" rx="20" fill="${PAPEL}"/>`+tx('¿Confirmas mañana',X+64,Y+150,{size:27,font:'Manrope',weight:600})+tx('08:30 con Fam. Díaz?',X+64,Y+190,{size:27,font:'Manrope',weight:600});
+      o+=chip(X+64,Y+290,130,56,'Sí',{k:1,size:24})+chip(X+210,Y+290,186,56,'No puedo',{k:1,size:24,fill:prog(t,CU_T[1]+1.2,CU_T[1]+1.4)>0?E:PAPEL});
+      const tp=prog(t,CU_T[1]+1.1,CU_T[1]+1.6);if(tp>0&&tp<1)o+=`<circle cx="${X+303}" cy="${Y+318}" r="${16+44*eout(tp)}" fill="none" stroke="${INK}" stroke-width="4" opacity="${1-tp}"/>`;
+      o+='</g>';}}
+  if(ph===2){ // propone reemplazo
+    const k=show(CU_T[2]+.1,CU_T[2]+5.6);if(k>0){o+=open(k)+tx('Punto → Carmen',X+W/2,Y+64,{anchor:'middle',size:22,font:'JBM',weight:400,fill:MUTED});
+      o+=`<rect x="${X+40}" y="${Y+96}" width="${W-80}" height="110" rx="20" fill="${PAPEL}"/>`+tx('Luz no puede mañana.',X+64,Y+142,{size:25,font:'Manrope',weight:600})+tx('Disponibles cerca:',X+64,Y+180,{size:25,font:'Manrope',weight:700});
+      [['Paula','libre 08:00 · 2 km'],['Rita','libre 10:00 · 5 km']].forEach(([n,d],j)=>{const a=appear(t,CU_T[2]+.8+j*.3,.3),y=Y+226+j*104;
+        o+=`<g opacity="${a}"><rect x="${X+40}" y="${y}" width="${W-80}" height="88" rx="18" fill="${j===0&&t>CU_T[2]+2.2?mix(PAPEL,SAGE2,.4):PAPEL}" stroke="${INK}" stroke-width="3"/>`+tx(n,X+64,y+38,{size:26,font:'Manrope',weight:700})+tx(d,X+64,y+70,{size:21,font:'Manrope',weight:500,fill:MUTED});
+        if(j===0)o+=chip(X+W-196,y+18,140,52,t>CU_T[2]+2.2?'Asignada':'Asignar',{k:1,size:21,fill:t>CU_T[2]+2.2?SAGE2:E});o+='</g>';});
+      const tp=prog(t,CU_T[2]+1.8,CU_T[2]+2.3);if(tp>0&&tp<1)o+=`<circle cx="${X+W-126}" cy="${Y+270}" r="${16+44*eout(tp)}" fill="none" stroke="${INK}" stroke-width="4" opacity="${1-tp}"/>`;
+      const f=appear(t,CU_T[2]+2.8,.35);if(f>0)o+=`<g opacity="${f}"><rect x="${X+40}" y="${Y+450}" width="${W-80}" height="90" rx="20" fill="${CIELO}"/>${tx('Aviso enviado a',X+64,Y+488,{size:22,font:'Manrope',weight:600})}${tx('Paula y a la Fam. Díaz.',X+64,Y+520,{size:22,font:'Manrope',weight:700})}</g>`;
+      o+='</g>';}}
+  return o;}
+function cuOffice(t){ // oficina de Carmen
+  const night=t<CU_T[1];let o=`<rect width="${CW}" height="${CH}" fill="${lgrad([[0,night?'#E2DACD':PAPEL],[1,night?'#CFC6B8':BG]])}"/>`;
+  o+= night? nightWindow(60,620,300,300,t,8) : dayWindow(60,620,300,300,t,{frame:8});
+  o+=`<rect x="60" y="960" width="300" height="12" rx="4" fill="${WOOD_D}"/>`+plant(300,960,.5);
+  if(night)o+=`<circle cx="760" cy="600" r="320" fill="${rgrad([[0,E,.18],[1,E,0]])}"/>`;
+  o+=clock(430,700,54,night?22:18,night?10:0);
+  o+=cuBoard(t);
+  return o;}
+window.cuidadoras=(t)=>{DEFS='';GID=0;
+  const svg=document.getElementById('stage');svg.setAttribute('width',CW);svg.setAttribute('height',CH);svg.setAttribute('viewBox',`0 0 ${CW} ${CH}`);
+  const C=1500,T=CU_T[4];let o='';
+  if(t<CU_T[3]){
+    o+=cuOffice(t);
+    const mood=t<CU_T[0]?'tired':t<CU_T[1]?'surprised':t<CU_T[2]+2.2?'ok':'happy';
+    o+=persona(290,C,1,mood,t,{shirt:SAGE2,hair:'#5C3B28',bun:true});
+    o+=`<rect x="0" y="${C}" width="${CW}" height="34" fill="${WOOD}"/><rect x="0" y="${C}" width="${CW}" height="8" fill="${WOOD_D}"/><rect x="0" y="${C+34}" width="${CW}" height="420" fill="${lgrad([[0,'#8A6A4F'],[1,'#6E5440']])}"/>`;
+    const buzz=(t>.8&&t<4.8)||(t>CU_T[0]&&t<CU_T[0]+1.2)?3*Math.sin(t*60)*(Math.sin(t*3.4)>0?1:0):0;
+    o+=personaArms(290,C,1,t<CU_T[1],t,buzz,SAGE2);
+    o+=catLying(130,C,.8,t,(t>CU_T[0]&&t<CU_T[0]+1.6)?Math.sin(Math.PI*(t-CU_T[0])/1.6):0);
+    // fase 0: las familias preguntan
+    if(t<CU_T[0]){[['¿Quién viene mañana?',.9],['¿A qué hora llega?',1.6],['¿Sigue Luz el jueves?',2.3],['¿Quién viene mañana?',3.0]].forEach(([m,a],j)=>{const k=Math.min(appear(t,a,.3),1-prog(t,j<2?a+1.3:CU_T[0]-.4,j<2?a+1.5:CU_T[0]-.1));if(k<=0)return;
+        const x=[540,620,540,620][j],y=[1300,1400,1300,1400][j];o+=bubble(x,y-60*(1-k),m.length*15+60,76,CIELO,[m],{op:k,size:26,tail:'right'});});}
+    o+=cuPhone(t);
+    // Punto
+    const pin=eback(clamp((t-CU_T[1])/.5));
+    let st={ex:-12,ey:-10,ty:-4*Math.sin(TAU*t/2.2)};
+    if(t<CU_T[1]+.01)st={eyes:'round',ex:-14,ey:-10};
+    else if(t<CU_T[2]){const u=t-CU_T[1];st=u>2.6?{eyes:'happy',ty:-12*Math.abs(Math.sin(u*TAU))}:{ex:10,ey:-12,dots:[0,1,2].map(j=>clamp((u-.2-j*.2)/.15))};}
+    else st=t>CU_T[2]+2.2?celebrate(t,CU_T[2]+2.2):{ex:-10,ey:-12};
+    if(pin>0)o+=`<g transform="translate(880 ${C}) scale(${pin}) translate(-880 ${-C})"><ellipse cx="880" cy="${C+4}" rx="96" ry="9" fill="${INK}" opacity=".18"/>${puntoAt(880,C-100,100,st)}</g>`;
+  } else if(t<T){ // exterior del barrio por la mañana
+    const u=t-CU_T[3];const cam=u*18;const G=1560;
+    o+=`<rect width="${CW}" height="${CH}" fill="${lgrad([[0,CIELO],[.6,'#F4E6D8'],[.75,'#F6DCC6']])}"/>`;
+    o+=`<circle cx="830" cy="920" r="200" fill="${rgrad([[0,E,.3],[1,E,0]])}"/><circle cx="830" cy="920" r="60" fill="${E}"/>`;
+    o+=`<g transform="translate(${-cam*.2} 0)">${hill(1080,40,150,1,HILL_C,-200,1700,1600)}</g>`;
+    o+=`<g transform="translate(${-cam*.5} 0)">${hill(1190,24,100,3,SAGE_L,-200,1900,1600)}${tree(120,1230,1.1)}${house(420,1240,150,110,E800,0)}${tree(700,1240,.9)}${house(960,1240,140,100,INK,0)}${tree(1250,1235,1.0)}</g>`;
+    o+=`<g transform="translate(${-cam} 0)">${hill(1330,14,70,5,SAGE,-200,2300,1700)}${house(760,G,300,240,E,0)}${tree(330,G,1.6)}${tree(1180,G,1.5)}</g>`;
+    o+=`<rect x="0" y="${G}" width="${CW}" height="${CH-G}" fill="${lgrad([[0,'#DCD5C9'],[1,'#C9C0B2']])}"/><rect x="0" y="${G}" width="${CW}" height="10" fill="#BEB8AE"/>`;
+    // Paula camina hacia la casa
+    const wx=lerp(80,560,clamp(u/4.2))-0;o+=walker(wx,G+120,1.0,t,{shirt:CIELO,hair:'#3F2A1E',bag:E});
+    o+=catWalk(lerp(-80,380,clamp(u/4.4)),G+200,.8,t);
+    o+=puntoAt(880,G+160-90,90,u>1.6?celebrate(t,CU_T[3]+1.6):{eyes:'happy'});
+    // aviso a la familia
+    const k=appear(t,CU_T[3]+2.0,.4);if(k>0)o+=`<g opacity="${k}" transform="translate(0 ${20*(1-k)})">`+bubble(470,680,546,150,PAPEL,['Fam. Díaz · 07:45','Hoy a las 08:30 te visita Paula.'],{size:28,tail:'left'})+'</g>';
+    const wo=prog(t,T-.4,T);if(wo>0)o+=`<rect x="0" y="${lerp(CH,0,eio(wo))}" width="${CW}" height="${CH}" fill="${INK}"/>`;
+  } else {
+    o+=`<rect width="${CW}" height="${CH}" fill="${INK}"/>`+stars(t,30,700,5);
+    const a=appear(t,T+.2),b=appear(t,T+1.0);
+    ['Cuidar ya es','bastante trabajo.'].forEach((l,i)=>o+=tx(l,64,330+i*104,{size:88,weight:600,ls:-2.5,fill:PAPEL,op:a,dy:18*(1-a)}));
+    ['Coordinar no','debería serlo.'].forEach((l,i)=>o+=tx(l,64,580+i*104,{size:88,weight:600,ls:-2.5,fill:E,op:b,dy:18*(1-b)}));
+    const C2=1480;o+=`<rect x="0" y="${C2}" width="${CW}" height="30" fill="${WOOD}"/><rect x="0" y="${C2+30}" width="${CW}" height="420" fill="${NIGHT2}"/>`;
+    o+=persona(330,C2,.82,'happy',t,{shirt:SAGE2,hair:'#5C3B28',bun:true})+personaArms(330,C2,.82,false,t,0,SAGE2);
+    o+=catSit(120,C2,.7,t,{look:1});
+    o+=puntoAt(820,C2-110,110,t>T+1.8?celebrate(t,T+1.8):{eyes:'happy'});
+    o+=txr([['¿Coordinas turnos por WhatsApp? ',PAPEL],['Escríbenos RAÍZ.',E,700]],64,1640,{size:34,op:appear(t,T+2.2)});
+    o+=tx('El barrio de Punto · Ep. 02 · caso de ejemplo',64,1760,{size:26,font:'JBM',weight:400,fill:'#BEB8AE',op:appear(t,T+2.6)})+tx('interforma.digital',64,1812,{size:26,font:'JBM',weight:400,fill:E,op:appear(t,T+2.8)});
+  }
+  if(t<T){
+    const pill='EL BARRIO DE PUNTO · EP. 02';o+=`<rect x="64" y="100" width="${pill.length*20.6+64}" height="64" rx="32" fill="${E}"/>`+tx(pill,96,143,{size:30,font:'JBM',weight:400,ls:1});
+    o+=tx('CASO DE EJEMPLO',96+pill.length*20.6+64,143,{size:22,font:'JBM',weight:400,fill:MUTED,ls:1});
+    const ph=[[.2,5.2,[['Carmen coordina',INK],['12 cuidadoras',INK],['a domicilio.',E]]],
+      [5.4,11.0,[['22:10. Un aviso',INK],['tarde y un turno',INK],['queda solo.',E]]],
+      [11.2,17.4,[['Punto confirma',INK],['cada turno',INK],['el día antes.',E]]],
+      [17.6,23.4,[['Si alguien no puede,',INK],['propone',INK],['un reemplazo.',E]]],
+      [23.6,28.8,[['La familia sabe',INK],['quién llega',INK],['y a qué hora.',E]]]];
+    ph.forEach(([a,b,lines])=>{const k=Math.min(appear(t,a,.4),1-prog(t,b-.25,b));if(k<=0)return;lines.forEach(([l,c],i)=>o+=tx(l,64,280+i*92,{size:l.length>17?74:82,weight:600,ls:-2.5,fill:c,op:k,dy:16*(1-appear(t,a,.4))}));});
+    const subs=[[11.6,17.4,'A las 18:00, por WhatsApp, a cada cuidadora.'],[18.0,23.4,'Carmen decide con un toque.']];
+    subs.forEach(([a,b,s])=>o+=tx(s,64,560,{size:30,font:'Manrope',weight:600,fill:'#3F3A34',op:Math.min(appear(t,a),1-prog(t,b-.25,b))}));
+  }
+  svg.innerHTML=`<defs>${DEFS}</defs>`+o;};
+
 window.ready=document.fonts.ready.then(()=>Promise.all([document.fonts.load('500 80px Outfit'),document.fonts.load('500 40px Manrope'),document.fonts.load('30px JBM')]));
 </script>
 </body>

@@ -18,6 +18,8 @@ Todo se dibuja con código: `engine.html` contiene un motor SVG que dibuja cualq
 | `audio_reel05.py` | Cap. 05: latido tenso que se vuelve bossa a 112 bpm (23 s) |
 | `audio_cap04v2.py` | Cap. 04 v2: swing jazzero a 126 bpm con vibráfono y trompeta con sordina (27 s) |
 | `audio_hsm10.py` | Cap. 10: electrónica técnica a 110 bpm, un acorde por paso, plumón y borrador como efectos (44 s) |
+| `audio_firstcargo.py` | Caso real First Cargo: house enérgico a 124 bpm en F# menor con sidechain (37,6 s) |
+| `audio_cuidadoras.py` | Barrio Ep. 02: afro-funk a 108 bpm en C mayor, congas, marimba y metales (34,2 s) |
 | `audio_rosa01.py` | El barrio de Punto · Ep. 01: acordeón de noche que se vuelve cumbia suave a 100 bpm (28 s) |
 | `audio_problemas.py` | «¿Le suena familiar?»: lo-fi en re menor a 96 bpm que resuelve a fa mayor en el cierre (34,7 s); efectos con la misma lista de eventos que el sitio |
 | `render_problemas.mjs` | Renderiza el reel «¿Le suena familiar?» desde el componente real del sitio (ver abajo) |
@@ -39,6 +41,8 @@ Todo se dibuja con código: `engine.html` contiene un motor SVG que dibuja cualq
 | `reel03(t)` | Cap. 03 · ¿En cuántas planillas vive tu cliente? | 1080×1920, 18 s |
 | `reel05(t)` | Cap. 05 · El mito: «La IA va a reemplazar a mi equipo» (oficina con equipo y el gato) | 1080×1920, 23 s |
 | `hsm10(t)` | Cap. 10 · ¿Cómo se envía un HSM? Punto lo dibuja en una pizarra: opt-in, plantilla aprobada, variables, API y estados, ventana de 24 h, métricas | 1080×1920, 44 s |
+| `firstcargo(t)` | Punto en acción · Caso real First Cargo: puerto con profundidad; clasifica consultas, pide datos, lead al CRM, ~9 de 10 sin humano, recordatorio a 15 días | 1080×1920, 37,6 s |
+| `cuidadoras(t)` | El barrio de Punto · Ep. 02 (caso de ejemplo): Carmen coordina cuidadoras; Punto confirma turnos y propone reemplazos | 1080×1920, 34,2 s |
 | `rosa01(t)` | El barrio de Punto · Ep. 01: Doña Rosa y los 40 audios (ferretería, Doña Rosa, el gato) | 1080×1920, 28 s |
 | `portada(k)`, `portadaCliSq()`, `post03()` | Portadas de grilla e imagen fija del Cap. 03 | — |
 | `sticker(nombre, p)` | Stickers de Punto | 512×512 |
