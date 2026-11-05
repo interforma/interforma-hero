@@ -2030,10 +2030,10 @@ window.cap08=(t)=>{DEFS='';GID=0;
   } else {
     o+=`<rect width="${CW}" height="${CH}" fill="${INK}"/>`+stars(t,26,700,8);
     const a=appear(t,T+.2),b=appear(t,T+1.0),c=appear(t,T+1.8);
-    o+=tx('Ley 21.719',64,320,{size:110,weight:600,ls:-3,fill:PAPEL,op:a,dy:20*(1-a)});
-    ['Postergar la ley no es','postergar la preparación.'].forEach((l,i)=>o+=tx(l,64,450+i*80,{size:66,weight:600,ls:-2,fill:E,op:b,dy:16*(1-b)}));
-    o+=tx('Vigencia prevista: 1 dic 2026.',64,650,{size:28,font:'JBM',weight:400,fill:'#BEB8AE',op:c})+tx('El Congreso discute postergarla.',64,696,{size:28,font:'JBM',weight:400,fill:'#BEB8AE',op:c});
-    o+=tx('Este video explica, no asesora.',64,742,{size:28,font:'JBM',weight:400,fill:'#BEB8AE',op:c});
+    o+=tx('Con o sin ley,',64,330,{size:100,weight:600,ls:-3,fill:PAPEL,op:a,dy:20*(1-a)});
+    ['cuidar los datos','es parte del trabajo.'].forEach((l,i)=>o+=tx(l,64,450+i*88,{size:80,weight:600,ls:-2.5,fill:E,op:b,dy:16*(1-b)}));
+    o+=tx('Ley 21.719 · vigencia prevista 1 dic 2026,',64,680,{size:26,font:'JBM',weight:400,fill:'#BEB8AE',op:c})+tx('con postergación en discusión.',64,722,{size:26,font:'JBM',weight:400,fill:'#BEB8AE',op:c});
+    o+=tx('Este video explica, no asesora.',64,764,{size:26,font:'JBM',weight:400,fill:'#BEB8AE',op:c});
     o+=`<rect x="0" y="1480" width="${CW}" height="440" fill="${NIGHT2}"/>`+house(860,1480,220,170,E800,1);
     o+=puntoAt(560,1480-120,120,t>T+1.8?celebrate(t,T+1.8):{eyes:'happy'})+catSit(260,1480,.9,t,{look:1});
     o+=txr([['Guárdalo para revisarlo ',PAPEL],['con tu equipo.',E,700]],64,1660,{size:36,op:appear(t,T+2.3)});
