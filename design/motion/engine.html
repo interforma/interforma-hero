@@ -1923,6 +1923,124 @@ window.cuidadoras=(t)=>{DEFS='';GID=0;
   }
   svg.innerHTML=`<defs>${DEFS}</defs>`+o;};
 
+/* ---------- Cap. 08 · Punto explica: las reglas de la casa para guardar datos de otros (reel 9:16, 38,5 s) ----------
+   Bodega de la casa con profundidad (pared, repisa con cajas, puerta abierta al jardín, piso de madera).
+   Cinco reglas en simple sobre la Ley 21.719. Explica, no asesora; la vigencia se muestra con su estado. */
+const C8_T=[5.0,10.5,16.0,21.5,27.0,33.0];
+const C8_FL=1560;
+function box8(x,y,w,h,col,label,k=1){if(k<=0)return '';
+  return `<g opacity="${clamp(k*2)}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8" fill="${col}" stroke="${INK}" stroke-width="4"/><path d="M${x+w/2-14} ${y}v${h*.34}h28v${-h*.34}" fill="${mix(col,INK,.15)}"/>`+
+    `<rect x="${x+14}" y="${y+h*.5}" width="${w-28}" height="38" rx="6" fill="${PAPEL}" stroke="${INK}" stroke-width="2"/>`+tx(label,x+w/2,y+h*.5+27,{anchor:'middle',size:21,font:'JBM',weight:400})+'</g>';}
+const C8_BOX=[[60,'Nombre',E,1.0],[250,'RUT',CIELO,1.5],[60,'Teléfono',SAGE2,2.0],[250,'Ficha','#E3C9A8',2.5]];
+function c8Room(t){
+  let o=`<rect width="${CW}" height="${CH}" fill="${lgrad([[0,'#EFE9E0'],[1,'#E0D8CB']])}"/>`;
+  for(let x=0;x<CW;x+=90)o+=`<rect x="${x}" y="0" width="45" height="${C8_FL}" fill="${PAPEL}" opacity=".35"/>`;
+  // puerta abierta al jardín (profundidad)
+  o+=`<rect x="880" y="1270" width="200" height="${C8_FL-1270}" fill="${INK}"/>`+dayWindow(892,1282,188,C8_FL-1282,t,{frame:0.1});
+  o+=`<rect x="872" y="1262" width="216" height="${C8_FL-1262+4}" fill="none" stroke="${WOOD_D}" stroke-width="16"/>`;
+  // repisa
+  o+=`<rect x="36" y="640" width="16" height="${C8_FL-640}" fill="${WOOD_D}"/><rect x="448" y="640" width="16" height="${C8_FL-640}" fill="${WOOD_D}"/>`;
+  [640,900,1180,1460].forEach(y=>o+=`<rect x="30" y="${y}" width="440" height="18" rx="4" fill="${WOOD}"/>`);
+  // cajas que caen a la repisa en el gancho
+  C8_BOX.forEach(([x,l,c,ta],j)=>{const shelfY=j<2?900:1180;const h=150,w=180;const p=clamp((t-ta)/.45);if(p<=0)return;
+    const y=lerp(-200,shelfY-h,eout(p))+(p>=1?0:0);const sq=p>=1?wobble(t-ta-.45,.06,3,6):0;
+    o+=`<g transform="translate(${x+w/2} ${shelfY}) scale(${1+sq} ${1-sq}) translate(${-x-w/2} ${-shelfY})">`+box8(x,y,w,h,c,l)+'</g>';});
+  // repisa baja: cosas propias
+  o+=container(80,1380,140,80,'#BEB8AE',2)+plant(360,1460,.55);
+  // piso
+  o+=`<rect x="0" y="${C8_FL}" width="${CW}" height="${CH-C8_FL}" fill="${lgrad([[0,WOOD],[1,WOOD_D]])}"/>`;
+  for(let x=-200;x<1300;x+=150)o+=`<line x1="${x}" y1="${C8_FL}" x2="${x-140}" y2="${CH}" stroke="${WOOD_D}" stroke-width="3" opacity=".6"/>`;
+  return o;}
+function c8Panel(t){
+  const X=500,Y=610,W=516,H=630;const i=C8_T.findIndex((a,k)=>t>=a&&t<C8_T[k+1]);if(i<0||i>4)return '';
+  const t0=C8_T[i],u=t-t0,end=C8_T[i+1];const k=Math.min(appear(t,t0,.4),1-prog(t,end-.3,end));if(k<=0)return '';
+  const A=(a,d=.3)=>appear(u,a,d);
+  let o=`<g opacity="${k}" transform="translate(0 ${24*(1-appear(t,t0,.4))})"><rect x="${X}" y="${Y}" width="${W}" height="${H}" rx="40" fill="${PAPEL}" stroke="${INK}" stroke-width="6"/>`;
+  const head=s=>tx(s,X+40,Y+64,{size:24,font:'JBM',weight:400,fill:E800,ls:2});
+  if(i===0){o+=head('INVENTARIO');
+    [['Nombre','ventas'],['RUT','facturación'],['Teléfono','despacho'],['Ficha','atención']].forEach(([a,b],j)=>{const s=.5+j*.9,y=Y+110+j*112;
+      o+=`<rect x="${X+36}" y="${y}" width="${W-72}" height="92" rx="16" fill="${BG}" opacity="${A(s-.2)}"/>`+tx(a,X+60,y+40,{size:28,font:'Manrope',weight:700,op:A(s-.2)})+tx('→ '+typed([b],u,s,s+.5)[0],X+60,y+76,{size:22,font:'Manrope',weight:600,fill:MUTED})+check(X+W-74,y+46,clamp((u-s-.55)/.3));});}
+  if(i===1){o+=head('TELÉFONO DEL CLIENTE');
+    o+=`<rect x="${X+40}" y="${Y+100}" width="${W-80}" height="110" rx="18" fill="${SAGE2}" stroke="${INK}" stroke-width="3"/>`+tx('+56 9 …',X+W/2,Y+170,{anchor:'middle',size:40,font:'JBM',weight:400});
+    const r1=A(.6);o+=`<g opacity="${r1}"><rect x="${X+40}" y="${Y+240}" width="${W-80}" height="84" rx="16" fill="${BG}"/>${tx('Avisar el despacho',X+64,Y+292,{size:27,font:'Manrope',weight:700})}</g>`+check(X+W-82,Y+282,clamp((u-1.0)/.3));
+    const r2=A(1.4);o+=`<g opacity="${r2}"><rect x="${X+40}" y="${Y+344}" width="${W-80}" height="84" rx="16" fill="${BG}"/>${tx('Enviar promociones',X+64,Y+396,{size:27,font:'Manrope',weight:700,fill:u>3.6?INK:MUTED})}</g>`;
+    const st=prog(u,1.9,2.2);if(st>0&&u<3.6){const sc=lerp(1.6,1,eout(st));o+=`<g opacity="${st}" transform="translate(${X+W/2} ${Y+386}) rotate(-6) scale(${sc}) translate(${-X-W/2} ${-Y-386})"><rect x="${X+150}" y="${Y+356}" width="${W-300}" height="60" rx="10" fill="${PAPEL}" stroke="${E800}" stroke-width="6"/>${tx('SIN PERMISO',X+W/2,Y+397,{anchor:'middle',size:28,font:'JBM',weight:400,fill:E800})}</g>`;}
+    const cb=A(2.6);if(cb>0){const on=u>3.2;o+=`<g opacity="${cb}"><rect x="${X+44}" y="${Y+468}" width="42" height="42" rx="8" fill="${on?E:PAPEL}" stroke="${INK}" stroke-width="4"/>`+(on?`<path d="M${X+54} ${Y+489}l8 8l15 -16" stroke="${INK}" stroke-width="5" fill="none"/>`:'')+tx('Acepto recibir promociones',X+102,Y+498,{size:24,font:'Manrope',weight:600})+'</g>';
+      const tp=prog(u,3.0,3.5);if(tp>0&&tp<1)o+=`<circle cx="${X+65}" cy="${Y+489}" r="${14+40*eout(tp)}" fill="none" stroke="${INK}" stroke-width="4" opacity="${1-tp}"/>`;}
+    o+=check(X+W-82,Y+386,clamp((u-3.7)/.3));
+    o+=tx('Con permiso, ahora sí.',X+40,Y+H-42,{size:24,font:'Manrope',weight:700,op:A(3.9)});}
+  if(i===2){o+=head('QUIÉN PUEDE VER');
+    // llavero
+    const sw=8*Math.sin(u*5)*Math.exp(-u*.6);o+=`<g transform="rotate(${sw} ${X+W/2} ${Y+110})"><circle cx="${X+W/2}" cy="${Y+130}" r="30" fill="none" stroke="${INK}" stroke-width="7"/>`;
+    [-1,1].forEach((d,j)=>{const kx=X+W/2+d*44,a=A(.4+j*.3);o+=`<g opacity="${a}" transform="rotate(${d*24} ${X+W/2} ${Y+150})"><circle cx="${X+W/2}" cy="${Y+190}" r="22" fill="${[E,CIELO][j]}" stroke="${INK}" stroke-width="4"/><rect x="${X+W/2-6}" y="${Y+210}" width="12" height="70" fill="${[E,CIELO][j]}" stroke="${INK}" stroke-width="3"/><rect x="${X+W/2+6}" y="${Y+250}" width="16" height="10" fill="${INK}"/></g>`;});
+    o+='</g>';
+    const P=[['Ventas',1],['Soporte',1],['Practicante',0],['Proveedor',0],['Ex empleado',0],['Amigo',0]];
+    P.forEach(([n,ok],j)=>{const x=X+60+(j%3)*150,y=Y+330+Math.floor(j/3)*118,a=A(1.2+j*.15);if(a<=0)return;const off=!ok&&u>2.6;
+      o+=`<g opacity="${a*(off?.35:1)}">${person(x+40,y+30,50,ok?E:INK)}${tx(n,x+40,y+92,{anchor:'middle',size:19,font:'Manrope',weight:700})}</g>`;
+      if(ok&&u>2.6)o+=check(x+78,y-6,clamp((u-2.6-j*.15)/.3));});
+    o+=tx('Cada llave, con nombre y apellido.',X+40,Y+H-34,{size:23,font:'Manrope',weight:700,op:A(3.4)});}
+  if(i===3){o+=head('PROTEGER');
+    const cx=X+W/2,cy=Y+250;const cl=eio(prog(u,1.8,2.3));
+    o+=`<rect x="${cx-150}" y="${cy-110}" width="300" height="230" rx="22" fill="${WOOD_D}" stroke="${INK}" stroke-width="5"/><line x1="${cx}" y1="${cy-110}" x2="${cx}" y2="${cy+120}" stroke="${INK}" stroke-width="4"/>`;
+    o+=`<path d="M${cx-34} ${cy+10-lerp(40,0,cl)}v-40a34 34 0 0 1 68 0v${lerp(10,40,cl)}" stroke="${INK}" stroke-width="12" fill="none"/><rect x="${cx-52}" y="${cy+4}" width="104" height="88" rx="16" fill="${E}" stroke="${INK}" stroke-width="5"/><circle cx="${cx}" cy="${cy+42}" r="10" fill="${INK}"/>`;
+    if(cl>=1)o+=`<circle cx="${cx}" cy="${cy+48}" r="${70+60*eout(prog(u,2.3,2.8))}" fill="none" stroke="${E}" stroke-width="5" opacity="${1-prog(u,2.3,2.8)}"/>`;
+    ['Contraseñas seguras','Respaldos','Acceso con usuario'].forEach((s,j)=>{const a=A(2.6+j*.4),y=Y+420+j*62;o+=`<g opacity="${a}">${check(X+70,y,a)}${tx(s,X+110,y+10,{size:27,font:'Manrope',weight:700})}</g>`;});}
+  if(i===4){o+=head('DERECHOS DEL DUEÑO');
+    o+=`<rect x="${X+40}" y="${Y+96}" width="${W-80}" height="96" rx="20" fill="${CIELO}" opacity="${A(.3)}"/>`+tx('«¿Qué datos tienen míos?»',X+64,Y+154,{size:27,font:'Manrope',weight:700,op:A(.3)});
+    const R=['Acceso','Rectificación','Supresión','Oposición','Portabilidad','Bloqueo'];
+    R.forEach((r,j)=>{const x=X+40+(j%2)*224,y=Y+222+Math.floor(j/2)*84;o+=chip(x,y,212,66,r,{k:clamp((u-1.0-j*.28)/.3),size:24,fill:j===0?E:PAPEL});});
+    o+=tx('Ver, corregir, borrar, oponerse…',X+40,Y+H-70,{size:23,font:'Manrope',weight:700,op:A(3.0)})+tx('Hay que responder en plazo.',X+40,Y+H-36,{size:23,font:'Manrope',weight:600,fill:MUTED,op:A(3.3)});}
+  return o+'</g>';}
+window.cap08=(t)=>{DEFS='';GID=0;
+  const svg=document.getElementById('stage');svg.setAttribute('width',CW);svg.setAttribute('height',CH);svg.setAttribute('viewBox',`0 0 ${CW} ${CH}`);
+  const T=C8_T[5];let o='';
+  if(t<T){
+    o+=c8Room(t);
+    const perk=C8_T.slice(0,5).some(x=>t>x&&t<x+.6)?1:0;
+    o+=catSit(250,640,.75,t,{look:1,perk:t<3?(C8_BOX.some(b=>t>b[3]+.4&&t<b[3]+.8)?1:0):perk});
+    o+=c8Panel(t);
+    // vecina que pregunta (regla 5)
+    if(t>C8_T[4]-.2&&t<T){const u=t-C8_T[4];const x=lerp(1180,700,eout(clamp(u/1.2)));o+=walker(x,C8_FL+10,.9,u<1.2?t:0,{shirt:E800,hair:INK,bag:CIELO});}
+    // Punto
+    let st={ex:-12,ey:-10,ty:-4*Math.sin(TAU*t/2.2)};
+    if(t<C8_BOX[0][3]+.4)st={eyes:'oval',ex:-10,ey:-14};
+    else if(t<C8_T[0]){st={eyes:'round',ex:-16,ey:-14,lines:C8_BOX.some(b=>t>b[3]+.4&&t<b[3]+.9)?1:0,ty:C8_BOX.some(b=>t>b[3]+.4&&t<b[3]+.7)?-18:0};}
+    else{const i=C8_T.findIndex((a,k)=>t>=a&&t<C8_T[k+1]),u=t-C8_T[i];
+      if(u<.8)st={eyes:'happy',ty:-14*Math.abs(Math.sin(u*TAU*.8))};
+      if(i===1&&u>1.9&&u<3.0)st={eyes:'round',ex:-12,ey:-6,sweat:(u-1.9)/1.1};
+      if(i===1&&u>3.7)st=celebrate(t,C8_T[1]+3.7);
+      if(i===3&&u>2.3&&u<3.6)st=celebrate(t,C8_T[3]+2.3);
+      if(i===4)st={ex:14,ey:-8,dots:u>.4&&u<1.0?[0,1,2].map(j=>clamp((u-.4-j*.15)/.12)):null,ty:-4*Math.sin(TAU*t/2.2)};}
+    const px=t>C8_T[4]?560:780;const mv=eio(prog(t,C8_T[4]-.4,C8_T[4]+.4));const pX=lerp(780,560,mv);
+    o+=`<ellipse cx="${pX}" cy="${C8_FL+4}" rx="100" ry="10" fill="${INK}" opacity=".18"/>`+puntoAt(pX,C8_FL-104,104,st);
+    // textos
+    const pill='CAP. 08 · PUNTO EXPLICA';o+=`<rect x="64" y="100" width="${pill.length*20.6+64}" height="64" rx="32" fill="${E}"/>`+tx(pill,96,143,{size:30,font:'JBM',weight:400,ls:1});
+    const H=[[.2,4.8,0,[['Guardas cosas',INK],['que no son tuyas.',E]],'Los datos de tus clientes.'],
+      [5.0,10.3,1,[['Sabe qué',INK],['guardas.',E]],'Qué dato, para qué y dónde está.'],
+      [10.5,15.8,2,[['Úsalo para lo',INK],['que te lo dieron.',E]],'Para otra cosa, pide permiso.'],
+      [16.0,21.3,3,[['Pocas',INK],['llaves.',E]],'Que vea los datos solo quien los necesita.'],
+      [21.5,26.8,4,[['Cierra',INK],['con llave.',E]],'Protege lo que guardas.'],
+      [27.0,32.8,5,[['Si el dueño pide,',INK],['respóndele.',E]],'Puede pedir ver, corregir o borrar sus datos.']];
+    H.forEach(([a,b,n,lines,sub])=>{const k=Math.min(appear(t,a,.4),1-prog(t,b-.25,b));if(k<=0)return;let x=64;
+      if(n){o+=`<g opacity="${k}"><circle cx="106" cy="${280-26}" r="42" fill="${INK}"/>${tx(String(n),106,280-9,{anchor:'middle',size:46,weight:600,fill:PAPEL})}</g>`;}
+      lines.forEach(([l,c],i)=>o+=tx(l,i===0&&n?170:64,280+i*92,{size:l.length>16?76:84,weight:600,ls:-2.5,fill:c,op:k,dy:16*(1-appear(t,a,.4))}));
+      o+=tx(sub,64,500,{size:30,font:'Manrope',weight:600,fill:'#3F3A34',op:k});});
+    o+=tx('Ley 21.719 · en simple',1016,550,{anchor:'end',size:24,font:'JBM',weight:400,fill:E800,op:Math.min(appear(t,.9),1-prog(t,4.5,4.8))});
+    const wo=prog(t,T-.4,T);if(wo>0)o+=`<rect x="0" y="${lerp(CH,0,eio(wo))}" width="${CW}" height="${CH}" fill="${INK}"/>`;
+  } else {
+    o+=`<rect width="${CW}" height="${CH}" fill="${INK}"/>`+stars(t,26,700,8);
+    const a=appear(t,T+.2),b=appear(t,T+1.0),c=appear(t,T+1.8);
+    o+=tx('Ley 21.719',64,320,{size:110,weight:600,ls:-3,fill:PAPEL,op:a,dy:20*(1-a)});
+    ['Postergar la ley no es','postergar la preparación.'].forEach((l,i)=>o+=tx(l,64,450+i*80,{size:66,weight:600,ls:-2,fill:E,op:b,dy:16*(1-b)}));
+    o+=tx('Vigencia prevista: 1 dic 2026.',64,650,{size:28,font:'JBM',weight:400,fill:'#BEB8AE',op:c})+tx('El Congreso discute postergarla.',64,696,{size:28,font:'JBM',weight:400,fill:'#BEB8AE',op:c});
+    o+=tx('Este video explica, no asesora.',64,742,{size:28,font:'JBM',weight:400,fill:'#BEB8AE',op:c});
+    o+=`<rect x="0" y="1480" width="${CW}" height="440" fill="${NIGHT2}"/>`+house(860,1480,220,170,E800,1);
+    o+=puntoAt(560,1480-120,120,t>T+1.8?celebrate(t,T+1.8):{eyes:'happy'})+catSit(260,1480,.9,t,{look:1});
+    o+=txr([['Guárdalo para revisarlo ',PAPEL],['con tu equipo.',E,700]],64,1660,{size:36,op:appear(t,T+2.3)});
+    o+=tx('Cap. 08 · Punto explica',64,1770,{size:26,font:'JBM',weight:400,fill:'#BEB8AE',op:appear(t,T+2.6)})+tx('interforma.digital',64,1820,{size:26,font:'JBM',weight:400,fill:E,op:appear(t,T+2.8)});
+  }
+  svg.innerHTML=`<defs>${DEFS}</defs>`+o;};
+
 window.ready=document.fonts.ready.then(()=>Promise.all([document.fonts.load('500 80px Outfit'),document.fonts.load('500 40px Manrope'),document.fonts.load('30px JBM')]));
 </script>
 </body>
