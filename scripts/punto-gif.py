@@ -4,7 +4,7 @@ Geometría = src/lib/punto.ts (viewBox 200u, cuerpo r=72 en 100,108). Punto es u
 personaje aparte: el isotipo de la firma no cambia y nunca lleva ojos.
 
 Secuencia (se reproduce una vez, ~6 s, y queda en "atento"):
-  atento (primer cuadro: Outlook de escritorio solo muestra este) → parpadea →
+  atento (sin fondo, con sombra suave; primer cuadro: Outlook de escritorio solo muestra este) → parpadea →
   saluda (se balancea) → piensa (mira arriba, puntos) → celebra (salta, confeti)
   → atento.
 Uso: python3 scripts/punto-gif.py
@@ -15,7 +15,9 @@ from PIL import Image, ImageDraw
 OUT = 120            # px del GIF (se muestra a 40 px en la firma: 3x para retina)
 SS = 4               # supersampling
 K = OUT * SS / 200   # px por unidad del viewBox
-INK, ENERGIA, PAPEL, CIELO = (40, 31, 24), (238, 110, 67), (242, 241, 238), (204, 226, 237)
+INK, ENERGIA, CIELO = (40, 31, 24), (238, 110, 67), (204, 226, 237)
+MATE = (255, 255, 255)   # fondo del correo: suaviza los bordes del GIF transparente
+SOMBRA = (232, 229, 224)
 BG_KEY = 23
 
 def lerp(a, b, t): return a + (b - a) * t
@@ -51,7 +53,9 @@ def frame(expr="atento", rot=0.0, lift=0.0, look=0.0, blink=1.0, decor=0.0, scal
     """decor: 0..1 progreso de los elementos alrededor (flick, puntos, confeti)."""
     big = Image.new("RGBA", (OUT * SS, OUT * SS), (0, 0, 0, 0))
     d = ImageDraw.Draw(big)
-    d.rounded_rectangle([0, 0, OUT * SS - 1, OUT * SS - 1], radius=44 * K, fill=PAPEL)
+    # Sin recuadro: Punto flota sobre el correo. La sombra se achica al subir.
+    sw = 40 * (1 - lift / 40)
+    ellipse(d, 100, 192, sw, 5 * (1 - lift / 40), SOMBRA)
 
     # Cuerpo en su propia capa para poder rotarlo/levantarlo.
     body = Image.new("RGBA", big.size, (0, 0, 0, 0))
@@ -82,7 +86,7 @@ def frame(expr="atento", rot=0.0, lift=0.0, look=0.0, blink=1.0, decor=0.0, scal
 
     im = big.resize((OUT, OUT), Image.LANCZOS)
     alpha = im.split()[3].point(lambda v: 255 if v >= 128 else 0)
-    flat = Image.new("RGB", im.size, PAPEL); flat.paste(im, mask=im.split()[3])
+    flat = Image.new("RGB", im.size, MATE); flat.paste(im, mask=im.split()[3])
     p = flat.quantize(colors=BG_KEY, method=Image.MEDIANCUT)
     p.paste(BG_KEY, mask=alpha.point(lambda v: 255 - v))
     p.info["transparency"] = BG_KEY
