@@ -1,0 +1,205 @@
+---
+import Eyebrow from '@components/base/Eyebrow.astro';
+import SectionHeading from '@components/base/SectionHeading.astro';
+import ReelCard from '@components/composite/ReelCard.astro';
+import { reels } from '@config/reels';
+---
+
+{reels.length > 0 && (
+  <div class="reels-wrap" data-animate>
+    <section id="reels" class="reels" aria-labelledby="reels-heading">
+
+      <div class="reels__header">
+        <div class="reels__lead">
+          <Eyebrow>@interformagents</Eyebrow>
+          <SectionHeading id="reels-heading">
+            Cápsulas que explican lo que hacemos.
+          </SectionHeading>
+          <p class="reels__sub">
+            Videos cortos sobre transformación digital, agentes de IA y los problemas
+            reales que resolvemos en empresas medianas.
+          </p>
+        </div>
+        <a
+          class="reels__ig-link"
+          href="https://www.instagram.com/interformagents/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Seguir en Instagram
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="reels__track-wrap">
+        <div class="reels__track" role="list">
+          {reels.map((reel) => (
+            <div class="reels__item" role="listitem">
+              <ReelCard reel={reel} />
+            </div>
+          ))}
+        </div>
+        <div class="reels__fade reels__fade--end" aria-hidden="true"></div>
+      </div>
+
+    </section>
+  </div>
+)}
+
+<script>
+  import { track } from '@lib/analytics/track';
+
+  document.querySelectorAll<HTMLElement>('.reel-card').forEach((card) => {
+    const video = card.querySelector<HTMLVideoElement>('.reel-card__video');
+    const playBtn = card.querySelector<HTMLButtonElement>('.reel-card__play');
+    if (!video || !playBtn) return;
+
+    const toggle = () => {
+      if (video.paused) {
+        document.querySelectorAll<HTMLVideoElement>('.reel-card__video').forEach((v) => {
+          if (v !== video && !v.paused) {
+            v.pause();
+            v.closest('.reel-card')?.querySelector('.reel-card__play')?.removeAttribute('data-playing');
+          }
+        });
+        video.play();
+        playBtn.setAttribute('data-playing', '');
+        playBtn.setAttribute('aria-label', 'Pausar reel');
+        track('reel_play', { reel: card.dataset.reelId ?? '' });
+      } else {
+        video.pause();
+        playBtn.removeAttribute('data-playing');
+        playBtn.setAttribute('aria-label', 'Reproducir reel');
+      }
+    };
+
+    playBtn.addEventListener('click', toggle);
+
+    video.addEventListener('ended', () => {
+      playBtn.removeAttribute('data-playing');
+      playBtn.setAttribute('aria-label', 'Reproducir reel');
+    });
+  });
+</script>
+
+<style>
+  .reels-wrap {
+    margin: 96px 0 0;
+    overflow: hidden;
+  }
+
+  .reels {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 clamp(20px, 5.5vw, 80px);
+  }
+
+  /* ── Header ─────────────────────────────────────── */
+  .reels__header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+  }
+
+  .reels__lead {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1 1 400px;
+    max-width: 560px;
+  }
+
+  .reels__sub {
+    margin: 0;
+    font-size: var(--font-size-body-lg);
+    line-height: 1.65;
+    color: var(--gray-500);
+  }
+
+  .reels__ig-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 22px;
+    border-radius: var(--radius-btn);
+    border: 1px solid var(--gray-200);
+    background: transparent;
+    color: var(--ink);
+    font-family: var(--font-family-ui);
+    font-size: var(--font-size-body-sm);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.2s var(--easing-default),
+                border-color 0.2s var(--easing-default);
+  }
+  .reels__ig-link:hover {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--white);
+  }
+  .reels__ig-link:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
+  }
+
+  /* ── Carousel track ─────────────────────────────── */
+  .reels__track-wrap {
+    position: relative;
+  }
+
+  .reels__track {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: clamp(20px, 5.5vw, 80px);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+  .reels__track::-webkit-scrollbar { display: none; }
+
+  .reels__item {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+
+  .reels__fade {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 64px;
+    pointer-events: none;
+  }
+  .reels__fade--end {
+    right: 0;
+    background: linear-gradient(to right, transparent, var(--paper));
+  }
+
+  /* ── Animate ────────────────────────────────────── */
+  body.animations-ready [data-animate]:not(.is-visible) {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity .7s var(--ease-default), transform .7s var(--ease-default);
+  }
+  [data-animate].is-visible { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    [data-animate] { transform: none; }
+  }
+
+  @media (max-width: 640px) {
+    .reels-wrap { margin-top: 72px; }
+    .reels { padding: 0 var(--spacing-5); gap: 24px; }
+    .reels__header { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .reels__lead { gap: 12px; }
+    .reels__ig-link { align-self: flex-start; }
+  }
+</style>
