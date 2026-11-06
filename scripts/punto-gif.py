@@ -3,7 +3,7 @@
 Geometría = src/lib/punto.ts (viewBox 200u, cuerpo r=72 en 100,108). Punto es un
 personaje aparte: el isotipo de la firma no cambia y nunca lleva ojos.
 
-Secuencia (se reproduce una vez, ~6 s, y queda en "atento"):
+Secuencia (~6 s, en bucle con 5 s de pausa en "atento" entre repeticiones):
   atento (sin fondo, con sombra suave; primer cuadro: Outlook de escritorio solo muestra este) → parpadea →
   saluda (se balancea) → piensa (mira arriba, puntos) → celebra (salta, confeti)
   → atento.
@@ -127,11 +127,11 @@ for i in range(1, 6):                            # pequeño rebote
     add(frame("celebra", lift=4 * math.sin(math.pi * i / 5), decor=1), 40)
 add(frame("celebra", decor=1), 600)
 
-# 5. Vuelve a atento y queda fijo
+# 5. Vuelve a atento y descansa antes de repetir
 for t in (0.0, 0.6):
     add(frame("atento", blink=t), 50)
-add(frame("atento"), 60000)
+add(frame("atento"), 3500)                 # + 1,5 s del inicio = 5 s de pausa
 
 frames[0].save("public/marca/punto-firma.gif", save_all=True, append_images=frames[1:],
-               duration=durations, loop=1, disposal=2, optimize=True)
+               duration=durations, loop=0, disposal=2, optimize=True)
 print(len(frames), "cuadros,", round(sum(durations[:-1]) / 1000, 1), "s")
