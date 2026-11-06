@@ -2,10 +2,12 @@
 import Eyebrow from '@components/base/Eyebrow.astro';
 import SectionHeading from '@components/base/SectionHeading.astro';
 import ReelCard from '@components/composite/ReelCard.astro';
-import { reels } from '@config/reels';
+import { reels, REELS_HOME_LIMIT } from '@config/reels';
+
+const visibles = reels.slice(0, REELS_HOME_LIMIT);
 ---
 
-{reels.length > 0 && (
+{visibles.length > 0 && (
   <div class="reels-wrap" data-animate>
     <section id="reels" class="reels" aria-labelledby="reels-heading">
 
@@ -35,13 +37,26 @@ import { reels } from '@config/reels';
 
       <div class="reels__track-wrap">
         <div class="reels__track" role="list">
-          {reels.map((reel) => (
+          {visibles.map((reel) => (
             <div class="reels__item" role="listitem">
-              <ReelCard reel={reel} />
+              <a href={`/reels/${reel.id}`} class="reels__card-link">
+                <ReelCard reel={reel} />
+              </a>
             </div>
           ))}
         </div>
         <div class="reels__fade reels__fade--end" aria-hidden="true"></div>
+
+        {reels.length > REELS_HOME_LIMIT && (
+          <div class="reels__ver-todos">
+            <a href="/reels" class="reels__ver-todos-link">
+              Ver los {reels.length} videos
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        )}
       </div>
 
     </section>
@@ -191,6 +206,36 @@ import { reels } from '@config/reels';
   .reels__item {
     scroll-snap-align: start;
     flex-shrink: 0;
+    width: 260px;
+  }
+
+  .reels__card-link {
+    text-decoration: none;
+    color: inherit;
+    display: contents;
+  }
+
+  .reels__ver-todos {
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
+  }
+
+  .reels__ver-todos-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-family-ui);
+    font-size: var(--font-size-body-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--primary-500);
+    text-decoration: none;
+    transition: color 0.2s var(--easing-default);
+  }
+  .reels__ver-todos-link:hover { color: var(--ink); }
+  .reels__ver-todos-link:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
   }
 
   .reels__fade {

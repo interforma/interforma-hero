@@ -1,0 +1,244 @@
+---
+import Base from '@layouts/Base.astro';
+import JsonLd from '@components/utility/JsonLd.astro';
+import Eyebrow from '@components/base/Eyebrow.astro';
+import SectionHeading from '@components/base/SectionHeading.astro';
+import ReelCard from '@components/composite/ReelCard.astro';
+import { reels, serieLabels, type ReelSerie } from '@config/reels';
+
+const url = 'https://interforma.digital/reels';
+
+const series = Object.entries(serieLabels) as [ReelSerie, string][];
+const seriesConReels = series.filter(([key]) => reels.some((r) => r.serie === key));
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  '@id': `${url}#page`,
+  name: 'Videos sobre transformación digital — Interforma',
+  description: 'Cápsulas, casos reales y series sobre transformación digital, agentes de IA y automatización para empresas medianas en Chile.',
+  url,
+  inLanguage: 'es-CL',
+  isPartOf: { '@id': 'https://interforma.digital/#website' },
+  publisher: { '@id': 'https://interforma.digital/#organization' },
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: reels.length,
+    itemListElement: reels.map((reel, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: `${url}/${reel.id}`,
+      name: reel.seoTitle,
+    })),
+  },
+};
+---
+
+<Base
+  title="Videos sobre transformación digital para empresas — Interforma"
+  description="Cápsulas, casos reales y series sobre transformación digital, agentes de IA y automatización. Videos cortos que explican cómo transformamos empresas medianas en Chile."
+  canonical={url}
+>
+  <JsonLd schema={schema} />
+
+  <div class="reels-page">
+    <header class="reels-page__hero">
+      <Eyebrow>@interformagents</Eyebrow>
+      <SectionHeading size="xl" as="h1" id="reels-heading">
+        Cápsulas que explican lo que hacemos.
+      </SectionHeading>
+      <p class="reels-page__sub">
+        Videos cortos sobre transformación digital, agentes de IA y los problemas
+        reales que resolvemos en empresas medianas. Cada cápsula va al grano.
+      </p>
+      <a
+        class="reels-page__ig"
+        href="https://www.instagram.com/interformagents/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Seguir en Instagram
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </header>
+
+    <nav class="reels-page__filters" role="group" aria-label="Filtrar por categoría">
+      <button type="button" class="reels-page__filter" data-filter="todos" aria-pressed="true">
+        Todos<span class="reels-page__filter-count">{reels.length}</span>
+      </button>
+      {seriesConReels.map(([key, label]) => {
+        const count = reels.filter((r) => r.serie === key).length;
+        return (
+          <button type="button" class="reels-page__filter" data-filter={key} aria-pressed="false">
+            {label}<span class="reels-page__filter-count">{count}</span>
+          </button>
+        );
+      })}
+    </nav>
+
+    {seriesConReels.map(([key, label]) => {
+      const serieReels = reels.filter((r) => r.serie === key);
+      return (
+        <section class="reels-page__serie" data-serie={key} aria-labelledby={`serie-${key}`}>
+          <h2 class="reels-page__serie-title" id={`serie-${key}`}>{label}</h2>
+          <div class="reels-page__grid">
+            {serieReels.map((reel) => (
+              <a href={`/reels/${reel.id}`} class="reels-page__card-link" data-serie-item={key}>
+                <ReelCard reel={reel} />
+              </a>
+            ))}
+          </div>
+        </section>
+      );
+    })}
+  </div>
+</Base>
+
+<script>
+  const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.reels-page__filter'));
+  const sections = Array.from(document.querySelectorAll<HTMLElement>('.reels-page__serie'));
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.filter ?? 'todos';
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      sections.forEach((sec) => {
+        sec.hidden = id !== 'todos' && sec.dataset.serie !== id;
+      });
+    });
+  });
+</script>
+
+<style>
+  .reels-page {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 48px clamp(20px, 5.5vw, 80px) 96px;
+  }
+
+  /* ── Hero ────────────────────────────────────────── */
+  .reels-page__hero {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 640px;
+  }
+
+  .reels-page__sub {
+    margin: 0;
+    font-size: var(--font-size-body-lg);
+    line-height: 1.65;
+    color: var(--gray-500);
+  }
+
+  .reels-page__ig {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    align-self: flex-start;
+    margin-top: 4px;
+    padding: 10px 22px;
+    border-radius: var(--radius-btn);
+    background: var(--color-action-bg);
+    border: 1px solid var(--color-action-bg);
+    color: var(--ink);
+    font-family: var(--font-family-ui);
+    font-size: var(--font-size-body-sm);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    transition: background 0.2s var(--easing-default);
+  }
+  .reels-page__ig:hover {
+    background: var(--color-action-bg-hover);
+    border-color: var(--color-action-bg-hover);
+  }
+  .reels-page__ig:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
+  }
+
+  /* ── Filters ────────────────────────────────────── */
+  .reels-page__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .reels-page__filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: var(--radius-badge);
+    border: 1px solid var(--gray-200);
+    background: var(--white);
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--font-size-body-sm);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: background var(--duration-fast) var(--easing-default),
+                border-color var(--duration-fast) var(--easing-default);
+  }
+  .reels-page__filter:hover { border-color: var(--gray-400); }
+  .reels-page__filter:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; }
+  .reels-page__filter[aria-pressed='true'] {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--white);
+  }
+
+  .reels-page__filter-count {
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-label-md);
+    color: var(--gray-500);
+  }
+  .reels-page__filter[aria-pressed='true'] .reels-page__filter-count { color: var(--stone); }
+
+  /* ── Series sections ────────────────────────────── */
+  .reels-page__serie[hidden] { display: none; }
+
+  .reels-page__serie-title {
+    margin: 0 0 24px;
+    font-family: var(--font-family-heading);
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    font-weight: var(--font-weight-heading);
+    color: var(--ink);
+  }
+
+  .reels-page__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .reels-page__card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.2s var(--easing-default);
+  }
+  .reels-page__card-link:hover { transform: translateY(-4px); }
+  .reels-page__card-link:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 4px;
+    border-radius: var(--radius-card);
+  }
+
+  @media (max-width: 1024px) {
+    .reels-page__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (max-width: 768px) {
+    .reels-page__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 480px) {
+    .reels-page { padding: 32px var(--spacing-5) 72px; gap: 32px; }
+    .reels-page__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  }
+</style>
