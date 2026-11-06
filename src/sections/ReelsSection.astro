@@ -54,32 +54,53 @@ import { reels } from '@config/reels';
   document.querySelectorAll<HTMLElement>('.reel-card').forEach((card) => {
     const video = card.querySelector<HTMLVideoElement>('.reel-card__video');
     const playBtn = card.querySelector<HTMLButtonElement>('.reel-card__play');
-    if (!video || !playBtn) return;
+    const soundBtn = card.querySelector<HTMLButtonElement>('.reel-card__sound');
+    const soundOff = card.querySelector<HTMLElement>('.reel-card__sound-off');
+    const soundOn = card.querySelector<HTMLElement>('.reel-card__sound-on');
+    if (!video || !playBtn || !soundBtn) return;
+
+    const updateSoundIcon = () => {
+      if (!soundOff || !soundOn) return;
+      soundOff.style.display = video.muted ? '' : 'none';
+      soundOn.style.display = video.muted ? 'none' : '';
+      soundBtn.setAttribute('aria-label', video.muted ? 'Activar sonido' : 'Silenciar');
+    };
 
     const toggle = () => {
       if (video.paused) {
         document.querySelectorAll<HTMLVideoElement>('.reel-card__video').forEach((v) => {
           if (v !== video && !v.paused) {
             v.pause();
-            v.closest('.reel-card')?.querySelector('.reel-card__play')?.removeAttribute('data-playing');
+            const otherCard = v.closest('.reel-card');
+            otherCard?.querySelector('.reel-card__play')?.removeAttribute('data-playing');
+            otherCard?.querySelector<HTMLButtonElement>('.reel-card__sound')?.setAttribute('hidden', '');
           }
         });
         video.play();
         playBtn.setAttribute('data-playing', '');
         playBtn.setAttribute('aria-label', 'Pausar reel');
+        soundBtn.removeAttribute('hidden');
         track('reel_play', { reel: card.dataset.reelId ?? '' });
       } else {
         video.pause();
         playBtn.removeAttribute('data-playing');
         playBtn.setAttribute('aria-label', 'Reproducir reel');
+        soundBtn.setAttribute('hidden', '');
       }
     };
+
+    soundBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      video.muted = !video.muted;
+      updateSoundIcon();
+    });
 
     playBtn.addEventListener('click', toggle);
 
     video.addEventListener('ended', () => {
       playBtn.removeAttribute('data-playing');
       playBtn.setAttribute('aria-label', 'Reproducir reel');
+      soundBtn.setAttribute('hidden', '');
     });
   });
 </script>
@@ -129,8 +150,8 @@ import { reels } from '@config/reels';
     gap: 6px;
     padding: 10px 22px;
     border-radius: var(--radius-btn);
-    border: 1px solid var(--gray-200);
-    background: transparent;
+    border: 1px solid var(--color-action-bg);
+    background: var(--color-action-bg);
     color: var(--ink);
     font-family: var(--font-family-ui);
     font-size: var(--font-size-body-sm);
@@ -141,9 +162,9 @@ import { reels } from '@config/reels';
                 border-color 0.2s var(--easing-default);
   }
   .reels__ig-link:hover {
-    background: var(--ink);
-    border-color: var(--ink);
-    color: var(--white);
+    background: var(--color-action-bg-hover);
+    border-color: var(--color-action-bg-hover);
+    color: var(--ink);
   }
   .reels__ig-link:focus-visible {
     outline: 2px solid var(--color-focus-ring);

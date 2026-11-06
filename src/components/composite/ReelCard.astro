@@ -32,6 +32,21 @@ const serieLabel = serieLabels[reel.serie];
         <path d="M22 17l16 11-16 11V17z" fill="var(--white)" />
       </svg>
     </button>
+    <button
+      type="button"
+      class="reel-card__sound"
+      aria-label="Activar sonido"
+      hidden
+    >
+      <svg class="reel-card__sound-off" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M11 5L6 9H2v6h4l5 4V5z" fill="var(--white)"/>
+        <path d="M23 9l-6 6M17 9l6 6" stroke="var(--white)" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <svg class="reel-card__sound-on" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="display:none">
+        <path d="M11 5L6 9H2v6h4l5 4V5z" fill="var(--white)"/>
+        <path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14" stroke="var(--white)" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
     <span class="reel-card__badge">{serieLabel}</span>
   </div>
   <div class="reel-card__info">
@@ -97,6 +112,27 @@ const serieLabel = serieLabels[reel.serie];
   }
   .reel-card__play[data-playing]:hover {
     opacity: 1;
+  }
+
+  .reel-card__sound {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-full);
+    background: var(--ink);
+    background-color: rgba(40, 31, 24, 0.6);
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s var(--easing-default);
+    z-index: 1;
+  }
+  .reel-card__sound:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
   }
 
   .reel-card__badge {
