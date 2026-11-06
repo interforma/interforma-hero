@@ -1,0 +1,403 @@
+---
+import Base from '@layouts/Base.astro';
+import JsonLd from '@components/utility/JsonLd.astro';
+import Eyebrow from '@components/base/Eyebrow.astro';
+import { reels, serieLabels } from '@config/reels';
+
+export function getStaticPaths() {
+  return reels.map((reel, i) => {
+    const mismo = reels.filter((r) => r.serie === reel.serie && r.id !== reel.id);
+    const otros = reels.filter((r) => r.serie !== reel.serie && r.id !== reel.id);
+    const relacionados = [...mismo, ...otros].slice(0, 3);
+    const siguiente = reels[i + 1] ?? reels[0];
+    return {
+      params: { slug: reel.id },
+      props: { reel, relacionados, siguiente },
+    };
+  });
+}
+
+const { reel, relacionados, siguiente } = Astro.props;
+const url = `https://interforma.digital/reels/${reel.id}`;
+const serieLabel = serieLabels[reel.serie];
+
+const videoSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  '@id': `${url}#video`,
+  name: reel.seoTitle,
+  description: reel.descripcion,
+  thumbnailUrl: reel.poster,
+  contentUrl: reel.src,
+  uploadDate: reel.date,
+  duration: reel.duracion,
+  inLanguage: 'es-CL',
+  publisher: { '@id': 'https://interforma.digital/#organization' },
+  isPartOf: { '@type': 'WebPage', '@id': `${url}#page` },
+};
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://interforma.digital/' },
+    { '@type': 'ListItem', position: 2, name: 'Reels', item: 'https://interforma.digital/reels' },
+    { '@type': 'ListItem', position: 3, name: reel.seoTitle },
+  ],
+};
+
+const formattedDate = new Date(reel.date + 'T12:00:00').toLocaleDateString('es-CL', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<Base
+  title={`${reel.seoTitle} — Interforma`}
+  description={reel.descripcion}
+  canonical={url}
+  og={{ type: 'article' }}
+>
+  <JsonLd schema={videoSchema} />
+  <JsonLd schema={breadcrumb} />
+
+  <article class="reel-page">
+
+    <!-- Breadcrumb -->
+    <nav class="reel-page__breadcrumb" aria-label="Navegación">
+      <a href="/">Inicio</a>
+      <span aria-hidden="true">/</span>
+      <a href="/reels">Reels</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{serieLabel}</span>
+    </nav>
+
+    <!-- Header + Video -->
+    <div class="reel-page__main">
+      <div class="reel-page__video-col">
+        <div class="reel-page__video-wrap">
+          <video
+            class="reel-page__video"
+            src={reel.src}
+            poster={reel.poster}
+            playsinline
+            controls
+            preload="metadata"
+            aria-label={reel.seoTitle}
+          />
+        </div>
+      </div>
+
+      <div class="reel-page__info-col">
+        <div class="reel-page__meta">
+          <Eyebrow>{serieLabel}</Eyebrow>
+          <time class="reel-page__date" datetime={reel.date}>{formattedDate}</time>
+        </div>
+        <h1 class="reel-page__title">{reel.seoTitle}</h1>
+        <p class="reel-page__descripcion">{reel.descripcion}</p>
+
+        <div class="reel-page__actions">
+          {reel.instagram && (
+            <a
+              class="reel-page__action reel-page__action--ig"
+              href={reel.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Ver en Instagram
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          )}
+          <a class="reel-page__action reel-page__action--cta" href="/#contacto">
+            Conversemos sobre su empresa
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Relacionados -->
+    {relacionados.length > 0 && (
+      <section class="reel-page__relacionados" aria-labelledby="relacionados-heading">
+        <h2 class="reel-page__relacionados-title" id="relacionados-heading">Más videos</h2>
+        <div class="reel-page__relacionados-grid">
+          {relacionados.map((r) => (
+            <a href={`/reels/${r.id}`} class="reel-page__rel-card">
+              <div class="reel-page__rel-thumb">
+                <img src={r.poster} alt={r.caption} loading="lazy" />
+                <span class="reel-page__rel-badge">{serieLabels[r.serie]}</span>
+              </div>
+              <p class="reel-page__rel-caption">{r.caption}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Nav -->
+    <nav class="reel-page__nav" aria-label="Navegación entre reels">
+      <a href="/reels" class="reel-page__nav-link">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Todos los videos
+      </a>
+      {siguiente.id !== reel.id && (
+        <a href={`/reels/${siguiente.id}`} class="reel-page__nav-link">
+          Siguiente
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      )}
+    </nav>
+
+  </article>
+</Base>
+
+<style>
+  .reel-page {
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 32px clamp(20px, 5.5vw, 80px) 96px;
+  }
+
+  /* ── Breadcrumb ─────────────────────────────────── */
+  .reel-page__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--font-size-body-sm);
+    color: var(--gray-500);
+  }
+  .reel-page__breadcrumb a {
+    color: var(--gray-500);
+    text-decoration: none;
+  }
+  .reel-page__breadcrumb a:hover { color: var(--ink); }
+  .reel-page__breadcrumb [aria-current] { color: var(--ink); }
+
+  /* ── Main layout ────────────────────────────────── */
+  .reel-page__main {
+    display: grid;
+    grid-template-columns: minmax(0, 400px) 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  /* ── Video ──────────────────────────────────────── */
+  .reel-page__video-wrap {
+    aspect-ratio: 9 / 16;
+    border-radius: var(--radius-card-lg);
+    overflow: hidden;
+    background: var(--gray-100);
+  }
+
+  .reel-page__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ── Info ────────────────────────────────────────── */
+  .reel-page__info-col {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 8px;
+  }
+
+  .reel-page__meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .reel-page__date {
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-label-md);
+    color: var(--gray-500);
+    letter-spacing: 0.02em;
+  }
+
+  .reel-page__title {
+    margin: 0;
+    font-family: var(--font-family-heading);
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: var(--font-weight-heading);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .reel-page__descripcion {
+    margin: 0;
+    font-size: var(--font-size-body-lg);
+    line-height: 1.65;
+    color: var(--gray-500);
+    max-width: 52ch;
+  }
+
+  .reel-page__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .reel-page__action {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 22px;
+    border-radius: var(--radius-btn);
+    font-family: var(--font-family-ui);
+    font-size: var(--font-size-body-sm);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    transition: background 0.2s var(--easing-default),
+                border-color 0.2s var(--easing-default);
+  }
+  .reel-page__action:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
+  }
+
+  .reel-page__action--ig {
+    border: 1px solid var(--gray-200);
+    background: transparent;
+    color: var(--ink);
+  }
+  .reel-page__action--ig:hover {
+    border-color: var(--gray-400);
+  }
+
+  .reel-page__action--cta {
+    background: var(--color-action-bg);
+    border: 1px solid var(--color-action-bg);
+    color: var(--ink);
+  }
+  .reel-page__action--cta:hover {
+    background: var(--color-action-bg-hover);
+    border-color: var(--color-action-bg-hover);
+  }
+
+  /* ── Relacionados ───────────────────────────────── */
+  .reel-page__relacionados-title {
+    margin: 0 0 24px;
+    font-family: var(--font-family-heading);
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    font-weight: var(--font-weight-heading);
+    color: var(--ink);
+  }
+
+  .reel-page__relacionados-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .reel-page__rel-card {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: transform 0.2s var(--easing-default);
+  }
+  .reel-page__rel-card:hover { transform: translateY(-4px); }
+  .reel-page__rel-card:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 4px;
+    border-radius: var(--radius-card);
+  }
+
+  .reel-page__rel-thumb {
+    position: relative;
+    aspect-ratio: 9 / 16;
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background: var(--gray-100);
+  }
+  .reel-page__rel-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .reel-page__rel-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 3px 8px;
+    border-radius: var(--radius-full);
+    background: var(--white);
+    color: var(--ink);
+    font-size: 11px;
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.4;
+  }
+
+  .reel-page__rel-caption {
+    margin: 0;
+    font-size: var(--font-size-body-sm);
+    line-height: 1.45;
+    color: var(--gray-500);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ── Nav ─────────────────────────────────────────── */
+  .reel-page__nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 32px;
+    border-top: 1px solid var(--gray-200);
+  }
+
+  .reel-page__nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--font-size-body-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 0.2s var(--easing-default);
+  }
+  .reel-page__nav-link:hover { color: var(--primary-500); }
+  .reel-page__nav-link:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
+  }
+
+  /* ── Responsive ─────────────────────────────────── */
+  @media (max-width: 768px) {
+    .reel-page__main {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .reel-page__video-wrap {
+      max-width: 360px;
+    }
+    .reel-page__relacionados-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 480px) {
+    .reel-page { padding: 24px var(--spacing-5) 72px; gap: 48px; }
+    .reel-page__relacionados-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+  }
+</style>
