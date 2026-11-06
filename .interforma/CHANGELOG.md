@@ -7,6 +7,7 @@ Registro de cambios por fecha. Para el detalle, ver el PR indicado.
 - Las 10 pantallas de `/libreta` se regeneraron con la app actual (íconos en Hoy y Perfil, descanso a pantalla completa con Punto, Comida con agua, Progreso con récords). Cuenta de demostración con datos ficticios; nada de la base real.
 - Tarjeta «Bienvenida»: suma el paso «Tu pauta» (subir la pauta del nutricionista), según la especificación del 6 nov.
 - Momento 04: el descanso se ve en grande.
+- Tráiler nuevo (30 s, misma música): rutina de hoy, cuándo subir, descanso, entrenador, comida, progreso y letra grande, con las pantallas actuales.
 
 ## 2026-10-28 — Landing de Libreta de Fierros
 
