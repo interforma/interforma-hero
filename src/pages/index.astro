@@ -9,6 +9,7 @@ import ServicesSection from '../sections/ServicesSection.astro';
 import AgentsSection from '../sections/AgentsSection.astro';
 import SectorsSection from '../sections/SectorsSection.astro';
 import CtaSection from '../sections/CtaSection.astro';
+import PuntoChat from '@components/mobile/PuntoChat.astro';
 
 const organization = {
   '@context': 'https://schema.org',
@@ -91,12 +92,18 @@ const webSite = {
   <JsonLd schema={professionalService} />
   <JsonLd schema={webSite} />
 
-  <HeroSection />
-  <CapabilitiesSection />
-  <ProblemsSection />
-  <MethodSection />
-  <ServicesSection />
-  <AgentsSection />
-  <SectorsSection />
-  <CtaSection />
+  <!-- Desktop: sitio completo -->
+  <div class="desktop-only">
+    <HeroSection />
+    <CapabilitiesSection />
+    <ProblemsSection />
+    <MethodSection />
+    <ServicesSection />
+    <AgentsSection />
+    <SectorsSection />
+    <CtaSection />
+  </div>
+
+  <!-- Mobile: experiencia conversacional con Punto -->
+  <PuntoChat />
 </Base>

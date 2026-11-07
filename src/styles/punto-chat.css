@@ -1,0 +1,411 @@
+/*
+ * punto-chat.css — Estilos de la experiencia conversacional móvil con Punto.
+ * Solo se muestra en viewports ≤ 640px (mobile-only).
+ * Fondo oscuro (Umbra) para dar protagonismo a Punto y las burbujas.
+ */
+
+/* ── Visibilidad desktop/mobile ────────────────────────── */
+.desktop-only { display: block; }
+.mobile-only  { display: none;  }
+
+@media (max-width: 640px) {
+  .desktop-only { display: none !important;  }
+  .mobile-only  { display: flex !important;  }
+}
+
+/* ── Contenedor principal (fondo oscuro) ───────────────── */
+.punto-chat {
+  flex-direction: column;
+  min-height: calc(100svh - var(--header-height, 60px));
+  padding: 0 20px 32px;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(238, 110, 67, 0.08) 0%, transparent 60%),
+    var(--ink);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Punto avatar (zona superior) ──────────────────────── */
+.punto-chat__avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 24px 0 4px;
+  flex-shrink: 0;
+}
+
+.punto-chat__avatar .punto {
+  filter: drop-shadow(0 8px 24px rgba(238, 110, 67, 0.25));
+}
+
+/* Nombre: aparece y se desvanece */
+.punto-chat__name {
+  font-family: var(--font-family-heading);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--stone);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: nameFade 3s ease forwards;
+}
+
+@keyframes nameFade {
+  0%   { opacity: 0; transform: translateY(4px); }
+  15%  { opacity: 1; transform: translateY(0); }
+  70%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ── Zona de mensajes ──────────────────────────────────── */
+.punto-chat__messages {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Grupo de burbujas (avatar + mensajes) ─────────────── */
+.punto-msg-group {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.punto-msg-group__avatar {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  margin-top: 2px;
+  opacity: 0;
+  animation: bubbleIn 300ms cubic-bezier(0.16, 1, 0.3, 1) 100ms forwards;
+}
+
+.punto-msg-group__bubbles {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+/* ── Burbuja de Punto ──────────────────────────────────── */
+.punto-bubble {
+  max-width: 90%;
+  padding: 14px 18px;
+  background: var(--gray-800);
+  border-radius: var(--radius-card) var(--radius-card) var(--radius-card) 4px;
+  font-family: var(--font-family-ui);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--white);
+  opacity: 0;
+  transform: translateY(12px) scale(0.97);
+  animation: bubbleIn 450ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Delay secuencial para burbujas dentro de un grupo */
+.punto-bubble:nth-child(1) { animation-delay: 200ms; }
+.punto-bubble:nth-child(2) { animation-delay: 900ms; }
+.punto-bubble:nth-child(3) { animation-delay: 1600ms; }
+
+@keyframes bubbleIn {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── Burbuja del usuario ───────────────────────────────── */
+.punto-bubble--user {
+  align-self: flex-end;
+  background: var(--brand-500);
+  color: var(--ink);
+  font-weight: 500;
+  border-radius: var(--radius-card) var(--radius-card) 4px var(--radius-card);
+  animation-delay: 0ms;
+  max-width: 85%;
+}
+
+/* ── Chips de opciones ─────────────────────────────────── */
+.punto-chat__options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 0 16px;
+  flex-shrink: 0;
+  opacity: 0;
+  animation: chipsIn 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.punto-chat__options--delay-2 { animation-delay: 1400ms; }
+.punto-chat__options--delay-3 { animation-delay: 2100ms; }
+
+@keyframes chipsIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.punto-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  background: var(--gray-800);
+  border: 1.5px solid var(--gray-700);
+  border-radius: var(--radius-card);
+  font-family: var(--font-family-ui);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--white);
+  cursor: pointer;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+  -webkit-tap-highlight-color: transparent;
+  text-align: left;
+}
+
+.punto-chip:active {
+  transform: scale(0.97);
+  background: var(--gray-700);
+  border-color: var(--brand-500);
+  box-shadow: 0 0 0 3px rgba(238, 110, 67, 0.15);
+}
+
+/* Flecha sutil */
+.punto-chip::after {
+  content: '\203A';
+  margin-left: auto;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--gray-500);
+  transition: color 180ms ease;
+}
+
+.punto-chip:active::after {
+  color: var(--brand-500);
+}
+
+/* ── Chip WhatsApp ─────────────────────────────────────── */
+.punto-chip--whatsapp {
+  background: #25D366;
+  border-color: #25D366;
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+.punto-chip--whatsapp::after {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.punto-chip--whatsapp:active {
+  background: #1da851;
+  border-color: #1da851;
+  box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.2);
+}
+
+/* ── Chip volver ───────────────────────────────────────── */
+.punto-chip--back {
+  background: transparent;
+  border: 1.5px dashed var(--brand-500);
+  color: var(--brand-500);
+  font-weight: 500;
+  font-size: 14px;
+  padding: 12px 18px;
+  justify-content: center;
+}
+
+.punto-chip--back::after {
+  content: none;
+}
+
+.punto-chip--back:active {
+  background: rgba(238, 110, 67, 0.1);
+  border-color: var(--brand-500);
+}
+
+/* ── Chip destacado (cápsulas/videos) ──────────────────── */
+.punto-chip--featured {
+  background: var(--brand-500);
+  border-color: var(--brand-500);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.punto-chip--featured::after {
+  color: rgba(40, 31, 24, 0.4);
+}
+
+.punto-chip--featured:active {
+  background: var(--brand-400);
+  border-color: var(--brand-400);
+  box-shadow: 0 0 0 3px rgba(238, 110, 67, 0.2);
+}
+
+/* ── Video inline ──────────────────────────────────────── */
+.punto-video {
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: var(--gray-800);
+  opacity: 0;
+  animation: bubbleIn 450ms cubic-bezier(0.16, 1, 0.3, 1) 200ms forwards;
+}
+
+.punto-video video {
+  display: block;
+  width: 100%;
+  max-height: none;
+  object-fit: contain;
+  background: #000;
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
+}
+
+.punto-video__caption {
+  padding: 12px 16px;
+  font-family: var(--font-family-ui);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--stone);
+  margin: 0;
+}
+
+/* ── Typing indicator ──────────────────────────────────── */
+.punto-typing {
+  display: flex;
+  gap: 5px;
+  padding: 14px 18px;
+  background: var(--gray-800);
+  border-radius: var(--radius-card) var(--radius-card) var(--radius-card) 4px;
+  width: fit-content;
+  animation: bubbleIn 300ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.punto-typing__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--brand-500);
+  animation: typingDot 1.2s ease-in-out infinite;
+}
+
+.punto-typing__dot:nth-child(2) { animation-delay: 200ms; }
+.punto-typing__dot:nth-child(3) { animation-delay: 400ms; }
+
+@keyframes typingDot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.3; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+
+/* ── Paisaje ambiental ──────────────────────────────────── */
+.punto-chat__scene {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  animation: sceneIn 2s ease 1s forwards;
+}
+
+@keyframes sceneIn {
+  to { opacity: 1; }
+}
+
+.punto-scene {
+  width: 100%;
+  height: 100%;
+}
+
+.punto-scene__star {
+  animation: starTwinkle 4s ease-in-out infinite;
+}
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.5; }
+}
+
+.punto-scene__moon {
+  animation: moonGlow 6s ease-in-out infinite;
+}
+
+@keyframes moonGlow {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.18; }
+}
+
+/* Mensajes y opciones por encima del paisaje */
+.punto-chat__avatar,
+.punto-chat__messages,
+.punto-chat__options {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Gato easter egg ───────────────────────────────────── */
+.punto-chat__cat {
+  position: absolute;
+  bottom: -30px;
+  right: 24px;
+  font-size: 24px;
+  z-index: 2;
+  transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.punto-chat__cat.is-visible {
+  transform: translateY(-42px);
+}
+
+/* ── Transición de reset (fade out → in) ───────────────── */
+.punto-chat__messages.is-resetting {
+  animation: fadeReset 350ms ease forwards;
+}
+
+@keyframes fadeReset {
+  0%   { opacity: 1; transform: translateY(0); }
+  50%  { opacity: 0; transform: translateY(-8px); }
+  51%  { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Reduced motion ────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .punto-bubble,
+  .punto-chat__options,
+  .punto-typing,
+  .punto-msg-group__avatar,
+  .punto-chat__name {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .punto-typing__dot {
+    animation: none;
+    opacity: 0.6;
+  }
+
+  .punto-chat__cat {
+    transition: none;
+  }
+
+  .punto-chat__messages.is-resetting {
+    animation: none;
+  }
+
+  .punto-chat__scene,
+  .punto-scene__star,
+  .punto-scene__moon {
+    animation: none;
+    opacity: 0.5;
+  }
+}
