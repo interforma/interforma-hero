@@ -1,4 +1,6 @@
 # Brief de rediseño visual — interforma.digital
+
+> **Histórico (agosto 2026).** Este brief describe la línea Cal.com anterior. El sistema vigente es la **Identidad 2026**: ver `DESIGN.md` y ADR-009. Las tipografías y colores de este documento ya no se usan.
 Dirección: "Opción B — línea Cal.com" (aprobada por el cliente)
 
 ## Objetivo

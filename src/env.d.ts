@@ -8,6 +8,7 @@ interface ImportMetaEnv {
   readonly PUBLIC_WHATSAPP_NUMBER: string;
   readonly PUBLIC_WHATSAPP_MESSAGE: string;
   readonly PUBLIC_CONTACT_EMAIL: string;
+  readonly PUBLIC_CAL_URL: string;
 }
 
 interface ImportMeta {

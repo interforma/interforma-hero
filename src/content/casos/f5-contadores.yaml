@@ -1,0 +1,12 @@
+orden: 2
+tipo: web
+estado: Entregado
+titulo: Sitio, correo corporativo y onboarding listos en 60 días.
+cliente: F5 Estudio Contable
+sector: Servicios contables B2B
+prueba:
+  valor: 60 días
+  etiqueta: del inicio a la entrega, con el sitio en vivo
+proximaFase: Fase 2 · continuidad desde noviembre 2026
+stack: [Vercel, Cloudflare, Google Workspace]
+sitio: https://f5contadores.cl

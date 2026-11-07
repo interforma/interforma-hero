@@ -144,10 +144,10 @@
     align-items: center;
     gap: 10px;
     text-decoration: none;
-    font-family: var(--font-family-host-grotesk);
+    font-family: var(--font-family-ui);
     font-weight: 700;
     font-size: 16px;
-    border-radius: var(--radius-none);
+    border-radius: var(--radius-btn);
     cursor: pointer;
     transition: opacity 150ms, background 150ms;
   }
@@ -210,7 +210,7 @@
   }
 
   .mock__label {
-    font-family: var(--font-family-host-grotesk);
+    font-family: var(--font-family-ui);
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.1em;
@@ -218,7 +218,7 @@
   }
 
   .mock__channel {
-    font-family: var(--font-family-host-grotesk);
+    font-family: var(--font-family-ui);
     font-size: 13px;
     font-weight: 600;
     opacity: 0.85;
@@ -287,7 +287,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-family: var(--font-family-host-grotesk);
+    font-family: var(--font-family-ui);
     font-size: 15px;
     font-weight: 700;
   }
@@ -304,3 +304,11 @@
     }
   }
 </style>
+
+<script>
+  import { track } from '@lib/analytics/track';
+  document.querySelector<HTMLAnchorElement>('.hero__cta--primary')
+    ?.addEventListener('click', () => track('agents_pilot_cta', { placement: 'agentes_hero', page: 'agentes' }));
+  document.querySelector<HTMLAnchorElement>('.hero__cta--ghost')
+    ?.addEventListener('click', () => track('nav_click', { destination: '#como', placement: 'agentes_hero' }));
+</script>

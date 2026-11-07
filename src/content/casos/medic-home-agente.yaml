@@ -1,0 +1,15 @@
+orden: 4
+tipo: agente
+estado: En desarrollo
+titulo: Un asistente que agenda, confirma y deriva pacientes por WhatsApp.
+cliente: Medic-Home
+sector: Hospitalización domiciliaria
+prueba:
+  valor: Fase 1
+  etiqueta: en desarrollo; publicaremos el caso al ponerlo en marcha
+stack: [n8n, Chatwoot, Twenty CRM]
+conversacion:
+  - de: cliente
+    texto: Quiero agendar un examen de sueño en casa.
+  - de: agente
+    texto: ¿Qué día le acomoda? Tengo martes o jueves.

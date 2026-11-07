@@ -1,151 +1,140 @@
 # Estado del proyecto — interforma.digital
 
-**Fecha del análisis:** 2026-10-02
-**Rama / commit:** `main` @ `7dc7d30` (feat: nueva página /agentes)
-**Fuentes revisadas:** `CLAUDE_START_HERE.md`, `AGENTS.md`, `DESIGN.md`, `PRODUCT.md`, `README.md`, `README-SDD.md`, `.interforma/*`, `specs/`, `prompts/`, `src/`, `public/`, configuración (`astro.config.mjs`, `vercel.json`, `.env.example`) e historial de git.
-**Validación ejecutada:** `pnpm build` ✅ (4 páginas generadas) · `astro check` ❌ (39 errores de tipos, 0 warnings).
+**Fecha del análisis:** 2026-10-26
+**Base:** `main` @ `5f97aef` (Motion: El barrio de Punto · Ep. 01) + correcciones de la rama `docs/estado-y-agentes-2026-10-26`
+**Análisis anterior:** 2026-10-02 @ `7dc7d30`. Este documento lo reemplaza.
+**Validación ejecutada:** `pnpm build` ✅ (6 páginas) · `pnpm check` ✅ (0 errores, 0 warnings) · capturas de las páginas y documentos con Playwright, sin errores de JavaScript.
 
 ---
 
 ## 1. Resumen ejecutivo
 
-El sitio está **publicado y funcional**: es una landing estática en Astro 4.16 desplegada en Vercel, con la home rediseñada (iteraciones D y E), una nueva página `/agentes` (Interforma Agents), `/privacidad` y `404`. GA4 y Clarity están integrados, y la base de SEO/GEO está bien cubierta (metadata, canonical, OG, JSON-LD y `llms.txt`).
+Desde el 2 de octubre se cerró casi toda la deuda técnica (0 errores de tipos, código legado eliminado, sitemap automático, navegación multipágina) y el sitio creció: nuevas páginas `/metodo` y `/agentes/flujo`, identidad de marca 2026 (paleta Energía, isotipo Transforma animado, Punto como mascota), píxel de Metricool y un motor de animación para las piezas de redes.
 
-El proceso, en cambio, va por detrás del código. El flujo que plantea `CLAUDE_START_HERE.md` (PROMPT-001 → arquitectura aprobada → backlog → PROMPT-002…) nunca se cerró formalmente: no existe `docs/01-product-architecture.md`, `SPEC-001` sigue en *Draft* y PROMPT-002 a 007 están en *Pendiente*. Además hay **deuda técnica acumulada**: componentes legados huérfanos, errores de TypeScript, un sitemap estático desactualizado y CTA sin tracking. Esto choca con la Definition of Done de `AGENTS.md`.
+En esta rama se corrigieron además los cuatro hallazgos del análisis:
+
+| Hallazgo | Corrección |
+|---|---|
+| Documentos de clientes públicos e indexables | `noindex` en meta y header `X-Robots-Tag` para `/informes`, `/propuestas`, `/clientes` y `/agente-medic-home` |
+| CTA de `/agentes` a `mailto:hola@interforma.ai`, sin tracking | «Agendar piloto» → agenda Cal.com; «Hablar con ventas» → WhatsApp; todos con eventos |
+| URLs con y sin barra final mezcladas | Convención única **sin barra** en Astro, Vercel, sitemap y canonicals |
+| `DESIGN.md` contradictorio y restos del sistema anterior | `DESIGN.md` reescrito; identidad 2026 aplicada en el sitio, los componentes, los informes y las propuestas |
 
 | Área | Estado |
 |---|---|
-| Sitio en producción (home + /agentes) | 🟢 Listo |
-| Sistema de diseño (tokens, tipografía, componentes base) | 🟢 Listo · 🟡 `DESIGN.md` no refleja el rediseño E |
-| SEO técnico / GEO | 🟢 Mayormente listo · 🔴 sitemap desactualizado |
-| Analytics | 🟡 Parcial: infraestructura lista, cobertura de eventos incompleta |
-| Calidad de código (TS estricto, limpieza) | 🔴 39 errores en `astro check` y código muerto |
-| Proceso SDD / documentación de gobierno | 🔴 Arquitectura, specs y backlog sin cerrar |
-| Contenido (copy, casos reales) | 🟡 Copy provisional, sin casos ni testimonios |
-| Automatización comercial (Sprint 2) | ⚪ No iniciado (correcto según ADR-005) |
+| Sitio en producción (home, `/metodo`, `/agentes`, `/agentes/flujo`) | 🟢 Listo |
+| Calidad de código (TS estricto) | 🟢 0 errores en `astro check` |
+| Identidad 2026 y sistema de diseño | 🟢 Aplicada y documentada en todo el sitio y los documentos de Interforma |
+| SEO técnico / GEO | 🟢 Sitemap, canonicals y redirect alineados; `llms.txt` con todas las páginas |
+| Analytics | 🟢 Todos los CTA con evento |
+| Privacidad de activos de clientes | 🟡 Fuera de buscadores; siguen en un repo público (ADR-011) |
+| Proceso SDD / gobierno | 🟡 Documentación al día; specs y arquitectura siguen abiertos |
+| Interforma Agents | 🟢 Referencia en producción con un cliente · ⚪ sin agente propio |
+| Motion y contenido de redes | 🟢 Motor y fuentes versionados |
+| Automatización comercial propia (Sprint 2) | ⚪ No iniciado |
 
 ---
 
 ## 2. ✅ Qué está listo
 
 ### Infraestructura y stack
-- **Astro 4.16.x** con salida `static` (ADR-001 y ADR-008), **Node 20** fijado en `.nvmrc` y `engines` (ADR-007), y pnpm como gestor.
-- **Vercel** como plataforma de deploy (ADR-002), con headers de seguridad en `vercel.json` (`nosniff`, `Referrer-Policy`, `Permissions-Policy`, `X-Frame-Options`).
-- **Estilos:** CSS nativo con variables (ADR-006): `reset.css`, `tokens.css`, `global.css` y `utilities.css`. Tokens JSON en `design/tokens/` (colores, tipografía, espaciado, radios, sombras y motion).
-- `.env.example` documentado y sin secretos en el repositorio.
-- El build compila sin errores y genera `/`, `/agentes/`, `/privacidad/` y `/404.html`.
+- **Astro 4.16.x** estático (ADR-001, ADR-008), **Node 20** (ADR-007), **pnpm ≥ 10** (el `pnpm-workspace.yaml` usa `allowBuilds`).
+- **Vercel** (ADR-002) con headers de seguridad, `trailingSlash: false` y `X-Robots-Tag` para documentos de clientes.
+- **URLs sin barra final:** `trailingSlash: 'never'` en `astro.config.mjs`; sitemap, canonicals y `llms.txt` coinciden.
+- **`@astrojs/sitemap` 3.2.1** genera `sitemap-index.xml` y `sitemap-0.xml` con las 5 páginas indexables. Ya no hay sitemap estático en `public/`.
+- CSS nativo con variables (ADR-006). Fuente de verdad de color: bloque *IDENTIDAD 2026* de `src/styles/tokens.css`.
 
-### Home (`src/pages/index.astro`): rediseño D + E
-Secciones ensambladas en `src/sections/`:
-1. `HeroSection`: H1, CTA a WhatsApp y CTA secundario «Ver el método».
-2. `CapabilitiesSection`: flujo de 5 capacidades animado.
-3. `ProblemsSection`: 6 tarjetas «¿Le suena familiar?».
-4. `MethodSection`: panel oscuro con las 6 etapas, rombo naranja por paso y leyenda de puertas de decisión.
-5. `ServicesSection`: grilla de módulos y franja de Agentes de IA.
-6. `AgentsSection`: hitos y demo animada del operador (JS puro).
-7. `SectorsSection`: salud, logística y servicios profesionales.
-8. `CtaSection`: CTA azul final (`#contacto`).
+### Páginas
+| Ruta | Contenido | Desde |
+|---|---|---|
+| `/` | Hero, Capacidades, Problemas, Método (con botón a `/metodo`), Servicios, Agentes (con botones a `/agentes` y `/agentes/flujo`), Sectores, CTA | rediseño D/E |
+| `/metodo` | Diagrama interactivo del método (Archify, iframe), detalle de las 6 etapas, JSON-LD `HowTo` | PR #6 · 13-oct |
+| `/agentes` | Landing de Interforma Agents (8 secciones). CTA a Cal.com y WhatsApp | PR #3 · 1-oct |
+| `/agentes/flujo` | Diagrama del agente de WhatsApp, 8 pasos, estados, JSON-LD `HowTo` | PR #7 · 13-oct |
+| `/privacidad`, `/404` | Política de privacidad y página 404 con Punto en estado «uy» | — |
 
-Layout común: `Header` (pill, menú móvil), `Footer` rediseñado, `WhatsAppFloat` (FAB), `SkipToContent` y `SEOHead`.
+### Limpieza técnica (PR #4 · 2-oct)
+- Eliminados los componentes legados del diseño anterior (19 errores de tipos).
+- Tipos anotados en la demo de `AgentsSection` (17 errores).
+- `SectionHeading` acepta `id` y `as`; se repararon los `aria-labelledby` de Método, Sectores y CTA.
+- Nav y footer usan `/#seccion` y enlazan a `/agentes`.
 
-### Página `/agentes` (PR #3, 2026-10-01)
-Ocho secciones en `src/sections/agentes/`: Hero, Stats, Demo animada, Cómo funciona, Integración y seguridad, App del operador, Día 30 (puerta de decisión) y CTA.
+### Identidad 2026 (PR #8–#11 y esta rama)
+- Paleta **Energía `#EE6E43`** + neutros piedra cálida; **Outfit**, **Manrope** y **JetBrains Mono** autoalojadas. Se retiraron Plus Jakarta Sans, Inter y Host Grotesk del código y de las dependencias.
+- Isotipo **Transforma** animado y logotipo «interforma» en minúsculas; **Punto** como mascota.
+- Botones unificados: primario Energía con texto Umbra; sobre superficies Energía, primario Umbra; foco en Energía 800 en todos los componentes; sin esquinas rectas.
+- Paneles oscuros y fallbacks de la demo de Agentes con la paleta cálida (sin grises fríos).
+- **Documentos de Interforma** (informes, plantilla, propuestas de F5 y Medic-Home) con la marca vía `public/marca/interforma-docs.css`: fuentes propias, sin Google Fonts, colores y gráficos de marca.
+- `DESIGN.md` reescrito como referencia única; `PRODUCT.md` y el brief de handoff marcados como actualizados o históricos.
 
-### SEO / GEO
-- `SEOHead` con title, description, canonical, Open Graph, Twitter Card y soporte de `noindex` (aplicado en 404).
-- JSON-LD en la home: `Organization`, `ProfessionalService` (con `OfferCatalog` de 6 servicios) y `WebSite`, lo que cubre lo pedido en `.interforma/SEO_GEO.md`.
-- `public/llms.txt` con descripción de la empresa, servicios y método (orientado a GEO).
-- `robots.txt`, `og-image.png` y `favicon.svg`.
-- `lang="es"` y locale `es_CL`.
+### SEO y medición
+- JSON-LD en home (`Organization`, `ProfessionalService`, `WebSite`), `/metodo` y `/agentes/flujo` (`HowTo`).
+- `llms.txt` con todas las páginas principales.
+- Diagramas en `/diagramas/` con `noindex` y canonical a su página.
+- GA4 (condicional), Microsoft Clarity y Metricool en `Base.astro`.
+- **Eventos en todos los CTA:** Hero, CTA final, header (desktop y móvil), `WhatsAppButton`, `/agentes` y botones del home hacia `/agentes` y `/agentes/flujo`. Catálogo en `.interforma/ANALYTICS.md`.
 
-### Analytics
-- Dispatcher desacoplado `src/lib/analytics/track.ts` (logs en consola en dev, `gtag` en prod y no-op si falta GA4).
-- Scroll tracking 25/50/75/90 (`scroll.ts`) inicializado en `Base.astro`.
-- GA4 inyectado condicionalmente vía `PUBLIC_GA4_MEASUREMENT_ID`, más Microsoft Clarity.
-- Eventos del `Header` (nav y WhatsApp) y del FAB de WhatsApp.
+### Motion y redes (PR #12, #14–#16)
+`design/motion/`: motor SVG + Playwright + ffmpeg + música original en Python. Serie de Punto (La semilla, Cap. 03–05, Método, «Punto en acción», *El barrio de Punto · Ep. 01*), portadas y stickers.
 
-### Accesibilidad y performance
-- Skip-to-content, foco visible global y soporte de `prefers-reduced-motion`.
-- Fix de LCP (animaciones *visible-first* con `animations-ready`).
-- Fix de zoom/overflow en móvil corregido en su causa raíz (`AgentsSection`).
+### Activos de clientes y comerciales en `public/`
+| Ruta | Qué es | Indexación |
+|---|---|---|
+| `/informes/grupo-borie/*`, `/informes/_template/` | Informes mensuales y plantilla | `noindex` |
+| `/propuestas/f5/` | Propuesta comercial de F5 Estudio Contable | `noindex` |
+| `/clientes/gatica-property/` | Panel, plan y landing «Las Rocas» (marca del cliente) | `noindex` |
+| `/agente-medic-home/` | Propuesta de asistente de WhatsApp para Medic-Home | `noindex` |
 
-### Activos complementarios (fuera del sitio principal)
-- `public/agente-medic-home/`: página estática de demo.
-- `public/clientes/gatica-property/`: plan de marketing y landing «Las Rocas».
-- `public/informes/`: plantilla de informe mensual e informe Grupo Borie (sept 2026).
-- `email-signature/`: firmas HTML v1 y v2.
-- `handoff/`: brief de diseño, moodboards y referencias de Cal.com.
-
-### Gobierno del proyecto
-- `AGENTS.md` (estándar de ingeniería), `.interforma/ADN.md`, `METHOD.md`, `DECISIONS.md` (ADR-001 a 008), `ROADMAP.md`, `SEO_GEO.md` y `ANALYTICS.md`.
-- `DESIGN.md` y `PRODUCT.md` con el contexto de diseño y de producto.
+### Documentación
+`docs/agentes/` (arquitectura, oferta y piloto, mapa en el sitio), este documento, `DESIGN.md`, `README.md` y `.interforma/` (CHANGELOG, DECISIONS con ADR-009 a ADR-011, ROADMAP, ANALYTICS).
 
 ---
 
 ## 3. 🟡 Qué está en progreso / parcial
 
-| Tema | Situación actual | Evidencia |
+| Tema | Situación | Evidencia |
 |---|---|---|
-| **Rediseño E (acento naranja «Agents»)** | Implementado en código (`--agents-*` en `tokens.css`), pero `DESIGN.md` todavía declara la *One Accent Rule* (azul como único acento) y no menciona el naranja ni el wordmark en minúsculas. | `src/styles/tokens.css:32-44` vs `DESIGN.md` §Colors |
-| **Copy** | Marcado como provisional y pendiente de aprobación del equipo. | `src/config/content.ts:2-3`, `PRODUCT.md` |
-| **Decisión de headline A/B** | Sigue abierta. | `PRODUCT.md` → `content.ts › headlineAlternatives` |
-| **Tracking de CTA** | La infraestructura está lista, pero los CTA de WhatsApp de `HeroSection` y `CtaSection` (rediseño D) no llaman a `track()`. Los CTA y mailto de `/agentes` tampoco tienen eventos. `AGENTS.md` exige «no agregar CTA sin tracking previsto». | `grep track src/sections` → sin resultados |
-| **Catálogo de eventos** | `ANALYTICS.md` documenta `hero_cta`, `click_secondary_cta`, `contact_start`, etc., que hoy vivían en los componentes legados (`src/components/sections/*`) que ya no se usan. El catálogo no refleja lo que realmente se envía. | `.interforma/ANALYTICS.md` |
-| **Página `/agentes`** | Publicada, pero: no está enlazada desde la nav ni la home (solo existe el ancla `#agentes`); usa el email `hola@interforma.ai` mientras `PRODUCT.md` dice que el email está pendiente y el dominio es `.digital`; el tono es «tú» frente al «usted» del resto del sitio; no tiene JSON-LD. | `src/sections/agentes/CtaAgentes.astro:13,21`, `src/pages/agentes.astro` |
-| **Navegación entre páginas** | La nav y el footer usan anclas relativas (`#metodo`, `#servicios`, `#contacto`). En `/agentes` y `/privacidad` esas anclas no existen, así que los enlaces no llevan a la home. | `src/config/navigation.ts`, `src/components/layout/Footer.astro:17-19` |
-| **Spec de homepage** | `SPEC-001` sigue en *Draft* y su alcance (incluye «Diagnóstico» y «Soluciones») y sus eventos (`view_home`, `start_diagnostic`, `complete_diagnostic`) no coinciden con lo implementado. | `specs/001-homepage.md` |
-| **Migración Firebase → Vercel** | El sitio ya se sirve desde Vercel, pero el repo no registra si el DNS se cambió, si Firebase se retiró ni si existe una ruta de rollback documentada (ADR-003 y ADR-004). | `.interforma/DECISIONS.md` |
+| **Documentos de clientes en repo público** | Ya no se indexan, pero siguen accesibles con el enlace y visibles en GitHub (el informe de octubre incluye el monto facturado). Falta decidir si se mueven a un repo privado o a un portal con acceso. | ADR-011 |
+| **Agenda de Cal.com** | El enlace viene de la configuración de Interforma; conviene abrirlo en el preview de Vercel y confirmar que es el evento correcto. Se puede cambiar con `PUBLIC_CAL_URL`. | `src/config/site.ts` |
+| **Landing «Las Rocas»** | Quedó con `noindex` junto al resto de `/clientes`. Si se quiere tráfico orgánico para esa propiedad, hay que excluirla. | `public/clientes/gatica-property/lasrocas.html` |
+| **Voz** | `/agentes` usa «tú»; el resto del sitio, los documentos y el agente en producción usan «usted». | `src/sections/agentes/*` |
+| **Alcance comunicado de Agents** | El flujo público muestra postventa, encuesta y remarketing; en la implementación real están en preparación. La «app del operador iOS» es un concepto. | `docs/agentes/README.md` |
+| **Copy y headline A/B** | Copy marcado como provisional; decisión de headline abierta. | `src/config/content.ts`, `PRODUCT.md` |
+| **Specs** | `SPEC-001` en *Draft* con alcance y eventos que no existen; no hay specs de `/metodo`, `/agentes` ni `/agentes/flujo`. | `specs/` |
+| **Migración Firebase / DNS** | Sin registro del cambio de DNS ni del retiro de Firebase (ADR-003, ADR-004). | `.interforma/DECISIONS.md` |
 
 ---
 
 ## 4. 🔴 Qué falta por hacer
 
-### Prioridad alta: calidad y consistencia
-1. **Corregir los 39 errores de `astro check`.** `AGENTS.md` exige TypeScript estricto.
-   - `src/sections/AgentsSection.astro`: 17 errores (parámetros `any`, `.style` sobre `Element`, `root`/`canvas` posiblemente `null`).
-   - `src/sections/MethodSection.astro`, `CtaSection.astro` y `SectorsSection.astro`: 1 cada uno (props de `SectionHeading`).
-   - El resto pertenece a componentes legados (ver punto 2).
-2. **Eliminar o archivar el código muerto del diseño anterior.** No se importa en ninguna página:
-   - `src/components/sections/{Hero,Method,Problems,Bridge,CTA,Contact}Section.astro`
-   - `src/components/composite/NavLink.astro`
-   - `src/components/visual/{MethodSystemDiagram,DiagnosticWidget,DiagnosticFlowDiagram}.astro`
-   - `src/components/background/HeroBackground.astro`, `src/components/base/CornerMarks.astro`, `src/lib/halftone.ts` (solo los usan los legados)
+### Prioridad alta
+1. **Decidir ADR-011:** mover informes y propuestas de clientes fuera del repo público.
+2. **Revisar el preview de Vercel** de esta rama: agenda Cal.com, botones y documentos con la nueva marca.
 
-   Esto elimina 19 de los 39 errores y simplifica el repositorio.
-3. **Sitemap.** `public/sitemap-0.xml` es un archivo estático que no incluye `/agentes`. `@astrojs/sitemap` está instalado pero no configurado en `astro.config.mjs`. Hay que activar la integración y borrar los XML estáticos.
-4. **Tracking de CTA** en Hero, CTA final y `/agentes` mediante `track()`, y actualizar `.interforma/ANALYTICS.md` con el catálogo real.
-5. **Navegación multipágina:** usar `/#metodo` en lugar de `#metodo` y agregar el enlace a `/agentes` en la nav y el footer.
+### Prioridad media
+3. Voz única (usted) en `/agentes`.
+4. JSON-LD `Service` para `/agentes`.
+5. Specs retroactivos de `/metodo`, `/agentes` y `/agentes/flujo`; actualizar `SPEC-001`.
+6. `docs/01-product-architecture.md` (o la arquitectura vigente) y cierre de PROMPT-002 a 007.
+7. Registrar el cambio de DNS y el estado de Firebase.
+8. Copy definitivo, headline y casos reales con autorización y métricas verificables.
+9. **Agente propio de Interforma** reutilizando `docs/agentes/arquitectura.md`.
 
-### Prioridad media: documentación y proceso (SDD)
-6. **Arquitectura de producto:** crear `docs/01-product-architecture.md` (resultado de PROMPT-001) o documentar retroactivamente la arquitectura vigente.
-7. **Specs:** actualizar `SPEC-001` al estado real y crear un `SPEC-002` para `/agentes`. `README-SDD.md` indica que no se implementa sin spec aprobado.
-8. **ADR nuevos** en `DECISIONS.md`: rediseño D/E y segundo acento naranja, página `/agentes` y su marca, y alojamiento de páginas de clientes e informes en `public/`.
-9. **Actualizar `DESIGN.md`:** acento Agents, wordmark en minúsculas y paneles oscuros del rediseño D/E.
-10. **Actualizar `.interforma/CHANGELOG.md`:** solo tiene la entrada v0.1 del 2026-07-31.
-11. **Actualizar `README.md`:** menciona `src/content/` y `docs/`, que no existían, y omite `src/sections/`.
-12. **Prompt Library:** PROMPT-002 (UX/UI) a PROMPT-007 siguen pendientes.
-
-### Prioridad media: contenido y marca
-13. Aprobar el copy definitivo y cerrar la decisión del headline A/B.
-14. Unificar la voz (usted vs. tú) entre la home y `/agentes`.
-15. Definir el email oficial (`.digital` vs. `.ai`) y completar `PUBLIC_CONTACT_EMAIL`.
-16. Incorporar casos reales con métricas y testimonios (`PRODUCT.md` › Evidence on Hand) sin fabricar datos.
-17. Revisar si las páginas de clientes (`/clientes/gatica-property`) e informes (`/informes/grupo-borie`) deben ser públicas e indexables. Hoy se sirven como estáticos sin `noindex`.
-
-### Prioridad baja: QA
-18. Ninguna página tiene pruebas automatizadas. Falta definir una validación explícita (Lighthouse/axe en CI o un checklist de QA por PR) para cumplir la Definition of Done.
-19. Hay que verificar el contraste de la escala naranja (`--agents-*`) sobre fondos claros, según las notas de `tokens.css`.
+### Prioridad baja
+10. Validación automática por PR (Lighthouse/axe en CI o checklist).
+11. Fijar pnpm con `packageManager` en `package.json`.
+12. Reducir los aliases históricos de `tokens.css` (`--agents-*`, `--primary-*`, `--cj-*`) a los tokens de marca.
 
 ---
 
 ## 5. Roadmap: posición actual
 
-| Sprint (`.interforma/ROADMAP.md`) | Estado |
+| Sprint | Estado |
 |---|---|
-| **Sprint 0 — Recuperar presencia online** | 🟢 Prácticamente completo (sitio en Vercel). Pendiente: confirmar formalmente el DNS, el rollback y la «arquitectura aprobada». |
-| **Sprint 1 — Medición y optimización** | 🟡 En curso. Analytics, SEO técnico y GEO inicial hechos; sectores incorporados. Faltan eventos de embudo completos, ajustes de conversión con datos y casos por industria. |
-| **Sprint 2 — Automatización comercial** | ⚪ No iniciado: n8n, registro de leads, WhatsApp Business, agenda y CRM/Notion. |
-| **Sprint 3 — Escala** | ⚪ No iniciado: páginas por problema e industria (`/metodo`, `/sectores/salud`…), casos, recursos y RAG. `/agentes` es la primera página de servicio y adelanta parte de este sprint. |
+| **Sprint 0 — Recuperar presencia online** | 🟢 Completo en la práctica. Falta dejar constancia del DNS y del rollback. |
+| **Sprint 1 — Medición y optimización** | 🟢 Casi completo: SEO técnico, GEO, analytics con eventos en todos los CTA, Metricool. Faltan casos por industria y ajustes de conversión con datos. |
+| **Sprint 2 — Automatización comercial** | ⚪ No iniciado para Interforma. La pila existe y opera para un cliente (n8n, WhatsApp Cloud API, Chatwoot, CRM Twenty). |
+| **Sprint 3 — Escala** | 🟡 Adelantado: `/agentes`, `/agentes/flujo`, `/metodo` y la serie animada de Punto. Faltan casos de éxito, páginas por industria y RAG. |
 
 ---
 
@@ -153,23 +142,23 @@ Ocho secciones en `src/sections/agentes/`: Hero, Stats, Demo animada, Cómo func
 
 | Criterio | Estado | Nota |
 |---|---|---|
-| Funciona | ✅ Cumple | Build OK, sitio publicado |
-| Comprensible | ✅ Cumple | Estructura clara por secciones |
-| Responsive | ✅ Cumple | Mobile-first, fix de overflow aplicado |
-| Accesible | 🟡 Parcial | Base sólida; falta auditoría formal (axe/Lighthouse) |
-| Documentada | 🔴 Pendiente | `DESIGN.md`, `ANALYTICS.md`, specs y changelog desactualizados |
-| Pruebas / validación explícita | 🔴 Pendiente | Sin tests; `astro check` falla |
-| Sin regresiones conocidas | 🟡 Parcial | Anclas de nav rotas fuera de la home; sitemap sin `/agentes` |
-| TypeScript estricto | 🔴 Pendiente | 39 errores |
-| CTA con tracking | 🟡 Parcial | Header y FAB sí; Hero, CTA final y `/agentes` no |
-| Sin secretos en repo | ✅ Cumple | Solo `.env.example`; el ID de Clarity es público |
+| Funciona | ✅ Cumple | Build OK, 6 páginas |
+| Comprensible | ✅ Cumple | Secciones y páginas bien separadas |
+| Responsive | ✅ Cumple | — |
+| Accesible | 🟡 Parcial | Foco visible unificado, reduced motion respetado; falta auditoría formal |
+| Documentada | ✅ Cumple | `DESIGN.md`, estado, ADR, analytics y Agents al día; specs pendientes |
+| Pruebas / validación explícita | 🟡 Parcial | `astro check` limpio y capturas manuales; sin CI de calidad |
+| Sin regresiones conocidas | ✅ Cumple | — |
+| TypeScript estricto | ✅ Cumple | 0 errores |
+| CTA con tracking | ✅ Cumple | Ver `.interforma/ANALYTICS.md` |
+| Sin secretos en repo | ✅ Cumple | IDs públicos de Clarity y Metricool; ningún token. Datos comerciales de clientes: ver ADR-011 |
 
 ---
 
-## 7. Próximos pasos recomendados (orden sugerido)
+## 7. Próximos pasos recomendados
 
-1. Hacer limpieza técnica en un solo PR: borrar los componentes legados, corregir los errores de tipos restantes, activar `@astrojs/sitemap` y arreglar las anclas de navegación.
-2. Agregar tracking a todos los CTA y sincronizar `ANALYTICS.md`.
-3. Poner la documentación al día: ADR del rediseño D/E y `/agentes`, `DESIGN.md`, `CHANGELOG.md` y `SPEC-001`/`SPEC-002`.
-4. Cerrar decisiones de contenido: copy definitivo, headline, voz, email e incorporación de casos reales.
-5. Planificar Sprint 2 (automatización comercial) con un spec aprobado antes de implementar.
+1. Revisar el preview de Vercel y mezclar la rama.
+2. Decidir ADR-011 (repo privado o portal para documentos de clientes).
+3. Unificar la voz de `/agentes` y agregar su JSON-LD.
+4. Specs retroactivos y arquitectura de producto.
+5. Spec del agente propio de Interforma.

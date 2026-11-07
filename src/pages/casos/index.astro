@@ -1,0 +1,35 @@
+---
+import Base from '@layouts/Base.astro';
+import JsonLd from '@components/utility/JsonLd.astro';
+import CasesSection from '../../sections/CasesSection.astro';
+import CtaSection from '../../sections/CtaSection.astro';
+import { getCasos, casoHref } from '@lib/casos';
+
+const casos = await getCasos();
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Casos de Interforma',
+  itemListElement: casos.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: c.data.titulo,
+    ...(casoHref(c) ? { url: `https://interforma.digital${casoHref(c)}` } : {}),
+  })),
+};
+---
+<Base
+  title="Casos — Interforma"
+  description="Proyectos reales de web, agentes de IA, marketing digital, datos y producto para empresas en Chile: el problema, lo que hicimos y cómo funciona hoy."
+  canonical="https://interforma.digital/casos"
+>
+  <JsonLd schema={itemList} />
+  <div class="casos-page">
+    <CasesSection headingAs="h1" placement="cases_page" />
+  </div>
+  <CtaSection />
+</Base>
+
+<style>
+  .casos-page { padding-top: 24px; }
+</style>

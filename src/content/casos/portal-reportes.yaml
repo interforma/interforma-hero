@@ -1,0 +1,11 @@
+orden: 5
+tipo: datos
+estado: En operación
+titulo: Informes de Meta Ads que llegan solos al portal del cliente.
+cliente: Portal de reportes Interforma
+sector: Clientes de marketing digital
+prueba:
+  valor: PDF
+  etiqueta: informes que se generan solos, con acceso seguro para cada cliente
+stack: [Next.js, Supabase, Vercel]
+etiquetaDatos: Informe mensual · Meta Ads

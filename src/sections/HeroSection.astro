@@ -174,5 +174,11 @@
 
 <script>
   import { initAnimations } from '@lib/animations/intersectionObserver';
+  import { track } from '@lib/analytics/track';
   initAnimations();
+
+  document.querySelector<HTMLAnchorElement>('.hero__btn--primary')
+    ?.addEventListener('click', () => track('click_whatsapp', { placement: 'hero' }));
+  document.querySelector<HTMLAnchorElement>('.hero__btn--outline')
+    ?.addEventListener('click', () => track('nav_click', { destination: '#metodo', placement: 'hero' }));
 </script>

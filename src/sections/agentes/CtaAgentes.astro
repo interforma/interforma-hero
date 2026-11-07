@@ -1,5 +1,6 @@
 ---
 // CtaAgentes.astro — Sección CTA final de /agentes
+import { site, whatsappUrl } from '@config/site';
 ---
 
 <section id="empezar" class="cta-ag" aria-labelledby="cta-ag-heading">
@@ -10,7 +11,9 @@
     </h2>
 
     <div class="cta-ag__actions">
-      <a href="mailto:hola@interforma.ai" class="cta-ag__btn cta-ag__btn--primary">
+      <a href={site.calUrl} target="_blank" rel="noopener noreferrer"
+         class="cta-ag__btn cta-ag__btn--primary"
+         data-track-event="agents_pilot_cta" data-track-placement="agentes_cta_agenda">
         <span>Agendar piloto</span>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
              stroke-width="2" stroke-linecap="square" aria-hidden="true">
@@ -18,12 +21,22 @@
           <path d="m12 5 7 7-7 7"/>
         </svg>
       </a>
-      <a href="mailto:hola@interforma.ai" class="cta-ag__btn cta-ag__btn--ghost">
+      <a href={whatsappUrl(site.whatsappAgentsMessage)} target="_blank" rel="noopener noreferrer"
+         class="cta-ag__btn cta-ag__btn--ghost"
+         data-track-event="click_whatsapp" data-track-placement="agentes_cta">
         Hablar con ventas
       </a>
     </div>
   </div>
 </section>
+
+<script>
+  import { track } from '@lib/analytics/track';
+  document.querySelectorAll<HTMLAnchorElement>('.cta-ag [data-track-event]').forEach((el) => {
+    el.addEventListener('click', () =>
+      track(el.dataset.trackEvent!, { placement: el.dataset.trackPlacement, page: 'agentes' }));
+  });
+</script>
 
 <style>
   .cta-ag {
@@ -67,12 +80,12 @@
     align-items: center;
     gap: 12px;
     text-decoration: none;
-    font-family: var(--font-family-host-grotesk);
+    font-family: var(--font-family-ui);
     font-weight: 700;
     font-size: 16px;
     cursor: pointer;
     transition: opacity 150ms;
-    border-radius: var(--radius-none);
+    border-radius: var(--radius-btn);
   }
 
   .cta-ag__btn--primary {

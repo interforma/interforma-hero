@@ -1,0 +1,131 @@
+---
+/**
+ * Testimonios aprobados por el cliente. No renderiza nada si no hay ninguno.
+ */
+import { iniciales } from '@lib/casos';
+
+export interface Item {
+  cita: string;
+  nombre: string;
+  cargo?: string;
+  empresa: string;
+}
+export interface Props {
+  items: Item[];
+}
+const { items } = Astro.props;
+const multiple = items.length > 1;
+---
+{items.length > 0 && (
+  <div class="ts" data-testimonials>
+    <p class="ts__eyebrow">Lo que dicen nuestros clientes</p>
+    <div class="ts__row">
+      <div class="ts__slides">
+        {items.map((t, i) => (
+          <figure class="ts__item" hidden={i > 0} data-index={i}>
+            <blockquote class="ts__quote">“{t.cita}”</blockquote>
+            <figcaption class="ts__who">
+              <span class="ts__avatar" aria-hidden="true">{iniciales(t.nombre)}</span>
+              <span class="ts__id">
+                <span class="ts__name">{t.nombre}</span>
+                <span class="ts__role">{[t.cargo, t.empresa].filter(Boolean).join(' · ')}</span>
+              </span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+      {multiple && (
+        <div class="ts__nav">
+          <button type="button" class="ts__btn" data-dir="-1" aria-label="Testimonio anterior">
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6" /></svg>
+          </button>
+          <span class="ts__pos" aria-live="polite"><span data-pos>1</span> / {items.length}</span>
+          <button type="button" class="ts__btn" data-dir="1" aria-label="Testimonio siguiente">
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6" /></svg>
+          </button>
+        </div>
+      )}
+    </div>
+  </div>
+)}
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-testimonials]').forEach((root) => {
+    const slides = Array.from(root.querySelectorAll<HTMLElement>('.ts__item'));
+    const pos = root.querySelector<HTMLElement>('[data-pos]');
+    let i = 0;
+    root.querySelectorAll<HTMLButtonElement>('.ts__btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const dir = Number(btn.dataset.dir);
+        i = (i + dir + slides.length) % slides.length;
+        slides.forEach((s, n) => (s.hidden = n !== i));
+        if (pos) pos.textContent = String(i + 1);
+      });
+    });
+  });
+</script>
+
+<style>
+  .ts {
+    background: var(--ink);
+    color: var(--white);
+    border-radius: var(--radius-card-lg);
+    padding: clamp(28px, 5vw, 56px);
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .ts__eyebrow {
+    margin: 0;
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-label-md);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dark-accent);
+  }
+  .ts__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .ts__slides { flex: 1 1 560px; min-width: 0; }
+  .ts__item { margin: 0; display: flex; flex-direction: column; gap: 28px; }
+  .ts__quote {
+    margin: 0;
+    font-family: var(--font-family-heading);
+    font-weight: 400;
+    font-size: clamp(1.375rem, 2.6vw, 2rem);
+    line-height: 1.28;
+    letter-spacing: -0.02em;
+    text-wrap: pretty;
+  }
+  .ts__who { display: flex; align-items: center; gap: 14px; }
+  .ts__avatar {
+    width: 48px; height: 48px; flex-shrink: 0;
+    border-radius: 9999px;
+    background: var(--brand-500);
+    color: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-family-heading);
+    font-weight: 500;
+    font-size: 1.125rem;
+  }
+  .ts__id { display: flex; flex-direction: column; gap: 2px; }
+  .ts__name { font-weight: var(--font-weight-semibold); }
+  .ts__role { font-size: var(--font-size-body-sm); color: var(--stone); }
+  .ts__nav { display: flex; align-items: center; gap: 12px; }
+  .ts__btn {
+    width: 48px; height: 48px;
+    border-radius: 9999px;
+    border: 1px solid var(--stone);
+    background: transparent;
+    color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .ts__btn:hover { background: var(--gray-800); }
+  .ts__btn:focus-visible { outline: 2px solid var(--dark-accent); outline-offset: 2px; }
+  .ts__pos { font-family: var(--font-family-mono); font-size: var(--font-size-label-md); color: var(--stone); min-width: 44px; text-align: center; }
+</style>

@@ -1,11 +1,5 @@
 {
-  "redirects": [
-    {
-      "source": "/agentes/",
-      "destination": "/agentes",
-      "permanent": true
-    }
-  ],
+  "trailingSlash": false,
   "headers": [
     {
       "source": "/(.*)",
@@ -25,6 +19,24 @@
         {
           "key": "X-Frame-Options",
           "value": "SAMEORIGIN"
+        }
+      ]
+    },
+    {
+      "source": "/(informes|propuestas|clientes|agente-medic-home)/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive"
+        }
+      ]
+    },
+    {
+      "source": "/(informes|propuestas|clientes|agente-medic-home)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive"
         }
       ]
     }

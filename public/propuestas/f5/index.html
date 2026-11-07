@@ -2,23 +2,23 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Propuesta Continuidad Digital — F5 Estudio Contable</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600&display=swap">
+<link rel="stylesheet" href="/marca/interforma-docs.css">
 <style>
   :root {
-    --navy:   #152D3E;
-    --orange: #F45B35;
-    --bg:     #FFFFFF;
-    --bg-alt: #F7F8FA;
-    --fg:     #152D3E;
-    --fg-mid: #4A5E6C;
-    --fg-soft:#7A8E99;
-    --border: #D6DDE2;
-    --card:   #FFFFFF;
-    --card-shadow: 0 2px 16px rgba(21,45,62,.08);
+    --navy:   #281F18;
+    --orange: #9A3D1A;   /* Energía 800: texto y bordes naranjas sobre claro */
+    --energia: #EE6E43;  /* Energía: superficies; texto encima en Umbra */
+    --bg:     #F2F1EE;
+    --bg-alt: #E4E3DF;
+    --fg:     #281F18;
+    --fg-mid: #5C564E;
+    --fg-soft:#8F887E;
+    --border: #D0CCC4;
+    --card:   #F2F1EE;
+    --card-shadow: 0 2px 16px rgba(40,31,24,.08);
   }
   /* Siempre tema claro — propuesta comercial */
 
@@ -27,7 +27,7 @@
   body {
     background: var(--bg);
     color: var(--fg);
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Manrope Variable', system-ui, sans-serif;
     font-size: 1rem;
     line-height: 1.65;
     padding-inline: 20px;
@@ -75,7 +75,7 @@
     color: var(--fg-soft);
   }
   .headline {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Outfit Variable', Georgia, serif;
     font-size: clamp(2rem, 5vw, 3rem);
     font-weight: 600;
     line-height: 1.18;
@@ -168,7 +168,7 @@
     position: absolute;
     top: 0; right: 0;
     background: var(--navy);
-    color: #fff;
+    color: #f2f1ee;
     font-size: .68rem;
     font-weight: 600;
     letter-spacing: .08em;
@@ -185,7 +185,7 @@
     margin-bottom: 8px;
   }
   .plan-price {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Outfit Variable', Georgia, serif;
     font-size: 2.4rem;
     font-weight: 600;
     color: var(--navy);
@@ -213,21 +213,21 @@
     gap: 10px;
   }
   .plan-items li {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
+    position: relative;
+    padding-left: 16px;
     font-size: .9rem;
     color: var(--fg-mid);
     line-height: 1.4;
   }
   .plan-items li::before {
     content: '';
+    position: absolute;
+    left: 0;
+    top: .45em;
     width: 6px;
     height: 6px;
-    min-width: 6px;
     border-radius: 50%;
-    background: var(--orange);
-    margin-top: 6px;
+    background: var(--energia);
   }
   .plan-items li strong { color: var(--fg); }
 
@@ -269,7 +269,7 @@
     margin-bottom: 2px;
   }
   .bonus-amount {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Outfit Variable', Georgia, serif;
     font-size: 1.6rem;
     font-weight: 600;
     color: var(--orange);
@@ -331,7 +331,7 @@
     box-shadow: var(--card-shadow);
   }
   .why-num {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Outfit Variable', Georgia, serif;
     font-size: 1.5rem;
     font-weight: 600;
     color: var(--border);
@@ -357,10 +357,10 @@
     border-radius: 12px;
     padding: 40px 36px;
     text-align: center;
-    color: #fff;
+    color: #f2f1ee;
   }
   .cta-title {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Outfit Variable', Georgia, serif;
     font-size: 1.75rem;
     font-weight: 600;
     margin-bottom: 12px;
@@ -381,7 +381,7 @@
   }
   .btn {
     display: inline-block;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Manrope Variable', sans-serif;
     font-size: .88rem;
     font-weight: 600;
     padding: 12px 24px;
@@ -392,8 +392,8 @@
     transition: opacity .15s;
   }
   .btn:hover { opacity: .85; }
-  .btn-primary { background: var(--orange); color: #fff; }
-  .btn-outline { background: transparent; border-color: rgba(255,255,255,.4); color: #fff; }
+  .btn-primary { background: var(--energia); color: var(--navy); }
+  .btn-outline { background: transparent; border-color: rgba(255,255,255,.4); color: #f2f1ee; }
 
   /* ── Footer ── */
   .footer {
@@ -423,6 +423,10 @@
     .cta-block { padding: 32px 20px; }
     .btn { width: 100%; text-align: center; }
   }
+
+  /* Identidad Interforma 2026 — ver /marca/interforma-docs.css y DESIGN.md */
+  body { font-family: var(--if-font-body); color: var(--if-umbra); }
+  h1, h2, h3 { font-family: var(--if-font-heading); font-weight: 500; letter-spacing: -0.02em; }
 </style>
 </head>
 <body>

@@ -11,15 +11,12 @@
  */
 
 /* ============================================================
-   FUENTES
-   Plus Jakarta Sans  — titulares (700–800)
-   Inter Variable     — cuerpo / UI (400–600)
-   Host Grotesk       — conservado para compatibilidad
+   FUENTES — Identidad 2026 (ADR-009)
+   Outfit Variable   — titulares (500)
+   Manrope Variable  — cuerpo / UI (400–700)
+   JetBrains Mono    — datos, numeración, código (400–500)
    ============================================================ */
 
-@import '@fontsource-variable/plus-jakarta-sans';
-@import '@fontsource-variable/inter';
-@import '@fontsource-variable/host-grotesk';
 @import '@fontsource-variable/outfit';
 @import '@fontsource-variable/manrope';
 @import '@fontsource/jetbrains-mono/400.css';
@@ -207,13 +204,18 @@
   --color-text-on-dark-primary:   var(--cj-white);
   --color-text-on-dark-secondary: var(--cj-gray-400);
 
-  /* Interactivos — v2: ink como único acento de acción (sin azul) */
+  /* Interactivos — Identidad 2026: la acción principal es Energía con
+     texto Umbra; sobre superficies Energía la acción se invierte a Umbra. */
+  --color-action-bg:           var(--brand-500);
+  --color-action-bg-hover:     var(--brand-400);
+  --color-action-text:         var(--ink);
+  --color-focus-ring:          var(--brand-800);   /* 5,4:1 sobre claro */
   --color-interactive-default: var(--cj-ink);
   --color-interactive-hover:   #3A2F27;
   --color-interactive-active:  #1C1611;
   --color-interactive-subtle:  var(--cj-gray-50);
 
-  /* Base font → UI (Inter) */
+  /* Fuente base del sitio: Manrope */
   --font-family-base: var(--font-family-ui);
 
   /* ----------------------------------------------------------
@@ -221,12 +223,8 @@
      Referencia: design/tokens/typography.json > fontFamily
      ---------------------------------------------------------- */
 
-  --font-family-jakarta: 'Plus Jakarta Sans Variable', 'Plus Jakarta Sans',
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  /* Alias histórico: el cuerpo del sitio ahora usa Manrope */
-  --font-family-host-grotesk: 'Manrope Variable', 'Manrope',
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-family-base: var(--font-family-jakarta); /* overridden by html class */
+  /* Las familias viven en --font-family-heading / -ui / -mono (arriba).
+     Plus Jakarta Sans, Inter y Host Grotesk se retiraron en oct. 2026. */
 
   /* ----------------------------------------------------------
      TIPOGRAFÍA — Pesos
@@ -369,10 +367,6 @@
   --easing-out:     var(--ease-out);
   --easing-in-out:  var(--ease-in-out);
 
-}
-
-html.font-host-grotesk {
-  --font-family-base: var(--font-family-host-grotesk);
 }
 
 /* ============================================================

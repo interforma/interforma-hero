@@ -19,21 +19,21 @@
       "size": "4.5rem",
       "sizePx": 72,
       "lineHeight": 1.05,
-      "weight": 700,
+      "weight": 500,
       "use": "Headline principal del Hero (desktop)"
     },
     "display-lg": {
       "size": "3.5rem",
       "sizePx": 56,
       "lineHeight": 1.1,
-      "weight": 700,
+      "weight": 500,
       "use": "Headline Hero (tablet) / Titulares grandes de sección"
     },
     "display-md": {
       "size": "2.5rem",
       "sizePx": 40,
       "lineHeight": 1.15,
-      "weight": 700,
+      "weight": 500,
       "use": "Headline Hero (mobile)"
     },
     "heading-xl": {

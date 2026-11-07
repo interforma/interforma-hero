@@ -16,7 +16,14 @@ Todo se dibuja con código: `engine.html` contiene un motor SVG que dibuja cualq
 | `audio_metodo.py` | Método Interforma: lo-fi por capas a 96 bpm, sube de Fa a Sol en la etapa 6 (48 s) |
 | `audio_reel03.py` | Cap. 03: rasgueo tipo ukelele, silbido y palmas a 104 bpm (18 s) |
 | `audio_reel05.py` | Cap. 05: latido tenso que se vuelve bossa a 112 bpm (23 s) |
+| `audio_cap04v2.py` | Cap. 04 v2: swing jazzero a 126 bpm con vibráfono y trompeta con sordina (27 s) |
+| `audio_hsm10.py` | Cap. 10: electrónica técnica a 110 bpm, un acorde por paso, plumón y borrador como efectos (44 s) |
+| `audio_firstcargo.py` | Caso real First Cargo: house enérgico a 124 bpm en F# menor con sidechain (37,6 s) |
+| `audio_cuidadoras.py` | Barrio Ep. 02: afro-funk a 108 bpm en C mayor, congas, marimba y metales (34,2 s) |
+| `audio_cap08.py` | Cap. 08: dembow-pop a 96 bpm en D menor; llaves, sello y candado como efectos (38,6 s) |
 | `audio_rosa01.py` | El barrio de Punto · Ep. 01: acordeón de noche que se vuelve cumbia suave a 100 bpm (28 s) |
+| `audio_problemas.py` | «¿Le suena familiar?»: lo-fi en re menor a 96 bpm que resuelve a fa mayor en el cierre (34,7 s); efectos con la misma lista de eventos que el sitio |
+| `render_problemas.mjs` | Renderiza el reel «¿Le suena familiar?» desde el componente real del sitio (ver abajo) |
 | `stickers.py` | Genera los 6 stickers WebP de WhatsApp |
 | `fonts/` | Outfit, Manrope y JetBrains Mono (licencia OFL), versionadas para que cualquier sesión pueda renderizar |
 | `../../scripts/isotipo-gif.py` | GIF del isotipo para la firma de correo |
@@ -27,12 +34,17 @@ Todo se dibuja con código: `engine.html` contiene un motor SVG que dibuja cualq
 | --- | --- | --- |
 | `story(t)` | Cap. 01 · La semilla (raíces v2) | 1080×1920, 50 s |
 | `reel(t)` | Presentación de Punto | 1080×1920, 15 s |
-| `cap04(t)` | Cap. 04 · ¿Qué es un agente de IA? | 1080×1350, 25 s |
+| `cap04(t)` | Cap. 04 · ¿Qué es un agente de IA? (v1, plana) | 1080×1350, 25 s |
+| `cap04v2(t)` | Cap. 04 v2 · «Hoy llega alguien nuevo al equipo»: recorrido con paneo por la oficina, ventanas con parallax al 40 %, plantas en primer plano al 130 %, Punto con credencial, el gato y Carla | 1080×1920, 27 s |
 | `metodo(t)` | El Método Interforma: 6 etapas, 6 emociones | 1080×1920, 48 s |
 | `clinica(t)` / `automotora(t)` | Punto en acción, versión plana | 1080×1920, 34,5 s |
 | `clinica2(t)` / `automotora2(t)` | Punto en acción con escenarios del barrio (recepción con el gato, patio de autos de noche) | 1080×1920, 34,5 s |
 | `reel03(t)` | Cap. 03 · ¿En cuántas planillas vive tu cliente? | 1080×1920, 18 s |
 | `reel05(t)` | Cap. 05 · El mito: «La IA va a reemplazar a mi equipo» (oficina con equipo y el gato) | 1080×1920, 23 s |
+| `hsm10(t)` | Cap. 10 · ¿Cómo se envía un HSM? Punto lo dibuja en una pizarra: opt-in, plantilla aprobada, variables, API y estados, ventana de 24 h, métricas | 1080×1920, 44 s |
+| `firstcargo(t)` | Punto en acción · Caso real First Cargo: puerto con profundidad; clasifica consultas, pide datos, lead al CRM, ~9 de 10 sin humano, recordatorio a 15 días | 1080×1920, 37,6 s |
+| `cuidadoras(t)` | El barrio de Punto · Ep. 02 (caso de ejemplo): Carmen coordina cuidadoras; Punto confirma turnos y propone reemplazos | 1080×1920, 34,2 s |
+| `cap08(t)` | Cap. 08 · Las reglas de la casa (Ley 21.719 en simple): bodega con repisa de cajas, cinco reglas y cierre con el estado de la vigencia | 1080×1920, 38,6 s |
 | `rosa01(t)` | El barrio de Punto · Ep. 01: Doña Rosa y los 40 audios (ferretería, Doña Rosa, el gato) | 1080×1920, 28 s |
 | `portada(k)`, `portadaCliSq()`, `post03()` | Portadas de grilla e imagen fija del Cap. 03 | — |
 | `sticker(nombre, p)` | Stickers de Punto | 512×512 |
@@ -46,6 +58,26 @@ Desde octubre de 2026 las piezas viven en «El barrio de Punto»: fondos con pro
 - El gato del barrio (personaje fijo): `catLying` (duerme y despierta), `catSit`, `catWalk`. El perro se descartó en la revisión del 26/10.
 - Degradados y recortes: `lgrad`, `rgrad`, `clip` (llenan `DEFS`; cada función de pieza parte con `DEFS='';GID=0` y termina con `<defs>${DEFS}</defs>`).
 - Paleta de naturaleza, siempre apagada para no competir con Energía: `SAGE`, `SAGE2`, `SAGE_L`, `GROUND_L`, `HILL_C`, `WOOD`, y de noche `NIGHT1..3`.
+
+### «¿Le suena familiar?» (sitio + reel)
+
+Esta pieza no vive en `engine.html`: es el componente `src/sections/ProblemsSection.astro`, el mismo que se ve en el home. Así el sitio y el reel nunca se desfasan.
+
+- En escritorio se ve horizontal (800×460); en móvil, vertical (450×640).
+- Con `?ps-render=reel` pasa a 9:16 con título, subtítulo de cada problema y la marca al cierre, y expone `window.psRender(t)` para dibujar cualquier instante.
+- Duración de las escenas: `DUR` del componente. Efectos de sonido: `EVENTS` del componente, repetidos en `audio_problemas.py`. Si cambia uno, se cambia el otro.
+
+```bash
+pnpm build && python3 -m http.server 4321 --directory dist &   # sitio local
+cd design/motion
+npm i playwright && npx playwright install chromium            # una vez
+node render_problemas.mjs http://localhost:4321 sheet out/revision   # 14 cuadros para revisar
+node render_problemas.mjs http://localhost:4321 frames out/problemas
+python3 audio_problemas.py
+ffmpeg -y -i audio_problemas.wav -af loudnorm=I=-14:TP=-1.5:LRA=11 audio-norm.wav
+ffmpeg -y -framerate 30 -i out/problemas/f%05d.jpg -i audio-norm.wav -map 0:v -map 1:a \
+  -c:v libx264 -crf 18 -preset veryfast -pix_fmt yuv420p -c:a aac -b:a 192k -shortest -movflags +faststart le-suena-familiar.mp4
+```
 
 ## Preparar (una vez)
 
@@ -77,6 +109,15 @@ Antes de renderizar todo, revisa con una hoja de contacto: `VH=1350 python3 rend
 ## Hacer un capítulo nuevo
 
 Copia la función `cap04` en `engine.html` y cambia textos, expresiones de Punto y tiempos. Mantén la estructura de la serie: portada en Umbra con chip «CAP. NN · PILAR» → barrido Energía → tres viñetas numeradas → barrido Umbra → cierre con la idea fuerza y el adelanto del capítulo siguiente. Si cambian los tiempos, ajusta los efectos en una copia de `audio_cap04.py`.
+
+## Regla de producción
+
+Toda animación nueva para publicar se entrega en su ficha del Calendario RRSS de Notion, con el video incrustado como bloque de video, el copy de Instagram (Copy y Copy completo) y un copy de LinkedIn propio, y respeta la línea gráfica de las animaciones. La lista completa está en la página de Notion «Reglas de producción · Animaciones de Punto», dentro de *Estrategia digital y RRSS*. En resumen:
+
+- Reel 1080×1920, chip de la serie arriba a la izquierda, gancho en los primeros 2–3 s, cierre en Umbra con idea fuerza, pregunta e interforma.digital.
+- Escenarios del barrio en capas (nada de fondos planos), el gato en cada pieza, Punto con una emoción clara por escena.
+- Música original distinta en cada pieza, efectos sincronizados, −14 LUFS.
+- En las notas de Notion no se escriben nombres de archivo con extensión: Notion convierte «.mp4» en un enlace roto.
 
 ## Flujo semanal
 

@@ -1,0 +1,70 @@
+orden: 1
+tipo: agente
+estado: En operación
+titulo: Un agente de WhatsApp que atiende, cotiza y registra cada lead.
+cliente: First Cargo · Grupo Borie
+sector: Logística y comercio exterior
+prueba:
+  valor: '3'
+  etiqueta: empresas atendidas desde un solo WhatsApp, en operación desde agosto 2026
+stack: [n8n, Chatwoot, Claude, Twenty CRM]
+conversacion:
+  - de: cliente
+    texto: Hola, necesito cotizar una importación marítima desde China.
+  - de: agente
+    texto: Con gusto. ¿La carga es LCL o FCL, y qué producto trae?
+  - de: cliente
+    texto: FCL, un contenedor de 40 pies con film de PVC.
+  - de: agente
+    texto: Perfecto. ¿Me deja un correo? Un ejecutivo le confirma la cotización.
+detalle:
+  resumen: >-
+    First Cargo recibe solicitudes de importación, exportación y transporte por un solo
+    número de WhatsApp. Hoy un asistente de IA las atiende de inmediato, recopila los datos
+    de la carga y deja cada oportunidad lista en el CRM para el equipo comercial.
+  servicio: Agente IA + CRM
+  estadoDesde: Desde agosto 2026
+  reto:
+    titulo: Tres empresas, un solo WhatsApp y todo a mano.
+    parrafos:
+      - >-
+        El grupo atiende comercio exterior, agenciamiento de aduana y transporte desde un
+        mismo número. Cada consulta había que leerla, clasificarla y responderla manualmente.
+      - >-
+        Los datos de la carga quedaban en la conversación y no en un sistema, así que el
+        seguimiento dependía de la memoria del equipo.
+  solucion:
+    titulo: Un flujo que va de la primera pregunta a la cotización.
+    pasos:
+      - titulo: Atiende y entiende
+        texto: El agente identifica qué necesita el cliente y recopila origen, destino y tipo de carga.
+      - titulo: Deriva cuando hace falta
+        texto: Todas las conversaciones viven en Chatwoot y un ejecutivo puede tomar el control.
+      - titulo: Registra en el CRM
+        texto: Contacto y oportunidad se crean solos en Twenty, en un pipeline de cinco etapas.
+      - titulo: Confirma y cotiza
+        texto: El cliente recibe un correo de confirmación y la cotización formal sale desde el CRM.
+  pruebas:
+    - valor: '3'
+      etiqueta: empresas del grupo atendidas desde un solo número de WhatsApp
+    - valor: '5'
+      etiqueta: etapas de pipeline, del lead captado a la venta ganada
+    - valor: Ago 2026
+      etiqueta: en operación con clientes reales
+  antes: >-
+    Cada consulta se leía, se clasificaba y se respondía a mano. Los datos de la carga
+    quedaban en el chat.
+  ahora: >-
+    Atención inmediata, derivación a un ejecutivo cuando hace falta y cada solicitud
+    registrada en el CRM, lista para cotizar.
+testimonio:
+  # Borrador de ejemplo para revisión de Gabriel. Cambiar a aprobado: true solo cuando
+  # él confirme el texto final (y su cargo).
+  cita: >-
+    Antes, cada consulta de WhatsApp se leía, se clasificaba y se respondía a mano. Hoy el
+    asistente atiende de inmediato, ordena los datos de la carga y cada solicitud llega al
+    CRM lista para cotizar. El equipo dedica su tiempo a cerrar negocios, no a transcribir
+    conversaciones.
+  nombre: Gabriel Borie
+  empresa: Grupo Borie · First Cargo
+  aprobado: false
