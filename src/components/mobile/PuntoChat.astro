@@ -1,0 +1,391 @@
+---
+/**
+ * PuntoChat — Experiencia conversacional móvil con Punto.
+ *
+ * Reemplaza las secciones del sitio desktop con una interfaz de chat
+ * donde Punto (la mascota) guía al usuario por el contenido.
+ * Solo se renderiza en móvil (640px), ocultado via CSS en desktop.
+ *
+ * Mejoras v2:
+ * - "Volver al inicio" limpia el chat y reinicia (no acumula)
+ * - Nombre "Punto" aparece brevemente y se desvanece
+ * - Fondo oscuro (Umbra) para protagonismo visual
+ * - Mini Punto junto a cada grupo de burbujas (reemplaza emojis)
+ */
+import { puntoSvg, type PuntoExpr } from '@lib/punto';
+
+// Pre-render expresiones para el avatar grande
+const exprs: PuntoExpr[] = ['atento', 'saluda', 'escucha', 'piensa', 'trabaja', 'sorpresa', 'celebra', 'uy', 'duerme'];
+const avatarOpts = { size: 120, decor: true, alive: true };
+
+// Pre-render mini avatares animados para las burbujas
+const miniOpts = { size: 32, decor: false, alive: true };
+const miniSvgs: Record<string, string> = {};
+for (const expr of exprs) {
+  miniSvgs[expr] = puntoSvg(expr, miniOpts);
+}
+---
+
+<div class="punto-chat mobile-only" id="punto-chat">
+
+  <!-- Avatar grande de Punto -->
+  <div class="punto-chat__avatar">
+    <div class="punto-chat__faces" id="punto-faces">
+      {exprs.map((expr) => (
+        <div
+          class={`punto-chat__face${expr === 'saluda' ? ' is-active' : ''}`}
+          data-expr={expr}
+          set:html={puntoSvg(expr, avatarOpts)}
+        />
+      ))}
+    </div>
+    <span class="punto-chat__name" id="punto-name">Punto</span>
+  </div>
+
+  <!-- Mini SVGs ocultos para clonar desde JS -->
+  <template id="punto-minis">
+    {exprs.map((expr) => (
+      <div data-mini={expr} set:html={miniSvgs[expr]} />
+    ))}
+  </template>
+
+  <!-- Zona de mensajes -->
+  <div class="punto-chat__messages" id="punto-messages"></div>
+
+  <!-- Opciones -->
+  <div class="punto-chat__options" id="punto-options"></div>
+
+  <!-- Paisaje ambiental (fondo sutil) -->
+  <div class="punto-chat__scene" aria-hidden="true">
+    <svg class="punto-scene" viewBox="0 0 375 200" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+      <!-- Estrellas -->
+      <circle class="punto-scene__star" cx="40" cy="30" r="1.2" fill="#BEB8AE" opacity="0.4"/>
+      <circle class="punto-scene__star" cx="120" cy="18" r="0.8" fill="#BEB8AE" opacity="0.3" style="animation-delay:1.5s"/>
+      <circle class="punto-scene__star" cx="200" cy="42" r="1" fill="#BEB8AE" opacity="0.35" style="animation-delay:3s"/>
+      <circle class="punto-scene__star" cx="290" cy="25" r="1.2" fill="#BEB8AE" opacity="0.4" style="animation-delay:0.8s"/>
+      <circle class="punto-scene__star" cx="340" cy="50" r="0.8" fill="#BEB8AE" opacity="0.3" style="animation-delay:2.2s"/>
+      <circle class="punto-scene__star" cx="80" cy="55" r="0.6" fill="#BEB8AE" opacity="0.25" style="animation-delay:4s"/>
+      <circle class="punto-scene__star" cx="250" cy="15" r="1" fill="#BEB8AE" opacity="0.35" style="animation-delay:1s"/>
+      <!-- Luna -->
+      <circle class="punto-scene__moon" cx="310" cy="40" r="14" fill="#E4E3DF" opacity="0.12"/>
+      <!-- Montañas lejanas -->
+      <path d="M0 160 L60 110 L130 140 L200 95 L270 130 L340 100 L375 120 L375 200 L0 200Z" fill="#2F2620" opacity="0.5"/>
+      <!-- Montañas cercanas -->
+      <path d="M0 180 L50 145 L110 165 L170 130 L230 155 L300 125 L375 150 L375 200 L0 200Z" fill="#3F3A34" opacity="0.6"/>
+      <!-- Suelo -->
+      <path d="M0 185 Q90 175 187 182 Q280 188 375 180 L375 200 L0 200Z" fill="#3F3A34" opacity="0.8"/>
+    </svg>
+  </div>
+
+  <!-- Gato easter egg -->
+  <div class="punto-chat__cat" id="punto-cat" aria-hidden="true"></div>
+</div>
+
+<style>
+  .punto-chat__face {
+    display: none;
+  }
+  .punto-chat__face.is-active {
+    display: block;
+  }
+  .punto-chat__face.is-entering {
+    animation: faceIn 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes faceIn {
+    from { transform: scale(0.85); opacity: 0.4; }
+    to   { transform: scale(1);    opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .punto-chat__face.is-entering { animation: none; }
+  }
+</style>
+
+<script>
+  import { chatTree, WHATSAPP_URL } from '@lib/punto-chat';
+  import { reels } from '@config/reels';
+
+  const INSTAGRAM_URL = 'https://www.instagram.com/interformagents/';
+  const STORAGE = 'https://iuamjwwgivnmgrqdjqas.supabase.co/storage/v1/object/public/reels';
+
+  const chat    = document.getElementById('punto-chat');
+  const faces   = document.getElementById('punto-faces');
+  const msgZone = document.getElementById('punto-messages');
+  const optZone = document.getElementById('punto-options');
+  const cat     = document.getElementById('punto-cat');
+  const miniTpl = document.getElementById('punto-minis') as HTMLTemplateElement | null;
+
+  if (chat && faces && msgZone && optZone) {
+
+    let currentExpr = 'saluda';
+    let idleTimer: ReturnType<typeof setTimeout> | null = null;
+    let visitCount = 0;
+
+    // ── Obtener mini SVG de Punto por expresión ──────────
+    function getMiniSvg(expr: string): string {
+      if (!miniTpl) return '';
+      const el = miniTpl.content.querySelector(`[data-mini="${expr}"]`);
+      return el ? el.innerHTML : '';
+    }
+
+    // ── Cambiar expresión del avatar grande ──────────────
+    function setExpr(expr: string) {
+      if (expr === currentExpr) return;
+      const prev = faces.querySelector('.punto-chat__face.is-active');
+      const next = faces.querySelector(`.punto-chat__face[data-expr="${expr}"]`);
+      if (!next) return;
+      prev?.classList.remove('is-active', 'is-entering');
+      (next as HTMLElement).classList.add('is-active', 'is-entering');
+      next.addEventListener('animationend', () => (next as HTMLElement).classList.remove('is-entering'), { once: true });
+      currentExpr = expr;
+    }
+
+    // ── Reset completo (para "Volver al inicio") ─────────
+    function resetChat(then: () => void) {
+      if (idleTimer) clearTimeout(idleTimer);
+      optZone.innerHTML = '';
+      optZone.className = 'punto-chat__options';
+
+      // Animar salida del contenido actual
+      msgZone.classList.add('is-resetting');
+      msgZone.addEventListener('animationend', () => {
+        msgZone.innerHTML = '';
+        msgZone.classList.remove('is-resetting');
+        msgZone.scrollTop = 0;
+        then();
+      }, { once: true });
+    }
+
+    // ── Render burbujas + opciones de un nodo ────────────
+    function renderNode(nodeId: string, userLabel?: string, isReset = false) {
+      const node = chatTree[nodeId];
+      if (!node) return;
+
+      if (idleTimer) clearTimeout(idleTimer);
+
+      // Si es reset (volver al inicio): Punto se alegra, limpia y re-render
+      if (isReset) {
+        setExpr('celebra');
+        setTimeout(() => {
+          resetChat(() => renderNode(nodeId));
+        }, 400);
+        return;
+      }
+
+      // Burbuja del usuario
+      if (userLabel) {
+        const userBubble = document.createElement('div');
+        userBubble.className = 'punto-bubble punto-bubble--user';
+        userBubble.textContent = userLabel;
+        msgZone.appendChild(userBubble);
+      }
+
+      // Typing indicator dentro de un grupo con mini avatar
+      const typingGroup = document.createElement('div');
+      typingGroup.className = 'punto-msg-group';
+
+      const typingAvatar = document.createElement('div');
+      typingAvatar.className = 'punto-msg-group__avatar';
+      typingAvatar.innerHTML = getMiniSvg(node.expr);
+      typingGroup.appendChild(typingAvatar);
+
+      const typing = document.createElement('div');
+      typing.className = 'punto-typing';
+      typing.innerHTML =
+        '<span class="punto-typing__dot"></span>' +
+        '<span class="punto-typing__dot"></span>' +
+        '<span class="punto-typing__dot"></span>';
+      typingGroup.appendChild(typing);
+
+      msgZone.appendChild(typingGroup);
+      msgZone.scrollTop = msgZone.scrollHeight;
+
+      // Cambiar expresión grande
+      setExpr(node.expr);
+
+      // Limpiar opciones
+      optZone.innerHTML = '';
+      optZone.className = 'punto-chat__options';
+
+      // Delay: typing → burbujas
+      const baseDelay = 700;
+      setTimeout(() => {
+        // Reemplazar typing por grupo real de burbujas
+        typingGroup.remove();
+
+        const group = document.createElement('div');
+        group.className = 'punto-msg-group';
+
+        // Mini avatar de Punto
+        const avatar = document.createElement('div');
+        avatar.className = 'punto-msg-group__avatar';
+        avatar.innerHTML = getMiniSvg(node.expr);
+        group.appendChild(avatar);
+
+        // Contenedor de burbujas
+        const bubbles = document.createElement('div');
+        bubbles.className = 'punto-msg-group__bubbles';
+
+        node.messages.forEach((msg, i) => {
+          const bubble = document.createElement('div');
+          bubble.className = 'punto-bubble';
+          bubble.textContent = msg;
+          bubble.style.animationDelay = `${i * 600}ms`;
+          bubbles.appendChild(bubble);
+        });
+
+        group.appendChild(bubbles);
+        msgZone.appendChild(group);
+
+        requestAnimationFrame(() => {
+          msgZone.scrollTo({ top: msgZone.scrollHeight, behavior: 'smooth' });
+        });
+
+        // Opciones después de burbujas
+        const optDelay = node.messages.length * 600 + 400;
+        setTimeout(() => {
+          renderOptions(node.options || [], node.messages.length);
+          requestAnimationFrame(() => {
+            msgZone.scrollTo({ top: msgZone.scrollHeight, behavior: 'smooth' });
+          });
+        }, optDelay);
+
+        startIdleTimer();
+      }, baseDelay);
+
+      visitCount++;
+      if (visitCount === 4 && cat) {
+        cat.classList.add('is-visible');
+        setTimeout(() => cat.classList.remove('is-visible'), 4000);
+      }
+    }
+
+    // ── Mostrar video inline ────────────────────────────
+    function showVideo(reelId: string, label: string) {
+      const reel = reels.find((r) => r.id === reelId);
+      if (!reel) return;
+
+      // Burbuja del usuario
+      const userBubble = document.createElement('div');
+      userBubble.className = 'punto-bubble punto-bubble--user';
+      userBubble.textContent = label;
+      msgZone.appendChild(userBubble);
+
+      // Grupo con mini Punto + video
+      const group = document.createElement('div');
+      group.className = 'punto-msg-group';
+
+      const avatar = document.createElement('div');
+      avatar.className = 'punto-msg-group__avatar';
+      avatar.innerHTML = getMiniSvg('celebra');
+      group.appendChild(avatar);
+
+      const videoWrap = document.createElement('div');
+      videoWrap.className = 'punto-msg-group__bubbles';
+
+      const player = document.createElement('div');
+      player.className = 'punto-video';
+      player.innerHTML =
+        `<video playsinline preload="metadata" controls poster="${reel.poster}">` +
+        `<source src="${reel.src}" type="video/mp4" />` +
+        `</video>` +
+        `<p class="punto-video__caption">${reel.caption}</p>`;
+
+      videoWrap.appendChild(player);
+      group.appendChild(videoWrap);
+      msgZone.appendChild(group);
+
+      setExpr('celebra');
+
+      requestAnimationFrame(() => {
+        msgZone.scrollTo({ top: msgZone.scrollHeight, behavior: 'smooth' });
+      });
+
+      startIdleTimer();
+    }
+
+    // ── Render opciones ──────────────────────────────────
+    function renderOptions(
+      options: NonNullable<typeof chatTree['inicio']['options']>,
+      msgCount: number,
+    ) {
+      optZone.innerHTML = '';
+      optZone.className = `punto-chat__options punto-chat__options--delay-${msgCount}`;
+
+      options.forEach((opt) => {
+        const isWhatsApp = opt.target === '_whatsapp';
+        const isBack = opt.label.startsWith('Volver');
+        const isFeatured = opt.target === 'capsulas' || opt.target === '_instagram';
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'punto-chip'
+          + (isWhatsApp ? ' punto-chip--whatsapp' : '')
+          + (isFeatured ? ' punto-chip--featured' : '')
+          + (isBack ? ' punto-chip--back' : '');
+        btn.textContent = opt.label;
+
+        btn.addEventListener('click', () => {
+          if (isWhatsApp) {
+            window.open(WHATSAPP_URL, '_blank', 'noopener');
+            return;
+          }
+          if (opt.target === '_instagram') {
+            window.open(INSTAGRAM_URL, '_blank', 'noopener');
+            return;
+          }
+          // Video inline
+          if (opt.target.startsWith('_video:')) {
+            const reelId = opt.target.slice(7);
+            showVideo(reelId, opt.label);
+            return;
+          }
+          // "Volver al inicio" hace reset completo
+          if (opt.target === 'inicio' && isBack) {
+            renderNode(opt.target, undefined, true);
+          } else {
+            renderNode(opt.target, opt.label);
+          }
+        });
+
+        optZone.appendChild(btn);
+      });
+    }
+
+    // ── Idle / Sleep ─────────────────────────────────────
+    function startIdleTimer() {
+      if (idleTimer) clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => setExpr('duerme'), 15000);
+    }
+
+    chat.addEventListener('touchstart', () => {
+      if (currentExpr === 'duerme') {
+        setExpr('sorpresa');
+        setTimeout(() => setExpr('atento'), 1200);
+      }
+      startIdleTimer();
+    }, { passive: true });
+
+    // ── Tap en avatar grande: reacción divertida ──────────
+    const avatarZone = document.querySelector('.punto-chat__avatar');
+    if (avatarZone) {
+      const reactions: string[] = ['sorpresa', 'celebra', 'saluda', 'piensa', 'uy'];
+      let tapCount = 0;
+      avatarZone.addEventListener('click', () => {
+        const savedExpr = currentExpr;
+        const reaction = reactions[tapCount % reactions.length];
+        tapCount++;
+        setExpr(reaction);
+        setTimeout(() => setExpr(savedExpr === reaction ? 'atento' : savedExpr), 1500);
+        startIdleTimer();
+      });
+    }
+
+    // ── Navegación desde menú hamburguesa ─────────────────
+    chat.addEventListener('punto-navigate', ((e: CustomEvent<string>) => {
+      renderNode(e.detail, undefined, true);
+    }) as EventListener);
+
+    // ── Arranque ──────────────────────────────────────────
+    renderNode('inicio');
+  }
+</script>
