@@ -119,6 +119,12 @@ for (const expr of exprs) {
     let currentExpr = 'saluda';
     let idleTimer: ReturnType<typeof setTimeout> | null = null;
     let visitCount = 0;
+    let pendingTimers: ReturnType<typeof setTimeout>[] = [];
+
+    function cancelPending() {
+      pendingTimers.forEach(t => clearTimeout(t));
+      pendingTimers = [];
+    }
 
     // ── Obtener mini SVG de Punto por expresión ──────────
     function getMiniSvg(expr: string): string {
@@ -140,10 +146,21 @@ for (const expr of exprs) {
     }
 
     // ── Reset completo (para "Volver al inicio") ─────────
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     function resetChat(then: () => void) {
       if (idleTimer) clearTimeout(idleTimer);
+      cancelPending();
       optZone.innerHTML = '';
       optZone.className = 'punto-chat__options';
+
+      // Sin animacion: limpiar directo (prefers-reduced-motion)
+      if (reducedMotion) {
+        msgZone.innerHTML = '';
+        msgZone.scrollTop = 0;
+        then();
+        return;
+      }
 
       // Animar salida del contenido actual
       msgZone.classList.add('is-resetting');
@@ -161,13 +178,14 @@ for (const expr of exprs) {
       if (!node) return;
 
       if (idleTimer) clearTimeout(idleTimer);
+      cancelPending();
 
       // Si es reset (volver al inicio): Punto se alegra, limpia y re-render
       if (isReset) {
         setExpr('celebra');
-        setTimeout(() => {
+        pendingTimers.push(setTimeout(() => {
           resetChat(() => renderNode(nodeId));
-        }, 400);
+        }, 400));
         return;
       }
 
@@ -208,7 +226,7 @@ for (const expr of exprs) {
 
       // Delay: typing → burbujas
       const baseDelay = 700;
-      setTimeout(() => {
+      pendingTimers.push(setTimeout(() => {
         // Reemplazar typing por grupo real de burbujas
         typingGroup.remove();
 
@@ -242,15 +260,15 @@ for (const expr of exprs) {
 
         // Opciones después de burbujas
         const optDelay = node.messages.length * 600 + 400;
-        setTimeout(() => {
+        pendingTimers.push(setTimeout(() => {
           renderOptions(node.options || [], node.messages.length);
           requestAnimationFrame(() => {
             msgZone.scrollTo({ top: msgZone.scrollHeight, behavior: 'smooth' });
           });
-        }, optDelay);
+        }, optDelay));
 
         startIdleTimer();
-      }, baseDelay);
+      }, baseDelay));
 
       visitCount++;
       if (visitCount === 4 && cat) {
