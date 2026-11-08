@@ -66,7 +66,6 @@
   gap: 10px;
   padding: 12px 0;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
 }
 
 /* ── Grupo de burbujas (avatar + mensajes) ─────────────── */
@@ -351,12 +350,13 @@
   z-index: 1;
 }
 
-/* ── Gato easter egg ───────────────────────────────────── */
+/* ── Easter egg: mini Punto se asoma ──────────────────── */
 .punto-chat__cat {
   position: absolute;
-  bottom: -30px;
+  bottom: -32px;
   right: 24px;
-  font-size: 24px;
+  width: 32px;
+  height: 32px;
   z-index: 2;
   transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
@@ -409,4 +409,38 @@
     animation: none;
     opacity: 0.5;
   }
+}
+
+
+/* IA: todos los ajustes visuales quedan dentro de la experiencia móvil. */
+@media (max-width: 640px) {
+  .punto-chat[data-ai-enabled="true"] { overflow: clip; }
+  .punto-chat[data-ai-enabled="true"] .punto-chat__avatar { padding-top: 12px; }
+  .punto-chat[data-ai-enabled="true"] .punto-chat__faces .punto { width: 88px; height: 88px; }
+  .punto-chat[data-ai-enabled="true"] .punto-chat__messages { flex: 0 1 auto; overflow: visible; }
+  .punto-chat[data-ai-enabled="true"] .punto-chat__options { animation: none; opacity: 1; }
+  .punto-chat[data-ai-enabled="true"] [hidden] { display: none !important; }
+  .punto-chat[data-ai-enabled="true"] .punto-bubble { overflow-wrap: anywhere; white-space: pre-wrap; }
+  .punto-ai-reply { scroll-margin-top: calc(var(--header-height, 60px) + 16px); }
+  .punto-ai-reply .punto-bubble { animation: none; opacity: 1; transform: none; }
+  .punto-ai { position: relative; z-index: 1; color: var(--paper); padding: 16px 0; }
+  .punto-ai label { display: block; font-weight: 600; font-size: 16px; margin-bottom: 8px; }
+  .punto-ai p { font-size: 13px; line-height: 1.5; margin: 8px 0 12px; color: var(--stone); }
+  .punto-ai textarea { display: block; box-sizing: border-box; width: 100%; min-height: 88px; resize: vertical;
+    border: 1px solid var(--stone); border-radius: 12px; background: var(--gray-800); color: var(--paper);
+    padding: 12px; font: inherit; font-size: 16px; line-height: 1.5; }
+  .punto-ai textarea::placeholder { color: var(--stone); }
+  .punto-ai__actions { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin-top: 10px; }
+  .punto-ai button, .punto-ai__actions a, #punto-ai-share { min-height: 44px; display: inline-flex; align-items: center;
+    justify-content: center; font: inherit; font-size: 14px; padding: 10px 12px; border-radius: 12px;
+    border: 1px solid var(--stone); color: var(--paper); background: transparent; cursor: pointer; }
+  .punto-ai a { color: var(--paper); text-underline-offset: 3px; }
+  #punto-ai-send { background: var(--brand-500); border-color: var(--brand-500); color: var(--ink); font-weight: 600; flex: 1; }
+  .punto-ai button:disabled { opacity: .55; cursor: default; }
+  .punto-ai :is(button, textarea, a):focus-visible { outline: 2px solid var(--sky); outline-offset: 3px; }
+  .punto-ai__summary { margin-top: 24px; border-top: 1px solid var(--stone); padding-top: 16px; }
+  #punto-ai-share { margin-top: 12px; background: var(--paper); color: var(--ink); text-align: center; }
+  #punto-ai-status:empty { display: none; }
+  /* Evitar que el segundo Punto o WhatsApp cubran el campo y sus acciones. */
+  body:has(#punto-chat[data-ai-enabled="true"]) :is(.wa-float, .punto-hi) { display: none !important; }
 }

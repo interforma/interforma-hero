@@ -13,6 +13,8 @@
  * - Mini Punto junto a cada grupo de burbujas (reemplaza emojis)
  */
 import { puntoSvg, type PuntoExpr } from '@lib/punto';
+import { whatsappUrl } from '@config/site';
+const aiEnabled = import.meta.env.PUBLIC_PUNTO_AI_ENABLED === 'true';
 
 // Pre-render expresiones para el avatar grande
 const exprs: PuntoExpr[] = ['atento', 'saluda', 'escucha', 'piensa', 'trabaja', 'sorpresa', 'celebra', 'uy', 'duerme'];
@@ -26,7 +28,7 @@ for (const expr of exprs) {
 }
 ---
 
-<div class="punto-chat mobile-only" id="punto-chat">
+<div class="punto-chat mobile-only" id="punto-chat" data-ai-enabled={aiEnabled ? "true" : undefined}>
 
   <!-- Avatar grande de Punto -->
   <div class="punto-chat__avatar">
@@ -50,7 +52,36 @@ for (const expr of exprs) {
   </template>
 
   <!-- Zona de mensajes -->
-  <div class="punto-chat__messages" id="punto-messages"></div>
+  <div class="punto-chat__messages" id="punto-messages" role="log" aria-label="Conversación con Punto" aria-live="polite" aria-relevant="additions"></div>
+
+  {aiEnabled && (
+    <section class="punto-ai" aria-label="Conversar con Punto">
+      <form id="punto-ai-form" class="punto-ai__form">
+        <label for="punto-ai-input">Cuéntame qué pasa en tu empresa</label>
+        <p id="punto-ai-help">Soy un asistente con IA. Te ayudo a ordenar el problema y explorar un primer paso.</p>
+        <textarea id="punto-ai-input" name="message" rows="2" maxlength="1200" required
+          placeholder="Por ejemplo: se nos pierden consultas de clientes…"
+          aria-describedby="punto-ai-help punto-ai-privacy" enterkeyhint="enter"></textarea>
+        <div class="punto-ai__actions">
+          <button id="punto-ai-send" type="submit" disabled>Conversar con Punto</button>
+          <button id="punto-ai-cancel" type="button" hidden>Cancelar respuesta</button>
+        </div>
+        <p id="punto-ai-status" role="status" aria-live="polite"></p>
+        <p id="punto-ai-privacy">Evita datos confidenciales. Tus mensajes se procesan con IA para responderte. <a href="/privacidad">Privacidad</a></p>
+      </form>
+      <div class="punto-ai__actions">
+        <button id="punto-ai-summary-button" type="button" hidden>Preparar mi resumen</button>
+        <a id="punto-ai-human" href={whatsappUrl()} target="_blank" rel="noopener noreferrer">Hablar con el equipo</a>
+      </div>
+      <section id="punto-ai-summary" class="punto-ai__summary" aria-label="Resumen para el equipo" hidden>
+        <label for="punto-ai-summary-text">Tu resumen para el equipo</label>
+        <p>Revísalo y corrige lo que necesites. Es una primera orientación; todavía no se ha enviado.</p>
+        <textarea id="punto-ai-summary-text" rows="7" maxlength="1600"></textarea>
+        <a id="punto-ai-share" href={whatsappUrl()} target="_blank" rel="noopener noreferrer">Continuar con este resumen en WhatsApp</a>
+        <p>WhatsApp se abrirá con el texto preparado. Tú decides si lo envías.</p>
+      </section>
+    </section>
+  )}
 
   <!-- Opciones -->
   <div class="punto-chat__options" id="punto-options"></div>
@@ -77,8 +108,8 @@ for (const expr of exprs) {
     </svg>
   </div>
 
-  <!-- Gato easter egg -->
-  <div class="punto-chat__cat" id="punto-cat" aria-hidden="true"></div>
+  <!-- Easter egg: mini Punto se asoma -->
+  <div class="punto-chat__cat" id="punto-cat" aria-hidden="true" set:html={puntoSvg('uy', { size: 32, decor: false, alive: true })} />
 </div>
 
 <style>
@@ -103,18 +134,24 @@ for (const expr of exprs) {
 <script>
   import { chatTree, WHATSAPP_URL } from '@lib/punto-chat';
   import { reels } from '@config/reels';
+  import { initPuntoAI } from '@lib/punto-ai';
 
   const INSTAGRAM_URL = 'https://www.instagram.com/interformagents/';
-  const STORAGE = 'https://iuamjwwgivnmgrqdjqas.supabase.co/storage/v1/object/public/reels';
 
-  const chat    = document.getElementById('punto-chat');
-  const faces   = document.getElementById('punto-faces');
-  const msgZone = document.getElementById('punto-messages');
-  const optZone = document.getElementById('punto-options');
+  const chatElement = document.getElementById('punto-chat');
+  const facesElement = document.getElementById('punto-faces');
+  const messagesElement = document.getElementById('punto-messages');
+  const optionsElement = document.getElementById('punto-options');
   const cat     = document.getElementById('punto-cat');
   const miniTpl = document.getElementById('punto-minis') as HTMLTemplateElement | null;
 
-  if (chat && faces && msgZone && optZone) {
+  if (chatElement && facesElement && messagesElement && optionsElement) {
+    const chat = chatElement;
+    const faces = facesElement;
+    const msgZone = messagesElement;
+    const optZone = optionsElement;
+    const aiEnabled = chat.dataset.aiEnabled === 'true';
+    let resetContext = false;
 
     let currentExpr = 'saluda';
     let idleTimer: ReturnType<typeof setTimeout> | null = null;
@@ -174,7 +211,11 @@ for (const expr of exprs) {
 
     // ── Render burbujas + opciones de un nodo ────────────
     function renderNode(nodeId: string, userLabel?: string, isReset = false) {
-      const node = chatTree[nodeId];
+      const original = chatTree[nodeId];
+      const node = aiEnabled && nodeId === 'inicio' ? { ...original, messages: [
+        'Hola, soy Punto, el asistente con IA de Interforma.',
+        'Cuéntame qué quieres mejorar. Primero entendemos el problema; después elegimos la herramienta.',
+      ] } : original;
       if (!node) return;
 
       if (idleTimer) clearTimeout(idleTimer);
@@ -182,12 +223,19 @@ for (const expr of exprs) {
 
       // Si es reset (volver al inicio): Punto se alegra, limpia y re-render
       if (isReset) {
+        resetContext = true;
+        chat.dispatchEvent(new CustomEvent('punto-context', { detail: { messages: [], reset: true } }));
         setExpr('celebra');
         pendingTimers.push(setTimeout(() => {
           resetChat(() => renderNode(nodeId));
         }, 400));
         return;
       }
+
+      chat.dispatchEvent(new CustomEvent('punto-context', { detail: {
+        label: userLabel, messages: node.messages, reset: resetContext,
+      } }));
+      resetContext = false;
 
       // Burbuja del usuario
       if (userLabel) {
@@ -225,7 +273,7 @@ for (const expr of exprs) {
       optZone.className = 'punto-chat__options';
 
       // Delay: typing → burbujas
-      const baseDelay = 700;
+      const baseDelay = aiEnabled || reducedMotion ? 0 : 700;
       pendingTimers.push(setTimeout(() => {
         // Reemplazar typing por grupo real de burbujas
         typingGroup.remove();
@@ -247,7 +295,7 @@ for (const expr of exprs) {
           const bubble = document.createElement('div');
           bubble.className = 'punto-bubble';
           bubble.textContent = msg;
-          bubble.style.animationDelay = `${i * 600}ms`;
+          bubble.style.animationDelay = `${aiEnabled || reducedMotion ? 0 : i * 600}ms`;
           bubbles.appendChild(bubble);
         });
 
@@ -259,7 +307,7 @@ for (const expr of exprs) {
         });
 
         // Opciones después de burbujas
-        const optDelay = node.messages.length * 600 + 400;
+        const optDelay = aiEnabled || reducedMotion ? 0 : node.messages.length * 600 + 400;
         pendingTimers.push(setTimeout(() => {
           renderOptions(node.options || [], node.messages.length);
           requestAnimationFrame(() => {
@@ -375,7 +423,11 @@ for (const expr of exprs) {
       idleTimer = setTimeout(() => setExpr('duerme'), 15000);
     }
 
-    chat.addEventListener('touchstart', () => {
+    chat.addEventListener('touchstart', (e) => {
+      // Don't trigger wake/idle when touching video controls
+      const target = e.target as HTMLElement;
+      if (target.closest('video, .punto-video')) return;
+
       if (currentExpr === 'duerme') {
         setExpr('sorpresa');
         setTimeout(() => setExpr('atento'), 1200);
@@ -402,6 +454,17 @@ for (const expr of exprs) {
     chat.addEventListener('punto-navigate', ((e: CustomEvent<string>) => {
       renderNode(e.detail, undefined, true);
     }) as EventListener);
+
+    if (aiEnabled) {
+      initPuntoAI(chat, getMiniSvg);
+      chat.addEventListener('punto-ai-start', () => {
+        cancelPending();
+        if (idleTimer) clearTimeout(idleTimer);
+        msgZone.querySelectorAll('.punto-typing').forEach(el => el.parentElement?.remove());
+        setExpr('piensa');
+      });
+      chat.addEventListener('punto-ai-finish', () => { setExpr('escucha'); startIdleTimer(); });
+    }
 
     // ── Arranque ──────────────────────────────────────────
     renderNode('inicio');
