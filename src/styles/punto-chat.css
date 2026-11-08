@@ -141,6 +141,7 @@
   animation: chipsIn 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+.punto-chat__options--delay-1 { animation-delay: 800ms; }
 .punto-chat__options--delay-2 { animation-delay: 1400ms; }
 .punto-chat__options--delay-3 { animation-delay: 2100ms; }
 
