@@ -55,30 +55,31 @@ for (const expr of exprs) {
   <div class="punto-chat__messages" id="punto-messages" role="log" aria-label="Conversación con Punto" aria-live="polite" aria-relevant="additions"></div>
 
   {aiEnabled && (
-    <section class="punto-ai" aria-label="Conversar con Punto">
+    <section class="punto-ai" aria-label="Conversar con Punto" hidden>
       <form id="punto-ai-form" class="punto-ai__form">
-        <label for="punto-ai-input">Cuéntame qué pasa en tu empresa</label>
-        <p id="punto-ai-help">Soy un asistente con IA. Te ayudo a ordenar el problema y explorar un primer paso.</p>
-        <textarea id="punto-ai-input" name="message" rows="2" maxlength="1200" required
-          placeholder="Por ejemplo: se nos pierden consultas de clientes…"
-          aria-describedby="punto-ai-help punto-ai-privacy" enterkeyhint="enter"></textarea>
-        <div class="punto-ai__actions">
-          <button id="punto-ai-send" type="submit" disabled>Conversar con Punto</button>
-          <button id="punto-ai-cancel" type="button" hidden>Cancelar respuesta</button>
+        <div class="punto-ai__bar">
+          <textarea id="punto-ai-input" name="message" rows="1" maxlength="1200" required
+            placeholder="Escríbele a Punto…"
+            aria-label="Escribe tu mensaje"
+            aria-describedby="punto-ai-privacy" enterkeyhint="send"></textarea>
+          <button id="punto-ai-send" type="submit" disabled aria-label="Enviar">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M11 4l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button id="punto-ai-cancel" type="button" hidden>Cancelar</button>
         </div>
         <p id="punto-ai-status" role="status" aria-live="polite"></p>
-        <p id="punto-ai-privacy">Evita datos confidenciales. Tus mensajes se procesan con IA para responderte. <a href="/privacidad">Privacidad</a></p>
+        <p id="punto-ai-privacy" hidden>Evita datos confidenciales. <a href="/privacidad">Privacidad</a></p>
+        <p id="punto-ai-help" hidden></p>
       </form>
-      <div class="punto-ai__actions">
+      <div class="punto-ai__extras">
         <button id="punto-ai-summary-button" type="button" hidden>Preparar mi resumen</button>
-        <a id="punto-ai-human" href={whatsappUrl()} target="_blank" rel="noopener noreferrer">Hablar con el equipo</a>
+        <a id="punto-ai-human" href={whatsappUrl()} target="_blank" rel="noopener noreferrer" hidden>Hablar con el equipo</a>
       </div>
       <section id="punto-ai-summary" class="punto-ai__summary" aria-label="Resumen para el equipo" hidden>
         <label for="punto-ai-summary-text">Tu resumen para el equipo</label>
-        <p>Revísalo y corrige lo que necesites. Es una primera orientación; todavía no se ha enviado.</p>
-        <textarea id="punto-ai-summary-text" rows="7" maxlength="1600"></textarea>
-        <a id="punto-ai-share" href={whatsappUrl()} target="_blank" rel="noopener noreferrer">Continuar con este resumen en WhatsApp</a>
-        <p>WhatsApp se abrirá con el texto preparado. Tú decides si lo envías.</p>
+        <p>Revísalo y corrige lo que necesites.</p>
+        <textarea id="punto-ai-summary-text" rows="5" maxlength="1600"></textarea>
+        <a id="punto-ai-share" href={whatsappUrl()} target="_blank" rel="noopener noreferrer">Enviar resumen por WhatsApp</a>
       </section>
     </section>
   )}

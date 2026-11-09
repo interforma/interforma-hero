@@ -5,10 +5,13 @@ type Message = { role: 'user' | 'assistant'; content: string };
 type ContextEvent = CustomEvent<{ label?: string; messages: string[]; reset: boolean }>;
 
 export function initPuntoAI(chat: HTMLElement, getMiniSvg: (expression: string) => string) {
+  const section = chat.querySelector<HTMLElement>('.punto-ai')!;
   const form = chat.querySelector<HTMLFormElement>('#punto-ai-form')!;
   const input = chat.querySelector<HTMLTextAreaElement>('#punto-ai-input')!;
   const send = chat.querySelector<HTMLButtonElement>('#punto-ai-send')!;
   const status = chat.querySelector<HTMLElement>('#punto-ai-status')!;
+  const privacy = chat.querySelector<HTMLElement>('#punto-ai-privacy')!;
+  const humanLink = chat.querySelector<HTMLAnchorElement>('#punto-ai-human')!;
   const summaryButton = chat.querySelector<HTMLButtonElement>('#punto-ai-summary-button')!;
   const summaryPanel = chat.querySelector<HTMLElement>('#punto-ai-summary')!;
   const summary = chat.querySelector<HTMLTextAreaElement>('#punto-ai-summary-text')!;
@@ -22,12 +25,30 @@ export function initPuntoAI(chat: HTMLElement, getMiniSvg: (expression: string) 
   let version = 0;
   let busy = false;
   let activeUser: HTMLElement | null = null;
+  let revealed = false;
+
+  // Show the AI input bar after intro bubbles appear
+  function reveal() {
+    if (revealed) return;
+    revealed = true;
+    section.hidden = false;
+  }
+
+  // Show privacy text on first focus
+  input.addEventListener('focus', () => { privacy.hidden = false; }, { once: true });
+
+  // Auto-grow textarea
+  input.addEventListener('input', () => {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+  });
 
   function refresh() {
     send.disabled = busy || !input.value.trim();
     input.readOnly = busy;
     summaryButton.disabled = busy || !messages.length;
     summaryButton.hidden = !messages.length;
+    humanLink.hidden = !messages.length;
     cancel.hidden = !busy;
     options.hidden = busy;
     form.setAttribute('aria-busy', String(busy));
@@ -51,11 +72,12 @@ export function initPuntoAI(chat: HTMLElement, getMiniSvg: (expression: string) 
   chat.addEventListener('punto-context', (event) => {
     const detail = (event as ContextEvent).detail;
     cancelRequest();
-    if (detail.reset) { messages = []; input.value = ''; }
+    if (detail.reset) { messages = []; input.value = ''; input.style.height = ''; }
     // Navigation is context, not a statement that the visitor has this problem.
     context = [detail.label ? `Exploró la opción: ${detail.label}.` : '', ...detail.messages].join('\n').slice(0, 1800);
     summaryPanel.hidden = true;
     status.textContent = '';
+    reveal();
     refresh();
   });
 
@@ -98,7 +120,7 @@ export function initPuntoAI(chat: HTMLElement, getMiniSvg: (expression: string) 
     zone.append(user);
     activeUser = user;
     const pending = addReply('Estoy revisando lo que me cuentas…', true);
-    form.scrollIntoView({ block: 'nearest', behavior: 'instant' });
+    user.scrollIntoView({ block: 'nearest', behavior: 'instant' });
     const timeout = window.setTimeout(() => requestController.abort(), 30000);
     track('punto_ai_request', { mode, turn: messages.length / 2 + 1 });
     try {
@@ -108,7 +130,14 @@ export function initPuntoAI(chat: HTMLElement, getMiniSvg: (expression: string) 
         signal: requestController.signal,
       });
       if (requestVersion !== version) return;
-      if (!response.ok) throw new Error(response.status === 429 ? 'rate_limit' : 'unavailable');
+      if (!response.ok) {
+        if (response.status === 429) throw new Error('rate_limit');
+        if (response.status === 503) {
+          const body = await response.json().catch(() => ({}));
+          throw new Error(body.reason === 'disabled' ? 'disabled' : body.reason === 'no_key' ? 'no_key' : 'unavailable');
+        }
+        throw new Error('unavailable');
+      }
       const reply: unknown = await response.json();
       if (!reply || typeof reply !== 'object' || !('message' in reply) || typeof reply.message !== 'string' ||
         !('summary' in reply) || !(reply.summary === null || typeof reply.summary === 'string')) throw new Error('unavailable');
@@ -130,11 +159,13 @@ export function initPuntoAI(chat: HTMLElement, getMiniSvg: (expression: string) 
     } catch (error) {
       if (requestVersion !== version) return;
       pending.remove(); user.remove(); activeUser = null;
-      const rate = error instanceof Error && error.message === 'rate_limit';
-      status.textContent = rate
-        ? 'Hay muchas consultas en este momento. Espera un minuto y vuelve a enviar. También puedes hablar con el equipo.'
-        : 'No pude responder ahora. Tu texto sigue aquí: puedes volver a enviarlo, usar las opciones o hablar con el equipo.';
-      track('punto_ai_error', { reason: rate ? 'rate_limit' : 'unavailable' });
+      const msg = error instanceof Error ? error.message : '';
+      status.textContent = msg === 'rate_limit'
+        ? 'Hay muchas consultas en este momento. Espera un minuto y vuelve a enviar.'
+        : msg === 'disabled' ? 'El asistente IA no está habilitado en este momento. Usa las opciones o habla con el equipo.'
+        : msg === 'no_key' ? 'Falta configurar la conexión IA. Usa las opciones o habla con el equipo.'
+        : 'No pude responder ahora. Puedes volver a enviarlo, usar las opciones o hablar con el equipo.';
+      track('punto_ai_error', { reason: msg || 'unavailable' });
     } finally {
       clearTimeout(timeout);
       if (requestVersion === version) {

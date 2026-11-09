@@ -67,7 +67,8 @@ function buildMessages(body: RequestBody): { role: string; content: string }[] {
 
 export const POST: APIRoute = async ({ request }) => {
   if (!ENABLED || !API_KEY) {
-    return new Response(JSON.stringify({ error: 'unavailable' }), {
+    const reason = !ENABLED ? 'disabled' : 'no_key';
+    return new Response(JSON.stringify({ error: 'unavailable', reason }), {
       status: 503,
       headers: { 'Content-Type': 'application/json' },
     });
