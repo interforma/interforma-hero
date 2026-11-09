@@ -9,9 +9,10 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 
-const ENABLED = import.meta.env.PUNTO_AI_ENABLED === 'true';
-const API_KEY = import.meta.env.AI_GATEWAY_API_KEY ?? '';
-const MODEL = import.meta.env.AI_GATEWAY_MODEL ?? 'claude-haiku-4-5-20251001';
+const env = process.env;
+const ENABLED = env.PUNTO_AI_ENABLED === 'true';
+const API_KEY = env.AI_GATEWAY_API_KEY ?? '';
+const MODEL = env.AI_GATEWAY_MODEL ?? 'claude-haiku-4-5-20251001';
 const MAX_TURNS = 22;
 const MAX_INPUT = 1200;
 
