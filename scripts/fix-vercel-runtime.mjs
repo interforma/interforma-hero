@@ -9,7 +9,7 @@ import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 
 const FUNCTIONS_DIR = '.vercel/output/functions';
-const TARGET_RUNTIME = 'nodejs20.x';
+const TARGET_RUNTIME = 'nodejs22.x';
 
 if (!existsSync(FUNCTIONS_DIR)) process.exit(0);
 
