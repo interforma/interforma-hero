@@ -146,14 +146,14 @@ export function initPuntoAI(chat: HTMLElement, getMiniSvg: (expression: string) 
       const group = addReply(reply.message);
       messages.push({ role: 'user', content: text }, { role: 'assistant', content: [reply.message, reply.summary].filter(Boolean).join('\n\n').slice(0, 2400) });
       activeUser = null;
-      if (mode === 'chat') input.value = '';
+      if (mode === 'chat') { input.value = ''; input.style.height = ''; }
       if (reply.summary) {
         summary.value = reply.summary;
         summaryPanel.hidden = false;
         updateShare();
         track('punto_ai_summary_ready', { turn: messages.length / 2 });
       }
-      status.textContent = 'Respuesta lista. Puedes seguir escribiendo o explorar las opciones.';
+      status.textContent = '';
       group.scrollIntoView({ block: 'start', behavior: 'instant' });
       track('punto_ai_response', { mode, turn: messages.length / 2 });
     } catch (error) {

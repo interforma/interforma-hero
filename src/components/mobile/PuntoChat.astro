@@ -310,7 +310,12 @@ for (const expr of exprs) {
         // Opciones después de burbujas
         const optDelay = aiEnabled || reducedMotion ? 0 : node.messages.length * 600 + 400;
         pendingTimers.push(setTimeout(() => {
-          renderOptions(node.options || [], node.messages.length);
+          // Si hay conversación IA activa, reducir opciones
+          const hasAiConvo = aiEnabled && msgZone.querySelector('.punto-ai-reply');
+          const opts = hasAiConvo && node.options
+            ? node.options.filter(o => o.target === '_whatsapp' || o.label.startsWith('Volver'))
+            : (node.options || []);
+          renderOptions(opts, node.messages.length);
           requestAnimationFrame(() => {
             msgZone.scrollTo({ top: msgZone.scrollHeight, behavior: 'smooth' });
           });
@@ -452,8 +457,15 @@ for (const expr of exprs) {
     }
 
     // ── Navegación desde menú hamburguesa ─────────────────
+    // Si hay conversación IA activa, insertar contenido sin borrar historial
     chat.addEventListener('punto-navigate', ((e: CustomEvent<string>) => {
-      renderNode(e.detail, undefined, true);
+      if (aiEnabled && msgZone.querySelector('.punto-ai-reply')) {
+        // Conversacion IA activa: mostrar contenido inline sin reset
+        renderNode(e.detail, `Explorar: ${chatTree[e.detail]?.messages?.[0]?.slice(0, 40) ?? e.detail}`);
+        msgZone.scrollTo({ top: msgZone.scrollHeight, behavior: 'smooth' });
+      } else {
+        renderNode(e.detail, undefined, true);
+      }
     }) as EventListener);
 
     if (aiEnabled) {

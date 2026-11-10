@@ -430,7 +430,7 @@
   .punto-ai textarea {
     flex: 1; box-sizing: border-box; min-height: 44px; max-height: 120px; resize: none;
     border: 1px solid var(--stone); border-radius: 22px; background: var(--gray-800); color: var(--paper);
-    padding: 10px 16px; font: inherit; font-size: 15px; line-height: 1.4;
+    padding: 10px 16px; font: inherit; font-size: 16px; line-height: 1.4;
   }
   .punto-ai textarea::placeholder { color: var(--stone); }
   #punto-ai-send {
@@ -452,8 +452,8 @@
   /* Extras row: summary button + WhatsApp */
   .punto-ai__extras { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; align-items: center; }
   .punto-ai__extras button, .punto-ai__extras a {
-    min-height: 36px; display: inline-flex; align-items: center; justify-content: center;
-    font: inherit; font-size: 13px; padding: 6px 14px; border-radius: 18px;
+    min-height: 44px; display: inline-flex; align-items: center; justify-content: center;
+    font: inherit; font-size: 14px; padding: 8px 16px; border-radius: 22px;
     border: 1px solid var(--stone); color: var(--paper); background: transparent; cursor: pointer;
     text-decoration: none;
   }
@@ -461,11 +461,12 @@
 
   /* Summary panel */
   .punto-ai__summary { margin-top: 16px; border-top: 1px solid var(--stone); padding-top: 12px; }
-  .punto-ai__summary label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .punto-ai__summary label { display: block; font-weight: 600; font-size: 16px; margin-bottom: 8px; }
+  .punto-ai__summary p { font-size: 14px; }
   .punto-ai__summary textarea {
-    display: block; box-sizing: border-box; width: 100%; min-height: 100px; resize: vertical;
+    display: block; box-sizing: border-box; width: 100%; min-height: 160px; resize: vertical;
     border: 1px solid var(--stone); border-radius: 12px; background: var(--gray-800); color: var(--paper);
-    padding: 12px; font: inherit; font-size: 14px; line-height: 1.5;
+    padding: 12px; font: inherit; font-size: 16px; line-height: 1.5;
   }
   #punto-ai-share {
     display: block; margin-top: 10px; min-height: 44px; border-radius: 12px;
