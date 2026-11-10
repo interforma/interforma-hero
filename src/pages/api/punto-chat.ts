@@ -231,31 +231,31 @@ export const POST: APIRoute = async ({ request }) => {
     const data = await response.json();
     const text: string = data.content?.[0]?.text ?? '';
 
-    // Try to parse JSON response (new format from improved prompt)
-    // Strip markdown code fences if model wraps JSON in ```json ... ```
-    const cleaned = text.replace(/^```(?:json)?\s*\n?/i, '').replace(/\n?```\s*$/i, '').trim();
+    // Extract JSON from response -- Haiku sometimes wraps it in code fences
+    // or prefixes it with prose text before the JSON object.
     let message: string;
     let summary: string | null = null;
 
-    try {
-      const parsed = JSON.parse(cleaned);
-      if (typeof parsed.message === 'string' && parsed.message.trim()) {
-        message = parsed.message.trim();
-        summary = typeof parsed.summary === 'string' && parsed.summary.trim()
-          ? parsed.summary.trim()
-          : null;
-      } else {
-        throw new Error('invalid');
+    const jsonMatch = text.match(/\{[\s\S]*"message"\s*:\s*"[\s\S]*?\}(?:\s*```)?/);
+    if (jsonMatch) {
+      try {
+        const raw = jsonMatch[0].replace(/```\s*$/, '').trim();
+        const parsed = JSON.parse(raw);
+        if (typeof parsed.message === 'string' && parsed.message.trim()) {
+          message = parsed.message.trim();
+          summary = typeof parsed.summary === 'string' && parsed.summary.trim()
+            ? parsed.summary.trim()
+            : null;
+        } else {
+          message = text.replace(/```json[\s\S]*?```/g, '').replace(/\{[\s\S]*"message"[\s\S]*\}/g, '').trim();
+        }
+      } catch {
+        // JSON-like but invalid: strip it and use remaining text
+        message = text.replace(/```json[\s\S]*?```/g, '').replace(/\{[\s\S]*"message"[\s\S]*\}/g, '').trim();
       }
-    } catch {
-      // Fallback: treat entire response as message (backwards compat)
-      if (isSummary && text.includes('---RESUMEN---')) {
-        const parts = text.split('---RESUMEN---');
-        message = parts[0].trim();
-        summary = parts[1].trim();
-      } else {
-        message = text.trim();
-      }
+    } else {
+      // No JSON found: use full text as message
+      message = text.trim();
     }
 
     if (!message) {
