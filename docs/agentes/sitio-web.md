@@ -1,6 +1,6 @@
 # Interforma Agents en el sitio web
 
-**Última actualización:** 2026-10-26
+**Última actualización:** 2026-11-10
 
 Mapa de todo lo que existe en este repositorio sobre Interforma Agents y cómo mantenerlo.
 
@@ -19,11 +19,12 @@ Mapa de todo lo que existe en este repositorio sobre Interforma Agents y cómo m
 1. `HeroAgentes` — titular, tarjeta de derivación de ejemplo («Espera humano · 6 min») y CTA a `#empezar` / `#como`.
 2. `StatsAgentes` — 30 días · 1·1·1 · 5 min · 100 %.
 3. `DemoAgentes` — «Un turno, en treinta segundos»: demo animada de la app del operador con Punto como avatar del agente.
-4. `ComoFunciona` — los tres pasos de la regla 1·1·1.
-5. `IntegracionSeguridad` — agnóstico + Ley 19.628 / 21.719.
-6. `AppOperador` — concepto de app iOS del operador (derivaciones, aprobaciones, alertas). **Es un concepto: la app no existe todavía.**
-7. `Dia30` — puerta de decisión: escalar, ajustar o detener.
-8. `CtaAgentes` — «Agendar piloto» abre la agenda de Cal.com (`site.calUrl`, configurable con `PUBLIC_CAL_URL`) y «Hablar con ventas» abre WhatsApp con un mensaje prellenado sobre un piloto (`site.whatsappAgentsMessage`).
+4. `EscenariosAgentes` — «Velo funcionar, paso a paso»: dos recorridos navegables con pestañas (del primer contacto a la venta, 7 pasos; encuesta de postventa, 4 pasos). Teléfono con la conversación, panel con lo que pasa en el negocio, «¿Qué pasa por dentro?» con la cadena de componentes y costo de WhatsApp estimado. Datos ficticios en `src/lib/escenarios.ts`.
+5. `ComoFunciona` — los tres pasos de la regla 1·1·1.
+6. `IntegracionSeguridad` — agnóstico + Ley 19.628 / 21.719.
+7. `AppOperador` — concepto de app iOS del operador (derivaciones, aprobaciones, alertas). **Es un concepto: la app no existe todavía.**
+8. `Dia30` — puerta de decisión: escalar, ajustar o detener.
+9. `CtaAgentes` — «Agendar piloto» abre la agenda de Cal.com (`site.calUrl`, configurable con `PUBLIC_CAL_URL`) y «Hablar con ventas» abre WhatsApp con un mensaje prellenado sobre un piloto (`site.whatsappAgentsMessage`).
 
 ## Eventos de analytics
 
@@ -37,12 +38,18 @@ Mapa de todo lo que existe en este repositorio sobre Interforma Agents y cómo m
 | `agents_pilot_cta` | «Agendar piloto» del hero de `/agentes` y del CTA final (agenda) | `placement` (`agentes_hero` \| `agentes_cta_agenda`) |
 | `click_whatsapp` | «Hablar con ventas» en `/agentes` · «Conversar sobre un piloto» en `/agentes/flujo` | `placement` (`agentes_cta` \| `agentes_flujo_cta`) |
 | `nav_click` | Enlace «Agentes» de la nav (desktop y móvil) · «Cómo funciona» | `destination`, `placement` |
+| `agents_scenario_tab` | Pestaña de escenario en «Velo funcionar» | `scenario` (`lead` \| `encuesta`), `page: 'agentes'` |
+| `agents_scenario_step` | Cambio de paso en un escenario | `scenario`, `step`, `source` (`next` \| `prev` \| `step_list` \| `phone` \| `reset`), `page` |
+| `agents_scenario_outcome` | Elección de cómo responde el cliente | `scenario`, `outcome`, `source` (`phone` \| `buttons`), `page` |
+| `agents_scenario_inside` | Apertura de «¿Qué pasa por dentro?» | `scenario`, `step`, `page` |
 
 Todos los CTA de Interforma Agents tienen evento. Catálogo completo en `.interforma/ANALYTICS.md`.
 
 ## Cómo actualizar
 
 **Diagrama del flujo.** Editar el `candidate.json` de Archify, regenerar y reemplazar `public/diagramas/agente-whatsapp.html`. Conservar dos ajustes manuales: arranque en modo **Activa** (la preferencia «Fija» del visitante se guarda en `localStorage`) y la etiqueta `noindex` con canonical a `/agentes/flujo`.
+
+**Escenarios de «Velo funcionar».** Textos, pasos, mensajes, tarjetas y cadenas en `src/lib/escenarios.ts`. Un elemento con `outcome` solo aparece con esa respuesta. Mantener datos ficticios: sin clientes reales, sin infraestructura (n8n, Redis, dominios) ni BSP; el detalle técnico vive en el estudio interno de la plataforma.
 
 **Pasos del flujo.** Están en el array `steps` de `src/pages/agentes/flujo.astro`; el JSON-LD `HowTo` se genera desde ese mismo array. Si cambian, actualizar también la página de Notion *Flujo público del Agente WhatsApp* y [`arquitectura.md`](./arquitectura.md).
 
