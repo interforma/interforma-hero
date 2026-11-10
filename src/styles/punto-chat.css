@@ -459,6 +459,9 @@
   }
   .punto-ai__extras button:disabled { opacity: .5; cursor: default; }
 
+  /* Hint contextual */
+  .punto-ai__hint { font-size: 13px; line-height: 1.4; margin: 6px 0 0; color: var(--stone); }
+
   /* Summary panel */
   .punto-ai__summary { margin-top: 16px; border-top: 1px solid var(--stone); padding-top: 12px; }
   .punto-ai__summary label { display: block; font-weight: 600; font-size: 16px; margin-bottom: 8px; }
@@ -468,12 +471,14 @@
     border: 1px solid var(--stone); border-radius: 12px; background: var(--gray-800); color: var(--paper);
     padding: 12px; font: inherit; font-size: 16px; line-height: 1.5;
   }
-  #punto-ai-share {
-    display: block; margin-top: 10px; min-height: 44px; border-radius: 12px;
-    background: var(--paper); color: var(--ink); text-align: center; text-decoration: none;
+  .punto-ai__share-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+  .punto-ai__share-actions a {
+    min-height: 44px; border-radius: 12px; text-align: center; text-decoration: none;
     font: inherit; font-size: 14px; padding: 10px 12px;
     display: flex; align-items: center; justify-content: center;
   }
+  #punto-ai-share { background: var(--paper); color: var(--ink); font-weight: 600; }
+  #punto-ai-share-cal { background: transparent; color: var(--paper); border: 1px solid var(--stone); }
 
   /* Evitar que el segundo Punto o WhatsApp cubran el campo y sus acciones. */
   body:has(#punto-chat[data-ai-enabled="true"]) :is(.wa-float, .punto-hi) { display: none !important; }

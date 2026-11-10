@@ -13,8 +13,9 @@
  * - Mini Punto junto a cada grupo de burbujas (reemplaza emojis)
  */
 import { puntoSvg, type PuntoExpr } from '@lib/punto';
-import { whatsappUrl } from '@config/site';
+import { whatsappUrl, site } from '@config/site';
 const aiEnabled = import.meta.env.PUBLIC_PUNTO_AI_ENABLED === 'true';
+const calUrl = site.calUrl;
 
 // Pre-render expresiones para el avatar grande
 const exprs: PuntoExpr[] = ['atento', 'saluda', 'escucha', 'piensa', 'trabaja', 'sorpresa', 'celebra', 'uy', 'duerme'];
@@ -71,15 +72,20 @@ for (const expr of exprs) {
         <p id="punto-ai-privacy" hidden>Evita datos confidenciales. <a href="/privacidad">Privacidad</a></p>
         <p id="punto-ai-help" hidden></p>
       </form>
-      <div class="punto-ai__extras">
-        <button id="punto-ai-summary-button" type="button" hidden>Preparar mi resumen</button>
-        <a id="punto-ai-human" href={whatsappUrl()} target="_blank" rel="noopener noreferrer" hidden>Hablar con el equipo</a>
+      <div class="punto-ai__extras" hidden>
+        <button id="punto-ai-summary-button" type="button">Preparar mi resumen</button>
+        <a id="punto-ai-human" href={whatsappUrl()} target="_blank" rel="noopener noreferrer">WhatsApp</a>
+        <a id="punto-ai-cal" href={calUrl} target="_blank" rel="noopener noreferrer">Agendar</a>
       </div>
+      <p class="punto-ai__hint" id="punto-ai-hint" hidden>Con "Preparar mi resumen" puedes revisar lo conversado y enviarlo por WhatsApp al equipo.</p>
       <section id="punto-ai-summary" class="punto-ai__summary" aria-label="Resumen para el equipo" hidden>
         <label for="punto-ai-summary-text">Tu resumen para el equipo</label>
-        <p>Revísalo y corrige lo que necesites.</p>
+        <p>Revísalo y corrige lo que necesites antes de compartirlo.</p>
         <textarea id="punto-ai-summary-text" rows="5" maxlength="1600"></textarea>
-        <a id="punto-ai-share" href={whatsappUrl()} target="_blank" rel="noopener noreferrer">Enviar resumen por WhatsApp</a>
+        <div class="punto-ai__share-actions">
+          <a id="punto-ai-share" href={whatsappUrl()} target="_blank" rel="noopener noreferrer">Enviar resumen por WhatsApp</a>
+          <a id="punto-ai-share-cal" href={calUrl} target="_blank" rel="noopener noreferrer">Agendar una conversacion</a>
+        </div>
       </section>
     </section>
   )}

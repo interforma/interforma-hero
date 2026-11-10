@@ -11,7 +11,8 @@ export function initPuntoAI(chat: HTMLElement, getMiniSvg: (expression: string) 
   const send = chat.querySelector<HTMLButtonElement>('#punto-ai-send')!;
   const status = chat.querySelector<HTMLElement>('#punto-ai-status')!;
   const privacy = chat.querySelector<HTMLElement>('#punto-ai-privacy')!;
-  const humanLink = chat.querySelector<HTMLAnchorElement>('#punto-ai-human')!;
+  const extras = chat.querySelector<HTMLElement>('.punto-ai__extras')!;
+  const hint = chat.querySelector<HTMLElement>('#punto-ai-hint')!;
   const summaryButton = chat.querySelector<HTMLButtonElement>('#punto-ai-summary-button')!;
   const summaryPanel = chat.querySelector<HTMLElement>('#punto-ai-summary')!;
   const summary = chat.querySelector<HTMLTextAreaElement>('#punto-ai-summary-text')!;
@@ -46,9 +47,10 @@ export function initPuntoAI(chat: HTMLElement, getMiniSvg: (expression: string) 
   function refresh() {
     send.disabled = busy || !input.value.trim();
     input.readOnly = busy;
-    summaryButton.disabled = busy || !messages.length;
-    summaryButton.hidden = !messages.length;
-    humanLink.hidden = !messages.length;
+    const hasConvo = messages.length > 0;
+    summaryButton.disabled = busy || !hasConvo;
+    extras.hidden = !hasConvo;
+    hint.hidden = !hasConvo || summaryPanel.hidden === false;
     cancel.hidden = !busy;
     options.hidden = busy;
     form.setAttribute('aria-busy', String(busy));
@@ -73,9 +75,9 @@ export function initPuntoAI(chat: HTMLElement, getMiniSvg: (expression: string) 
     const detail = (event as ContextEvent).detail;
     cancelRequest();
     if (detail.reset) { messages = []; input.value = ''; input.style.height = ''; }
-    // Navigation is context, not a statement that the visitor has this problem.
     context = [detail.label ? `Exploró la opción: ${detail.label}.` : '', ...detail.messages].join('\n').slice(0, 1800);
     summaryPanel.hidden = true;
+    hint.hidden = true;
     status.textContent = '';
     reveal();
     refresh();
@@ -150,6 +152,7 @@ export function initPuntoAI(chat: HTMLElement, getMiniSvg: (expression: string) 
       if (reply.summary) {
         summary.value = reply.summary;
         summaryPanel.hidden = false;
+        hint.hidden = true;
         updateShare();
         track('punto_ai_summary_ready', { turn: messages.length / 2 });
       }
@@ -184,7 +187,9 @@ export function initPuntoAI(chat: HTMLElement, getMiniSvg: (expression: string) 
     if (!summary.value.trim()) { event.preventDefault(); return; }
     track('punto_ai_handoff', { has_summary: true });
   });
-  chat.querySelector<HTMLAnchorElement>('#punto-ai-human')!.addEventListener('click', () => track('punto_ai_handoff', { has_summary: false }));
+  chat.querySelector<HTMLAnchorElement>('#punto-ai-human')!.addEventListener('click', () => track('punto_ai_handoff', { channel: 'whatsapp', has_summary: false }));
+  chat.querySelector<HTMLAnchorElement>('#punto-ai-cal')!.addEventListener('click', () => track('punto_ai_handoff', { channel: 'cal', has_summary: false }));
+  chat.querySelector<HTMLAnchorElement>('#punto-ai-share-cal')?.addEventListener('click', () => track('punto_ai_handoff', { channel: 'cal', has_summary: true }));
   window.addEventListener('pagehide', cancelRequest);
   window.matchMedia('(max-width: 640px)').addEventListener('change', event => { if (!event.matches) cancelRequest(); });
   refresh();
