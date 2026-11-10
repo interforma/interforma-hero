@@ -198,6 +198,18 @@ const join = (list?: string[]) => (list ? list.join(' ') : undefined);
         </div>
       </div>
     ))}
+
+    <aside class="esc-sector" aria-labelledby="esc-sector-heading">
+      <div class="esc-sector__text">
+        <p class="esc-sector__eyebrow">Caso por sector · Agencias de aduana</p>
+        <h3 id="esc-sector-heading" class="esc-sector__h">Una importación de punta a punta: estado de la carga, documentos, provisión de fondos y aforo.</h3>
+        <p class="esc-sector__body">Mira cómo un agente le quita a tu agencia las preguntas de siempre, con tus ejecutivos aprobando cada monto.</p>
+      </div>
+      <div class="esc-sector__actions">
+        <a class="esc-sector__btn esc-sector__btn--primary" href="/agentes/aduanas" data-sector-link="open">Ver el caso animado</a>
+        <a class="esc-sector__btn" href="/descargas/Interforma-Agente-WhatsApp-Agencias-de-Aduana.pdf" download data-sector-link="pdf">Descargar PDF</a>
+      </div>
+    </aside>
   </div>
 </section>
 
@@ -330,6 +342,9 @@ const join = (list?: string[]) => (list ? list.join(' ') : undefined);
 
   document.querySelectorAll<HTMLElement>('#escenarios').forEach(initTabs);
   document.querySelectorAll<HTMLElement>('[data-esc-demo]').forEach(initDemo);
+  document.querySelectorAll<HTMLAnchorElement>('[data-sector-link]').forEach((a) =>
+    a.addEventListener('click', () =>
+      track(a.dataset.sectorLink === 'pdf' ? 'agents_sector_pdf_download' : 'agents_sector_case_open', { sector: 'aduanas', page: 'agentes' })));
 </script>
 
 <style>
@@ -493,4 +508,16 @@ const join = (list?: string[]) => (list ? list.join(' ') : undefined);
   @media (prefers-reduced-motion: reduce) {
     .esc-phone__chat { scroll-behavior: auto; }
   }
+
+  /* Caso por sector */
+  .esc-sector { margin-top: 48px; padding: 28px clamp(20px, 3vw, 36px); border-radius: 16px; background: var(--ink); color: var(--white); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 32px; }
+  .esc-sector__text { flex: 1 1 460px; display: flex; flex-direction: column; gap: 8px; }
+  .esc-sector__eyebrow { margin: 0; font-family: var(--font-family-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-500); }
+  .esc-sector__h { margin: 0; font-family: var(--font-family-heading); font-weight: var(--font-weight-heading); font-size: clamp(20px, 2.2vw, 26px); line-height: 1.2; letter-spacing: -0.02em; text-wrap: balance; }
+  .esc-sector__body { margin: 0; font-size: 15px; color: var(--stone); }
+  .esc-sector__actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .esc-sector__btn { min-height: 46px; display: inline-flex; align-items: center; padding: 0 20px; border-radius: var(--radius-btn); border: 1px solid var(--stone); color: var(--white); font: 600 15px var(--font-family-ui); text-decoration: none; }
+  .esc-sector__btn--primary { background: var(--brand-500); border-color: var(--brand-500); color: var(--ink); font-weight: 700; }
+  .esc-sector__btn--primary:hover { background: var(--brand-400); }
+  .esc-sector__btn:focus-visible { outline: 2px solid var(--brand-500); outline-offset: 3px; }
 </style>
