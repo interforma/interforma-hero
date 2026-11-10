@@ -2,6 +2,14 @@
 
 Registro de cambios por fecha. Para el detalle, ver el PR indicado.
 
+## 2026-11-10 — «Velo funcionar» en /agentes
+
+- Nueva sección `EscenariosAgentes` después de la demo del operador: dos recorridos navegables con pestañas, del primer contacto a la venta (7 pasos) y encuesta de postventa (4 pasos).
+- Cada paso muestra la conversación en el teléfono, lo que pasa en la bandeja y el CRM, la cadena «¿Qué pasa por dentro?» en lenguaje de cliente y el costo de WhatsApp estimado.
+- El visitante elige cómo responde el cliente (desde el teléfono o con botones) y el recorrido cambia.
+- Datos ficticios en `src/lib/escenarios.ts`; sin nombres de clientes, infraestructura ni BSP.
+- Eventos `agents_scenario_tab`, `agents_scenario_step`, `agents_scenario_outcome` y `agents_scenario_inside`.
+
 ## 2026-11-06 — Libreta: pantallas al día
 
 - Las 10 pantallas de `/libreta` se regeneraron con la app actual (íconos en Hoy y Perfil, descanso a pantalla completa con Punto, Comida con agua, Progreso con récords). Cuenta de demostración con datos ficticios; nada de la base real.

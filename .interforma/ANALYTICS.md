@@ -120,6 +120,18 @@ Comportamiento por entorno:
 
 **KPI sugerido:** `agents_pilot_cta` con `placement: 'agentes_cta_agenda'` + `click_whatsapp` con `placement: 'agentes_cta'`, dividido por las visitas a `/agentes`.
 
+### Interforma Agents (escenarios «Velo funcionar»)
+
+| Evento | Dónde | Props |
+|---|---|---|
+| `agents_scenario_tab` | Pestaña de escenario en `/agentes#escenarios` | `scenario` (`lead` \| `encuesta`), `page: 'agentes'` |
+| `agents_scenario_step` | Cambio de paso | `scenario`, `step`, `source` (`next` \| `prev` \| `step_list` \| `phone` \| `reset`), `page: 'agentes'` |
+| `agents_scenario_outcome` | Elección de la respuesta del cliente | `scenario`, `outcome`, `source` (`phone` \| `buttons`), `page: 'agentes'` |
+| `agents_scenario_inside` | Apertura de «¿Qué pasa por dentro?» | `scenario`, `step`, `page: 'agentes'` |
+
+**Lectura sugerida:** visitas a `/agentes` que llegan al último paso de un escenario (`agents_scenario_step` con `step` final) y su conversión posterior a `agents_pilot_cta`.
+
+
 ### Otras herramientas
 
 | Herramienta | Dónde | Nota |
