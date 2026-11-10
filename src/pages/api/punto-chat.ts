@@ -230,11 +230,13 @@ export const POST: APIRoute = async ({ request }) => {
     const text: string = data.content?.[0]?.text ?? '';
 
     // Try to parse JSON response (new format from improved prompt)
+    // Strip markdown code fences if model wraps JSON in ```json ... ```
+    const cleaned = text.replace(/^```(?:json)?\s*\n?/i, '').replace(/\n?```\s*$/i, '').trim();
     let message: string;
     let summary: string | null = null;
 
     try {
-      const parsed = JSON.parse(text);
+      const parsed = JSON.parse(cleaned);
       if (typeof parsed.message === 'string' && parsed.message.trim()) {
         message = parsed.message.trim();
         summary = typeof parsed.summary === 'string' && parsed.summary.trim()
