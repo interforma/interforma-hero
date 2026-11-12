@@ -2279,6 +2279,319 @@ window.cap09b=(t)=>{DEFS='';GID=0;
   }
   svg.innerHTML=`<defs>${DEFS}</defs>`+o;};
 
+/* ---------- Punto lee las noticias (Ep. 01 y 02): plaza del barrio con capas, Punto con lentes en la banca ---------- */
+function puntoGlasses(cx,cy,r,k=1){if(k<=0)return '';const f=r/72;return `<g transform="translate(${cx-100*f} ${cy-108*f}) scale(${f})" opacity="${k}"><circle cx="80" cy="100" r="20" fill="${PAPEL}" fill-opacity=".25" stroke="${INK}" stroke-width="6"/><circle cx="120" cy="100" r="20" fill="${PAPEL}" fill-opacity=".25" stroke="${INK}" stroke-width="6"/><path d="M100 98h0" stroke="${INK}" stroke-width="6"/><path d="M60 96l-14 -6M140 96l14 -6" stroke="${INK}" stroke-width="5" stroke-linecap="round"/></g>`;}
+function plaza(t){let o=`<rect width="${CW}" height="${CH}" fill="${lgrad([[0,CIELO],[.55,'#E9EEEC'],[1,PAPEL]])}"/>`;
+  o+=birds(t,560);
+  o+=hill(1180,40,160,.6,HILL_C)+hill(1260,34,120,2.1,SAGE_L)+hill(1330,24,90,4.0,SAGE);
+  o+=house(160,1330,150,120,E800,0)+house(930,1340,170,130,WOOD_D,0);
+  o+=tree(330,1360,1.3)+tree(760,1380,1.1);
+  o+=`<rect x="0" y="1380" width="${CW}" height="560" fill="${GROUND_L}"/><rect x="0" y="1380" width="${CW}" height="8" fill="${SAGE_L}"/>`;
+  o+=`<path d="M0 1700Q540 1600 1080 1700V1920H0Z" fill="#E6DED1"/>`;
+  return o;}
+function bench(x,y){return `<rect x="${x-210}" y="${y-70}" width="420" height="22" rx="8" fill="${WOOD}"/><rect x="${x-210}" y="${y-130}" width="420" height="20" rx="8" fill="${WOOD}"/><rect x="${x-210}" y="${y-100}" width="420" height="16" rx="6" fill="${WOOD_D}"/><rect x="${x-190}" y="${y-48}" width="16" height="48" fill="${INK}"/><rect x="${x+174}" y="${y-48}" width="16" height="48" fill="${INK}"/>`;}
+function paperPanel(t,a,b,head,drawBody){ // diario ampliado (x 64–1016, y 600–1300)
+  const k=appear(t,a,.5)*(1-prog(t,b-.3,b));if(k<=0)return '';const X=64,Y=600,W=952,H=700;
+  let o=`<g opacity="${k}" transform="translate(${X+W/2} ${Y+H/2}) rotate(${lerp(-6,-1.2,eback(k))}) scale(${lerp(.85,1,eback(k))}) translate(${-X-W/2} ${-Y-H/2})">`;
+  o+=`<rect x="${X+12}" y="${Y+14}" width="${W}" height="${H}" rx="10" fill="${INK}" opacity=".18"/><rect x="${X}" y="${Y}" width="${W}" height="${H}" rx="10" fill="${PAPEL}" stroke="${INK}" stroke-width="5"/>`;
+  o+=`<rect x="${X+30}" y="${Y+28}" width="${W-60}" height="56" fill="${INK}"/>`+tx('EL DIARIO DEL BARRIO',X+50,Y+66,{size:24,font:'JBM',weight:400,fill:PAPEL,ls:3})+tx('NOVIEMBRE 2026',X+W-50,Y+66,{anchor:'end',size:20,font:'JBM',weight:400,fill:'#BEB8AE'});
+  o+=tx(head,X+40,Y+150,{size:52,weight:700,ls:-1.5});o+=`<line x1="${X+40}" y1="${Y+178}" x2="${X+W-40}" y2="${Y+178}" stroke="${INK}" stroke-width="3"/>`;
+  o+=drawBody(X,Y,W,H)+(PAPER_SRC?tx(PAPER_SRC,X+40,Y+H-30,{size:20,font:'JBM',weight:400,fill:MUTED}):'')+'</g>';return o;}
+let PAPER_SRC='';
+function newsPunto(t,C,st){return `<ellipse cx="820" cy="${C+4}" rx="100" ry="9" fill="${INK}" opacity=".18"/>`+puntoAt(820,C-104,104,st)+puntoGlasses(820,C-104,104,1);}
+function newsText(t,ph){let o='';ph.forEach(([a,b,lines])=>{lines.forEach(([l,c,d],i)=>{const k=Math.min(appear(t,a+d,.4),1-prog(t,b-.25,b));if(k<=0)return;o+=tx(l,64,290+i*96,{size:84,weight:600,ls:-2.5,fill:c,op:k,dy:16*(1-appear(t,a+d,.4))});});});return o;}
+function newsChipTop(label){return `<rect x="64" y="100" width="${label.length*20.6+64}" height="64" rx="32" fill="${E}"/>`+tx(label,96,143,{size:30,font:'JBM',weight:400,ls:1});}
+function bullets(X,Y,t,a,items,{size=34,gap=86,y0=250}={}){let o='';items.forEach(([s,c],i)=>{const q=appear(t,a+i*.45,.35);if(q<=0)return;
+  o+=`<g opacity="${q}" transform="translate(${24*(1-q)} 0)"><circle cx="${X+60}" cy="${Y+y0+i*gap-12}" r="12" fill="${c||E}"/>`+tx(s,X+90,Y+y0+i*gap,{size,font:'Manrope',weight:700})+'</g>';});return o;}
+function calendar(x,y,day,k,mark){if(k<=0)return '';let o=`<g opacity="${k}" transform="translate(${x} ${y}) scale(${eback(clamp(k))})"><rect x="-150" y="-150" width="300" height="300" rx="26" fill="${PAPEL}" stroke="${INK}" stroke-width="5"/><rect x="-150" y="-150" width="300" height="80" rx="26" fill="${E}"/><rect x="-150" y="-100" width="300" height="30" fill="${E}"/>`+tx('NOVIEMBRE',0,-98,{anchor:'middle',size:28,font:'JBM',weight:400,ls:2})+tx(String(day),0,70,{anchor:'middle',size:150,weight:700,ls:-4});
+  if(mark>0){const L=900;o+=`<ellipse cx="0" cy="22" rx="112" ry="98" fill="none" stroke="${E}" stroke-width="10" stroke-dasharray="${L}" stroke-dashoffset="${L*(1-mark)}" transform="rotate(-8)"/>`;}
+  return o+'</g>';}
+const N1_END=21.0;
+window.news01=(t)=>{DEFS='';GID=0;
+  const svg=document.getElementById('stage');svg.setAttribute('width',CW);svg.setAttribute('height',CH);svg.setAttribute('viewBox',`0 0 ${CW} ${CH}`);
+  const C=1600;let o='';PAPER_SRC='Fuente: Portal Innova, 10/11/2026';
+  if(t<N1_END){
+    o+=plaza(t)+bench(700,C);
+    o+=catLying(560,C-70,.8,t,t>16.0&&t<17.6?Math.sin(Math.PI*(t-16.0)/1.6):0);
+    // diario
+    o+=paperPanel(t,.5,N1_END,'500 becas de IA para pymes',(X,Y,W,H)=>{let b='';
+      const s0=appear(t,1.0,.4)*(1-prog(t,3.7,4.0));
+      if(s0>0)b+=`<g opacity="${s0}">`+tx('500',X+40,Y+440,{size:230,weight:700,ls:-8,fill:E})+tx('becas gratuitas',X+470,Y+350,{size:44,font:'Manrope',weight:800})+tx('para emprendedores',X+470,Y+404,{size:34,font:'Manrope',weight:600,fill:MUTED})+tx('y trabajadores de pymes',X+470,Y+446,{size:34,font:'Manrope',weight:600,fill:MUTED})+chip(X+40,Y+520,420,74,'Cierra el 22 de noviembre',{k:clamp((t-2.0)/.3),size:28,fill:E})+'</g>';
+      // 1 quién
+      const s1=appear(t,4.0,.4)*(1-prog(t,7.7,8.0));
+      if(s1>0)b+=`<g opacity="${s1}">`+tx('QUIÉN LAS DA',X+40,Y+250,{size:24,font:'JBM',weight:400,fill:E800,ls:2})+tx('Pacto Pyme',X+40,Y+330,{size:64,weight:600,ls:-1.5})+tx('Alianza público-privada con el',X+40,Y+400,{size:34,font:'Manrope',weight:600,fill:MUTED})+tx('Ministerio de Economía.',X+40,Y+446,{size:34,font:'Manrope',weight:600,fill:MUTED})+'</g>';
+      // 2 cursos
+      if(t>=8.0&&t<12.0){const q=appear(t,8.0,.3)*(1-prog(t,11.7,12.0));b+=`<g opacity="${q}">`+tx('3 CURSOS',X+40,Y+250,{size:24,font:'JBM',weight:400,fill:E800,ls:2})+bullets(X,Y,t,8.3,[['IA para marketing y ventas'],['IA aplicada al trabajo'],['Automatización de procesos']],{size:40,gap:100,y0:340})+'</g>';}
+      // 3 para quién
+      if(t>=12.0&&t<16.0){const q=appear(t,12.0,.3)*(1-prog(t,15.7,16.0));b+=`<g opacity="${q}">`+tx('PARA QUIÉN',X+40,Y+250,{size:24,font:'JBM',weight:400,fill:E800,ls:2})+tx('Sin conocimientos previos.',X+40,Y+320,{size:40,font:'Manrope',weight:800})+tx('Con prioridad para:',X+40,Y+380,{size:30,font:'Manrope',weight:600,fill:MUTED});
+        [['Mujeres emprendedoras',300],['Jóvenes',150],['Personas mayores',260],['Regiones',170]].forEach(([l,w],i)=>{const x=X+40+(i%2)*440,y=Y+420+Math.floor(i/2)*96;b+=chip(x,y,Math.max(w+60,380),74,l,{k:clamp((t-12.6-i*.3)/.3),size:28,fill:i===3?E:PAPEL});});b+='</g>';}
+      // 4 plazo
+      if(t>=16.0){const q=appear(t,16.0,.3);b+=`<g opacity="${q}">`+tx('POSTULA HASTA',X+40,Y+250,{size:24,font:'JBM',weight:400,fill:E800,ls:2})+calendar(X+220,Y+460,22,appear(t,16.2,.4),eout(prog(t,16.8,17.6)))+
+        tx('Clases: última',X+430,Y+380,{size:36,font:'Manrope',weight:800,op:appear(t,17.6)})+tx('semana de noviembre.',X+430,Y+428,{size:36,font:'Manrope',weight:800,op:appear(t,17.6)})+
+        tx('pactopyme.cl/regiones',X+430,Y+520,{size:30,font:'JBM',weight:400,fill:E800,op:appear(t,18.2)})+'</g>';}
+      return b;});
+    let st={ex:-10,ey:-12,ty:-3*Math.sin(TAU*t/2.4)};
+    if(t<1.2)st={eyes:'oval',ex:-6,ey:-8};
+    else if(t<3.0)st={eyes:'round',ex:-12,ey:-14,lines:1-prog(t,1.6,2.4)};
+    else if(t>=16.8&&t<17.8)st={eyes:'round',ex:-14,ey:-14,sweat:prog(t,16.8,17.8)};
+    else if(t>=18.6)st=celebrate(t,18.6);
+    o+=newsPunto(t,C-70,st);
+    o+=newsChipTop('PUNTO LEE LAS NOTICIAS · EP. 01');
+    o+=newsText(t,[[.15,3.8,[['500 becas gratis',E,0],['para aprender IA.',INK,0],['Cierran el 22.',INK,1.4]]],
+                   [4.0,7.8,[['¿Quién',INK,0],['las da?',E,0]]],
+                   [8.0,11.8,[['3 cursos,',INK,0],['cero costo.',E,0]]],
+                   [12.0,15.8,[['¿Necesitas',INK,0],['saber de IA?',INK,0],['No.',E,.6]]],
+                   [16.0,20.8,[['Postula antes',INK,0],['del 22/11.',E,0]]]]);
+    const wo=prog(t,N1_END-.4,N1_END);if(wo>0)o+=`<rect x="0" y="${lerp(CH,0,eio(wo))}" width="${CW}" height="${CH}" fill="${INK}"/>`;
+  } else {
+    const T=N1_END;o+=`<rect width="${CW}" height="${CH}" fill="${INK}"/>`;
+    const a=appear(t,T+.2),b=appear(t,T+1.3);
+    ['Aprender IA','ya no es solo'].forEach((l,i)=>o+=tx(l,64,330+i*104,{size:92,weight:600,ls:-2.5,fill:PAPEL,op:a,dy:18*(1-a)}));
+    ['para empresas','grandes.'].forEach((l,i)=>o+=tx(l,64,580+i*104,{size:92,weight:600,ls:-2.5,fill:E,op:b,dy:18*(1-b)}));
+    o+=`<rect x="0" y="1480" width="${CW}" height="440" fill="${NIGHT2}"/>`+bench(700,1480).replace(new RegExp(WOOD,'g'),WOOD_D);
+    o+=catSit(420,1480,.7,t,{look:1});
+    o+=puntoAt(760,1376,104,t>T+2.2?celebrate(t,T+2.2):{eyes:'happy'})+puntoGlasses(760,1376,104,1);
+    o+=txr([['¿Postulas? ',PAPEL,700],['Comenta BECA.',E,700]],64,1640,{size:44,font:'Manrope',op:appear(t,T+2.6)});
+    o+=tx('Punto lee las noticias · Ep. 01',64,1770,{size:26,font:'JBM',weight:400,fill:'#BEB8AE',op:appear(t,T+3.0)})+tx('interforma.digital',64,1820,{size:26,font:'JBM',weight:400,fill:E,op:appear(t,T+3.2)});
+  }
+  svg.innerHTML=`<defs>${DEFS}</defs>`+o;};
+
+const N2_END=24.0;
+function register(x,y,k,ring){if(k<=0)return '';let o=`<g opacity="${k}" transform="translate(${x} ${y}) scale(${eback(clamp(k))}) rotate(${ring*6})">`;
+  o+=`<rect x="-120" y="-40" width="240" height="140" rx="16" fill="${E800}" stroke="${INK}" stroke-width="5"/><rect x="-90" y="-120" width="180" height="90" rx="12" fill="${INK}"/><rect x="-74" y="-106" width="148" height="56" rx="8" fill="${SAGE_L}"/>`+tx('$',0,-62,{anchor:'middle',size:44,font:'JBM',weight:400});
+  for(let i=0;i<6;i++)o+=`<rect x="${-96+(i%3)*66}" y="${-14+Math.floor(i/3)*44}" width="56" height="32" rx="8" fill="${PAPEL}"/>`;
+  return o+'</g>';}
+window.news02=(t)=>{DEFS='';GID=0;
+  const svg=document.getElementById('stage');svg.setAttribute('width',CW);svg.setAttribute('height',CH);svg.setAttribute('viewBox',`0 0 ${CW} ${CH}`);
+  const C=1600;let o='';PAPER_SRC='Fuente: Meta for Developers · WhatsApp Business Platform, precios';
+  if(t<N2_END){
+    o+=plaza(t)+bench(700,C);
+    o+=catLying(560,C-70,.8,t,t>9.6&&t<11.2?Math.sin(Math.PI*(t-9.6)/1.6):0);
+    o+=paperPanel(t,.5,N2_END,'WhatsApp API: responder se cobra',(X,Y,W,H)=>{let b='';
+      const s0=appear(t,1.0,.4)*(1-prog(t,3.9,4.2));
+      if(s0>0)b+=`<g opacity="${s0}">`+tx('Desde el',X+40,Y+290,{size:40,font:'Manrope',weight:700,fill:MUTED})+tx('1 OCT 2026',X+40,Y+430,{size:150,weight:700,ls:-5,fill:E})+tx('los mensajes de servicio',X+40,Y+520,{size:36,font:'Manrope',weight:800})+tx('vuelven a cobrarse por mensaje.',X+40,Y+566,{size:36,font:'Manrope',weight:800})+'</g>';
+      // 1 qué cambió
+      const s1=appear(t,4.2,.4)*(1-prog(t,8.0,8.3));
+      if(s1>0){b+=`<g opacity="${s1}">`+tx('QUÉ CAMBIÓ · 1 DE OCTUBRE',X+40,Y+250,{size:24,font:'JBM',weight:400,fill:E800,ls:2});
+        b+=bubble(X+40,Y+290,470,84,CIELO,['¿Tienen talla M?'],{size:30,op:appear(t,4.6)});
+        b+=bubble(X+420,Y+400,490,84,SAGE_L,['Sí, quedan dos.'],{size:30,tail:'right',op:appear(t,5.2)});
+        b+=tx('Esta respuesta, enviada por la API,',X+40,Y+560,{size:32,font:'Manrope',weight:700,op:appear(t,5.8)})+tx('ahora se cobra por mensaje.',X+40,Y+606,{size:32,font:'Manrope',weight:800,fill:E800,op:appear(t,6.2)});b+='</g>';}
+      // 2 contador 1.000
+      if(t>=8.3&&t<14.0){const q=appear(t,8.3,.3)*(1-prog(t,13.7,14.0));const n=Math.round(lerp(990,1004,clamp((t-9.0)/3.4)));const over=n>1000;
+        b+=`<g opacity="${q}">`+tx('1.000 GRATIS AL MES · POR NÚMERO',X+40,Y+250,{size:24,font:'JBM',weight:400,fill:E800,ls:2});
+        b+=`<rect x="${X+40}" y="${Y+300}" width="${W-80}" height="190" rx="24" fill="${over?mix(PAPEL,E,.25):mix(PAPEL,SAGE,.35)}" stroke="${INK}" stroke-width="5"/>`+tx(n.toLocaleString('es-CL'),X+W/2,Y+440,{anchor:'middle',size:130,weight:700,ls:-4});
+        b+=tx(over?'Desde el 1.001: se cobra':'Hasta 1.000: gratis',X+W/2,Y+560,{anchor:'middle',size:38,font:'Manrope',weight:800,fill:over?E800:INK});b+='</g>';}
+      // 3 lo que no cambia
+      if(t>=14.0&&t<19.0){const q=appear(t,14.0,.3)*(1-prog(t,18.7,19.0));b+=`<g opacity="${q}">`+tx('LO QUE NO CAMBIA',X+40,Y+250,{size:24,font:'JBM',weight:400,fill:E800,ls:2})+
+        bullets(X,Y,t,14.3,[['Lo que te escriben tus clientes: gratis',SAGE2],['La app gratuita no es la API:',SAGE2]],{size:34,gap:92,y0:340})+tx('este cobro no le aplica',X+90,Y+478,{size:34,font:'Manrope',weight:700,op:appear(t,15.0)})+'</g>';}
+      // 4 consejo
+      if(t>=19.0){const q=appear(t,19.0,.3);b+=`<g opacity="${q}">`+tx('EL CONSEJO DE PUNTO',X+40,Y+250,{size:24,font:'JBM',weight:400,fill:E800,ls:2})+
+        tx('6 mensajes',X+80,Y+380,{size:58,weight:700,fill:MUTED,op:appear(t,19.3)})+`<line x1="${X+70}" y1="${Y+362}" x2="${X+70+330*eout(prog(t,20.0,20.4))}" y2="${Y+362}" stroke="${E}" stroke-width="10" stroke-linecap="round"/>`+
+        tx('→ 2 que resuelven',X+80,Y+470,{size:58,weight:700,fill:E800,op:appear(t,20.4)})+tx('Respuestas claras = menos mensajes = menos costo.',X+40,Y+580,{size:30,font:'Manrope',weight:700,op:appear(t,21.0)})+'</g>';}
+      return b;});
+    const ring=[10.1,10.6,11.1,11.6,12.1].some(x=>t>x&&t<x+.25)?1:0;
+    o+=register(300,1470,appear(t,9.6,.4)*(1-prog(t,13.6,14.0)),ring?Math.sin(t*60):0);
+    let st={ex:-10,ey:-12,ty:-3*Math.sin(TAU*t/2.4)};
+    if(t<1.2)st={eyes:'oval',ex:-6,ey:-8};
+    else if(t<3.6)st={eyes:'round',ex:-12,ey:-14,lines:1-prog(t,1.6,2.4)};
+    else if(t>=10.0&&t<13.6)st={eyes:'round',ex:-16,ey:-6,sweat:((t-10)%1.2)/1.2};
+    else if(t>=14.0&&t<19.0)st={eyes:'happy',ty:-4*Math.sin(TAU*t/2.2)};
+    else if(t>=21.0)st=celebrate(t,21.0);
+    o+=newsPunto(t,C-70,st);
+    o+=newsChipTop('PUNTO LEE LAS NOTICIAS · EP. 02');
+    o+=newsText(t,[[.15,4.0,[['¿Atiendes por',INK,0],['la API de WhatsApp?',INK,0],['Responder se cobra.',E,1.2]]],
+                   [4.2,8.1,[['Desde el',INK,0],['1 de octubre.',E,0]]],
+                   [8.3,13.8,[['Tienes 1.000',INK,0],['gratis al mes.',E,0]]],
+                   [14.0,18.8,[['Lo que',INK,0],['no cambia.',E,0]]],
+                   [19.0,23.8,[['Resuelve en',INK,0],['menos mensajes.',E,0]]]]);
+    const wo=prog(t,N2_END-.4,N2_END);if(wo>0)o+=`<rect x="0" y="${lerp(CH,0,eio(wo))}" width="${CW}" height="${CH}" fill="${INK}"/>`;
+  } else {
+    const T=N2_END;o+=`<rect width="${CW}" height="${CH}" fill="${INK}"/>`;
+    const a=appear(t,T+.2),b=appear(t,T+1.3);
+    ['Resolver en menos','mensajes'].forEach((l,i)=>o+=tx(l,64,330+i*104,{size:92,weight:600,ls:-2.5,fill:PAPEL,op:a,dy:18*(1-a)}));
+    ['también ahorra.'].forEach((l,i)=>o+=tx(l,64,580+i*104,{size:92,weight:600,ls:-2.5,fill:E,op:b,dy:18*(1-b)}));
+    o+=`<rect x="0" y="1480" width="${CW}" height="440" fill="${NIGHT2}"/>`+bench(700,1480).replace(new RegExp(WOOD,'g'),WOOD_D);
+    o+=catSit(420,1480,.7,t,{look:1});
+    o+=puntoAt(760,1376,104,t>T+2.2?celebrate(t,T+2.2):{eyes:'happy'})+puntoGlasses(760,1376,104,1);
+    o+=txr([['¿Cuántos mensajes mandas al mes? ',PAPEL,700]],64,1620,{size:40,font:'Manrope',op:appear(t,T+2.6)})+txr([['Comenta RESUMEN.',E,700]],64,1676,{size:40,font:'Manrope',op:appear(t,T+2.8)});
+    o+=tx('Punto lee las noticias · Ep. 02',64,1770,{size:26,font:'JBM',weight:400,fill:'#BEB8AE',op:appear(t,T+3.0)})+tx('interforma.digital',64,1820,{size:26,font:'JBM',weight:400,fill:E,op:appear(t,T+3.2)});
+  }
+  svg.innerHTML=`<defs>${DEFS}</defs>`+o;};
+
+/* ---------- Semana 47: Cap. 11, Barrio Ep. 03, Caso 03 ---------- */
+function bigCard(t,a,b,{X=560,Y=600,W=456,H=690,head='',fill=PAPEL}={}){const k=appear(t,a,.5)*(b?1-prog(t,b-.3,b):1);if(k<=0)return {k:0,o:'',c:''};
+  return {k,o:`<g opacity="${k}" transform="translate(${X+W/2} ${Y+H/2}) scale(${lerp(.9,1,eback(k))}) translate(${-X-W/2} ${-Y-H/2})"><rect x="${X+10}" y="${Y+12}" width="${W}" height="${H}" rx="28" fill="${INK}" opacity=".18"/><rect x="${X}" y="${Y}" width="${W}" height="${H}" rx="28" fill="${fill}" stroke="${INK}" stroke-width="5"/>`+(head?tx(head,X+36,Y+56,{size:22,font:'JBM',weight:400,fill:E800,ls:2}):''),c:'</g>'};}
+function bigText(t,ph){return newsText(t,ph);}
+function seriesChip(label){return newsChipTop(label);}
+function outroCounter(t,T,who){const C2=1480;return `<rect x="0" y="${C2}" width="${CW}" height="30" fill="${WOOD}"/><rect x="0" y="${C2+30}" width="${CW}" height="420" fill="${NIGHT2}"/>`+who(C2)+catSit(130,C2,.7,t,{look:1})+puntoAt(820,C2-110,110,t>T+2.2?celebrate(t,T+2.2):{eyes:'happy'});}
+function wipe(t,T){const wo=prog(t,T-.4,T);return wo>0?`<rect x="0" y="${lerp(CH,0,eio(wo))}" width="${CW}" height="${CH}" fill="${INK}"/>`:'';}
+function outroUmbra(t,T,l1,l2,q1,q2,serie,scene=''){let o=`<rect width="${CW}" height="${CH}" fill="${INK}"/>`+scene;const a=appear(t,T+.2),b=appear(t,T+1.3);
+  l1.forEach((l,i)=>o+=tx(l,64,330+i*104,{size:92,weight:600,ls:-2.5,fill:PAPEL,op:a,dy:18*(1-a)}));
+  l2.forEach((l,i)=>o+=tx(l,64,330+(l1.length+.4)*104+i*104,{size:92,weight:600,ls:-2.5,fill:E,op:b,dy:18*(1-b)}));
+  o+=tx(q1,64,1630,{size:44,font:'Manrope',weight:700,fill:PAPEL,op:appear(t,T+2.6)})+(q2?tx(q2,64,1686,{size:44,font:'Manrope',weight:700,fill:E,op:appear(t,T+2.8)}):'');
+  o+=tx(serie,64,1770,{size:26,font:'JBM',weight:400,fill:'#BEB8AE',op:appear(t,T+3.0)})+tx('interforma.digital',64,1820,{size:26,font:'JBM',weight:400,fill:E,op:appear(t,T+3.2)});return o;}
+const CARLA={shirt:'#5C534A',hair:'#3A2E25'};
+/* Cap. 11 · ¿Qué es una automatización? (31 s) */
+const C11_END=26.6, C11_EX=[10.2,14.2,18.2];
+const C11_ROWS=[['Llega un pedido','Aviso a bodega'],['Un cliente agenda','Confirmación'],['3 días sin respuesta','Recordatorio']];
+function c11Board(t){const X=64,Y=600,W=952,H=470;const k=appear(t,5.0,.5)*(1-prog(t,22.0,22.4));if(k<=0)return '';
+  let o=`<g opacity="${k}" transform="translate(540 ${Y+H/2}) scale(${lerp(.9,1,eback(k))}) translate(-540 ${-Y-H/2})"><rect x="${X-14}" y="${Y-14}" width="${W+28}" height="${H+28}" rx="22" fill="${WOOD_D}"/><rect x="${X}" y="${Y}" width="${W}" height="${H}" rx="12" fill="#FBFAF7"/>`;
+  const L=520;o+=`<path d="M${X+40} ${Y+80}h200" stroke="${INK}" stroke-width="8" stroke-linecap="round" stroke-dasharray="${L}" stroke-dashoffset="${L*(1-eout(prog(t,5.6,6.4)))}"/>`;
+  o+=tx('CUANDO…',X+40,Y+66,{size:40,weight:700,fill:E800,op:appear(t,5.6)})+tx('…HAZ',X+560,Y+66,{size:40,weight:700,fill:E800,op:appear(t,6.6)});
+  o+=arrowR(X+400,Y+56,X+530,eout(prog(t,6.2,6.8)),INK);
+  C11_ROWS.forEach(([a,b],i)=>{const t0=C11_EX[i],y=Y+120+i*112;const q=appear(t,t0,.35);if(q<=0)return;
+    const fall=eio(prog(t,t0+.6,t0+1.0));
+    o+=`<g opacity="${q}"><g transform="rotate(${-12*Math.sin(Math.PI*fall)} ${X+390} ${y+96})"><rect x="${X+30}" y="${y}" width="360" height="96" rx="18" fill="${CIELO}" stroke="${INK}" stroke-width="5"/>${tx(a,X+210,y+60,{anchor:'middle',size:30,font:'Manrope',weight:800})}</g>`;
+    o+=arrowR(X+405,y+48,X+520,eout(prog(t,t0+.8,t0+1.2)),INK);
+    const r=eback(clamp((t-t0-1.2)/.35));if(r>0)o+=`<g transform="translate(${X+720} ${y+48}) scale(${r} 1) translate(${-X-720} ${-y-48})"><rect x="${X+530}" y="${y}" width="380" height="96" rx="18" fill="${E}" stroke="${INK}" stroke-width="5"/>${tx(b,X+720,y+60,{anchor:'middle',size:30,font:'Manrope',weight:800})}</g>`;
+    o+=check(X+W-30,y+10,clamp((t-t0-1.8)/.35))+'</g>';});
+  return o+'</g>';}
+window.cap11=(t)=>{DEFS='';GID=0;const svg=document.getElementById('stage');svg.setAttribute('width',CW);svg.setAttribute('height',CH);svg.setAttribute('viewBox',`0 0 ${CW} ${CH}`);
+  const C=1500;let o='';
+  if(t<C11_END){
+    o+=officeScene(t);
+    const mood=t<9?'tired':t<22?'ok':'happy';
+    o+=persona(300,C,1,mood,t,CARLA);
+    // escritorio y monitor
+    o+=`<rect x="0" y="${C}" width="${CW}" height="30" fill="${WOOD}"/><rect x="0" y="${C+30}" width="${CW}" height="420" fill="#CFC9BF"/>`;
+    o+=`<path d="M430 ${C}l14 -50h150l14 50z" fill="${INK}"/><rect x="420" y="${C-230}" width="230" height="170" rx="12" fill="${INK}"/><rect x="434" y="${C-216}" width="202" height="142" rx="6" fill="${t<22?CIELO:SAGE_L}"/>`;
+    o+=personaArms(300,C,1,false,t,t<5?4*Math.sin(t*30):0,CARLA.shirt);
+    // contador de copiar/pegar
+    const cnt=Math.min(20,Math.floor(t/0.24)+1);const ck=Math.min(appear(t,.2,.3),1-prog(t,9.6,10.0));
+    if(ck>0){o+=`<g opacity="${ck}" transform="translate(535 ${C-150})"><circle r="58" fill="${E}" stroke="${INK}" stroke-width="5"/>${tx(String(cnt),0,20,{anchor:'middle',size:56,weight:700})}</g>`;
+      if(t<4.8){const j=Math.floor(t/0.24)%2;o+=chip(470+(j?60:-40),C-330-(Math.floor(t/.24)%3)*30,170,54,j?'Ctrl+V':'Ctrl+C',{size:24,fill:j?PAPEL:CIELO});}}
+    if(t>=22.0){o+=`<g transform="translate(560 ${C-40})"><rect x="-28" y="-60" width="56" height="60" rx="10" fill="${PAPEL}" stroke="${INK}" stroke-width="4"/><path d="M26 -46q24 0 24 18q0 18 -24 18" stroke="${INK}" stroke-width="5" fill="none"/></g>`;
+      for(let i=0;i<2;i++){const q=((t*.6+i*.5)%1);o+=`<path d="M${548+i*20} ${C-110-50*q}q8 -12 0 -24" stroke="#BEB8AE" stroke-width="5" fill="none" stroke-linecap="round" opacity="${(1-q)*.8}"/>`;}}
+    o+=c11Board(t);
+    // gato y Punto
+    o+=catSit(960,C,.75,t,{look:-1,perk:C11_EX.some(x=>t>x+.6&&t<x+1.0)?1:0});
+    let st={ex:-10,ey:-10,ty:-4*Math.sin(TAU*t/2.2)};
+    if(t<7)st={eyes:'round',ex:-14,ey:-6,lines:1-prog(t,5.2,5.8)};
+    else if(C11_EX.some(x=>t>x+1.6&&t<x+2.4))st={eyes:'happy',ty:-12*Math.abs(Math.sin(t*TAU*.9))};
+    else if(t>=22.4)st=celebrate(t,22.4);
+    const pin=eback(clamp((t-4.6)/.5));
+    if(pin>0)o+=`<g transform="translate(790 ${C}) scale(${pin}) translate(-790 ${-C})"><ellipse cx="790" cy="${C+4}" rx="96" ry="9" fill="${INK}" opacity=".18"/>${puntoAt(790,C-100,100,st)}</g>`;
+    o+=tx('Carla · ventas',300,C+80,{anchor:'middle',size:26,font:'JBM',weight:400,fill:'#5C534A'});
+    o+=seriesChip('CAP. 11 · PUNTO EXPLICA');
+    o+=bigText(t,[[.15,4.8,[['Si haces lo mismo',INK,0],['20 veces al día…',E,0]]],
+                  [5.0,9.9,[['…eso se puede',INK,0],['automatizar.',E,0]]],
+                  [10.2,14.0,[['Llega un pedido →',INK,0],['aviso a bodega.',E,0]]],
+                  [14.2,18.0,[['Un cliente agenda →',INK,0],['confirmación.',E,0]]],
+                  [18.2,21.9,[['3 días sin respuesta →',INK,0],['recordatorio.',E,0]]],
+                  [22.2,26.4,[['No reemplaza',INK,0],['a tu equipo.',INK,0],['Le saca lo repetitivo.',E,.6]]]]);
+    o+=wipe(t,C11_END);
+  } else o+=outroUmbra(t,C11_END,['Lo que se repite,','se automatiza.'],['Lo que importa,','lo hace tu equipo.'],'¿Qué tarea repites todos los días?','','Cap. 11 · Punto explica',outroCounter(t,C11_END,C2=>persona(330,C2,.82,'happy',t,CARLA)+personaArms(330,C2,.82,false,t,0,CARLA.shirt)));
+  svg.innerHTML=`<defs>${DEFS}</defs>`+o;};
+
+/* El barrio de Punto · Ep. 03: Fer y los «¿me la guardas?» (30 s) */
+const B3_END=25.6;
+const B3_BUB=(()=>{const R=_rng(303),a=[];for(let i=0;i<7;i++)a.push({x:520+R()*330,y:640+R()*560,t:.5+i*.55});return a;})();
+function tagGarment(x,y,col,k,tag,sold){if(k<=0)return '';let o=`<g opacity="${k}" transform="translate(0 ${-20*(1-k)})">`+garment(x,y,0,col,0);
+  o+=`<path d="M${x+20} ${y+60}l20 30" stroke="${INK}" stroke-width="2"/><rect x="${x+28}" y="${y+86}" width="40" height="28" rx="4" fill="${sold?E:PAPEL}" stroke="${INK}" stroke-width="2" transform="rotate(12 ${x+48} ${y+100})"/>`;
+  return o+'</g>';}
+window.barrio03=(t)=>{DEFS='';GID=0;const svg=document.getElementById('stage');svg.setAttribute('width',CW);svg.setAttribute('height',CH);svg.setAttribute('viewBox',`0 0 ${CW} ${CH}`);
+  const C=1500;let o='';
+  if(t<B3_END){
+    o+=ferStore(t);
+    const mood=t<4.6?'ok':t<10?'worried':t<20?'ok':'happy';
+    o+=fer(310,C,1,mood,t);
+    o+=`<rect x="0" y="${C}" width="${CW}" height="34" fill="${WOOD}"/><rect x="0" y="${C}" width="${CW}" height="8" fill="${WOOD_D}"/><rect x="0" y="${C+34}" width="${CW}" height="420" fill="${SAGE2}"/>`;
+    for(let x=60;x<1080;x+=240)o+=`<rect x="${x}" y="${C+70}" width="190" height="300" rx="14" fill="none" stroke="#6F8A6C" stroke-width="5"/>`;
+    o+=`<path d="M470 ${C}l10 -96h96l10 96z" fill="${PAPEL}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/><path d="M500 ${C-96}q28 -40 56 0" stroke="${INK}" stroke-width="4" fill="none"/><circle cx="528" cy="${C-46}" r="14" fill="${E}"/>`;
+    o+=ferArms(310,C,1,t<4.6,t);
+    o+=catLying(120,C,.85,t,t>6&&t<7.6?Math.sin(Math.PI*(t-6)/1.6):0);
+    // fase 1: burbujas
+    if(t<5.4)B3_BUB.forEach(b=>{const k=appear(t,b.t,.3)*(1-prog(t,4.8,5.3));if(k>0)o+=`<g transform="translate(${b.x} ${b.y}) scale(${eback(k)})" opacity="${k}">`+bubble(0,0,330,76,PAPEL,['¿Me la guardas?'],{size:28})+'</g>';});
+    // fase 2: probador con prendas reservadas
+    const p=bigCard(t,5.0,10.4,{head:'PROBADOR · RESERVAS'});
+    if(p.k>0){o+=p.o;o+=`<line x1="590" y1="700" x2="990" y2="700" stroke="${WOOD_D}" stroke-width="8" stroke-linecap="round"/><line x1="590" y1="960" x2="990" y2="960" stroke="${WOOD_D}" stroke-width="8" stroke-linecap="round"/>`;
+      const cols=[CIELO,SAGE,DENIM,PAPEL,'#D9C3A5',SAGE2,'#E9B9A0'];
+      for(let i=0;i<14;i++){const x=620+(i%7)*56,y=i<7?712:972;o+=tagGarment(x,y,cols[i%7],appear(t,5.4+i*.18,.25),true,false);}
+      const n=Math.min(14,Math.max(0,Math.floor((t-5.4)/.18)+1));o+=`<g transform="translate(788 1220)"><rect x="-150" y="-44" width="300" height="88" rx="44" fill="${E}" stroke="${INK}" stroke-width="5"/>${tx(n+' reservas',0,14,{anchor:'middle',size:40,weight:700})}</g>`;
+      o+=p.c;}
+    // fase 3: reglas de Punto
+    const r=bigCard(t,10.4,B3_END,{head:'LAS REGLAS DE PUNTO'});
+    if(r.k>0){o+=r.o;const X=560,Y=600,W=456;
+      [['REGISTRO','Nombre · prenda · talla',11.0],['PLAZO','48 horas',13.6],['RECORDATORIO','A las 24 horas',16.2],['SI NO VIENE','Vuelve a la venta',18.8]].forEach(([lab,val,a],i)=>{const q=appear(t,a,.4);if(q<=0)return;const y=Y+110+i*130;
+        o+=`<g opacity="${q}" transform="translate(${24*(1-q)} 0)"><circle cx="${X+56}" cy="${y+30}" r="26" fill="${i===3?E:INK}"/>`+tx(String(i+1),X+56,y+41,{anchor:'middle',size:30,weight:600,fill:i===3?INK:PAPEL})+tx(lab,X+100,y+14,{size:19,font:'JBM',weight:400,fill:E800,ls:1.5})+tx(val,X+100,y+54,{size:28,font:'Manrope',weight:800})+'</g>';
+        if(i===1&&t>a){const u=((t-a)%2)/2;o+=`<g transform="translate(${X+W-60} ${y+30}) rotate(${u>.85?180*(u-.85)/.15:0})"><path d="M-20 -30h40l-20 30l20 30h-40l20 -30z" fill="${PAPEL}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/><path d="M-12 -24h24l-12 ${18*(1-u)}z" fill="${E}"/><path d="M0 30l${-12*u} 0l${12*u} 0z" stroke="${E}" stroke-width="${10*u}"/></g>`;}
+        if(i===2&&t>a+.3){const ring=wobble(t-a-.3,22,3,2.2);o+=bellIcon(X+W-60,y+30,.8,ring);}
+        if(i===3&&t>a+1.2)o+=chip(X+100,y+80,190,52,'¡VENDIDA!',{k:clamp((t-a-1.2)/.3),size:24,fill:E});});
+      o+=r.c;}
+    let st={ex:-10,ey:-12,ty:-4*Math.sin(TAU*t/2.2)};
+    if(t<8.6)st={eyes:'round',ex:-14,ey:-14,lines:1-prog(t,6.6,7.2)};
+    else if(t<10.4)st={ex:10,ey:-12,dots:[0,1,2].map(j=>clamp((t-8.8-j*.25)/.15))};
+    else if(t>=20.4)st=celebrate(t,20.4);
+    const pin=eback(clamp((t-6.0)/.5));
+    if(pin>0)o+=`<g transform="translate(870 ${C}) scale(${pin}) translate(-870 ${-C})"><ellipse cx="870" cy="${C+4}" rx="100" ry="9" fill="${INK}" opacity=".18"/>${puntoAt(870,C-104,104,st)}</g>`;
+    o+=seriesChip('EL BARRIO DE PUNTO · EP. 03');
+    o+=bigText(t,[[.15,4.8,[['«¿Me la',INK,0],['guardas?»',E,0]]],
+                  [5.0,10.2,[['14 prendas',INK,0],['guardadas.',INK,0],['¿Cuáles siguen?',E,1.6]]],
+                  [10.4,18.6,[['Punto ordena',INK,0],['las reservas.',E,0]]],
+                  [18.8,25.4,[['Si no viene,',INK,0],['vuelve a la venta.',E,0]]]]);
+    o+=wipe(t,B3_END);
+  } else {o+=outroUmbra(t,B3_END,['Una reserva','sin plazo'],['es una venta','en pausa.'],'¿Cuántas prendas tienes guardadas?','','El barrio de Punto · Ep. 03',outroCounter(t,B3_END,C2=>fer(330,C2,.82,'happy',t)+ferArms(330,C2,.82,false,t)));}
+  svg.innerHTML=`<defs>${DEFS}</defs>`+o;};
+
+/* Punto en acción · Caso 03: centro de kinesiología (33 s) */
+const K3_END=28.4;
+const K3_AG=[['09:00','Ana R.'],['10:00','Luis P.'],['11:00','Sofía M.'],['12:00','Jorge T.'],['15:00','Rita V.'],['16:00','Pedro S.']];
+function k3Room(t){let o=`<rect width="${CW}" height="${CH}" fill="${lgrad([[0,PAPEL],[1,BG]])}"/>`;
+    o+=plant(500,1420,.8);
+  return o;}
+function k3Agenda(t){const X=560,Y=600,W=456;let o='';
+  K3_AG.forEach(([h,n],i)=>{const y=Y+96+i*92;let st='?',col=BG;
+    if(t>5.6+i*.35){st='ok';col=mix(PAPEL,SAGE,.45);}
+    if(i===1){if(t>11.0){st='x';col=mix(PAPEL,E,.25);} if(t>17.6){st='w';col=mix(PAPEL,CIELO,.6);}}
+    const q=appear(t,.6+i*.15,.3);if(q<=0)return;
+    o+=`<g opacity="${q}"><rect x="${X+28}" y="${y}" width="${W-56}" height="76" rx="16" fill="${col}"/>`+tx(h,X+50,y+48,{size:26,font:'JBM',weight:400})+tx(i===1&&t>17.6?'Marta G. · espera':n,X+150,y+48,{size:26,font:'Manrope',weight:700});
+    if(st==='?')o+=tx('?',X+W-64,y+50,{anchor:'middle',size:36,weight:700,fill:MUTED});
+    if(st==='ok')o+=check(X+W-64,y+38,clamp((t-5.6-i*.35)/.3));
+    if(st==='x')o+=tx('reagenda',X+W-50,y+48,{anchor:'end',size:20,font:'JBM',weight:400,fill:E800});
+    if(st==='w')o+=check(X+W-64,y+38,clamp((t-17.6)/.3));
+    o+='</g>';});
+  return o;}
+function k3Chat(t,a,b,msgs){const k=appear(t,a,.4)*(1-prog(t,b-.3,b));if(k<=0)return '';const X=64,Y=630;let o=`<g opacity="${k}">`;
+  msgs.forEach(([who,txt,tt],i)=>{const q=appear(t,tt,.3);if(q<=0)return;const me=who==='p';o+=`<g transform="translate(0 ${10*(1-q)})" opacity="${q}">`+bubble(me?X:X+30,Y+i*96,440,80,me?E:CIELO,[txt],{size:24,tail:me?'left':'right'})+'</g>';});
+  return o+'</g>';}
+window.caso03=(t)=>{DEFS='';GID=0;const svg=document.getElementById('stage');svg.setAttribute('width',CW);svg.setAttribute('height',CH);svg.setAttribute('viewBox',`0 0 ${CW} ${CH}`);
+  const C=1500;let o='';
+  if(t<K3_END){
+    o+=k3Room(t);
+    const card=bigCard(t,.3,K3_END,{head:t<22.4?'AGENDA DE MAÑANA':'PANEL DE RECEPCIÓN'});
+    if(card.k>0){o+=card.o;
+      if(t<22.4)o+=`<g opacity="${1-prog(t,22.0,22.4)}">${k3Agenda(t)}</g>`;
+      else{const X=560,Y=600;[['Confirmadas',5,SAGE],['Reagendadas',1,CIELO],['Desde lista de espera',1,E],['Requieren persona',0,BG]].forEach(([l,n,c],i)=>{const q=appear(t,22.6+i*.4,.35);if(q<=0)return;const y=Y+110+i*130;
+        o+=`<g opacity="${q}"><rect x="${X+28}" y="${y}" width="400" height="104" rx="20" fill="${c}" stroke="${INK}" stroke-width="4"/>`+tx(String(n),X+72,y+72,{anchor:'middle',size:58,weight:700})+tx(l,X+120,y+64,{size:28,font:'Manrope',weight:800})+'</g>';});
+        o+=tx('Cifras ilustrativas',560+36,600+650,{size:20,font:'JBM',weight:400,fill:MUTED,op:appear(t,24.2)});}
+      o+=card.c;}
+    // mesón de recepción
+    o+=persona(260,C,.95,t<11?'ok':t<17?'surprised':'happy',t,{shirt:CIELO,hair:E800,glasses:true});
+    o+=`<rect x="0" y="${C}" width="${CW}" height="34" fill="${PAPEL}" stroke="${INK}" stroke-width="4"/><rect x="0" y="${C+34}" width="${CW}" height="420" fill="${SAGE_L}"/>`;
+    o+=personaArms(260,C,.95,true,t,0,CIELO);
+    o+=catLying(470,C,.8,t,t>4.6&&t<6.2?Math.sin(Math.PI*(t-4.6)/1.6):0);
+    o+=k3Chat(t,4.6,10.6,[['p','¿Confirmas tu sesión mañana?',4.8],['c','Sí, ahí estaré.',6.0],['p','¡Listo! Te esperamos.',7.0]]);
+    o+=k3Chat(t,10.8,16.6,[['p','¿Confirmas mañana 10:00?',10.9],['c','No puedo mañana.',11.6],['p','¿Jueves 11:00 o viernes 9:30?',12.6],['c','Viernes 9:30.',14.0]]);
+    o+=k3Chat(t,16.8,22.2,[['p','Se liberó una hora: mañana 10:00.',17.0],['c','¡La tomo!',17.8]]);
+    let st={ex:-10,ey:-12,ty:-4*Math.sin(TAU*t/2.2)};
+    if(t<4.4)st={eyes:'round',ex:-12,ey:-14};
+    else if(t>=11.6&&t<12.6)st={eyes:'round',ex:-12,ey:-10,sweat:prog(t,11.6,12.6)};
+    else if(t>=14.0&&t<15.0)st={eyes:'happy',ty:-14*Math.abs(Math.sin((t-14)*TAU*.9))};
+    else if(t>=17.8&&t<19.0)st=celebrate(t,17.8);
+    else if(t>=24.8)st=celebrate(t,24.8);
+    const pin=eback(clamp((t-3.8)/.5));
+    if(pin>0)o+=`<g transform="translate(870 ${C}) scale(${pin}) translate(-870 ${-C})"><ellipse cx="870" cy="${C+4}" rx="100" ry="9" fill="${INK}" opacity=".18"/>${puntoAt(870,C-104,104,st)}</g>`;
+    o+=seriesChip('PUNTO EN ACCIÓN · CASO 03');
+    o+=bigText(t,[[.15,4.4,[['El paciente que',INK,0],['no llega no avisa…',INK,0],['nadie le preguntó.',E,1.4]]],
+                  [4.6,10.6,[['1. Un día antes,',INK,0],['confirma.',E,0]]],
+                  [10.8,16.6,[['2. Si no puede,',INK,0],['reagenda.',E,0]]],
+                  [16.8,22.2,[['3. La hora libre',INK,0],['va a la lista',INK,0],['de espera.',E,0]]],
+                  [22.4,28.2,[['4. Recepción',INK,0],['ve todo en',INK,0],['un panel.',E,0]]]]);
+    o+=tx('Caso de ejemplo',64,555,{size:26,font:'JBM',weight:400,fill:MUTED,op:appear(t,1.0)*(1-prog(t,K3_END-.4,K3_END))});
+    o+=wipe(t,K3_END);
+  } else o+=outroUmbra(t,K3_END,['Una hora confirmada'],['es una hora que','no se pierde.'],'¿Cuántas horas pierdes a la semana?','','Punto en acción · Caso 03',outroCounter(t,K3_END,C2=>persona(330,C2,.82,'happy',t,{shirt:CIELO,hair:E800,glasses:true})+personaArms(330,C2,.82,false,t,0,CIELO)));
+  svg.innerHTML=`<defs>${DEFS}</defs>`+o;};
+
 window.ready=document.fonts.ready.then(()=>Promise.all([document.fonts.load('500 80px Outfit'),document.fonts.load('500 40px Manrope'),document.fonts.load('30px JBM')]));
 </script>
 </body>
