@@ -2071,22 +2071,23 @@ function c9Notebook(t){ // cuaderno ampliado (x 560–1016, y 600–1290)
     o+='</g>';}
   return o;}
 function bellIcon(x,y,s,rot,col=E){return `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s})"><path d="M-22 14c4 -6 4 -14 4 -24c0 -12 8 -20 18 -20s18 8 18 20c0 10 0 18 4 24z" fill="${col}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/><circle cx="0" cy="22" r="6" fill="${INK}"/><circle cx="0" cy="-32" r="4" fill="${INK}"/></g>`;}
-function c9Ficha(t){
+const C9_ROSA={name:'Luis Pérez',sub:'Constructor · desde 2021',team:[[SKIN,'R'],[E800,'C'],[E,'P']],rows:[['CONTACTO','+56 9 •••• 4821',11.6],['QUÉ PIDIÓ','3 gal. látex blanco',15.9],['QUÉ LE PROMETISTE','Cotización el martes',17.5],['PRÓXIMO PASO','Llamar jueves 10:00',19.8]]};
+function c9Ficha(t,D=C9_ROSA){
   const X=560,Y=600,W=456,H=690;const k=appear(t,10.1,.5);if(k<=0)return '';
   let o=`<g opacity="${k}" transform="translate(${X+W/2} ${Y+H/2}) scale(${lerp(.9,1,eback(k))}) translate(${-X-W/2} ${-Y-H/2})">`;
   o+=`<rect x="${X+10}" y="${Y+12}" width="${W}" height="${H}" rx="28" fill="${INK}" opacity=".18"/><rect x="${X}" y="${Y}" width="${W}" height="${H}" rx="28" fill="${PAPEL}" stroke="${INK}" stroke-width="5"/>`;
   o+=tx('FICHA DE CLIENTE',X+36,Y+56,{size:22,font:'JBM',weight:400,fill:E800,ls:2});
   // quién ve la ficha (equipo)
-  const team=[[SKIN,'R'],[E800,'C'],[E,'P']];
+  const team=D.team;
   team.forEach(([c,l],i)=>{const q=appear(t,23.9+i*.22,.35);if(q<=0)return;const cx=X+W-112+i*40,cy=Y+48;
     o+=`<g transform="translate(${cx} ${cy}) scale(${eback(q)*.85})"><circle r="24" fill="${c}" stroke="${INK}" stroke-width="4"/>`+(l==='P'?`<ellipse cx="-7" cy="-3" rx="3.5" ry="6" fill="${INK}"/><ellipse cx="7" cy="-3" rx="3.5" ry="6" fill="${INK}"/>`:tx(l,0,8,{anchor:'middle',size:22,weight:700,fill:l==='C'?PAPEL:INK}))+'</g>';});
   if(t>23.9){const q=appear(t,24.6,.4);o+=tx('LA VE TODO EL EQUIPO',X+W-36,Y+102,{anchor:'end',size:17,font:'JBM',weight:400,fill:MUTED,op:q});}
   // cabecera del cliente
   const h=appear(t,10.6,.4);
   o+=`<g opacity="${h}"><circle cx="${X+80}" cy="${Y+170}" r="46" fill="${CIELO}" stroke="${INK}" stroke-width="4"/>${person(X+80,Y+180,44,INK)}`+
-     tx('Luis Pérez',X+146,Y+164,{size:40,weight:600,ls:-1})+tx('Constructor · desde 2021',X+146,Y+200,{size:21,font:'Manrope',weight:600,fill:MUTED})+'</g>';
+     tx(D.name,X+146,Y+164,{size:40,weight:600,ls:-1})+tx(D.sub,X+146,Y+200,{size:21,font:'Manrope',weight:600,fill:MUTED})+'</g>';
   o+=`<line x1="${X+30}" y1="${Y+246}" x2="${X+W-30}" y2="${Y+246}" stroke="#BEB8AE" stroke-width="3" opacity="${h}"/>`;
-  const R=[['CONTACTO','+56 9 •••• 4821',11.6],['QUÉ PIDIÓ','3 gal. látex blanco',15.9],['QUÉ LE PROMETISTE','Cotización el martes',17.5],['PRÓXIMO PASO','Llamar jueves 10:00',19.8]];
+  const R=D.rows;
   R.forEach(([lab,val,a],i)=>{const q=appear(t,a,.4);if(q<=0)return;const y=Y+300+i*96;
     o+=`<g opacity="${q}" transform="translate(${24*(1-q)} 0)"><circle cx="${X+56}" cy="${y+20}" r="24" fill="${i===3?E:INK}"/>`+tx(String(i+1),X+56,y+30,{anchor:'middle',size:28,weight:600,fill:i===3?INK:PAPEL})+
       tx(lab,X+100,y+8,{size:18,font:'JBM',weight:400,fill:E800,ls:1.5})+tx(val,X+100,y+44,{size:28,font:'Manrope',weight:700})+'</g>';
@@ -2147,6 +2148,133 @@ window.cap09=(t)=>{DEFS='';GID=0;
     o+=catSit(130,C2,.7,t,{look:1});
     o+=puntoAt(820,C2-110,110,t>T+2.2?celebrate(t,T+2.2):{eyes:'happy'});
     o+=tx('¿Dónde anotas hoy',64,1630,{size:44,font:'Manrope',weight:700,fill:PAPEL,op:appear(t,T+2.6)})+tx('a tus clientes?',64,1686,{size:44,font:'Manrope',weight:700,fill:PAPEL,op:appear(t,T+2.6)});
+    o+=tx('Cap. 09 · Punto explica',64,1770,{size:26,font:'JBM',weight:400,fill:'#BEB8AE',op:appear(t,T+3.0)})+tx('interforma.digital',64,1820,{size:26,font:'JBM',weight:400,fill:E,op:appear(t,T+3.2)});
+  }
+  svg.innerHTML=`<defs>${DEFS}</defs>`+o;};
+
+/* ---------- Cap. 09 B · ¿Qué es un CRM? versión tienda de ropa (9:16, 32 s) ----------
+   Fer, dueña joven de una tienda de ropa: sus clientas viven en los mensajes del celular,
+   se pierden entre chats y el teléfono se descarga; Punto arma la ficha de la clienta. */
+const SKIN2='#D6A07C',HAIR2='#3A2E25',DENIM='#7E9DB0',DENIM_D='#5F7F93';
+function fer(x,y,s,mood,t){ // dueña joven; y = línea del mesón; mood: ok | happy | surprised | worried
+  let o='';const br=1+.012*Math.sin(t*2.4);const hy=y-330;
+  o+=`<g transform="translate(${x} ${y}) scale(${s}) scale(1 ${br}) translate(${-x} ${-y})">`;
+  o+=`<path d="M${x-96} ${hy+150}Q${x-118} ${hy-40} ${x} ${hy-92}Q${x+118} ${hy-40} ${x+96} ${hy+150}Z" fill="${HAIR2}"/>`; // pelo largo detrás
+  o+=`<rect x="${x-118}" y="${y-250}" width="236" height="300" rx="96" fill="${DENIM}"/>`;
+  o+=`<path d="M${x-58} ${y-250}L${x-58} ${y+50}L${x+58} ${y+50}L${x+58} ${y-250}Z" fill="${PAPEL}"/><path d="M${x-58} ${y-250}L${x-20} ${y-120}M${x+58} ${y-250}L${x+20} ${y-120}" stroke="${DENIM_D}" stroke-width="10" stroke-linecap="round"/>`;
+  o+=`<path d="M${x-58} ${y-250}L${x-22} ${y-110}L${x-58} ${y-60}Z M${x+58} ${y-250}L${x+22} ${y-110}L${x+58} ${y-60}Z" fill="${DENIM_D}"/>`;
+  o+=`<rect x="${x-20}" y="${y-282}" width="40" height="40" fill="${SKIN2}"/>`;
+  o+=`<circle cx="${x}" cy="${hy}" r="78" fill="${SKIN2}"/>`;
+  o+=`<path d="M${x-82} ${hy+20}Q${x-84} ${hy-80} ${x+6} ${hy-84}Q${x+86} ${hy-80} ${x+82} ${hy+10}Q${x+40} ${hy-56} ${x-30} ${hy-28}Q${x-60} ${hy-14} ${x-82} ${hy+20}Z" fill="${HAIR2}"/>`; // flequillo de lado
+  o+=`<circle cx="${x-80}" cy="${hy+46}" r="11" fill="none" stroke="${E}" stroke-width="5"/><circle cx="${x+80}" cy="${hy+46}" r="11" fill="none" stroke="${E}" stroke-width="5"/>`;
+  o+=`<circle cx="${x-44}" cy="${hy+30}" r="12" fill="${E}" opacity=".32"/><circle cx="${x+44}" cy="${hy+30}" r="12" fill="${E}" opacity=".32"/>`;
+  const blink=(t%3.5<.13)?.15:1;
+  [-28,28].forEach(dx=>{const ex=x+dx,ey=hy+10;
+    if(mood==='happy') o+=`<path d="M${ex-9} ${ey+4}q9 -10 18 0" stroke="${INK}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+    else o+=`<ellipse cx="${ex}" cy="${ey}" rx="${mood==='surprised'?7:6}" ry="${(mood==='surprised'?10:8)*blink}" fill="${INK}"/><path d="M${ex-10} ${ey-14}l${dx<0?-4:4} -3" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>`;
+    if(mood==='worried')o+=`<path d="M${ex-12} ${ey-24}L${ex+12} ${ey-(dx<0?18:30)}" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>`;});
+  if(mood==='happy') o+=`<path d="M${x-18} ${hy+42}q18 18 36 0" stroke="${INK}" stroke-width="5" fill="${PAPEL}" stroke-linecap="round"/>`;
+  else if(mood==='surprised') o+=`<ellipse cx="${x}" cy="${hy+48}" rx="9" ry="11" fill="${INK}"/>`;
+  else if(mood==='worried') o+=`<path d="M${x-14} ${hy+50}q14 -8 28 0" stroke="${INK}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+  else o+=`<path d="M${x-14} ${hy+46}q14 8 28 0" stroke="${INK}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+  o+='</g>';return o;}
+function ferArms(x,y,s,phone,t,dim=0){const px=x+80*s,py=y-120*s;let o='';
+  o+=`<path d="M${x-96*s} ${y-150*s}Q${x-60*s} ${y-40*s} ${px-20*s} ${py+20*s}" stroke="${DENIM}" stroke-width="${46*s}" fill="none" stroke-linecap="round"/>`;
+  o+=`<path d="M${x+96*s} ${y-150*s}Q${x+110*s} ${y-60*s} ${px+18*s} ${py+24*s}" stroke="${DENIM}" stroke-width="${46*s}" fill="none" stroke-linecap="round"/>`;
+  if(phone)o+=`<rect x="${px-34*s}" y="${py-60*s}" width="${68*s}" height="${120*s}" rx="${12*s}" fill="${INK}"/><rect x="${px-27*s}" y="${py-52*s}" width="${54*s}" height="${100*s}" rx="${7*s}" fill="${mix(CIELO,INK,dim)}"/>`;
+  o+=`<circle cx="${px-20*s}" cy="${py+22*s}" r="${24*s}" fill="${SKIN2}"/><circle cx="${px+18*s}" cy="${py+26*s}" r="${24*s}" fill="${SKIN2}"/>`;return o;}
+function garment(x,y,kind,col,sw){ // cuelga de (x,y)
+  let o=`<path d="M${x} ${y}q0 -14 10 -14" stroke="${INK}" stroke-width="3" fill="none"/><path d="M${x-34} ${y+16}L${x} ${y}L${x+34} ${y+16}" stroke="${INK}" stroke-width="3" fill="none"/>`;
+  const g=`transform="rotate(${sw} ${x} ${y})"`;
+  if(kind===0)o+=`<path ${g} d="M${x-36} ${y+14}L${x-62} ${y+60}L${x-46} ${y+72}L${x-34} ${y+52}L${x-34} ${y+190}L${x+34} ${y+190}L${x+34} ${y+52}L${x+46} ${y+72}L${x+62} ${y+60}L${x+36} ${y+14}Q${x} ${y+34} ${x-36} ${y+14}Z" fill="${col}" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>`;
+  if(kind===1)o+=`<path ${g} d="M${x-30} ${y+14}L${x-26} ${y+90}L${x-56} ${y+230}L${x+56} ${y+230}L${x+26} ${y+90}L${x+30} ${y+14}Q${x} ${y+30} ${x-30} ${y+14}Z" fill="${col}" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>`;
+  if(kind===2)o+=`<path ${g} d="M${x-40} ${y+14}L${x-66} ${y+150}L${x-50} ${y+154}L${x-40} ${y+80}L${x-40} ${y+170}L${x+40} ${y+170}L${x+40} ${y+80}L${x+50} ${y+154}L${x+66} ${y+150}L${x+40} ${y+14}Z" fill="${col}" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/><path ${g} d="M${x} ${y+20}v150" stroke="${INK}" stroke-width="3"/>`;
+  return o;}
+function ferStore(t){let o=`<rect width="${CW}" height="${CH}" fill="${lgrad([[0,PAPEL],[1,BG]])}"/>`;
+  o+=`<rect x="0" y="1380" width="${CW}" height="120" fill="#DDD6CB"/>`;
+  // letrero
+  o+=`<rect x="64" y="600" width="270" height="70" rx="35" fill="none" stroke="${INK}" stroke-width="4"/>`+tx('FER · ROPA',199,646,{anchor:'middle',size:28,font:'JBM',weight:400,fill:E800,ls:3});
+  // perchero
+  o+=`<line x1="40" y1="740" x2="700" y2="740" stroke="${WOOD_D}" stroke-width="10" stroke-linecap="round"/><line x1="60" y1="740" x2="60" y2="1500" stroke="${WOOD_D}" stroke-width="10"/><line x1="680" y1="740" x2="680" y2="1500" stroke="${WOOD_D}" stroke-width="10"/>`;
+  const G=[[0,CIELO],[1,SAGE],[2,DENIM],[0,PAPEL],[1,'#D9C3A5'],[2,SAGE2],[0,'#E9B9A0']];
+  G.forEach(([k,c],i)=>o+=garment(110+i*90,752,k,c,1.5*Math.sin(t*1.3+i)));
+  // espejo y planta
+  o+=`<rect x="770" y="560" width="230" height="420" rx="115" fill="${lgrad([[0,CIELO],[1,PAPEL]],1,1)}" stroke="${WOOD_D}" stroke-width="10"/><path d="M820 700l60 -60M840 760l90 -90" stroke="${PAPEL}" stroke-width="10" stroke-linecap="round" opacity=".8"/>`;
+  o+=plant(1000,1380,1.1);
+  return o;}
+const C9B_DM=[['cami.soto','¿Llega la chaqueta en M?',1],['vale_r','¿Precio del vestido?',0],['jo.mendez','Te transfiero mañana',0],['anto.p','¿Me la guardas?',0],['rocio.v','¿Hacen envíos?',0]];
+function c9bPhone(t){ // celular ampliado (x 560–1016, y 600–1290)
+  const X=560,Y=600,W=456,H=690;const k=appear(t,.3,.5)*(1-prog(t,9.4,9.9));if(k<=0)return '';
+  let o=`<g opacity="${k}" transform="translate(${X+W/2} ${Y+H/2}) rotate(${2-1.2*Math.sin(t*.8)}) translate(${-X-W/2} ${-Y-H/2})">`;
+  o+=`<rect x="${X+10}" y="${Y+12}" width="${W}" height="${H}" rx="56" fill="${INK}" opacity=".18"/><rect x="${X}" y="${Y}" width="${W}" height="${H}" rx="56" fill="${INK}"/>`;
+  const dim=eout(prog(t,8.4,8.9));
+  o+=`<rect x="${X+16}" y="${Y+16}" width="${W-32}" height="${H-32}" rx="42" fill="${BG}"/>`;
+  o+=`<g ${clip(`<rect x="${X+16}" y="${Y+16}" width="${W-32}" height="${H-32}" rx="42"/>`)}>`;
+  o+=tx('Mensajes',X+48,Y+82,{size:34,weight:600,ls:-1});
+  // lista que crece
+  const extra=Math.floor(clamp((t-5.0)/3.0)*14);
+  const NAMES=['maca.f','pauli_z','sofi.r','dani.c','flo.m','javi.t','bea.s','lu.g','tere.o','nati.p','consu.a','isi.b','mar.l','ale.k'];
+  const list=[...C9B_DM];for(let i=0;i<extra;i++)list.unshift([NAMES[i],['¿Tienen talla S?','¿Precio?','¿Me la guardas?','Hola!!','¿Abren el domingo?'][i%5],0]);
+  list.forEach(([n,m,hi],i)=>{const k2=i<extra?appear(t,5.0+(extra-1-i)*3.0/14,.25):appear(t,.6+(i)*.55,.35);if(k2<=0)return;
+    const yshow=Y+120+i*100;if(yshow>Y+H)return;
+    o+=`<g opacity="${k2}" transform="translate(${20*(1-k2)} 0)">`;
+    o+=`<rect x="${X+32}" y="${yshow}" width="${W-64}" height="86" rx="20" fill="${hi&&t<5.0?mix(PAPEL,E,.15):PAPEL}"/><circle cx="${X+80}" cy="${yshow+43}" r="28" fill="${[CIELO,SAGE,E800,'#D9C3A5',DENIM][i%5]}"/>`;
+    o+=tx(n,X+124,yshow+36,{size:22,font:'Manrope',weight:700})+tx(m,X+124,yshow+66,{size:21,font:'Manrope',weight:500,fill:MUTED});
+    if(i<extra||t<6)o+=`<circle cx="${X+W-62}" cy="${yshow+43}" r="10" fill="${E}"/>`;
+    o+='</g>';});
+  // contador de no leídos
+  const cnt=Math.round(lerp(5,87,clamp((t-5.0)/3.2)));
+  if(t>1.0){const q=appear(t,1.0,.3);o+=`<g transform="translate(${X+W-80} ${Y+70}) scale(${eback(q)})"><rect x="-44" y="-26" width="88" height="52" rx="26" fill="${E}"/>${tx(String(cnt),0,10,{anchor:'middle',size:28,weight:700})}</g>`;}
+  o+='</g>';
+  // batería baja
+  if(dim>0){o+=`<rect x="${X+16}" y="${Y+16}" width="${W-32}" height="${H-32}" rx="42" fill="${INK}" opacity="${.92*dim}"/>`;
+    const bk=(t%0.6<0.3)?1:.35;o+=`<g opacity="${dim*bk}"><rect x="${X+W/2-70}" y="${Y+H/2-34}" width="130" height="68" rx="12" fill="none" stroke="${PAPEL}" stroke-width="6"/><rect x="${X+W/2+62}" y="${Y+H/2-14}" width="12" height="28" rx="4" fill="${PAPEL}"/><rect x="${X+W/2-60}" y="${Y+H/2-24}" width="18" height="48" rx="4" fill="${E}"/></g>`+tx('1 %',X+W/2,Y+H/2+90,{anchor:'middle',size:30,font:'JBM',weight:400,fill:PAPEL,op:dim});}
+  return o+'</g>';}
+const C9_FER={name:'Camila Soto',sub:'Clienta desde 2024',team:[[SKIN2,'F'],[SAGE2,'A'],[E,'P']],rows:[['CONTACTO','@cami.soto',11.6],['QUÉ PIDIÓ','Chaqueta denim M',15.9],['QUÉ LE PROMETISTE','Avisarle si llega',17.5],['PRÓXIMO PASO','Escribirle el lunes',19.8]]};
+window.cap09b=(t)=>{DEFS='';GID=0;
+  const svg=document.getElementById('stage');svg.setAttribute('width',CW);svg.setAttribute('height',CH);svg.setAttribute('viewBox',`0 0 ${CW} ${CH}`);
+  const C=1500;let o='';
+  if(t<C9_END){
+    o+=ferStore(t);
+    const mood=t<5.0?'ok':t<8.4?'worried':t<9.8?'surprised':t<20.4?'ok':'happy';
+    o+=fer(310,C,1,mood,t);
+    o+=`<rect x="0" y="${C}" width="${CW}" height="34" fill="${WOOD}"/><rect x="0" y="${C}" width="${CW}" height="8" fill="${WOOD_D}"/><rect x="0" y="${C+34}" width="${CW}" height="420" fill="${SAGE2}"/>`;
+    for(let x=60;x<1080;x+=240)o+=`<rect x="${x}" y="${C+70}" width="190" height="300" rx="14" fill="none" stroke="#6F8A6C" stroke-width="5"/>`;
+    // bolsas de compra sobre el mesón
+    o+=`<path d="M470 ${C}l10 -96h96l10 96z" fill="${PAPEL}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/><path d="M500 ${C-96}q28 -40 56 0" stroke="${INK}" stroke-width="4" fill="none"/><circle cx="528" cy="${C-46}" r="14" fill="${E}"/>`;
+    o+=ferArms(310,C,1,t<10.0,t,eout(prog(t,8.4,8.9)));
+    const wake=Math.max(t>8.4&&t<10.0?Math.sin(Math.PI*(t-8.4)/1.6):0,t>20.4&&t<21.8?Math.sin(Math.PI*(t-20.4)/1.4):0);
+    o+=catLying(120,C,.85,t,wake);
+    o+=c9bPhone(t)+c9Ficha(t,C9_FER);
+    let st={ex:-10,ey:-14,ty:-4*Math.sin(TAU*t/2.2)};
+    if(t<8.0)st={eyes:'round',ex:-14,ey:-16,lines:1-prog(t,6.3,6.9)};
+    else if(t<10.0)st={eyes:'low',sweat:prog(t,8.4,9.6)};
+    else if(t<11.0)st={eyes:'happy',ty:-16*Math.abs(Math.sin((t-10)*TAU*.8))};
+    else if(t>=20.4&&t<21.4)st={eyes:'round',ex:-12,ey:-16,lines:1};
+    else if(t>=21.4&&t<23.8)st={eyes:'happy',ty:-4*Math.sin(TAU*t/2.2)};
+    else if(t>=23.8)st=celebrate(t,23.8);
+    const pin=eback(clamp((t-5.9)/.5));
+    if(pin>0)o+=`<g transform="translate(870 ${C}) scale(${pin}) translate(-870 ${-C})"><ellipse cx="870" cy="${C+4}" rx="100" ry="9" fill="${INK}" opacity=".18"/>${puntoAt(870,C-104,104,st)}</g>`;
+    const pill='CAP. 09 · PUNTO EXPLICA';o+=`<rect x="64" y="100" width="${pill.length*20.6+64}" height="64" rx="32" fill="${E}"/>`+tx(pill,96,143,{size:30,font:'JBM',weight:400,ls:1});
+    const ph=[[.15,4.8,[['¿Tus clientas',INK,0],['viven en',INK,0],['tus mensajes?',E,0]]],
+              [5.0,9.8,[['Se pierden',INK,0],['entre chats.',INK,0],['Y el celular…',E,3.4]]],
+              [10.0,15.5,[['Un CRM es',INK,0],['una memoria',INK,0],['que no se borra.',E,0]]],
+              [15.7,19.3,[['Guarda qué pidió',INK,0],['y qué le',INK,0],['prometiste.',E,0]]],
+              [19.5,23.5,[['Y te avisa',INK,0],['cuándo volver',INK,0],['a escribirle.',E,0]]],
+              [23.7,26.8,[['Y la ve',INK,0],['todo tu equipo.',E,0]]]];
+    ph.forEach(([a,b,lines])=>{lines.forEach(([l,c,d],i)=>{const k=Math.min(appear(t,a+d,.4),1-prog(t,b-.25,b));if(k<=0)return;o+=tx(l,64,290+i*96,{size:84,weight:600,ls:-2.5,fill:c,op:k,dy:16*(1-appear(t,a+d,.4))});});});
+    o+=tx('CRM: gestión de la relación con clientes.',64,555,{size:30,font:'Manrope',weight:600,fill:'#3F3A34',op:Math.min(appear(t,11.0),1-prog(t,15.2,15.5))});
+    const wo=prog(t,C9_END-.4,C9_END);if(wo>0)o+=`<rect x="0" y="${lerp(CH,0,eio(wo))}" width="${CW}" height="${CH}" fill="${INK}"/>`;
+  } else {
+    const T=C9_END;o+=`<rect width="${CW}" height="${CH}" fill="${INK}"/>`;
+    const a=appear(t,T+.2),b=appear(t,T+1.3);
+    ['Un CRM es','tu memoria,'].forEach((l,i)=>o+=tx(l,64,330+i*104,{size:92,weight:600,ls:-2.5,fill:PAPEL,op:a,dy:18*(1-a)}));
+    ['compartida y','siempre cargada.'].forEach((l,i)=>o+=tx(l,64,580+i*104,{size:92,weight:600,ls:-2.5,fill:E,op:b,dy:18*(1-b)}));
+    const C2=1480;o+=`<rect x="0" y="${C2}" width="${CW}" height="30" fill="${WOOD}"/><rect x="0" y="${C2+30}" width="${CW}" height="420" fill="${NIGHT2}"/>`;
+    o+=fer(330,C2,.82,'happy',t);o+=ferArms(330,C2,.82,false,t);
+    o+=catSit(130,C2,.7,t,{look:1});
+    o+=puntoAt(820,C2-110,110,t>T+2.2?celebrate(t,T+2.2):{eyes:'happy'});
+    o+=tx('¿Dónde anotas hoy',64,1630,{size:44,font:'Manrope',weight:700,fill:PAPEL,op:appear(t,T+2.6)})+tx('a tus clientas?',64,1686,{size:44,font:'Manrope',weight:700,fill:PAPEL,op:appear(t,T+2.6)});
     o+=tx('Cap. 09 · Punto explica',64,1770,{size:26,font:'JBM',weight:400,fill:'#BEB8AE',op:appear(t,T+3.0)})+tx('interforma.digital',64,1820,{size:26,font:'JBM',weight:400,fill:E,op:appear(t,T+3.2)});
   }
   svg.innerHTML=`<defs>${DEFS}</defs>`+o;};
