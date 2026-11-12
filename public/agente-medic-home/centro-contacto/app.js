@@ -244,9 +244,10 @@
 
   VIEWS.arquitectura = function () {
     function down(n) { var a = []; for (var i = 0; i < n; i++) a.push(ARROW_D); return '<div class="down"><div class="down__arrows">' + a.join('') + '</div><div class="spacer"></div></div>'; }
-    return '<div class="intro"><span class="eyebrow eyebrow--num">05 · Arquitectura</span><h1>Una sola plataforma para el 600, el WhatsApp y el CRM.</h1><p class="lead">Cuatro capas que trabajan juntas. A la derecha, qué reemplaza cada una de la operación actual.</p></div>' +
+    return '<div class="intro"><span class="eyebrow eyebrow--num">05 · Arquitectura</span><h1>Una sola plataforma para el 600, el WhatsApp y el CRM.</h1><p class="lead">Cuatro capas que trabajan juntas. A la derecha, qué reemplaza cada una de la operación actual.</p>' +
+      '<div class="stack" aria-label="Herramientas de la solución"><span class="eyebrow">Herramientas</span>' + [['Asterisk', 'central telefónica del 600'], ['API de WhatsApp', 'número oficial (Meta)'], ['n8n + LLM', 'orquestador y asistente IA'], ['Chatwoot', 'consola de ejecutivos'], ['Twenty', 'CRM'], ['Servidor dedicado', 'Medic Home']].map(function (t) { return '<span class="stack__item"><b>' + t[0] + '</b>' + t[1] + '</span>'; }).join('') + '</div></div>' +
       '<div class="layer"><div class="layer__main"><span class="eyebrow">Canales</span><div class="layer__cards">' +
-      '<div class="box box--light"><span><b>Número 600</b>Entrante y saliente · SIP trunk chileno, número portado</span></div>' +
+      '<div class="box box--light"><span><b>Número 600 · Asterisk</b>SIP trunk chileno con el 600 portado, a una central telefónica de código abierto</span></div>' +
       '<div class="box box--light"><span><b>WhatsApp oficial</b>API de Meta · un número para todo el equipo</span></div>' +
       '<div class="box box--light"><span><b>Web y formularios</b>Chat del sitio y solicitud de llamada</span></div></div></div>' +
       '<div class="repl-col"><span class="eyebrow eyebrow--num">Qué reemplaza</span><div class="box box--repl" style="flex:1"><span><b>Telefonía de CloudTalk</b>y los WhatsApp personales de cada ejecutivo.</span></div></div></div>' +
@@ -255,7 +256,7 @@
       '<div class="repl-col"><span class="eyebrow" style="visibility:hidden">.</span><div class="box box--repl" style="flex:1"><span><b>Menú de grabaciones fijo</b>de CloudTalk y el complemento de IA de voz que se cobra aparte.</span></div></div></div>' +
       down(3) +
       '<div class="layer"><div class="layer__main"><span class="eyebrow">Atención y datos</span><div class="layer__cards">' +
-      '<div class="box box--sky"><span><b>Consola omnicanal</b>Ejecutivos en computador y app móvil · colas, softphone, devoluciones</span></div>' +
+      '<div class="box box--sky"><span><b>Consola omnicanal · Chatwoot</b>Código abierto, en el servidor de Medic Home · web y app iOS/Android · colas, softphone, devoluciones</span></div>' +
       '<div class="box box--sky"><span><b>CRM Twenty autoalojado</b>Ficha del paciente, historial completo, tareas y métricas</span></div>' +
       '<div class="box box--sky"><span><b>Agenda clínica de Medic Home</b>Integración por API para consultar y mover visitas</span></div></div></div>' +
       '<div class="repl-col"><span class="eyebrow" style="visibility:hidden">.</span><div class="box box--repl" style="flex:1"><span><b>Integración CloudTalk–Zoho</b>que hoy no registra bien, y las licencias de Zoho si deciden cambiar de CRM.</span></div></div></div>' +
