@@ -208,7 +208,13 @@
       '<div class="summary"><span class="eyebrow eyebrow--num">Resumen del asistente</span><span style="font-size:15px;line-height:1.55">' + esc(cur.summary) + '</span></div>' +
       '<div class="lines"><span class="eyebrow">Conversación</span>' + lines.map(function (l) { return '<div class="line"><b>' + esc(l[0]) + '</b><span>' + esc(l[1]) + '</span></div>'; }).join('') + '</div>' + action + note + '</section>' +
       '<aside class="card patient" aria-label="Ficha del paciente"><span class="eyebrow">Ficha en el CRM</span><dl class="fields">' + cur.fields.map(function (f) { return '<div><dt>' + esc(f[0]) + '</dt><dd>' + esc(f[1]) + '</dd></div>'; }).join('') + '</dl>' +
-      (cur.kind === 'wa' && !c.calling[cur.id] && !c.closed[cur.id] ? '<button type="button" class="btn" data-act="con-call">Llamar desde el 600</button>' : '') + '<a class="small" style="font-weight:700" href="#crm">Abrir ficha completa</a></aside></div>';
+      (cur.kind === 'wa' && !c.calling[cur.id] && !c.closed[cur.id] ? '<button type="button" class="btn" data-act="con-call">Llamar desde el 600</button>' : '') + '<a class="small" style="font-weight:700" href="#crm">Abrir ficha completa</a></aside></div>' +
+      '<section class="card" aria-label="Cómo es la consola"><div style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow eyebrow--num">Cómo es la consola</span><h2>Una página web y una app, conectadas al servidor de Medic Home.</h2>' +
+      '<p class="small muted" style="margin:0;max-width:820px">Es una plataforma de atención de código abierto (por ejemplo, Chatwoot) instalada en el servidor de Medic Home. Cada ejecutivo entra con su usuario; el WhatsApp y el 600 siguen siendo de la empresa.</p></div>' +
+      '<div class="howit"><div class="howit__card"><span class="eyebrow">En el computador</span><h3>Se abre en el navegador</h3><ul><li>Sin instalar nada: usuario y clave.</li><li>Bandeja con llamadas y WhatsApp asignados.</li><li>Llamadas con audífonos con micrófono, desde el mismo navegador.</li></ul></div>' +
+      '<div class="howit__card"><span class="eyebrow">En el celular</span><h3>App para iPhone y Android</h3><ul><li>Se conecta al servidor de Medic Home.</li><li>Avisa cuando llega o se asigna una conversación.</li><li>Responde desde el número oficial, no desde el personal.</li></ul></div>' +
+      '<div class="howit__card"><span class="eyebrow">Para la jefatura</span><h3>Supervisión en vivo</h3><ul><li>Colas, tiempos de espera y conversaciones abiertas.</li><li>Reasigna casos con un clic.</li><li>Reportes por canal y por ejecutivo.</li></ul></div>' +
+      '<div class="minip" aria-hidden="true"><div class="minip__top">Medic Home · Bandeja</div><div class="minip__row"><b>Carmen Soto</b><span>Cobro duplicado · WhatsApp</span><i class="tag b-mine">Contigo</i></div><div class="minip__row"><b>Pedro Rojas</b><span>Cotización · WhatsApp</span><i class="tag b-warn">En cola</i></div><div class="minip__row"><b>+56 9 [NÚMERO]</b><span>Llamada perdida</span><i class="tag b-warn">Devolver</i></div></div></div></section>';
   };
 
   /* ---------- CRM ---------- */
@@ -253,7 +259,20 @@
       '<div class="box box--sky"><span><b>CRM Twenty autoalojado</b>Ficha del paciente, historial completo, tareas y métricas</span></div>' +
       '<div class="box box--sky"><span><b>Agenda clínica de Medic Home</b>Integración por API para consultar y mover visitas</span></div></div></div>' +
       '<div class="repl-col"><span class="eyebrow" style="visibility:hidden">.</span><div class="box box--repl" style="flex:1"><span><b>Integración CloudTalk–Zoho</b>que hoy no registra bien, y las licencias de Zoho si deciden cambiar de CRM.</span></div></div></div>' +
-      '<div class="layer"><div class="layer__main"><span class="eyebrow">Base</span><div class="box box--base" style="min-height:72px"><span><b>Infraestructura dedicada</b>Servidor de Medic Home administrado por Interforma · cifrado, respaldos y control de accesos · Ley 21.719</span></div></div><div></div></div>';
+      '<div class="layer"><div class="layer__main"><span class="eyebrow">Base</span><div class="box box--base" style="min-height:72px"><span><b>Infraestructura dedicada</b>Servidor de Medic Home administrado por Interforma · cifrado, respaldos y control de accesos · Ley 21.719</span></div></div><div></div></div>' +
+      '<section class="card law" aria-label="Datos de pacientes y Ley 21.719"><div class="between"><div style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow eyebrow--num">Datos de pacientes · Ley 21.719</span><h2>Qué significa «infraestructura dedicada».</h2></div><span class="tag b-warn">Vigente desde el 1/12/2026</span></div>' +
+      '<p class="small muted" style="margin:0;max-width:820px">La Ley 21.719 trata los datos de salud como datos sensibles: exige seguridad, contratos con quienes los manejan y aviso si hay una filtración, con multas que pueden llegar a 20.000 UTM. Esta es la forma en que la solución responde a eso.</p>' +
+      '<div class="law__grid"><div><h3>Quién es quién</h3><ul>' +
+      '<li><b>Medic Home es el responsable</b> de los datos: decide para qué se usan.</li>' +
+      '<li><b>Interforma es el encargado</b>: los trata solo por instrucción de Medic Home, con un contrato de encargo y confidencialidad.</li>' +
+      '<li><b>Meta, el operador telefónico y el proveedor de IA</b> participan con contratos de tratamiento de datos, sin usar la información para fines propios.</li></ul></div>' +
+      '<div><h3>Qué hace la plataforma</h3><ul>' +
+      '<li><b>Servidor propio de Medic Home:</b> sus datos no se mezclan con los de otros clientes.</li>' +
+      '<li><b>Cifrado</b> en tránsito y en reposo, y <b>respaldos diarios</b>.</li>' +
+      '<li><b>Accesos por rol</b> y registro de quién vio o cambió cada ficha.</li>' +
+      '<li><b>Aviso y consentimiento</b> en el primer contacto, incluida la grabación de llamadas.</li>' +
+      '<li><b>Mínimo necesario:</b> el asistente agenda y deriva; no pide ni registra diagnósticos.</li>' +
+      '<li><b>Derechos del paciente</b> (acceso, rectificación, eliminación) atendidos desde el CRM, y protocolo de aviso ante incidentes.</li></ul></div></div></section>';
   };
 
   VIEWS.flujos = function () {
@@ -419,7 +438,7 @@
       '<li>WhatsApp en Chile (Meta): marketing ~US$0,107 y utilidad o servicio ~US$0,024 por mensaje. Desde el 1/10/2026 también se cobran las respuestas de servicio, con 1.000 gratis al mes.</li>' +
       '<li>Asistente de voz IA: ~US$0,12/min (rango de mercado US$0,05–0,31 según modelo y voz).</li>' +
       '<li>Telefonía: entrante ~US$0,01/min y saliente a móviles ~US$0,07/min; un operador chileno con numeración 600 puede ser menor y se cotiza.</li>' +
-      '<li>Servidor dedicado ~US$40/mes. Twenty, n8n y la consola son código abierto autoalojado: sin licencias por usuario.</li></ul></section>' +
+      '<li>Servidor dedicado ~US$40/mes. Twenty, n8n y la consola son código abierto autoalojado: sin licencias por usuario. Si se usa el canal de voz nativo de la consola (hoy de pago por agente), se suma ese costo; la alternativa es el softphone de la central telefónica, también de código abierto.</li></ul></section>' +
       '<section style="background:#FBE6DC;border:1px solid #F7CDBB"><span class="eyebrow eyebrow--num">Supuestos y exclusiones</span><ul>' +
       '<li>Valores referenciales, netos, a validar con volúmenes reales y cotización del operador del 600.</li><li>No incluye contingencia: sugerimos reservar un 10 % adicional.</li>' +
       '<li>CloudTalk se mantiene durante la marcha blanca (S10–S11) para no cortar la atención.</li><li>El tipo de cambio y las tarifas de Meta y de los proveedores pueden variar.</li></ul></section></div>';
