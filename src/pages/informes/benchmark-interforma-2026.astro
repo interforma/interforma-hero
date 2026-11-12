@@ -1,0 +1,1551 @@
+---
+import Base from '@layouts/Base.astro';
+import Eyebrow from '@components/base/Eyebrow.astro';
+import SectionHeading from '@components/base/SectionHeading.astro';
+
+const title = 'Benchmark competitivo Interforma — Chile 2026';
+const description = 'Análisis exploratorio de información pública: posicionamiento, servicios, tecnología, casos y precios de 13 empresas chilenas y 3 referencias internacionales.';
+
+/* ── Competitors data ── */
+const competitors = [
+  { empresa: 'Redsoft', url: 'https://redsoftchile.cl/', especializacion: 'Marketing, SEO, anuncios, CRM, IA e integraciones', lectura: 'Documentar conexión entre captación y resultados comerciales', grupo: 'integral' },
+  { empresa: 'Quolab', url: 'https://quolab.cl/', especializacion: 'Web, WordPress, n8n, WhatsApp API, OpenAI, campañas', lectura: 'Diferenciar diagnóstico, rediseño de procesos y adopción', grupo: 'integral' },
+  { empresa: 'Z Digital', url: 'https://zdigital.cl/', especializacion: 'Growth, BI, marketing, CRM y automatización', lectura: 'Destacar KPIs e impacto del CRM y los datos', grupo: 'integral' },
+  { empresa: 'Consultores Raise', url: 'https://consultoresraise.com/', especializacion: 'Desarrollo web, SaaS, Make, n8n, SEO/GEO', lectura: 'Mostrar casos y objetivos cuantificados', grupo: 'integral' },
+  { empresa: 'LADO DIGITAL', url: 'https://agencialadodigital.com/', especializacion: 'Web, marketing, sistemas, automatización, agentes', lectura: 'Simplificar productos y contratación', grupo: 'integral' },
+  { empresa: 'Hi Agencia', url: 'https://hiagencia.com/', especializacion: 'n8n, Chatwoot, WhatsApp, CRM y agentes de IA', lectura: 'Traducir proyectos técnicos a historias comerciales', grupo: 'automatizacion' },
+  { empresa: 'FutureFlow', url: 'https://www.futureflow.cl/', especializacion: 'Consultoría, IA, automatización, web', lectura: 'Reforzar experiencia sectorial', grupo: 'automatizacion' },
+  { empresa: 'AIntelligence', url: 'https://aintelligence.cl/', especializacion: 'Software, Python, PostgreSQL, Docker, AWS, n8n, CRM', lectura: 'Comunicar arquitectura y seguridad accesiblemente', grupo: 'automatizacion' },
+  { empresa: 'SURMET', url: 'https://www.surmet.cl/', especializacion: 'n8n, Odoo, Shopify, AWS, servidores y agentes IA', lectura: 'Destacar continuidad operacional y privacidad', grupo: 'automatizacion' },
+  { empresa: 'YAGO', url: 'https://yago.cl/', especializacion: 'APIs, OCR, RPA, IA, agentes, productos verticales', lectura: 'Construir soluciones sectoriales reutilizables', grupo: 'automatizacion' },
+  { empresa: 'Digitals', url: 'https://digitals.cl/', especializacion: 'Marketing, datos, CRM con IA y automatización', lectura: 'Reforzar contenidos y activos propios', grupo: 'datos' },
+  { empresa: 'Artifact', url: 'https://www.artifact.cl/about', especializacion: 'Web, marketing, n8n, WhatsApp, Chatwoot', lectura: 'Ofrecer entrada comercial sin competir solo por precio', grupo: 'datos' },
+  { empresa: 'Vulkca', url: 'https://www.vulkca.com/', especializacion: 'Next.js, Supabase, CRM, agentes IA, SEO/GEO', lectura: 'Publicar tecnología, alcance y casos claramente', grupo: 'tech' },
+];
+
+/* ── Documentation matrix ── */
+const matrix = [
+  { empresa: 'Vulkca', posic: 2, web: 2, crm: 2, casos: 2, comercial: 2, indice: 100 },
+  { empresa: 'YAGO', posic: 2, web: 1, crm: 2, casos: 2, comercial: 2, indice: 95 },
+  { empresa: 'Interforma', posic: 2, web: 2, crm: 2, casos: 2, comercial: 1, indice: 92.5 },
+  { empresa: 'Consultores Raise', posic: 2, web: 2, crm: 2, casos: 2, comercial: 1, indice: 92.5 },
+  { empresa: 'LADO DIGITAL', posic: 2, web: 2, crm: 2, casos: 1, comercial: 2, indice: 87.5 },
+  { empresa: 'Quolab', posic: 2, web: 2, crm: 2, casos: 1, comercial: 1, indice: 80 },
+  { empresa: 'Hi Agencia', posic: 2, web: 1, crm: 2, casos: 2, comercial: 0, indice: 80 },
+  { empresa: 'Digitals', posic: 2, web: 2, crm: 1, casos: 2, comercial: 0, indice: 75 },
+  { empresa: 'Redsoft', posic: 2, web: 2, crm: 2, casos: 1, comercial: 0, indice: 72.5 },
+  { empresa: 'FutureFlow', posic: 2, web: 1, crm: 2, casos: 1, comercial: 0, indice: 67.5 },
+  { empresa: 'Artifact', posic: 1, web: 2, crm: 2, casos: 0, comercial: 2, indice: 65 },
+  { empresa: 'Z Digital', posic: 2, web: 2, crm: 1, casos: 1, comercial: 0, indice: 62.5 },
+  { empresa: 'AIntelligence', posic: 2, web: 1, crm: 2, casos: 0, comercial: 0, indice: 55 },
+  { empresa: 'SURMET', posic: 2, web: 0, crm: 2, casos: 0, comercial: 0, indice: 40 },
+];
+
+/* ── Prices ── */
+const prices = [
+  { empresa: 'Artifact', precio: 'Web desde $150.000 CLP', notas: 'Precio de entrada, no proyecto comparable' },
+  { empresa: 'LADO DIGITAL', precio: 'Implementación desde $190.000 + IVA; operación mensual $250.000–$1.400.000 + IVA', notas: 'Distingue setup y continuidad' },
+  { empresa: 'Vulkca', precio: 'Web desde $300.000; agente IA avanzado desde $400.000; mantenimiento bot desde $100.000/mes', notas: 'Ofertas con fecha 2025; verificar vigencia' },
+  { empresa: 'YAGO', precio: 'SADT desde 31,80 UF/mes; AXIS desde 22,13 UF + IVA/mes', notas: 'Productos específicos, no desarrollo general' },
+  { empresa: 'Consultores Raise', precio: 'Cotización después de diagnóstico', notas: 'No hay tarifa general' },
+];
+
+/* ── International references ── */
+const intl = [
+  { empresa: 'Aptitude 8', url: 'https://aptitude8.com/', aprender: 'CRM, Revenue Operations, integraciones, casos con resultados' },
+  { empresa: 'SmartBug Media', url: 'https://www.smartbugmedia.com/', aprender: 'Marketing + CRM + servicios recurrentes + verticalización' },
+  { empresa: 'DEPT', url: 'https://www.dept.global/', aprender: 'Narrativa de transformación digital y experiencias' },
+];
+
+/* ── Action plan ── */
+const actions = [
+  { n: 1, iniciativa: 'Estandarizar casos de éxito con KPIs antes/después', impacto: 'Muy alto', esfuerzo: 'Medio', horizonte: '0–30 días' },
+  { n: 2, iniciativa: 'Crear páginas comerciales por industria', impacto: 'Muy alto', esfuerzo: 'Medio', horizonte: '0–45 días' },
+  { n: 3, iniciativa: 'Publicar oferta clara de piloto IA', impacto: 'Muy alto', esfuerzo: 'Bajo', horizonte: '0–30 días' },
+  { n: 4, iniciativa: 'Definir planes de implementación y mantenimiento', impacto: 'Alto', esfuerzo: 'Bajo', horizonte: '0–30 días' },
+  { n: 5, iniciativa: 'Diseñar oferta RevOps para empresas medianas', impacto: 'Muy alto', esfuerzo: 'Alto', horizonte: '30–90 días' },
+  { n: 6, iniciativa: 'Crear soluciones reutilizables para logística y salud', impacto: 'Muy alto', esfuerzo: 'Alto', horizonte: '30–90 días' },
+  { n: 7, iniciativa: 'Publicar contenidos SEO especializados', impacto: 'Alto', esfuerzo: 'Medio', horizonte: '30–90 días' },
+  { n: 8, iniciativa: 'Desarrollar calculadora de retorno de automatización', impacto: 'Alto', esfuerzo: 'Medio', horizonte: '30–60 días' },
+  { n: 9, iniciativa: 'Documentar seguridad, continuidad y gobernanza IA', impacto: 'Alto', esfuerzo: 'Medio', horizonte: '0–60 días' },
+  { n: 10, iniciativa: 'Repetir benchmarking con histórico trimestral', impacto: 'Medio', esfuerzo: 'Medio', horizonte: '60–90 días' },
+];
+
+/* ── Sections nav ── */
+const sections = [
+  { id: 'resumen', label: 'Resumen' },
+  { id: 'alcance', label: 'Alcance' },
+  { id: 'competidores', label: 'Competidores' },
+  { id: 'matriz', label: 'Matriz' },
+  { id: 'precios', label: 'Precios' },
+  { id: 'seo', label: 'SEO y visibilidad' },
+  { id: 'internacionales', label: 'Internacionales' },
+  { id: 'foda', label: 'FODA' },
+  { id: 'plan', label: 'Plan de acción' },
+  { id: 'recomendaciones', label: 'Recomendaciones' },
+  { id: 'fuentes', label: 'Fuentes' },
+  { id: 'notas', label: 'Notas metodológicas' },
+];
+
+const grupoLabels: Record<string, string> = {
+  integral: 'Competencia integral',
+  automatizacion: 'Especialistas en automatización',
+  datos: 'Crecimiento y datos',
+  tech: 'Desarrollo tecnológico con agentes/SEO para IA',
+};
+
+const grupoColors: Record<string, string> = {
+  integral: 'var(--brand-500)',
+  automatizacion: 'var(--color-neutral-200)',
+  datos: 'var(--color-success-500)',
+  tech: 'var(--brand-800)',
+};
+---
+
+<Base title={title} description={description} noindex>
+
+  <!-- ════════════════ STICKY NAV ════════════════ -->
+  <nav class="report-nav" aria-label="Navegación del informe">
+    <div class="report-nav__inner">
+      {sections.map(s => (
+        <a href={`#${s.id}`} class="report-nav__link" data-nav-link={s.id}>{s.label}</a>
+      ))}
+    </div>
+  </nav>
+
+  <div class="report">
+
+    <!-- ════════════════ HEADER ════════════════ -->
+    <header class="report__header">
+      <div class="container">
+        <Eyebrow variant="primary">Informe interno v1.0</Eyebrow>
+        <SectionHeading size="xl" as="h1">
+          Benchmark competitivo Interforma — Chile 2026
+        </SectionHeading>
+        <p class="report__meta">
+          Versión 1.0 — 12 de noviembre de 2026
+        </p>
+        <div class="report__disclaimer">
+          <svg class="report__icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 3.5a.75.75 0 01.75.75v4a.75.75 0 01-1.5 0v-4A.75.75 0 0110 5.5zm0 8a.75.75 0 110-1.5.75.75 0 010 1.5z" fill="currentColor"/></svg>
+          <p>
+            <strong>Estado:</strong> análisis exploratorio de información pública. Esto no constituye una auditoría financiera, SEO cuantitativa ni técnica interna. La información proviene de una transferencia desde ChatGPT y ha sido revisada con juicio editorial.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <!-- ════════════════ 1. RESUMEN EJECUTIVO ════════════════ -->
+    <section id="resumen" class="report__section" data-animate>
+      <div class="container">
+        <Eyebrow variant="primary">01</Eyebrow>
+        <SectionHeading size="lg" id="resumen-heading">Resumen ejecutivo</SectionHeading>
+
+        <div class="summary-card">
+          <h3 class="summary-card__title">Hallazgo principal</h3>
+          <p>
+            Interforma tiene una oferta transversal (estrategia, procesos, tecnología, automatización, IA) que otros proveedores chilenos también ofrecen. La oportunidad no está en listar más tecnologías, sino en demostrar cómo transforma procesos completos con resultados medibles.
+          </p>
+        </div>
+
+        <div class="summary-card summary-card--accent">
+          <h3 class="summary-card__title">Posicionamiento recomendado</h3>
+          <p class="summary-card__quote">
+            &laquo;Conectamos procesos, personas y tecnología para que su empresa funcione mejor.&raquo;
+          </p>
+        </div>
+
+        <h3 class="report__h3">Tres prioridades inmediatas</h3>
+        <ol class="priority-list">
+          <li>
+            <span class="priority-list__number">1</span>
+            <span>Casos de éxito con métricas antes/después</span>
+          </li>
+          <li>
+            <span class="priority-list__number">2</span>
+            <span>Páginas comerciales por industria</span>
+          </li>
+          <li>
+            <span class="priority-list__number">3</span>
+            <span>Oferta clara de piloto para automatización e IA</span>
+          </li>
+        </ol>
+
+        <h3 class="report__h3">Lo que Interforma ya publica</h3>
+        <ul class="check-list">
+          <li>Cinco capacidades declaradas</li>
+          <li>Método de seis etapas</li>
+          <li>Seis casos de éxito</li>
+          <li>Especialización en salud, logística y servicios profesionales</li>
+          <li>Piloto de agentes IA de 30 días</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ════════════════ 2. ALCANCE Y METODOLOGÍA ════════════════ -->
+    <section id="alcance" class="report__section report__section--alt" data-animate>
+      <div class="container">
+        <Eyebrow variant="muted">02</Eyebrow>
+        <SectionHeading size="lg" id="alcance-heading">Alcance y metodología</SectionHeading>
+
+        <div class="method-grid">
+          <div class="method-card">
+            <h3 class="method-card__title">Universo</h3>
+            <p class="method-card__value">13 empresas chilenas + 3 referencias internacionales</p>
+          </div>
+          <div class="method-card">
+            <h3 class="method-card__title">Dimensiones</h3>
+            <p>Posicionamiento, servicios, tecnología declarada, CRM/automatización/IA, SEO/contenido visible, casos comerciales, precios publicados.</p>
+          </div>
+          <div class="method-card">
+            <h3 class="method-card__title">Exclusiones</h3>
+            <p>No se midieron: tráfico, posiciones orgánicas, tasa de conversión, inversión publicitaria, rentabilidad ni calidad de implementación.</p>
+          </div>
+          <div class="method-card">
+            <h3 class="method-card__title">Tipos de evidencia</h3>
+            <ul class="evidence-list">
+              <li><span class="evidence-tag evidence-tag--a">A</span> Oferta declarada en sitio</li>
+              <li><span class="evidence-tag evidence-tag--b">B</span> Caso publicado por el proveedor</li>
+              <li><span class="evidence-tag evidence-tag--c">C</span> Interpretación estratégica</li>
+              <li><span class="evidence-tag evidence-tag--d">D</span> Dato no disponible</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="report__disclaimer">
+          <svg class="report__icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 3.5a.75.75 0 01.75.75v4a.75.75 0 01-1.5 0v-4A.75.75 0 0110 5.5zm0 8a.75.75 0 110-1.5.75.75 0 010 1.5z" fill="currentColor"/></svg>
+          <p>
+            <strong>Advertencia editorial:</strong> no publique el índice exploratorio como &laquo;mejores agencias en Chile&raquo;. Es un ejercicio de documentación pública, no un ranking de calidad.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════ 3. COMPETIDORES CHILENOS ════════════════ -->
+    <section id="competidores" class="report__section" data-animate>
+      <div class="container">
+        <Eyebrow variant="primary">03</Eyebrow>
+        <SectionHeading size="lg" id="competidores-heading">Competidores chilenos</SectionHeading>
+
+        <div class="filter-bar" id="competitor-filters">
+          <button class="filter-btn filter-btn--active" data-filter="all">Todos</button>
+          {Object.entries(grupoLabels).map(([key, label]) => (
+            <button class="filter-btn" data-filter={key}>{label}</button>
+          ))}
+        </div>
+
+        <div class="table-wrap">
+          <table class="data-table" id="competitors-table">
+            <thead>
+              <tr>
+                <th data-sort="empresa">Empresa</th>
+                <th data-sort="especializacion">Especialización</th>
+                <th data-sort="lectura">Lectura estratégica</th>
+                <th>Grupo</th>
+              </tr>
+            </thead>
+            <tbody>
+              {competitors.map(c => (
+                <tr data-grupo={c.grupo}>
+                  <td>
+                    <a href={c.url} target="_blank" rel="noopener noreferrer" class="ext-link">
+                      {c.empresa}
+                      <svg class="ext-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3.5 1.5h7v7M10 2L2 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </a>
+                  </td>
+                  <td>{c.especializacion}</td>
+                  <td>{c.lectura}</td>
+                  <td>
+                    <span class="grupo-badge" style={`--badge-color: ${grupoColors[c.grupo]}`}>
+                      {grupoLabels[c.grupo]}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════ 4. MATRIZ DE DOCUMENTACIÓN ════════════════ -->
+    <section id="matriz" class="report__section report__section--alt" data-animate>
+      <div class="container">
+        <Eyebrow variant="muted">04</Eyebrow>
+        <SectionHeading size="lg" id="matriz-heading">Matriz de documentación pública</SectionHeading>
+
+        <div class="report__disclaimer report__disclaimer--strong">
+          <svg class="report__icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M8.485 3.495c.673-1.167 2.357-1.167 3.03 0l5.942 10.29c.674 1.167-.168 2.625-1.515 2.625H4.058c-1.347 0-2.189-1.458-1.515-2.626l5.942-10.29zM10 7.5v3M10 13h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div>
+            <p><strong>Esto es un índice exploratorio de documentación pública, NO un ranking de calidad.</strong></p>
+            <p>Ponderación: posicionamiento y método 20 %; marketing y web 20 %; CRM, automatización e IA 20 %; casos y evidencia 25 %; transparencia comercial 15 %.</p>
+            <p>Escala: 0 = sin evidencia encontrada; 1 = evidencia parcial; 2 = evidencia explícita y detallada. Un &laquo;0&raquo; no significa que la empresa carezca de esa capacidad.</p>
+          </div>
+        </div>
+
+        <!-- Bar chart -->
+        <div class="chart" role="img" aria-label="Gráfico de barras del índice de documentación pública">
+          {matrix.map(m => {
+            const isInterforma = m.empresa === 'Interforma';
+            return (
+              <div class:list={['chart__row', { 'chart__row--highlight': isInterforma }]}>
+                <span class="chart__label">{m.empresa}</span>
+                <div class="chart__bar-wrap">
+                  <div class="chart__bar" style={`--bar-width: ${m.indice}%`}>
+                    <span class="chart__value">{m.indice}</span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <!-- Detail table -->
+        <div class="table-wrap">
+          <table class="data-table data-table--compact" id="matrix-table">
+            <thead>
+              <tr>
+                <th data-sort="empresa">Empresa</th>
+                <th data-sort="posic" class="num-col">Posic.</th>
+                <th data-sort="web" class="num-col">Web/Mkt</th>
+                <th data-sort="crm" class="num-col">CRM/IA</th>
+                <th data-sort="casos" class="num-col">Casos</th>
+                <th data-sort="comercial" class="num-col">Comercial</th>
+                <th data-sort="indice" class="num-col">Índice /100</th>
+              </tr>
+            </thead>
+            <tbody>
+              {matrix.map(m => {
+                const isInterforma = m.empresa === 'Interforma';
+                return (
+                  <tr class:list={[{ 'row--highlight': isInterforma }]}>
+                    <td>{m.empresa}</td>
+                    <td class="num-col"><span class={`score score--${m.posic}`}>{m.posic}</span></td>
+                    <td class="num-col"><span class={`score score--${m.web}`}>{m.web}</span></td>
+                    <td class="num-col"><span class={`score score--${m.crm}`}>{m.crm}</span></td>
+                    <td class="num-col"><span class={`score score--${m.casos}`}>{m.casos}</span></td>
+                    <td class="num-col"><span class={`score score--${m.comercial}`}>{m.comercial}</span></td>
+                    <td class="num-col mono-num"><strong>{m.indice}</strong></td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════ 5. PRECIOS ════════════════ -->
+    <section id="precios" class="report__section" data-animate>
+      <div class="container">
+        <Eyebrow variant="primary">05</Eyebrow>
+        <SectionHeading size="lg" id="precios-heading">Precios publicados</SectionHeading>
+
+        <div class="report__disclaimer">
+          <svg class="report__icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 3.5a.75.75 0 01.75.75v4a.75.75 0 01-1.5 0v-4A.75.75 0 0110 5.5zm0 8a.75.75 0 110-1.5.75.75 0 010 1.5z" fill="currentColor"/></svg>
+          <p>
+            Nunca promedie estos valores. Corresponden a conceptos, monedas e IVA distintos. Todos están <strong>pendientes de verificación</strong> a la fecha de este informe.
+          </p>
+        </div>
+
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Empresa</th>
+                <th>Precio observado</th>
+                <th>Notas</th>
+              </tr>
+            </thead>
+            <tbody>
+              {prices.map(p => (
+                <tr>
+                  <td><strong>{p.empresa}</strong></td>
+                  <td class="mono-num">{p.precio}</td>
+                  <td>{p.notas}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════ 6. SEO Y VISIBILIDAD ════════════════ -->
+    <section id="seo" class="report__section report__section--alt" data-animate>
+      <div class="container">
+        <Eyebrow variant="muted">06</Eyebrow>
+        <SectionHeading size="lg" id="seo-heading">SEO, contenido y visibilidad IA</SectionHeading>
+
+        <p class="report__body">
+          Comparación cualitativa de servicios anunciados. No se dispone de datos validados de tráfico, cuota de búsqueda, autoridad, conversiones, inversión ni posiciones de palabras clave.
+        </p>
+
+        <h3 class="report__h3">Ideas de landing pages</h3>
+        <p class="report__body report__body--small">
+          No implementar sin revisar la arquitectura actual del sitio.
+        </p>
+        <ul class="landing-list">
+          <li><code>/automatizacion-procesos-empresas-chile/</code></li>
+          <li><code>/agentes-ia-whatsapp-empresas/</code></li>
+          <li><code>/implementacion-crm-chile/</code></li>
+          <li><code>/automatizacion-logistica-comercio-exterior/</code></li>
+          <li><code>/transformacion-digital-empresas-medianas/</code></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ════════════════ 7. REFERENCIAS INTERNACIONALES ════════════════ -->
+    <section id="internacionales" class="report__section" data-animate>
+      <div class="container">
+        <Eyebrow variant="primary">07</Eyebrow>
+        <SectionHeading size="lg" id="internacionales-heading">Referencias internacionales</SectionHeading>
+
+        <div class="intl-grid">
+          {intl.map(r => (
+            <div class="intl-card">
+              <h3 class="intl-card__title">
+                <a href={r.url} target="_blank" rel="noopener noreferrer" class="ext-link">
+                  {r.empresa}
+                  <svg class="ext-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3.5 1.5h7v7M10 2L2 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              </h3>
+              <p>{r.aprender}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════ 8. FODA ════════════════ -->
+    <section id="foda" class="report__section report__section--alt" data-animate>
+      <div class="container">
+        <Eyebrow variant="muted">08</Eyebrow>
+        <SectionHeading size="lg" id="foda-heading">Análisis FODA</SectionHeading>
+
+        <div class="swot-grid">
+          <div class="swot-card swot-card--strength">
+            <h3 class="swot-card__title">
+              <svg class="swot-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2l2.09 6.26H18l-4.77 3.47 1.83 5.63L10 13.89l-5.06 3.47 1.83-5.63L2 8.26h5.91L10 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+              Fortalezas
+            </h3>
+            <ul>
+              <li>Método visible de seis etapas</li>
+              <li>Propuesta integral (estrategia + procesos + tecnología)</li>
+              <li>Casos publicados por industria</li>
+              <li>Agentes IA con humano en control</li>
+              <li>Tecnología integradora, no atada a un solo proveedor</li>
+            </ul>
+          </div>
+
+          <div class="swot-card swot-card--weakness">
+            <h3 class="swot-card__title">
+              <svg class="swot-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 7l6 6M13 7l-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              Debilidades observadas de comunicación
+            </h3>
+            <ul>
+              <li>Evidencia de resultados poco normalizada</li>
+              <li>Precios y alcances orientativos no siempre visibles</li>
+              <li>Amplitud del catálogo puede dificultar la decisión del cliente</li>
+            </ul>
+          </div>
+
+          <div class="swot-card swot-card--opportunity">
+            <h3 class="swot-card__title">
+              <svg class="swot-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v16M2 10h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              Oportunidades
+            </h3>
+            <ul>
+              <li>Soluciones verticales por industria</li>
+              <li>Revenue Operations (RevOps)</li>
+              <li>Soporte recurrente y mantenimiento</li>
+              <li>Agentes IA gobernados</li>
+              <li>Formación y adopción</li>
+              <li>Visibilidad SEO especializada</li>
+            </ul>
+          </div>
+
+          <div class="swot-card swot-card--threat">
+            <h3 class="swot-card__title">
+              <svg class="swot-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 6v4M10 14h.01M3.34 17h13.32c1.1 0 1.78-1.19 1.22-2.14L11.22 3.28c-.56-.96-1.88-.96-2.44 0L2.12 14.86c-.56.95.12 2.14 1.22 2.14z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Amenazas
+            </h3>
+            <ul>
+              <li>Commoditización de webs y bots</li>
+              <li>Propuestas de entrada muy baratas</li>
+              <li>Competidores con casos o tarifas más visibles</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════ 9. PLAN DE ACCIÓN ════════════════ -->
+    <section id="plan" class="report__section" data-animate>
+      <div class="container">
+        <Eyebrow variant="primary">09</Eyebrow>
+        <SectionHeading size="lg" id="plan-heading">Plan de acción</SectionHeading>
+
+        <div class="filter-bar" id="action-filters">
+          <span class="filter-bar__label">Horizonte:</span>
+          <button class="filter-btn filter-btn--active" data-action-filter="all">Todos</button>
+          <button class="filter-btn" data-action-filter="inmediato">Inmediato (0–30 d)</button>
+          <button class="filter-btn" data-action-filter="corto">Corto plazo (30–90 d)</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="data-table" id="actions-table">
+            <thead>
+              <tr>
+                <th class="num-col">#</th>
+                <th>Iniciativa</th>
+                <th>Impacto</th>
+                <th>Esfuerzo</th>
+                <th>Horizonte</th>
+              </tr>
+            </thead>
+            <tbody>
+              {actions.map(a => {
+                const isInmediato = a.horizonte.startsWith('0–');
+                return (
+                  <tr data-horizon={isInmediato ? 'inmediato' : 'corto'}>
+                    <td class="num-col mono-num">{a.n}</td>
+                    <td>{a.iniciativa}</td>
+                    <td>
+                      <span class:list={['impact-badge', { 'impact-badge--high': a.impacto === 'Muy alto', 'impact-badge--med': a.impacto === 'Alto', 'impact-badge--low': a.impacto === 'Medio' }]}>
+                        {a.impacto}
+                      </span>
+                    </td>
+                    <td>{a.esfuerzo}</td>
+                    <td class="mono-num">{a.horizonte}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════ 10. RECOMENDACIONES ════════════════ -->
+    <section id="recomendaciones" class="report__section report__section--alt" data-animate>
+      <div class="container">
+        <Eyebrow variant="muted">10</Eyebrow>
+        <SectionHeading size="lg" id="recomendaciones-heading">Recomendaciones de producto y comunicación</SectionHeading>
+
+        <ol class="reco-list">
+          <li>
+            <h3 class="reco-list__title">Normalizar casos de éxito</h3>
+            <p>Utilice una estructura repetible: contexto, desafío, solución, métricas antes/después, testimonio. Publique al menos uno por industria prioritaria.</p>
+          </li>
+          <li>
+            <h3 class="reco-list__title">Crear páginas de aterrizaje por industria</h3>
+            <p>Cada página debe hablar el idioma del sector (salud, logística, servicios profesionales), con caso propio y llamada a la acción diferenciada.</p>
+          </li>
+          <li>
+            <h3 class="reco-list__title">Publicar precios orientativos o rangos de inversión</h3>
+            <p>No se trata de fijar tarifas, sino de reducir la fricción comercial. Un rango visible genera confianza y filtra prospectos.</p>
+          </li>
+          <li>
+            <h3 class="reco-list__title">Simplificar la oferta visible</h3>
+            <p>Agrupe servicios en paquetes claros (diagnóstico, implementación, mantenimiento) para que el visitante entienda qué puede contratar sin navegar todo el sitio.</p>
+          </li>
+          <li>
+            <h3 class="reco-list__title">Invertir en contenido SEO especializado</h3>
+            <p>Publique artículos y guías que respondan búsquedas reales de empresas medianas chilenas: automatización, CRM, agentes IA, RevOps.</p>
+          </li>
+          <li>
+            <h3 class="reco-list__title">Documentar gobernanza y seguridad</h3>
+            <p>En un mercado donde la IA genera dudas, publicar cómo se gobierna el dato, quién supervisa al agente y cómo se garantiza la continuidad operacional es un diferenciador real.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ════════════════ 11. FUENTES ════════════════ -->
+    <section id="fuentes" class="report__section" data-animate>
+      <div class="container">
+        <Eyebrow variant="primary">11</Eyebrow>
+        <SectionHeading size="lg" id="fuentes-heading">Fuentes para verificación</SectionHeading>
+
+        <div class="sources-grid">
+          <div class="sources-group">
+            <h3 class="sources-group__title">Competidores chilenos</h3>
+            <ul class="sources-list">
+              {competitors.map(c => (
+                <li>
+                  <a href={c.url} target="_blank" rel="noopener noreferrer" class="ext-link">
+                    {c.empresa}
+                    <svg class="ext-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3.5 1.5h7v7M10 2L2 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div class="sources-group">
+            <h3 class="sources-group__title">Referencias internacionales</h3>
+            <ul class="sources-list">
+              {intl.map(r => (
+                <li>
+                  <a href={r.url} target="_blank" rel="noopener noreferrer" class="ext-link">
+                    {r.empresa}
+                    <svg class="ext-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3.5 1.5h7v7M10 2L2 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════ 12. NOTAS METODOLÓGICAS ════════════════ -->
+    <section id="notas" class="report__section report__section--alt" data-animate>
+      <div class="container">
+        <Eyebrow variant="muted">12</Eyebrow>
+        <SectionHeading size="lg" id="notas-heading">Notas metodológicas</SectionHeading>
+
+        <div class="notes-content">
+          <h3 class="report__h3">Limitaciones del análisis</h3>
+          <ul class="check-list check-list--muted">
+            <li>Este informe se basa exclusivamente en información pública disponible en los sitios web de las empresas analizadas.</li>
+            <li>No se realizaron entrevistas, solicitudes de cotización ni pruebas de producto.</li>
+            <li>El índice de documentación mide visibilidad pública, no calidad de servicio ni capacidad técnica real.</li>
+            <li>Los precios publicados pueden haber cambiado desde la fecha de captura y corresponden a conceptos no comparables entre sí.</li>
+            <li>La información fue recopilada inicialmente mediante ChatGPT y revisada con juicio editorial. Puede contener imprecisiones derivadas de la fuente primaria.</li>
+          </ul>
+
+          <h3 class="report__h3">Instrucciones de publicación</h3>
+          <ul class="check-list check-list--muted">
+            <li>Este documento es de uso interno exclusivamente.</li>
+            <li>No publicar como ranking ni como evaluación comparativa de calidad.</li>
+            <li>Si se comparte extracto alguno, incluir siempre la advertencia metodológica completa.</li>
+            <li>Actualizar trimestralmente para mantener relevancia.</li>
+          </ul>
+
+          <h3 class="report__h3">Próxima iteración</h3>
+          <p class="report__body">
+            La versión 2.0 debería incorporar: datos de tráfico (SimilarWeb o SEMrush), análisis de backlinks, entrevistas con clientes reales y seguimiento de cambios en los sitios competidores.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- .report -->
+
+</Base>
+
+<style>
+  /* ────────────────────────────────────────────
+     REPORT LAYOUT
+     ──────────────────────────────────────────── */
+  .report {
+    --report-container: 1280px;
+    --report-gutter: 20px;
+  }
+  @media (min-width: 768px) { .report { --report-gutter: 32px; } }
+  @media (min-width: 1024px) { .report { --report-gutter: 48px; } }
+
+  .container {
+    max-width: var(--report-container);
+    margin-inline: auto;
+    padding-inline: var(--report-gutter);
+  }
+
+  /* ── Sticky nav ── */
+  .report-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--cj-white, #F2F1EE);
+    border-bottom: 1px solid var(--color-border-subtle, #DCD9D3);
+    overflow: hidden;
+  }
+  .report-nav__inner {
+    max-width: var(--report-container);
+    margin-inline: auto;
+    padding-inline: var(--report-gutter);
+    display: flex;
+    gap: var(--spacing-1, 4px);
+    overflow-x: auto;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+  }
+  .report-nav__link {
+    flex-shrink: 0;
+    padding: var(--spacing-3, 12px) var(--spacing-3, 12px);
+    font-family: var(--font-family-ui, 'Manrope Variable', sans-serif);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--cj-gray-500, #5C564E);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: color var(--duration-normal, 200ms) var(--ease-default, cubic-bezier(0.16, 1, 0.3, 1)),
+                border-color var(--duration-normal, 200ms) var(--ease-default, cubic-bezier(0.16, 1, 0.3, 1));
+    white-space: nowrap;
+  }
+  .report-nav__link:hover {
+    color: var(--cj-ink, #281F18);
+  }
+  .report-nav__link.is-active {
+    color: var(--cj-ink, #281F18);
+    border-bottom-color: var(--brand-500, #EE6E43);
+  }
+
+  /* ── Sections ── */
+  .report__header {
+    padding: var(--spacing-16, 64px) 0 var(--spacing-12, 48px);
+    background: var(--cj-white, #F2F1EE);
+  }
+  .report__section {
+    padding: var(--spacing-16, 64px) 0;
+  }
+  .report__section--alt {
+    background: var(--cj-gray-50, #E4E3DF);
+  }
+  .report__meta {
+    margin-top: var(--spacing-3, 12px);
+    font-family: var(--font-family-mono, 'JetBrains Mono', monospace);
+    font-size: 0.875rem;
+    color: var(--cj-gray-500, #5C564E);
+  }
+
+  /* ── Headings ── */
+  .report__h3 {
+    margin: var(--spacing-8, 32px) 0 var(--spacing-4, 16px);
+    font-family: var(--font-family-heading, 'Outfit Variable', sans-serif);
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--cj-ink, #281F18);
+  }
+  .report__body {
+    font-family: var(--font-family-base, 'Manrope Variable', sans-serif);
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--cj-gray-500, #5C564E);
+    max-width: 72ch;
+  }
+  .report__body--small {
+    font-size: 0.875rem;
+    color: var(--cj-gray-400, #8F887E);
+  }
+
+  /* ── Disclaimer ── */
+  .report__disclaimer {
+    display: flex;
+    gap: var(--spacing-3, 12px);
+    margin-top: var(--spacing-6, 24px);
+    padding: var(--spacing-4, 16px) var(--spacing-5, 20px);
+    background: var(--brand-50, #FBE6DC);
+    border-left: 3px solid var(--brand-500, #EE6E43);
+    border-radius: var(--radius-md, 8px);
+  }
+  .report__disclaimer p {
+    font-family: var(--font-family-base, 'Manrope Variable', sans-serif);
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--cj-ink, #281F18);
+    margin: 0;
+  }
+  .report__disclaimer p + p {
+    margin-top: var(--spacing-2, 8px);
+  }
+  .report__disclaimer--strong {
+    background: var(--brand-50, #FBE6DC);
+    border-left-width: 4px;
+  }
+  .report__icon {
+    flex-shrink: 0;
+    color: var(--brand-800, #9A3D1A);
+    margin-top: 1px;
+  }
+
+  /* ── Summary cards ── */
+  .summary-card {
+    margin-top: var(--spacing-6, 24px);
+    padding: var(--spacing-6, 24px);
+    background: var(--cj-gray-50, #E4E3DF);
+    border-radius: var(--radius-card, 16px);
+  }
+  .summary-card--accent {
+    background: var(--cj-ink, #281F18);
+  }
+  .summary-card--accent .summary-card__title {
+    color: var(--brand-500, #EE6E43);
+  }
+  .summary-card--accent p {
+    color: var(--cj-white, #F2F1EE);
+  }
+  .summary-card__title {
+    margin: 0 0 var(--spacing-3, 12px);
+    font-family: var(--font-family-heading, 'Outfit Variable', sans-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--cj-gray-400, #8F887E);
+  }
+  .summary-card p {
+    margin: 0;
+    font-family: var(--font-family-base, 'Manrope Variable', sans-serif);
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--cj-gray-500, #5C564E);
+  }
+  .summary-card__quote {
+    font-family: var(--font-family-heading, 'Outfit Variable', sans-serif);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.35;
+    font-style: italic;
+  }
+
+  /* ── Priority list ── */
+  .priority-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--spacing-4, 16px) 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3, 12px);
+  }
+  .priority-list li {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3, 12px);
+    font-family: var(--font-family-base, 'Manrope Variable', sans-serif);
+    font-size: 1rem;
+    color: var(--cj-ink, #281F18);
+  }
+  .priority-list__number {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    background: var(--brand-500, #EE6E43);
+    color: var(--cj-ink, #281F18);
+    font-family: var(--font-family-mono, 'JetBrains Mono', monospace);
+    font-size: 0.875rem;
+    font-weight: 700;
+    border-radius: var(--radius-sm, 4px);
+  }
+
+  /* ── Check list ── */
+  .check-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--spacing-4, 16px) 0 0;
+  }
+  .check-list li {
+    position: relative;
+    padding-left: var(--spacing-6, 24px);
+    margin-bottom: var(--spacing-2, 8px);
+    font-family: var(--font-family-base, 'Manrope Variable', sans-serif);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--cj-ink, #281F18);
+  }
+  .check-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--brand-500, #EE6E43);
+  }
+  .check-list--muted li {
+    color: var(--cj-gray-500, #5C564E);
+  }
+  .check-list--muted li::before {
+    background: var(--cj-stone, #BEB8AE);
+  }
+
+  /* ── Method grid ── */
+  .method-grid {
+    display: grid;
+    gap: var(--spacing-4, 16px);
+    margin-top: var(--spacing-6, 24px);
+  }
+  @media (min-width: 768px) {
+    .method-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .method-card {
+    padding: var(--spacing-5, 20px);
+    background: var(--cj-white, #F2F1EE);
+    border: 1px solid var(--color-border-subtle, #DCD9D3);
+    border-radius: var(--radius-card, 16px);
+  }
+  .report__section--alt .method-card {
+    background: var(--cj-white, #F2F1EE);
+  }
+  .method-card__title {
+    margin: 0 0 var(--spacing-2, 8px);
+    font-family: var(--font-family-heading, 'Outfit Variable', sans-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--brand-800, #9A3D1A);
+    letter-spacing: -0.02em;
+  }
+  .method-card__value {
+    font-family: var(--font-family-mono, 'JetBrains Mono', monospace);
+    font-size: 0.9375rem;
+    color: var(--cj-ink, #281F18);
+  }
+  .method-card p {
+    margin: 0;
+    font-family: var(--font-family-base, 'Manrope Variable', sans-serif);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--cj-gray-500, #5C564E);
+  }
+
+  /* ── Evidence tags ── */
+  .evidence-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--spacing-2, 8px) 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2, 8px);
+  }
+  .evidence-list li {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2, 8px);
+    font-family: var(--font-family-base, 'Manrope Variable', sans-serif);
+    font-size: 0.875rem;
+    color: var(--cj-gray-500, #5C564E);
+  }
+  .evidence-tag {
+    display: inline-grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    font-family: var(--font-family-mono, 'JetBrains Mono', monospace);
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: var(--radius-sm, 4px);
+  }
+  .evidence-tag--a { background: var(--color-success-500, #18794E); color: #fff; }
+  .evidence-tag--b { background: var(--color-neutral-200, #CCE2ED); color: var(--cj-ink, #281F18); }
+  .evidence-tag--c { background: var(--color-warning-500, #A35200); color: #fff; }
+  .evidence-tag--d { background: var(--cj-stone, #BEB8AE); color: var(--cj-ink, #281F18); }
+
+  /* ── Filter bar ── */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2, 8px);
+    align-items: center;
+    margin: var(--spacing-6, 24px) 0 var(--spacing-4, 16px);
+  }
+  .filter-bar__label {
+    font-family: var(--font-family-ui, 'Manrope Variable', sans-serif);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--cj-gray-400, #8F887E);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .filter-btn {
+    padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
+    font-family: var(--font-family-ui, 'Manrope Variable', sans-serif);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--cj-gray-500, #5C564E);
+    background: transparent;
+    border: 1px solid var(--color-border-default, #D0CCC4);
+    border-radius: var(--radius-btn, 11px);
+    cursor: pointer;
+    transition: all var(--duration-normal, 200ms) var(--ease-default, cubic-bezier(0.16, 1, 0.3, 1));
+  }
+  .filter-btn:hover {
+    color: var(--cj-ink, #281F18);
+    border-color: var(--cj-ink, #281F18);
+  }
+  .filter-btn--active {
+    background: var(--cj-ink, #281F18);
+    color: var(--cj-white, #F2F1EE);
+    border-color: var(--cj-ink, #281F18);
+  }
+
+  /* ── Tables ── */
+  .table-wrap {
+    margin-top: var(--spacing-4, 16px);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--color-border-subtle, #DCD9D3);
+    border-radius: var(--radius-lg, 12px);
+    background: var(--cj-white, #F2F1EE);
+  }
+  .table-wrap::after {
+    content: 'Desplazar horizontalmente';
+    display: block;
+    padding: var(--spacing-2, 8px);
+    text-align: center;
+    font-family: var(--font-family-ui, 'Manrope Variable', sans-serif);
+    font-size: 0.75rem;
+    color: var(--cj-gray-400, #8F887E);
+  }
+  @media (min-width: 1024px) {
+    .table-wrap::after { display: none; }
+  }
+  .data-table {
+    width: 100%;
+    min-width: 640px;
+    border-collapse: collapse;
+    font-family: var(--font-family-base, 'Manrope Variable', sans-serif);
+    font-size: 0.875rem;
+  }
+  .data-table th {
+    position: sticky;
+    top: 0;
+    background: var(--cj-gray-50, #E4E3DF);
+    padding: var(--spacing-3, 12px) var(--spacing-4, 16px);
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--cj-gray-500, #5C564E);
+    border-bottom: 2px solid var(--color-border-default, #D0CCC4);
+    white-space: nowrap;
+    cursor: default;
+  }
+  .data-table th[data-sort] {
+    cursor: pointer;
+    user-select: none;
+  }
+  .data-table th[data-sort]:hover {
+    color: var(--cj-ink, #281F18);
+  }
+  .data-table th[data-sort]::after {
+    content: ' \2195';
+    font-size: 0.625rem;
+    opacity: 0.5;
+  }
+  .data-table td {
+    padding: var(--spacing-3, 12px) var(--spacing-4, 16px);
+    border-bottom: 1px solid var(--color-border-subtle, #DCD9D3);
+    color: var(--cj-ink, #281F18);
+    vertical-align: top;
+  }
+  .data-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+  .data-table--compact td,
+  .data-table--compact th {
+    padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
+  }
+  .num-col { text-align: center; }
+  .mono-num {
+    font-family: var(--font-family-mono, 'JetBrains Mono', monospace);
+    font-variant-numeric: tabular-nums;
+  }
+  .row--highlight td {
+    background: var(--brand-50, #FBE6DC);
+  }
+
+  /* ── Score badges ── */
+  .score {
+    display: inline-grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    font-family: var(--font-family-mono, 'JetBrains Mono', monospace);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    border-radius: var(--radius-sm, 4px);
+  }
+  .score--0 { background: var(--cj-stone, #BEB8AE); color: var(--cj-ink, #281F18); }
+  .score--1 { background: var(--color-neutral-200, #CCE2ED); color: var(--cj-ink, #281F18); }
+  .score--2 { background: var(--color-success-500, #18794E); color: #fff; }
+
+  /* ── Grupo badge ── */
+  .grupo-badge {
+    display: inline-block;
+    padding: 2px var(--spacing-2, 8px);
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm, 4px);
+    background: color-mix(in srgb, var(--badge-color) 15%, transparent);
+    color: var(--cj-ink, #281F18);
+    white-space: nowrap;
+  }
+
+  /* ── External links ── */
+  .ext-link {
+    color: var(--brand-800, #9A3D1A);
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: color var(--duration-normal, 200ms) var(--ease-default);
+  }
+  .ext-link:hover { color: var(--brand-500, #EE6E43); }
+  .ext-icon { flex-shrink: 0; }
+
+  /* ── Bar chart ── */
+  .chart {
+    margin: var(--spacing-6, 24px) 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2, 8px);
+  }
+  .chart__row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3, 12px);
+  }
+  .chart__row--highlight .chart__label {
+    font-weight: 700;
+    color: var(--brand-800, #9A3D1A);
+  }
+  .chart__row--highlight .chart__bar {
+    background: var(--brand-500, #EE6E43);
+  }
+  .chart__label {
+    flex-shrink: 0;
+    width: 140px;
+    text-align: right;
+    font-family: var(--font-family-ui, 'Manrope Variable', sans-serif);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--cj-ink, #281F18);
+  }
+  @media (max-width: 639px) {
+    .chart__label { width: 100px; font-size: 0.75rem; }
+  }
+  .chart__bar-wrap {
+    flex: 1;
+    min-width: 0;
+    background: var(--color-border-subtle, #DCD9D3);
+    border-radius: var(--radius-sm, 4px);
+    overflow: hidden;
+  }
+  .chart__bar {
+    width: var(--bar-width);
+    padding: var(--spacing-1, 4px) var(--spacing-2, 8px);
+    background: var(--cj-ink, #281F18);
+    border-radius: var(--radius-sm, 4px);
+    transition: width 600ms var(--ease-default, cubic-bezier(0.16, 1, 0.3, 1));
+  }
+  .chart__value {
+    font-family: var(--font-family-mono, 'JetBrains Mono', monospace);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--cj-white, #F2F1EE);
+  }
+  .chart__row--highlight .chart__value {
+    color: var(--cj-ink, #281F18);
+  }
+
+  /* ── International cards ── */
+  .intl-grid {
+    display: grid;
+    gap: var(--spacing-4, 16px);
+    margin-top: var(--spacing-6, 24px);
+  }
+  @media (min-width: 768px) {
+    .intl-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .intl-card {
+    padding: var(--spacing-5, 20px);
+    background: var(--cj-gray-50, #E4E3DF);
+    border: 1px solid var(--color-border-subtle, #DCD9D3);
+    border-radius: var(--radius-card, 16px);
+  }
+  .intl-card__title {
+    margin: 0 0 var(--spacing-2, 8px);
+    font-family: var(--font-family-heading, 'Outfit Variable', sans-serif);
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .intl-card p {
+    margin: 0;
+    font-family: var(--font-family-base, 'Manrope Variable', sans-serif);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--cj-gray-500, #5C564E);
+  }
+
+  /* ── SWOT grid ── */
+  .swot-grid {
+    display: grid;
+    gap: var(--spacing-4, 16px);
+    margin-top: var(--spacing-6, 24px);
+  }
+  @media (min-width: 768px) {
+    .swot-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .swot-card {
+    padding: var(--spacing-5, 20px);
+    border-radius: var(--radius-card, 16px);
+    border: 1px solid var(--color-border-subtle, #DCD9D3);
+    background: var(--cj-white, #F2F1EE);
+  }
+  .swot-card__title {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2, 8px);
+    margin: 0 0 var(--spacing-3, 12px);
+    font-family: var(--font-family-heading, 'Outfit Variable', sans-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .swot-icon { flex-shrink: 0; }
+  .swot-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .swot-card li {
+    position: relative;
+    padding-left: var(--spacing-4, 16px);
+    margin-bottom: var(--spacing-2, 8px);
+    font-family: var(--font-family-base, 'Manrope Variable', sans-serif);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--cj-gray-500, #5C564E);
+  }
+  .swot-card li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+  .swot-card--strength { border-top: 3px solid var(--color-success-500, #18794E); }
+  .swot-card--strength .swot-card__title { color: var(--color-success-500, #18794E); }
+  .swot-card--strength li::before { background: var(--color-success-500, #18794E); }
+
+  .swot-card--weakness { border-top: 3px solid var(--color-error-500, #C53030); }
+  .swot-card--weakness .swot-card__title { color: var(--color-error-500, #C53030); }
+  .swot-card--weakness li::before { background: var(--color-error-500, #C53030); }
+
+  .swot-card--opportunity { border-top: 3px solid var(--color-neutral-200, #CCE2ED); }
+  .swot-card--opportunity .swot-card__title { color: var(--cj-ink, #281F18); }
+  .swot-card--opportunity li::before { background: var(--color-neutral-200, #CCE2ED); }
+
+  .swot-card--threat { border-top: 3px solid var(--color-warning-500, #A35200); }
+  .swot-card--threat .swot-card__title { color: var(--color-warning-500, #A35200); }
+  .swot-card--threat li::before { background: var(--color-warning-500, #A35200); }
+
+  /* ── Impact badges ── */
+  .impact-badge {
+    display: inline-block;
+    padding: 2px var(--spacing-2, 8px);
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm, 4px);
+    white-space: nowrap;
+  }
+  .impact-badge--high { background: color-mix(in srgb, var(--color-success-500, #18794E) 15%, transparent); color: var(--color-success-500, #18794E); }
+  .impact-badge--med { background: color-mix(in srgb, var(--color-neutral-200, #CCE2ED) 40%, transparent); color: var(--cj-ink, #281F18); }
+  .impact-badge--low { background: var(--color-border-subtle, #DCD9D3); color: var(--cj-gray-500, #5C564E); }
+
+  /* ── Landing page list ── */
+  .landing-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--spacing-3, 12px) 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2, 8px);
+  }
+  .landing-list li {
+    font-family: var(--font-family-base, 'Manrope Variable', sans-serif);
+    font-size: 0.9375rem;
+    color: var(--cj-gray-500, #5C564E);
+  }
+  .landing-list code {
+    font-family: var(--font-family-mono, 'JetBrains Mono', monospace);
+    font-size: 0.8125rem;
+    background: var(--cj-white, #F2F1EE);
+    padding: 2px var(--spacing-2, 8px);
+    border-radius: var(--radius-sm, 4px);
+    border: 1px solid var(--color-border-subtle, #DCD9D3);
+  }
+
+  /* ── Reco list ── */
+  .reco-list {
+    margin: var(--spacing-6, 24px) 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: reco;
+  }
+  .reco-list li {
+    counter-increment: reco;
+    position: relative;
+    padding: var(--spacing-5, 20px) var(--spacing-5, 20px) var(--spacing-5, 20px) var(--spacing-12, 48px);
+    margin-bottom: var(--spacing-4, 16px);
+    background: var(--cj-white, #F2F1EE);
+    border: 1px solid var(--color-border-subtle, #DCD9D3);
+    border-radius: var(--radius-card, 16px);
+  }
+  .reco-list li::before {
+    content: counter(reco);
+    position: absolute;
+    left: var(--spacing-4, 16px);
+    top: var(--spacing-5, 20px);
+    font-family: var(--font-family-mono, 'JetBrains Mono', monospace);
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--brand-800, #9A3D1A);
+  }
+  .reco-list__title {
+    margin: 0 0 var(--spacing-2, 8px);
+    font-family: var(--font-family-heading, 'Outfit Variable', sans-serif);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--cj-ink, #281F18);
+  }
+  .reco-list p {
+    margin: 0;
+    font-family: var(--font-family-base, 'Manrope Variable', sans-serif);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--cj-gray-500, #5C564E);
+  }
+
+  /* ── Sources ── */
+  .sources-grid {
+    display: grid;
+    gap: var(--spacing-6, 24px);
+    margin-top: var(--spacing-6, 24px);
+  }
+  @media (min-width: 768px) {
+    .sources-grid { grid-template-columns: 2fr 1fr; }
+  }
+  .sources-group__title {
+    margin: 0 0 var(--spacing-3, 12px);
+    font-family: var(--font-family-heading, 'Outfit Variable', sans-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--cj-ink, #281F18);
+  }
+  .sources-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2, 8px);
+  }
+  .sources-list li {
+    font-size: 0.875rem;
+  }
+
+  /* ── Notes ── */
+  .notes-content {
+    max-width: 72ch;
+  }
+
+  /* ── Hidden rows (filtering) ── */
+  tr.is-hidden { display: none; }
+
+  /* ── Animations ── */
+  [data-animate] {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  [data-animate].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 500ms var(--ease-default, cubic-bezier(0.16, 1, 0.3, 1)),
+                transform 500ms var(--ease-default, cubic-bezier(0.16, 1, 0.3, 1));
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-animate] {
+      opacity: 1;
+      transform: none;
+    }
+    [data-animate].is-visible {
+      transition: none;
+    }
+    .chart__bar {
+      transition: none;
+    }
+  }
+
+  /* ── Print ── */
+  @media print {
+    .report-nav { display: none; }
+    .report__section,
+    .report__section--alt {
+      break-inside: avoid;
+      background: #fff !important;
+      padding: 24pt 0;
+    }
+    .filter-bar { display: none; }
+    .table-wrap { overflow: visible; border: 1px solid #999; }
+    .table-wrap::after { display: none; }
+    .data-table { min-width: auto; font-size: 9pt; }
+    .chart__bar { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .ext-link::after {
+      content: ' (' attr(href) ')';
+      font-size: 8pt;
+      color: #666;
+    }
+    .ext-icon { display: none; }
+    a { color: inherit; }
+    .summary-card--accent { background: #333 !important; }
+  }
+</style>
+
+<script>
+  /* ═══════════════════════════════════════════
+     INTERACTIVITY — Vanilla JS
+     ═══════════════════════════════════════════ */
+
+  // ── Scroll-based section nav highlighting ──
+  const navLinks = document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]');
+  const sectionEls = document.querySelectorAll<HTMLElement>('.report__section');
+
+  function updateActiveNav() {
+    const scrollY = window.scrollY + 120;
+    let currentId = '';
+
+    sectionEls.forEach(section => {
+      if (section.offsetTop <= scrollY) {
+        currentId = section.id;
+      }
+    });
+
+    navLinks.forEach(link => {
+      link.classList.toggle('is-active', link.dataset.navLink === currentId);
+    });
+  }
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        updateActiveNav();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+  updateActiveNav();
+
+  // ── Smooth scroll for nav links ──
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.getElementById(link.dataset.navLink || '');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // ── Competitor filter ──
+  const competitorFilters = document.querySelectorAll<HTMLButtonElement>('#competitor-filters .filter-btn');
+  const competitorRows = document.querySelectorAll<HTMLTableRowElement>('#competitors-table tbody tr');
+
+  competitorFilters.forEach(btn => {
+    btn.addEventListener('click', () => {
+      competitorFilters.forEach(b => b.classList.remove('filter-btn--active'));
+      btn.classList.add('filter-btn--active');
+
+      const filter = btn.dataset.filter;
+      competitorRows.forEach(row => {
+        if (filter === 'all' || row.dataset.grupo === filter) {
+          row.classList.remove('is-hidden');
+        } else {
+          row.classList.add('is-hidden');
+        }
+      });
+    });
+  });
+
+  // ── Action plan filter ──
+  const actionFilters = document.querySelectorAll<HTMLButtonElement>('#action-filters .filter-btn');
+  const actionRows = document.querySelectorAll<HTMLTableRowElement>('#actions-table tbody tr');
+
+  actionFilters.forEach(btn => {
+    btn.addEventListener('click', () => {
+      actionFilters.forEach(b => b.classList.remove('filter-btn--active'));
+      btn.classList.add('filter-btn--active');
+
+      const filter = btn.dataset.actionFilter;
+      actionRows.forEach(row => {
+        if (filter === 'all' || row.dataset.horizon === filter) {
+          row.classList.remove('is-hidden');
+        } else {
+          row.classList.add('is-hidden');
+        }
+      });
+    });
+  });
+
+  // ── Table sorting ──
+  document.querySelectorAll<HTMLTableElement>('.data-table').forEach(table => {
+    const headers = table.querySelectorAll<HTMLTableCellElement>('th[data-sort]');
+    const tbody = table.querySelector('tbody');
+    if (!tbody) return;
+
+    headers.forEach((header, colIndex) => {
+      let ascending = true;
+
+      header.addEventListener('click', () => {
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        const key = header.dataset.sort || '';
+        const isNumeric = ['posic', 'web', 'crm', 'casos', 'comercial', 'indice'].includes(key);
+
+        // Find actual column index
+        const allHeaders = Array.from(table.querySelectorAll('th'));
+        const actualIndex = allHeaders.indexOf(header);
+
+        rows.sort((a, b) => {
+          const aText = a.cells[actualIndex]?.textContent?.trim() || '';
+          const bText = b.cells[actualIndex]?.textContent?.trim() || '';
+
+          if (isNumeric) {
+            const aNum = parseFloat(aText) || 0;
+            const bNum = parseFloat(bText) || 0;
+            return ascending ? aNum - bNum : bNum - aNum;
+          }
+          return ascending
+            ? aText.localeCompare(bText, 'es')
+            : bText.localeCompare(aText, 'es');
+        });
+
+        rows.forEach(row => tbody.appendChild(row));
+        ascending = !ascending;
+      });
+    });
+  });
+
+  // ── Intersection observer for fade-up ──
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!prefersReducedMotion) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    document.querySelectorAll('[data-animate]').forEach(el => observer.observe(el));
+  } else {
+    document.querySelectorAll('[data-animate]').forEach(el => el.classList.add('is-visible'));
+  }
+</script>

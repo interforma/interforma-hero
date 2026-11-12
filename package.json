@@ -9,6 +9,7 @@
     "preview": "astro preview",
     "check": "astro check",
     "sync": "astro sync",
+    "reel:add": "node scripts/add-reel.mjs",
     "dev:punto": "node scripts/dev-punto.mjs",
     "test:punto": "node --test tests/punto-ai.test.mjs"
   },
