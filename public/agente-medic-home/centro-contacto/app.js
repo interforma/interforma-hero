@@ -277,19 +277,17 @@
   };
 
   VIEWS.flujos = function () {
-    function flow(steps) {
-      return '<div class="flow">' + steps.map(function (s, i) {
-        return (i ? '<div class="flow__arrow">' + ARROW_R + '</div>' : '') + '<div class="box flow__step ' + s[2] + '"><span><b>' + esc(s[0]) + '</b>' + esc(s[1]) + '</span></div>';
-      }).join('') + '</div>';
-    }
-    return '<div class="intro"><span class="eyebrow eyebrow--num">06 · Flujos del proceso</span><h1>Entrante y saliente: qué cambia respecto de hoy.</h1></div>' +
-      '<section class="card"><span class="eyebrow">Entrante · 600 y WhatsApp</span>' +
-      flow([['Llega el contacto', 'Llamada al 600 o mensaje al WhatsApp oficial', 'box--light'], ['Identifica', 'Reconoce el número y abre la ficha en el CRM', 'box--light'], ['Entiende el motivo', 'Con voz natural o con el teclado, como hoy', 'box--dark'], ['Resuelve o deriva', 'Agenda, confirma, informa · urgencia al instante', 'box--dark'], ['Registro automático', 'Resumen, grabación y resultado en la ficha', 'box--sky']]) +
-      '<div class="branch"><span class="branch__label">SI DERIVA →</span><div class="box box--repl" style="justify-content:center;text-align:center"><span><b>Ejecutivo con contexto</b>Contesta desde la consola, sin que el paciente repita · luego se registra igual</span></div></div>' +
-      '<div class="cmp"><div class="cmp__now"><b>Hoy con CloudTalk</b><br>Menú de grabaciones fijo: casi todo pasa por la cola y el paciente espera. El registro en Zoho falla y el WhatsApp va por celulares personales.</div><div class="cmp__new"><b>Con la propuesta</b><br>Lo simple se resuelve sin espera, la urgencia salta la fila y cada contacto queda en el CRM solo. Menos carga por ejecutivo.</div></div></section>' +
-      '<section class="card"><span class="eyebrow">Saliente · confirmaciones, devoluciones y seguimiento</span>' +
-      flow([['Disparador', 'Visita mañana, llamada perdida o seguimiento', 'box--light'], ['Lista del día', 'Solo pacientes con servicio contratado', 'box--light'], ['WhatsApp primero', 'Plantilla aprobada por Meta, desde el número oficial', 'box--dark'], ['Sin respuesta: llamada', 'Asistente o ejecutivo, siempre desde el 600', 'box--dark'], ['Resultado registrado', 'Agenda y CRM al día, con responsable', 'box--sky']]) +
-      '<div class="cmp"><div class="cmp__now"><b>Hoy con CloudTalk</b><br>Cada ejecutivo marca a mano, muchas veces desde su celular. Las llamadas perdidas no se devuelven de forma sistemática.</div><div class="cmp__new"><b>Con la propuesta</b><br>Las salientes de rutina las hace el asistente, las perdidas se devuelven con plazo y siempre se ve el 600 de Medic Home.</div></div></section>';
+    var cur = state.flow || 'entrante';
+    var info = {
+      entrante: { label: 'Entrante · 600 y WhatsApp', src: '/agente-medic-home/centro-contacto/flujo-entrante.html', title: 'Diagrama interactivo del flujo entrante de Medic Home' },
+      saliente: { label: 'Saliente · confirmaciones y devoluciones', src: '/agente-medic-home/centro-contacto/flujo-saliente.html', title: 'Diagrama interactivo del flujo saliente de Medic Home' }
+    };
+    var f = info[cur];
+    return '<div class="intro"><span class="eyebrow eyebrow--num">06 · Flujos del proceso</span><h1>Entrante y saliente: qué cambia respecto de hoy.</h1>' +
+      '<p class="lead">Diagramas interactivos, con el mismo formato del Método Interforma. Use las vistas de cada diagrama para recorrer el camino que resuelve el asistente y el que pasa a una persona.</p></div>' +
+      '<div class="pillrow" role="group" aria-label="Elegir flujo">' + Object.keys(info).map(function (k) { return pill('flow-tab', k, info[k].label, k === cur); }).join('') + '</div>' +
+      '<div class="flowframe"><iframe src="' + f.src + '" title="' + esc(f.title) + '" loading="lazy"></iframe></div>' +
+      '<p class="small muted" style="margin:0">Cada diagrama compara al pie la operación de hoy con CloudTalk y la propuesta. <a href="' + f.src + '" target="_blank" rel="noopener" style="font-weight:700">Abrir en pantalla completa</a></p>';
   };
 
   VIEWS.costos = function () {
@@ -489,6 +487,7 @@
         if (!t) { if (inp) inp.focus(); return; }
         var o = Object.assign({}, c.sent); o[c.sel] = (o[c.sel] || []).concat([t]); c.sent = o; break;
       case 'crm-tab': state.crm.tab = key; break;
+      case 'flow-tab': state.flow = key; break;
       case 'calc-reset': state.calc = JSON.parse(JSON.stringify(CALC_DEFAULTS)); break;
       default: return;
     }

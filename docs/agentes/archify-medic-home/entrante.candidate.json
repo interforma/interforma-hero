@@ -1,0 +1,47 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Medic Home · Flujo entrante (600 y WhatsApp)",
+    "locale": "es",
+    "quality_profile": "showcase",
+    "output": ".archify/workflow-medic-home-entrante-20261112-0110/medic-home-entrante.html",
+    "views": [
+      { "id": "resuelve", "label": "Lo resuelve el asistente", "focus": ["paciente", "canal", "identifica", "motivo", "resuelve", "registro"], "note": "Agenda, confirma o informa sin espera y deja todo registrado." },
+      { "id": "persona", "label": "Pasa a una persona", "focus": ["motivo", "urgencia", "ejecutivo", "registro"], "note": "Urgencia o caso complejo: el ejecutivo recibe el resumen antes de contestar." }
+    ]
+  },
+  "lanes": [
+    { "id": "lpaciente", "label": "Paciente" },
+    { "id": "lcanales", "label": "Canales" },
+    { "id": "lia", "label": "Asistente IA · n8n" },
+    { "id": "lequipo", "label": "Equipo · Chatwoot", "variant": "exception" },
+    { "id": "ldatos", "label": "Registro · Twenty" }
+  ],
+  "mainPath": ["paciente", "canal", "identifica", "motivo", "resuelve", "registro"],
+  "nodes": [
+    { "id": "paciente", "lane": "lpaciente", "col": 0, "type": "external", "icon": "person", "label": "Paciente o familiar", "sublabel": "llama o escribe" },
+    { "id": "canal", "lane": "lcanales", "col": 1, "type": "frontend", "label": "600 o WhatsApp", "sublabel": "Asterisk · API de Meta" },
+    { "id": "identifica", "lane": "lia", "col": 2, "type": "backend", "label": "Identifica", "sublabel": "número y ficha" },
+    { "id": "motivo", "lane": "lia", "col": 3, "type": "backend", "icon": "decision", "label": "Entiende el motivo", "sublabel": "voz natural o teclado" },
+    { "id": "resuelve", "lane": "lia", "col": 4, "type": "backend", "icon": "success", "label": "Resuelve", "sublabel": "agenda, confirma, informa" },
+    { "id": "urgencia", "lane": "lequipo", "col": 3, "type": "security", "label": "Urgencia", "sublabel": "SAMU 131 y equipo clínico", "tag": "salta la fila" },
+    { "id": "ejecutivo", "lane": "lequipo", "col": 4, "type": "frontend", "icon": "person", "label": "Ejecutivo", "sublabel": "con resumen, sin repetir" },
+    { "id": "registro", "lane": "ldatos", "col": 5, "type": "database", "label": "Ficha del paciente", "sublabel": "resumen y grabación" }
+  ],
+  "edges": [
+    { "id": "contacto", "from": "paciente", "to": "canal", "label": "contacto", "variant": "emphasis" },
+    { "id": "entra", "from": "canal", "to": "identifica", "variant": "emphasis" },
+    { "id": "clasifica", "from": "identifica", "to": "motivo", "variant": "emphasis" },
+    { "id": "simple", "from": "motivo", "to": "resuelve", "label": "simple", "variant": "emphasis" },
+    { "id": "registra", "from": "resuelve", "to": "registro", "label": "registra", "variant": "emphasis" },
+    { "id": "alerta", "from": "motivo", "to": "urgencia", "label": "urgencia", "variant": "security", "role": "error" },
+    { "id": "deriva", "from": "urgencia", "to": "ejecutivo", "label": "prioridad", "variant": "security" },
+    { "id": "pide", "from": "motivo", "to": "ejecutivo", "label": "pide persona", "variant": "default", "role": "branch" },
+    { "id": "cierra", "from": "ejecutivo", "to": "registro", "label": "cierra", "variant": "default" }
+  ],
+  "cards": [
+    { "dot": "rose", "title": "Hoy con CloudTalk", "items": ["Menú de grabaciones fijo: casi todo pasa por la cola", "El registro en Zoho falla y el WhatsApp va por celulares personales"] },
+    { "dot": "emerald", "title": "Con la propuesta", "items": ["Lo simple se resuelve sin espera; la urgencia salta la fila", "Cada contacto queda en la ficha, con quién atendió"] }
+  ]
+}

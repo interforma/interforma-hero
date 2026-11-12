@@ -248,3 +248,7 @@ td:first-child{font-weight:700;width:20%}
 .stack .eyebrow{margin-right:4px}
 .stack__item{display:inline-flex;gap:6px;align-items:baseline;background:var(--white);border:1px solid var(--g200);border-radius:13px;padding:6px 12px;font-size:13px;color:var(--g500)}
 .stack__item b{color:var(--ink);font-size:14px}
+
+.flowframe{border:1px solid var(--g200);border-radius:20px;overflow:hidden;background:var(--white)}
+.flowframe iframe{display:block;width:100%;height:clamp(520px,62vw,820px);border:0}
+@media (max-width:760px){.flowframe iframe{height:560px}}
