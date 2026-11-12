@@ -243,24 +243,11 @@
   };
 
   VIEWS.arquitectura = function () {
-    function down(n) { var a = []; for (var i = 0; i < n; i++) a.push(ARROW_D); return '<div class="down"><div class="down__arrows">' + a.join('') + '</div><div class="spacer"></div></div>'; }
-    return '<div class="intro"><span class="eyebrow eyebrow--num">05 · Arquitectura</span><h1>Una sola plataforma para el 600, el WhatsApp y el CRM.</h1><p class="lead">Cuatro capas que trabajan juntas. A la derecha, qué reemplaza cada una de la operación actual.</p>' +
-      '<div class="stack" aria-label="Herramientas de la solución"><span class="eyebrow">Herramientas</span>' + [['Asterisk', 'central telefónica del 600'], ['API de WhatsApp', 'número oficial (Meta)'], ['n8n + LLM', 'orquestador y asistente IA'], ['Chatwoot', 'consola de ejecutivos'], ['Twenty', 'CRM'], ['Servidor dedicado', 'Medic Home']].map(function (t) { return '<span class="stack__item"><b>' + t[0] + '</b>' + t[1] + '</span>'; }).join('') + '</div></div>' +
-      '<div class="layer"><div class="layer__main"><span class="eyebrow">Canales</span><div class="layer__cards">' +
-      '<div class="box box--light"><span><b>Número 600 · Asterisk</b>SIP trunk chileno con el 600 portado, a una central telefónica de código abierto</span></div>' +
-      '<div class="box box--light"><span><b>WhatsApp oficial</b>API de Meta · un número para todo el equipo</span></div>' +
-      '<div class="box box--light"><span><b>Web y formularios</b>Chat del sitio y solicitud de llamada</span></div></div></div>' +
-      '<div class="repl-col"><span class="eyebrow eyebrow--num">Qué reemplaza</span><div class="box box--repl" style="flex:1"><span><b>Telefonía de CloudTalk</b>y los WhatsApp personales de cada ejecutivo.</span></div></div></div>' +
-      down(3) +
-      '<div class="layer"><div class="layer__main"><span class="eyebrow">Inteligencia</span><div class="box box--dark" style="min-height:110px"><span><b>Orquestador IA · n8n + LLM</b>Voz IA y bot de WhatsApp con el mismo cerebro · reglas de urgencia · derivación a colas · llamadas salientes y devoluciones</span></div></div>' +
-      '<div class="repl-col"><span class="eyebrow" style="visibility:hidden">.</span><div class="box box--repl" style="flex:1"><span><b>Menú de grabaciones fijo</b>de CloudTalk y el complemento de IA de voz que se cobra aparte.</span></div></div></div>' +
-      down(3) +
-      '<div class="layer"><div class="layer__main"><span class="eyebrow">Atención y datos</span><div class="layer__cards">' +
-      '<div class="box box--sky"><span><b>Consola omnicanal · Chatwoot</b>Código abierto, en el servidor de Medic Home · web y app iOS/Android · colas, softphone, devoluciones</span></div>' +
-      '<div class="box box--sky"><span><b>CRM Twenty autoalojado</b>Ficha del paciente, historial completo, tareas y métricas</span></div>' +
-      '<div class="box box--sky"><span><b>Agenda clínica de Medic Home</b>Integración por API para consultar y mover visitas</span></div></div></div>' +
-      '<div class="repl-col"><span class="eyebrow" style="visibility:hidden">.</span><div class="box box--repl" style="flex:1"><span><b>Integración CloudTalk–Zoho</b>que hoy no registra bien, y las licencias de Zoho si deciden cambiar de CRM.</span></div></div></div>' +
-      '<div class="layer"><div class="layer__main"><span class="eyebrow">Base</span><div class="box box--base" style="min-height:72px"><span><b>Infraestructura dedicada</b>Servidor de Medic Home administrado por Interforma · cifrado, respaldos y control de accesos · Ley 21.719</span></div></div><div></div></div>' +
+    var src = '/agente-medic-home/centro-contacto/arquitectura.html';
+    return '<div class="intro"><span class="eyebrow eyebrow--num">05 · Arquitectura</span><h1>Una sola plataforma para el 600, el WhatsApp y el CRM.</h1>' +
+      '<p class="lead">Diagrama interactivo con el mismo formato del Método Interforma. Use las vistas Canales, Inteligencia y Atención y datos para recorrerlo por partes; al pie, qué reemplaza y cómo se cuidan los datos.</p></div>' +
+      '<div class="flowframe"><iframe src="' + src + '" title="Diagrama interactivo de la arquitectura del centro de contacto de Medic Home" loading="lazy"></iframe></div>' +
+      '<p class="small muted" style="margin:0">Asterisk, n8n y Chatwoot son de código abierto; Twenty es el CRM autoalojado. <a href="' + src + '" target="_blank" rel="noopener" style="font-weight:700">Abrir en pantalla completa</a></p>' +
       '<section class="card law" aria-label="Datos de pacientes y Ley 21.719"><div class="between"><div style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow eyebrow--num">Datos de pacientes · Ley 21.719</span><h2>Qué significa «infraestructura dedicada».</h2></div><span class="tag b-warn">Vigente desde el 1/12/2026</span></div>' +
       '<p class="small muted" style="margin:0;max-width:820px">La Ley 21.719 trata los datos de salud como datos sensibles: exige seguridad, contratos con quienes los manejan y aviso si hay una filtración, con multas que pueden llegar a 20.000 UTM. Esta es la forma en que la solución responde a eso.</p>' +
       '<div class="law__grid"><div><h3>Quién es quién</h3><ul>' +
