@@ -199,3 +199,32 @@ td:first-child{font-weight:700;width:20%}
 .gantt__head span{font-family:var(--mono);font-size:12px;color:var(--g500);text-align:center}
 .gantt__head span:first-child{text-align:left}
 .gantt__bar{height:24px;background:var(--energia);border-radius:6px}
+
+.events .num{color:var(--white);font-weight:600}
+.events li > div > span{font-size:14px;line-height:1.55;color:var(--g500)}
+.field small{font-size:12px;font-weight:400;color:var(--g500);line-height:1.4}
+.howto{background:var(--white);border:1px solid var(--g200);border-left:0;border-radius:16px;padding:20px 24px;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.howto ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:15px;line-height:1.55}
+.groups{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;align-items:start}
+.group{gap:14px}
+.group--now{box-shadow:inset 0 4px 0 var(--err)}
+.group--new{box-shadow:inset 0 4px 0 var(--energia)}
+@media (max-width:980px){.groups{grid-template-columns:minmax(0,1fr)}}
+.split{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:980px){.split{grid-template-columns:minmax(0,1fr)}}
+.sum{border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:8px;border:1px solid var(--g200);background:#fff}
+.sum h3{margin:0;font-family:var(--head);font-weight:500;font-size:20px;letter-spacing:-.02em}
+.sum__row{display:flex;justify-content:space-between;gap:12px;font-size:14px;line-height:1.45;padding:6px 0;border-bottom:1px solid var(--g100)}
+.sum__row b{font-variant-numeric:tabular-nums;white-space:nowrap}
+.sum__row--total{border-bottom:0;font-weight:700;font-size:15px;padding-top:8px}
+.sum__row--total b{font-family:var(--head);font-weight:500;font-size:24px}
+.sum p{margin:0}
+.sum--now{box-shadow:inset 0 4px 0 var(--err)}
+.sum--new{box-shadow:inset 0 4px 0 var(--energia)}
+.sum--diff{background:var(--ink);color:var(--white);border-color:var(--ink)}
+.sum--diff .eyebrow{color:var(--stone)}
+.sum--diff p{color:var(--stone)}
+.sum__big{font-family:var(--head);font-weight:500;font-size:40px;letter-spacing:-.03em;color:var(--energia);line-height:1.1}
+.detail-box{border:1px solid var(--g200);border-radius:12px;padding:12px 16px;background:#fff}
+.detail-box summary{cursor:pointer;font-weight:700;font-size:14px;min-height:28px}
+.detail-box .tablebox{margin-top:12px}
