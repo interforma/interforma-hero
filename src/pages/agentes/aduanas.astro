@@ -1,0 +1,660 @@
+---
+// Landing vertical: Interforma Agents para agencias de aduana.
+// Página autocontenida (sin Base.astro) porque es una pieza comercial con identidad propia,
+// enlazada desde el PDF descargable en /descargas. Eventos GA4: download_pdf, click_agendar,
+// click_whatsapp, click_email (objetivo: reunión agendada; KPI: clics a Cal.com y WhatsApp).
+const ga4Id = import.meta.env.PUBLIC_GA4_MEASUREMENT_ID?.trim();
+const serviceLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Agente WhatsApp para agencias de aduana',
+  serviceType: 'Agente de IA para atención por WhatsApp',
+  provider: { '@type': 'Organization', name: 'Interforma', url: 'https://interforma.digital' },
+  areaServed: 'CL',
+  audience: { '@type': 'BusinessAudience', audienceType: 'Agencias de aduana y empresas de gestión de carga' },
+  url: 'https://interforma.digital/agentes/aduanas',
+  description: 'Agente en el WhatsApp de la agencia que informa el estado de cada operación, reúne documentos, comunica la provisión de fondos y avisa del aforo, con aprobación humana para montos y plazos.',
+};
+export const prerender = true;
+---
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agente WhatsApp para agencias de aduana</title>
+<link rel="canonical" href="https://interforma.digital/agentes/aduanas">
+<meta property="og:title" content="Agente WhatsApp para agencias de aduana · Interforma">
+<meta property="og:url" content="https://interforma.digital/agentes/aduanas">
+<meta name="description" content="Interforma Agents para agencias de aduana: estado de la carga, documentos, provisión de fondos y avisos de aforo por WhatsApp, con su equipo al mando.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style is:global>
+:root{
+  /* Sistema Interforma 2026: piedra clara, umbra, un solo naranja Energía.
+     Idea de layout: el dolor primero, luego un teléfono que cuenta una importación de punta a punta. */
+  --paper:#E4E3DF; --white:#F2F1EE; --ink:#281F18; --stone:#BEB8AE; --sky:#CCE2ED;
+  --energia:#EE6E43; --energia-600:#D9582E; --primary-50:#FBE6DC; --primary-100:#F7CDBB; --primary-500:#9A3D1A; --primary-600:#7A2F13;
+  --gray-100:#DCD9D3; --gray-200:#D0CCC4; --gray-400:#8F887E; --gray-500:#5C564E;
+  --ok:#18794E; --ok-bg:#EFFAF6; --warn:#8A5A00; --warn-bg:#FFF6E0; --crit:#B3261E; --crit-bg:#FDEDEC;
+  --wa:#DCF3D3; --wa-bg:#EFEAE2;
+  --f-display:Outfit, system-ui, sans-serif; --f-body:Manrope, -apple-system, "Segoe UI", sans-serif; --f-mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--primary-500)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--primary-500);outline-offset:3px;border-radius:6px}
+h1,h2,h3{font-family:var(--f-display);font-weight:500;margin:0;text-wrap:balance;letter-spacing:-.025em}
+p{margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+.eyebrow{font-family:var(--f-mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--primary-500)}
+.eyebrow.muted{color:var(--gray-500)}
+.lead{font-size:20px;line-height:1.55;color:var(--gray-500);max-width:620px}
+section{padding:88px 0}
+.sec-head{display:flex;flex-direction:column;gap:14px;margin-bottom:44px;max-width:780px}
+.sec-head h2{font-size:clamp(32px,4.2vw,48px);line-height:1.08}
+
+/* Nav */
+.nav{position:sticky;top:0;z-index:20;background:rgba(228,227,223,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--gray-200)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.brand span{font-family:var(--f-display);font-weight:500;font-size:22px;letter-spacing:-.02em}
+.brand small{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;color:var(--gray-500);text-transform:uppercase;margin-left:6px}
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--f-body);font-weight:600;font-size:16px;text-decoration:none;border-radius:28px;padding:13px 22px;border:1px solid transparent;cursor:pointer;transition:background .2s,transform .2s}
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{background:var(--energia);color:var(--ink)}
+.btn-primary:hover{background:#F2906D}
+.btn-dark{background:var(--ink);color:var(--white)}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn-sm{padding:9px 16px;font-size:14px}
+
+/* Hero */
+.hero{padding:72px 0 64px}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+.hero h1{font-size:clamp(38px,5.4vw,64px);line-height:1.04;letter-spacing:-.035em;margin:18px 0 22px}
+.hero h1 em{font-style:normal;color:var(--primary-500)}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:28px;font-family:var(--f-mono);font-size:12.5px;color:var(--gray-500);letter-spacing:.04em}
+
+/* Hero: bandeja saturada */
+.inbox{background:var(--white);border:1px solid var(--gray-200);border-radius:20px;padding:18px;position:relative;overflow:hidden}
+.inbox-head{display:flex;justify-content:space-between;align-items:center;font-family:var(--f-mono);font-size:12px;color:var(--gray-500);letter-spacing:.06em;text-transform:uppercase;padding:4px 4px 14px;border-bottom:1px solid var(--gray-100)}
+.inbox-head b{font-family:var(--f-body);font-size:13px;letter-spacing:0;text-transform:none;background:var(--crit-bg);color:var(--crit);border-radius:13px;padding:2px 10px;font-weight:600}
+.inbox ul{list-style:none;margin:0;padding:6px 0 0;display:flex;flex-direction:column}
+.inbox li{display:grid;grid-template-columns:36px 1fr auto;gap:12px;align-items:center;padding:11px 4px;border-bottom:1px solid var(--gray-100);animation:slidein .6s ease both}
+.inbox li:nth-child(1){animation-delay:.1s}.inbox li:nth-child(2){animation-delay:.5s}.inbox li:nth-child(3){animation-delay:.9s}.inbox li:nth-child(4){animation-delay:1.3s}.inbox li:nth-child(5){animation-delay:1.7s}.inbox li:nth-child(6){animation-delay:2.1s}
+.av{width:36px;height:36px;border-radius:50%;background:var(--paper);display:grid;place-items:center;font-family:var(--f-display);font-size:15px;color:var(--gray-500)}
+.inbox .who{font-weight:600;font-size:14.5px;line-height:1.3}
+.inbox .msg{font-size:14px;color:var(--gray-500);line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inbox .t{font-family:var(--f-mono);font-size:11.5px;color:var(--gray-500);text-align:right}
+.inbox .t i{display:block;margin-top:4px;margin-left:auto;width:20px;height:20px;border-radius:50%;background:var(--energia);color:var(--ink);font-style:normal;font-size:11px;line-height:20px;text-align:center;font-family:var(--f-body);font-weight:700}
+.inbox-foot{margin-top:14px;padding:12px 14px;background:var(--primary-50);border-radius:12px;font-size:14px;line-height:1.45}
+@keyframes slidein{from{opacity:.0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+
+/* Dolores */
+.pains{display:grid;grid-template-columns:repeat(6,1fr);gap:18px}
+.pain{grid-column:span 2;background:var(--white);border:1px solid var(--gray-200);border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:12px}
+.pain:nth-child(4),.pain:nth-child(5){grid-column:span 3}
+.pain .n{font-family:var(--f-mono);font-size:12.5px;color:var(--primary-500);letter-spacing:.08em}
+.pain h3{font-size:24px;line-height:1.18}
+.pain p{color:var(--gray-500);font-size:16px;line-height:1.55}
+.pain .cost{margin-top:auto;padding-top:14px;border-top:1px solid var(--gray-100);font-size:14.5px;line-height:1.45;color:var(--ink)}
+.pain .cost b{font-family:var(--f-mono);font-weight:400;font-size:11.5px;letter-spacing:.08em;color:var(--crit);display:block;margin-bottom:2px}
+
+/* Caso */
+.case{background:var(--ink);color:var(--white)}
+.case .eyebrow{color:var(--energia)}
+.case .sec-head h2{color:var(--white)}
+.case .lead{color:var(--stone)}
+.steps{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.step{font-family:var(--f-body);background:transparent;color:var(--stone);border:1px solid #4a4038;border-radius:13px;padding:9px 14px;font-size:14px;cursor:pointer;display:flex;gap:10px;align-items:center;transition:all .25s}
+.step .k{font-family:var(--f-mono);font-size:11.5px;color:var(--gray-400)}
+.step[aria-current="true"]{background:var(--energia);color:var(--ink);border-color:var(--energia)}
+.step[aria-current="true"] .k{color:var(--ink)}
+.step.done{color:var(--white);border-color:#6b5f55}
+.stage{display:grid;grid-template-columns:400px 1fr;gap:48px;align-items:start}
+
+.phone{background:#1a140f;border-radius:44px;padding:12px;box-shadow:0 30px 60px -20px rgba(0,0,0,.6);width:100%;max-width:400px;margin:0 auto}
+.screen{background:var(--wa-bg);border-radius:34px;overflow:hidden;height:640px;display:flex;flex-direction:column}
+.wa-top{background:#F7F5F1;color:var(--ink);display:flex;align-items:center;gap:10px;padding:16px 16px 12px;border-bottom:1px solid var(--gray-100)}
+.wa-top .pic{width:38px;height:38px;border-radius:50%;background:var(--ink);display:grid;place-items:center;flex:none}
+.wa-top .nm{font-weight:700;font-size:15px;line-height:1.2}
+.wa-top .st{font-size:12px;color:var(--gray-500)}
+.chat{flex:1;overflow-y:auto;padding:14px 12px 18px;display:flex;flex-direction:column;gap:6px;scroll-behavior:smooth}
+.day{align-self:center;background:#F7F5F1;color:var(--gray-500);font-size:11.5px;font-family:var(--f-mono);padding:4px 10px;border-radius:8px;margin:6px 0 4px;letter-spacing:.04em}
+.b{max-width:84%;padding:8px 11px 6px;border-radius:12px;font-size:14.5px;line-height:1.42;color:#1d1712;position:relative;animation:pop .35s ease both;box-shadow:0 1px 1px rgba(40,31,24,.08)}
+.b .tm{display:block;text-align:right;font-size:10.5px;color:var(--gray-500);margin-top:2px;font-family:var(--f-mono)}
+.b.in{align-self:flex-start;background:#fff;border-top-left-radius:4px}
+.b.out{align-self:flex-end;background:var(--wa);border-top-right-radius:4px}
+.b.tpl{border-left:3px solid var(--energia)}
+.b .tag{display:block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.06em;color:var(--primary-500);margin-bottom:3px;text-transform:uppercase}
+.b.file{display:flex;gap:10px;align-items:center}
+.b.file .ic{width:34px;height:40px;border-radius:5px;background:var(--crit);color:#fff;font-size:10px;font-weight:700;display:grid;place-items:center;flex:none;font-family:var(--f-mono)}
+.b.file .ic.img{background:var(--sky);color:var(--ink)}
+.b.file .fn{font-weight:600;font-size:13.5px;line-height:1.3}
+.b.file .fs{font-size:11.5px;color:var(--gray-500)}
+.check{margin-top:6px;display:flex;flex-direction:column;gap:5px;font-size:13.5px}
+.check div{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.pill{font-size:11px;font-weight:700;border-radius:13px;padding:1px 8px;white-space:nowrap}
+.pill.ok{background:var(--ok-bg);color:var(--ok)}
+.pill.no{background:var(--warn-bg);color:var(--warn)}
+.money{margin-top:6px;background:#fff;border:1px solid var(--gray-200);border-radius:10px;padding:10px 12px;font-size:13.5px}
+.money .row{display:flex;justify-content:space-between;gap:12px;font-variant-numeric:tabular-nums}
+.money .row.tot{border-top:1px solid var(--gray-200);margin-top:6px;padding-top:6px;font-weight:700}
+.money .note{font-size:11px;color:var(--gray-500);margin-top:6px;font-family:var(--f-mono)}
+.wa-btn{margin-top:6px;text-align:center;color:#1f7a5a;font-weight:600;font-size:13.5px;border-top:1px solid rgba(40,31,24,.1);padding-top:6px}
+.typing{align-self:flex-start;background:#fff;border-radius:12px;border-top-left-radius:4px;padding:10px 14px;display:flex;gap:4px;animation:pop .25s ease both}
+.typing span{width:7px;height:7px;border-radius:50%;background:var(--gray-400);animation:dot 1s infinite}
+.typing span:nth-child(2){animation-delay:.15s}.typing span:nth-child(3){animation-delay:.3s}
+.sys{align-self:center;background:var(--primary-50);color:var(--primary-600);font-size:12px;padding:5px 10px;border-radius:8px;font-weight:600;animation:pop .35s ease both;text-align:center}
+@keyframes pop{from{opacity:0;transform:translateY(6px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes dot{0%,60%,100%{transform:none;opacity:.5}30%{transform:translateY(-4px);opacity:1}}
+.wa-input{background:#F7F5F1;padding:10px 12px;display:flex;gap:8px;align-items:center;border-top:1px solid var(--gray-100)}
+.wa-input div{flex:1;background:#fff;border-radius:20px;padding:8px 14px;font-size:13px;color:var(--gray-400)}
+.wa-input i{width:36px;height:36px;border-radius:50%;background:#1f7a5a;flex:none}
+
+.inside{display:flex;flex-direction:column;gap:22px}
+.scene-head{display:flex;flex-direction:column;gap:10px}
+.scene-head .when{font-family:var(--f-mono);font-size:13px;color:var(--energia);letter-spacing:.06em;text-transform:uppercase}
+.scene-head h3{font-size:clamp(26px,3vw,36px);line-height:1.12;color:var(--white)}
+.scene-head p{color:var(--stone);font-size:17px;max-width:560px}
+.pain-tag{display:inline-flex;align-self:flex-start;gap:8px;align-items:center;background:#3a2f26;border:1px solid #54473c;border-radius:13px;padding:5px 12px;font-size:13.5px;color:var(--white)}
+.pain-tag b{font-family:var(--f-mono);font-weight:400;font-size:11px;color:var(--energia);letter-spacing:.08em}
+.actors{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.actor{background:#33291f;border:1px solid #4a4038;border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:6px;transition:border-color .3s,background .3s}
+.actor .who{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-400);display:flex;align-items:center;gap:8px}
+.actor .who i{width:8px;height:8px;border-radius:2px;background:var(--gray-400)}
+.actor p{font-size:15px;line-height:1.45;color:var(--white)}
+.actor.on{border-color:var(--energia);background:#3b2e24}
+.actor.on .who{color:var(--energia)}
+.actor.on .who i{background:var(--energia);border-radius:50%}
+.actor.idle p{color:var(--gray-400)}
+.rule{border-left:3px solid var(--energia);padding:4px 0 4px 16px;color:var(--stone);font-size:15.5px}
+.rule b{color:var(--white);font-weight:600}
+.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.ctrl{font-family:var(--f-body);font-weight:600;font-size:14px;background:transparent;color:var(--white);border:1px solid #6b5f55;border-radius:11px;padding:9px 16px;cursor:pointer}
+.ctrl:hover{border-color:var(--white)}
+.ctrl.main{background:var(--white);color:var(--ink);border-color:var(--white)}
+.prog{flex:1;min-width:120px;height:4px;background:#4a4038;border-radius:2px;overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:var(--energia);transition:width .2s linear}
+.fict{font-family:var(--f-mono);font-size:11.5px;color:var(--gray-400);letter-spacing:.04em}
+
+/* Antes / después */
+.compare{width:100%;border-collapse:collapse;background:var(--white);font-size:16px}
+.compare th{font-family:var(--f-mono);font-weight:400;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-500);text-align:left;padding:16px 22px;border-bottom:1px solid var(--gray-200)}
+.compare th:last-child{color:var(--primary-500)}
+.compare td{padding:18px 22px;border-bottom:1px solid var(--gray-200);vertical-align:top;line-height:1.5}
+.compare td:first-child{font-weight:600;width:22%}
+.compare td:nth-child(2){color:var(--gray-500);width:36%}
+.compare tr:last-child td{border-bottom:0}
+.tbl{overflow-x:auto;border:1px solid var(--gray-200)}
+
+/* Reglas */
+.cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:var(--white);border:1px solid var(--gray-200);border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:12px}
+.card h3{font-size:22px;line-height:1.2}
+.card p{color:var(--gray-500);font-size:16px}
+.card.hl{background:var(--sky);border-color:var(--sky)}
+.card.hl p{color:var(--ink)}
+
+/* Piloto */
+.pilot{display:grid;grid-template-columns:1fr 1.2fr;gap:56px;align-items:start}
+.mods{display:flex;flex-direction:column}
+.mod{display:grid;grid-template-columns:64px 1fr;gap:20px;padding:22px 0;border-top:1px solid var(--gray-200);align-items:start}
+.mod:last-child{border-bottom:1px solid var(--gray-200)}
+.mod .sh{width:52px;height:52px;background:var(--ink)}
+.mod h3{font-size:22px;margin-bottom:4px}
+.mod p{color:var(--gray-500);font-size:16px}
+.gate{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}
+.gate div{border-radius:12px;padding:16px;font-size:14.5px;line-height:1.45;background:var(--white);border:1px solid var(--gray-200)}
+.gate b{display:block;font-family:var(--f-display);font-weight:500;font-size:19px;margin-bottom:4px}
+
+/* Referencia */
+.ref{background:var(--white);border-top:1px solid var(--gray-200);border-bottom:1px solid var(--gray-200);padding:56px 0}
+.ref .wrap{display:grid;grid-template-columns:auto 1fr auto;gap:40px;align-items:center}
+.ref h3{font-size:clamp(24px,2.6vw,32px);line-height:1.2}
+.ref p{color:var(--gray-500);margin-top:8px;max-width:640px}
+
+/* CTA */
+.cta{background:var(--energia);color:var(--ink);padding:96px 0}
+.cta .wrap{display:grid;grid-template-columns:1fr auto;gap:48px;align-items:center}
+.cta h2{font-size:clamp(38px,5.4vw,68px);line-height:1.02;letter-spacing:-.035em}
+.cta .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+.cta .btn-ghost{background:var(--white);border-color:var(--white)}
+.contacts{display:grid;grid-template-columns:repeat(4,auto);justify-content:start;gap:16px 44px;margin-top:40px}
+.contacts span{display:block;font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;color:var(--primary-900,#4A1C0B)}
+.contacts a{color:var(--ink);font-weight:600;text-decoration:none;border-bottom:1px solid rgba(40,31,24,.35)}
+.punto{width:220px;height:220px}
+.punto .body{animation:bob 3.2s ease-in-out infinite}
+.punto .eyes{transform-box:fill-box;transform-origin:center;animation:blink 4.6s linear infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes blink{0%,90%,100%{transform:scaleY(1)}93%{transform:scaleY(.08)}96%{transform:scaleY(1)}}
+
+footer{background:var(--ink);color:var(--stone);padding:28px 0;font-family:var(--f-mono);font-size:12.5px;letter-spacing:.04em}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer a{color:var(--stone)}
+
+@media (max-width:980px){
+  .hero .wrap,.stage,.pilot,.cta .wrap{grid-template-columns:1fr}
+  .pains{grid-template-columns:1fr 1fr}
+  .pain,.pain:nth-child(4),.pain:nth-child(5){grid-column:span 1}
+  .pain:nth-child(5){grid-column:span 2}
+  .cards3{grid-template-columns:1fr}
+  .ref .wrap{grid-template-columns:1fr}
+  .contacts{grid-template-columns:1fr 1fr}
+  .punto{display:none}
+}
+@media (max-width:600px){
+  section{padding:64px 0}
+  .wrap{padding:0 18px}
+  .pains{grid-template-columns:1fr}
+  .pain:nth-child(5){grid-column:span 1}
+  .actors{grid-template-columns:1fr}
+  .gate{grid-template-columns:1fr}
+  .contacts{grid-template-columns:1fr}
+  .screen{height:560px}
+  .brand small{display:none}
+  .nav .btn{display:none}
+  .compare td:first-child{width:auto}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+<meta property="og:type" content="website">
+<meta property="og:description" content="Estado de la carga, documentos, provisión de fondos y avisos de aforo por WhatsApp, con su equipo al mando.">
+<meta property="og:image" content="https://interforma.digital/og-image.png">
+<meta property="og:locale" content="es_CL">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+{ga4Id && (
+  <Fragment set:html={`<script async src="https://www.googletagmanager.com/gtag/js?id=${ga4Id}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${ga4Id}');</script>`} />
+)}
+<script is:inline type="application/ld+json" set:html={JSON.stringify(serviceLd)}></script>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="https://interforma.digital/agentes" aria-label="interforma.digital, Interforma Agents">
+      <svg width="28" height="28" viewBox="0 0 90 90" aria-hidden="true"><rect x="0" y="60" width="30" height="30" rx="3" fill="#281F18"/><rect x="30" y="30" width="30" height="30" rx="9" fill="#281F18"/><circle cx="75" cy="15" r="15" fill="#EE6E43"/></svg>
+      <span>interforma</span><small>Agents · Aduanas</small>
+    </a>
+    <a class="btn btn-ghost btn-sm" href="/descargas/Interforma-Agente-WhatsApp-Agencias-de-Aduana.pdf" download data-track="download_pdf" style="margin-left:auto">PDF ↓</a>
+    <a class="btn btn-dark btn-sm" data-track="click_agendar" href="https://cal.com/interforma-marketing-diseno-wuxobg/conversemos-sobre-tu-proyecto">Agendar una reunión</a>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Agente IA · Agencias de aduana</p>
+      <h1>Su agencia no debería pasar el día respondiendo <em>«¿en qué va mi carga?»</em></h1>
+      <p class="lead">Un agente en el WhatsApp de su agencia que informa el estado de cada operación, reúne los documentos, cobra la provisión de fondos y avisa del aforo. Sus ejecutivos quedan para lo que exige criterio aduanero.</p>
+      <div class="ctas">
+        <a class="btn btn-primary" href="#caso">Ver el caso animado ↓</a>
+        <a class="btn btn-ghost" href="/descargas/Interforma-Agente-WhatsApp-Agencias-de-Aduana.pdf" download data-track="download_pdf">Descargar PDF ↓</a>
+      </div>
+      <div class="hero-meta"><span>API OFICIAL DE WHATSAPP</span><span>PILOTO DE 30 DÍAS</span><span>SU EQUIPO APRUEBA CADA MONTO</span></div>
+    </div>
+    <div class="inbox" role="img" aria-label="Ilustración: bandeja de WhatsApp de un ejecutivo con seis mensajes sin responder sobre carga, documentos y pagos">
+      <div class="inbox-head"><span>WhatsApp del ejecutivo · 08:12</span><b>23 sin leer</b></div>
+      <ul>
+        <li><div class="av">M</div><div><div class="who">Importadora Maule</div><div class="msg">¿Ya llegó la nave? No me aparece en la naviera</div></div><div class="t">07:58<i>3</i></div></li>
+        <li><div class="av">F</div><div><div class="who">Ferretería El Roble</div><div class="msg">¿Qué documento les falta ahora?</div></div><div class="t">07:40<i>2</i></div></li>
+        <li><div class="av">T</div><div><div class="who">Textiles Pacífico</div><div class="msg">Ya transferí la provisión, ¿la vieron?</div></div><div class="t">07:31<i>1</i></div></li>
+        <li><div class="av">A</div><div><div class="who">Agro Sur</div><div class="msg">¿El SAG ya dio el visto bueno?</div></div><div class="t">Ayer<i>4</i></div></li>
+        <li><div class="av">V</div><div><div class="who">Vinos Colchagua</div><div class="msg">¿Por qué me salió aforo físico?</div></div><div class="t">Ayer<i>2</i></div></li>
+        <li><div class="av">R</div><div><div class="who">Repuestos Norte</div><div class="msg">¿Cuándo puedo retirar? Tengo el camión listo</div></div><div class="t">Ayer<i>5</i></div></li>
+      </ul>
+      <p class="inbox-foot">Todas son preguntas con respuesta en su sistema. Ninguna requiere a un despachador.</p>
+    </div>
+  </div>
+</section>
+
+<section id="dolores" style="padding-top:24px">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">01 · Lo que vive hoy una agencia</p>
+      <h2>Cinco dolores que no aparecen en la DIN, pero sí en la planilla de horas.</h2>
+    </div>
+    <div class="pains">
+      <article class="pain">
+        <p class="n">DOLOR 01</p>
+        <h3>«¿En qué va mi carga?»</h3>
+        <p>La misma pregunta llega decenas de veces al día, por WhatsApp personal, correo y teléfono. Cada respuesta obliga a abrir el sistema y buscar la operación.</p>
+        <p class="cost"><b>LO QUE CUESTA</b>Horas de ejecutivo en tareas que no son despacho.</p>
+      </article>
+      <article class="pain">
+        <p class="n">DOLOR 02</p>
+        <h3>La carpeta que no se completa</h3>
+        <p>Factura comercial, BL endosado, declaración jurada de precio, certificado de origen, vistos buenos. Sin la carpeta completa no se presenta la DIN.</p>
+        <p class="cost"><b>LO QUE CUESTA</b>Días de espera mientras la carga ya está en el puerto.</p>
+      </article>
+      <article class="pain">
+        <p class="n">DOLOR 03</p>
+        <h3>La provisión de fondos que se demora</h3>
+        <p>Sin pago no hay derechos ni IVA pagados, y sin eso no hay retiro. Perseguir transferencias y comprobantes ocupa a ejecutivos y a tesorería.</p>
+        <p class="cost"><b>LO QUE CUESTA</b>Almacenaje que sigue corriendo y un cliente molesto.</p>
+      </article>
+      <article class="pain">
+        <p class="n">DOLOR 04</p>
+        <h3>Plazos que vencen sin aviso</h3>
+        <p>El plazo general de depósito es de 90 días desde la recepción. Vencido, la mercancía cae en presunción de abandono, con recargo y riesgo de subasta.</p>
+        <p class="cost"><b>LO QUE CUESTA</b>Recargos, reclamos y la confianza del importador.</p>
+      </article>
+      <article class="pain">
+        <p class="n">DOLOR 05</p>
+        <h3>La historia vive en el teléfono de cada ejecutivo</h3>
+        <p>Si alguien sale de vacaciones o deja la agencia, se van con él las conversaciones, los acuerdos y los archivos que el cliente envió por chat.</p>
+        <p class="cost"><b>LO QUE CUESTA</b>Sin trazabilidad ni continuidad de servicio.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="case" id="caso">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">02 · Caso ilustrativo</p>
+      <h2>Una importación, de punta a punta, en el WhatsApp de su agencia.</h2>
+      <p class="lead">Un contenedor de 40 pies con herramientas eléctricas, de Ningbo a San Antonio. Mire qué contesta el agente, qué pasa por dentro y en qué momento entra su ejecutiva.</p>
+    </div>
+
+    <nav class="steps" id="steps" aria-label="Escenas del caso"></nav>
+
+    <div class="stage">
+      <div class="phone">
+        <div class="screen">
+          <div class="wa-top">
+            <div class="pic"><svg width="22" height="22" viewBox="0 0 90 90" aria-hidden="true"><rect x="0" y="60" width="30" height="30" rx="3" fill="#F2F1EE"/><rect x="30" y="30" width="30" height="30" rx="9" fill="#F2F1EE"/><circle cx="75" cy="15" r="15" fill="#EE6E43"/></svg></div>
+            <div><div class="nm">Su Agencia de Aduanas</div><div class="st" id="wa-status">cuenta de empresa · en línea</div></div>
+          </div>
+          <div class="chat" id="chat" aria-live="polite">
+            <div class="day">MARTES</div>
+            <div class="b in">Hola, buenas noches. ¿Llegó mi contenedor? Es el BL COSU 6254 8871<span class="tm">22:47</span></div>
+            <div class="b out">Buenas noches. Sí: la nave arribó a San Antonio el lunes y su contenedor ya está en el recinto de depósito.<span class="tm">22:47</span></div>
+            <div class="b out">Para presentar su declaración de ingreso (DIN) nos faltan 2 documentos:<div class="check"><div>Factura comercial <span class="pill ok">Recibido</span></div><div>BL endosado <span class="pill ok">Recibido</span></div><div>Declaración jurada de precio <span class="pill no">Falta</span></div><div>Certificado de origen <span class="pill no">Falta</span></div></div><span class="tm">22:48</span></div>
+          </div>
+          <div class="wa-input" aria-hidden="true"><div>Mensaje</div><i></i></div>
+        </div>
+      </div>
+
+      <div class="inside">
+        <div class="scene-head">
+          <p class="when" id="sc-when">Escena 1 · Martes 22:47</p>
+          <h3 id="sc-title">El cliente pregunta fuera de horario.</h3>
+          <p id="sc-text">El agente consulta la operación en el sistema de la agencia, informa el estado real y detecta qué documentos faltan para presentar la DIN.</p>
+          <span class="pain-tag" id="sc-pain"><b>RESUELVE</b><span>Dolor 01 y 02</span></span>
+        </div>
+        <div class="actors" id="actors"></div>
+        <p class="rule" id="sc-rule"><b>Regla:</b> el agente solo informa lo que está registrado en el sistema. Si no está, lo dice y deriva.</p>
+        <div class="controls">
+          <button class="ctrl" id="prev" type="button">← Anterior</button>
+          <button class="ctrl main" id="play" type="button">Pausar</button>
+          <button class="ctrl" id="next" type="button">Siguiente →</button>
+          <div class="prog" aria-hidden="true"><i id="bar"></i></div>
+        </div>
+        <p class="fict">Datos ficticios. Nombres, BL y montos son de ejemplo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="antes-despues">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">03 · Qué cambia</p>
+      <h2>La misma operación, antes y después del agente.</h2>
+    </div>
+    <div class="tbl">
+      <table class="compare">
+        <tr><th>Momento</th><th>Hoy</th><th>Con el agente</th></tr>
+        <tr><td>Consulta de estado</td><td>El cliente escribe al celular del ejecutivo y espera a que abra el sistema.</td><td>Respuesta inmediata con el estado registrado, a cualquier hora.</td></tr>
+        <tr><td>Documentos</td><td>Correos y fotos sueltas; el faltante se descubre al armar la DIN.</td><td>Lista de documentos por operación, recibidos por chat y guardados en la carpeta.</td></tr>
+        <tr><td>Provisión de fondos</td><td>Se envía por correo y se persigue por teléfono.</td><td>Aviso con el detalle aprobado por su ejecutivo, comprobante a tesorería y recordatorio programado.</td></tr>
+        <tr><td>Aforo y liberación</td><td>El cliente se entera cuando llama.</td><td>Aviso proactivo en cada hito: DIN aceptada, aforo, carga liberada.</td></tr>
+        <tr><td>Plazos de depósito</td><td>Dependen de que alguien revise la planilla.</td><td>Alerta al ejecutivo y al cliente antes de que venza el plazo.</td></tr>
+        <tr><td>Historial</td><td>Repartido en teléfonos personales.</td><td>Una bandeja compartida con todo el historial de cada cliente.</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="reglas" style="padding-top:8px">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">04 · Con su equipo al mando</p>
+      <h2>El agente atiende. Su agencia decide.</h2>
+    </div>
+    <div class="cards3">
+      <div class="card hl"><p class="eyebrow muted">Regla fija</p><h3>Ningún monto sale sin aprobación</h3><p>Provisiones, cotizaciones y plazos los define su ejecutivo. El agente solo los comunica y hace el seguimiento.</p></div>
+      <div class="card"><p class="eyebrow muted">Integración</p><h3>Se conecta a lo que ya usa</h3><p>Lee el estado de las operaciones desde su sistema de despacho, por API o desde la planilla de seguimiento. Registra cada cliente en el CRM.</p></div>
+      <div class="card"><p class="eyebrow muted">Datos</p><h3>Pensado para la normativa chilena</h3><p>Diseñado según las Leyes 19.628 y 21.719 de protección de datos personales, sobre la API oficial de WhatsApp Business.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="piloto" style="padding-top:8px">
+  <div class="wrap pilot">
+    <div class="sec-head" style="margin:0">
+      <p class="eyebrow">05 · Cómo partimos</p>
+      <h2>Un piloto de 30 días, con una meta medible.</h2>
+      <p class="lead">Elegimos con usted un proceso, por ejemplo las consultas de estado o la recolección de documentos, y medimos un indicador desde el primer día.</p>
+    </div>
+    <div>
+      <div class="mods">
+        <div class="mod"><div class="sh" style="border-radius:4px"></div><div><h3>Elegir el proceso</h3><p>Un agente, un canal y un indicador. Partimos por lo que más tiempo le quita a su equipo.</p></div></div>
+        <div class="mod"><div class="sh" style="border-radius:14px"></div><div><h3>Conectar el canal</h3><p>Su número oficial de WhatsApp, la bandeja compartida y la fuente de estados de su agencia.</p></div></div>
+        <div class="mod"><div class="sh" style="border-radius:26px;background:var(--energia)"></div><div><h3>Fijar límites y medir</h3><p>Qué responde el agente, qué deriva y en cuánto tiempo toma su equipo cada conversación.</p></div></div>
+      </div>
+      <div class="gate">
+        <div><b>Escalar</b>Meta cumplida: sumamos procesos.</div>
+        <div><b>Ajustar</b>Mejora parcial: 15 días más de ajuste.</div>
+        <div><b>Detener</b>Sin mejora: informe de aprendizajes.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ref">
+  <div class="wrap">
+    <p class="eyebrow">Referencia en operación</p>
+    <div>
+      <h3>First Cargo y Agencia Borie ya atienden su WhatsApp comercial con un agente de Interforma.</h3>
+      <p>Un solo número para el grupo, bandeja compartida, CRM con embudo comercial y envío de cotizaciones validadas por el ejecutivo.</p>
+    </div>
+    <a class="btn btn-ghost" href="https://interforma.digital/agentes">Ver Interforma Agents</a>
+  </div>
+</div>
+
+<section class="cta" id="contacto">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow" style="color:var(--ink)">06 · Conversemos</p>
+      <h2>Veamos cuántas de esas preguntas puede responder su agente.</h2>
+      <div class="ctas">
+        <a class="btn btn-dark" data-track="click_agendar" href="https://cal.com/interforma-marketing-diseno-wuxobg/conversemos-sobre-tu-proyecto">Agendar una reunión de 30 min →</a>
+        <a class="btn btn-ghost" data-track="click_whatsapp" href="https://wa.me/56985408771?text=Hola%20Interforma%2C%20quiero%20ver%20el%20agente%20para%20agencias%20de%20aduana">Escribir por WhatsApp →</a>
+        <a class="btn btn-ghost" href="/descargas/Interforma-Agente-WhatsApp-Agencias-de-Aduana.pdf" download data-track="download_pdf">Descargar PDF ↓</a>
+      </div>
+      <div class="contacts">
+        <div><span>WHATSAPP</span><a data-track="click_whatsapp" href="https://wa.me/56985408771">+56 9 8540 8771</a></div>
+        <div><span>CORREO</span><a data-track="click_email" href="mailto:hola@interforma.digital?subject=Agente%20WhatsApp%20para%20agencias%20de%20aduana">hola@interforma.digital</a></div>
+        <div><span>SITIO</span><a href="https://interforma.digital/agentes">interforma.digital/agentes</a></div>
+        <div><span>INSTAGRAM</span><a href="https://instagram.com/interformagents">@interformagents</a></div>
+      </div>
+    </div>
+    <svg class="punto" viewBox="0 0 200 200" role="img" aria-label="Punto, la mascota de Interforma"><rect width="200" height="200" rx="36" fill="#281F18"/><g class="body"><circle cx="100" cy="108" r="62" fill="#EE6E43"/><g class="eyes"><ellipse cx="84" cy="100" rx="8" ry="14" fill="#281F18"/><ellipse cx="116" cy="100" rx="8" ry="14" fill="#281F18"/></g></g></svg>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Preparado por Interforma · <a href="https://interforma.digital">interforma.digital</a> · Viña del Mar, Chile</span>
+    <span>Caso ilustrativo con datos ficticios</span>
+  </div>
+</footer>
+
+<script is:inline>
+(function(){
+  var SCENES = [
+    {
+      key:'Estado', when:'Escena 1 · Martes 22:47', title:'El cliente pregunta fuera de horario.',
+      text:'El agente consulta la operación en el sistema de la agencia, informa el estado real y detecta qué documentos faltan para presentar la DIN.',
+      pain:'Dolor 01 y 02', rule:'<b>Regla:</b> el agente solo informa lo que está registrado en el sistema. Si no está, lo dice y deriva.',
+      actors:[['Cliente','Escribe a las 22:47 al número oficial de la agencia.',1],['Agente IA','Busca el BL, lee el estado y revisa la carpeta: 2 de 4 documentos.',1],['Ejecutiva','Duerme. No hizo falta despertarla.',0],['Sistema','Estado de la operación consultado por API o planilla.',1]],
+      msgs:[
+        {day:'MARTES'},
+        {d:'in',t:'22:47',h:'Hola, buenas noches. ¿Llegó mi contenedor? Es el BL COSU 6254 8871'},
+        {d:'out',t:'22:47',h:'Buenas noches. Sí: la nave arribó a San Antonio el lunes y su contenedor ya está en el recinto de depósito.'},
+        {d:'out',t:'22:48',h:'Para presentar su declaración de ingreso (DIN) nos faltan 2 documentos:<div class="check"><div>Factura comercial <span class="pill ok">Recibido</span></div><div>BL endosado <span class="pill ok">Recibido</span></div><div>Declaración jurada de precio <span class="pill no">Falta</span></div><div>Certificado de origen <span class="pill no">Falta</span></div></div>'}
+      ]
+    },
+    {
+      key:'Documentos', when:'Escena 2 · Martes 22:52', title:'Los documentos llegan por el mismo chat.',
+      text:'El cliente envía el certificado de origen y recibe la declaración jurada para firmar. Todo queda en la carpeta de la operación, no en un teléfono personal.',
+      pain:'Dolor 02 y 05', rule:'<b>Regla:</b> el agente recibe y ordena. La revisión técnica de cada documento la hace su ejecutiva.',
+      actors:[['Cliente','Envía el PDF desde el celular, sin buscar un correo.',1],['Agente IA','Guarda el archivo y envía el formulario de declaración jurada.',1],['Ejecutiva','Recibe la tarea: revisar el certificado de origen a las 9:00.',1],['Sistema','Carpeta actualizada: 3 de 4 documentos.',1]],
+      msgs:[
+        {d:'in',t:'22:52',file:['PDF','certificado_origen.pdf','1 página · 214 kB']},
+        {d:'in',t:'22:52',h:'La declaración jurada no la tengo'},
+        {d:'out',t:'22:53',h:'Recibido el certificado de origen, quedó en la carpeta de su operación.'},
+        {d:'out',t:'22:53',file:['PDF','declaracion_jurada_precio.pdf','Formulario para firmar']},
+        {d:'out',t:'22:53',h:'Aquí está la declaración jurada. Puede devolverla firmada por este chat y mañana Carolina, su ejecutiva, revisa todo a primera hora.'},
+        {sys:'Tarea creada para Carolina · mañana 09:00'}
+      ]
+    },
+    {
+      key:'Provisión de fondos', when:'Escena 3 · Miércoles 10:05', title:'La provisión de fondos se cobra sola.',
+      text:'Carolina revisa los documentos y prepara la provisión. El agente la envía, recibe el comprobante y lo pasa a tesorería.',
+      pain:'Dolor 03', rule:'<b>Regla:</b> el monto lo prepara y aprueba la ejecutiva. El agente nunca calcula ni negocia cifras.',
+      actors:[['Ejecutiva','Aprueba el detalle de la provisión en el sistema.',1],['Agente IA','Envía el aviso con plantilla aprobada por Meta.',1],['Cliente','Transfiere y manda el comprobante por el chat.',1],['Tesorería','Recibe el comprobante para validar el pago.',1]],
+      msgs:[
+        {day:'MIÉRCOLES'},
+        {d:'out',tpl:1,t:'10:05',h:'<span class="tag">Aviso de su agencia</span>Carolina revisó sus documentos: su carpeta está completa. Esta es la provisión de fondos para pagar derechos, IVA y gastos de su operación:<div class="money"><div class="row"><span>Derechos e IVA</span><span>$3.996.400</span></div><div class="row"><span>Gastos y honorarios</span><span>$815.900</span></div><div class="row tot"><span>Total CLP</span><span>$4.812.300</span></div><div class="note">PROVISIÓN N° 1187 · DATOS FICTICIOS</div></div><div class="wa-btn">Ver detalle y datos de transferencia</div>'},
+        {d:'in',t:'11:42',file:['IMG','comprobante_transferencia.jpg','Imagen · 380 kB'],img:1},
+        {d:'out',t:'11:42',h:'Comprobante recibido. Lo validamos con tesorería y le confirmamos por aquí.'},
+        {sys:'Comprobante enviado a tesorería'}
+      ]
+    },
+    {
+      key:'Aforo', when:'Escena 4 · Miércoles 16:30', title:'Aviso de aforo, y una pregunta que no le toca al agente.',
+      text:'La DIN fue aceptada y la carga quedó seleccionada para aforo físico. El agente avisa. Cuando el cliente pide un plazo, deriva a Carolina con todo el contexto.',
+      pain:'Dolor 01', rule:'<b>Regla:</b> el agente no promete plazos que dependen de Aduanas o del recinto. Deriva a una persona.',
+      actors:[['Sistema','Cambio de estado: seleccionada para aforo físico.',1],['Agente IA','Envía el aviso y detecta una pregunta sensible.',1],['Ejecutiva','Recibe la conversación con el historial y llama al cliente.',1],['Cliente','Sabe qué pasa antes de tener que preguntar.',1]],
+      msgs:[
+        {d:'out',tpl:1,t:'16:30',h:'<span class="tag">Aviso de su agencia</span>Su DIN fue aceptada y la carga fue seleccionada para <b>aforo físico</b>. Es una revisión de Aduanas; le avisamos apenas tengamos el resultado.'},
+        {d:'in',t:'16:34',h:'¿Eso atrasa mucho? Tengo clientes esperando'},
+        {d:'out',t:'16:34',h:'Depende de la programación del recinto, así que no le quiero dar una fecha que no podamos cumplir. Le pido a Carolina que lo llame hoy.'},
+        {sys:'Derivado a Carolina con el historial completo'}
+      ]
+    },
+    {
+      key:'Liberación', when:'Escena 5 · Jueves 11:20', title:'Carga liberada, y una venta más.',
+      text:'Con el aforo listo, el agente avisa la liberación y ofrece el retiro y transporte a bodega. La oportunidad queda en el CRM para el área de transporte.',
+      pain:'Dolor 04 y 05', rule:'<b>Regla:</b> cada operación cierra con su historial completo en una bandeja compartida.',
+      actors:[['Agente IA','Avisa la liberación y ofrece el transporte local.',1],['Cliente','Acepta el retiro desde el mismo chat.',1],['Transporte','Recibe la oportunidad con origen y destino.',1],['CRM','Operación cerrada. Encuesta de satisfacción programada.',1]],
+      msgs:[
+        {day:'JUEVES'},
+        {d:'out',tpl:1,t:'11:20',h:'<span class="tag">Aviso de su agencia</span>Buenas noticias: su carga fue <b>liberada</b>. ¿Coordinamos el retiro y el transporte a su bodega en Quilicura?'},
+        {d:'in',t:'11:26',h:'Sí, por favor'},
+        {d:'out',t:'11:26',h:'Listo. Un ejecutivo de transporte le escribe hoy con la cotización.'},
+        {sys:'Oportunidad de transporte creada en el CRM'}
+      ]
+    }
+  ];
+
+  var chat=document.getElementById('chat'), stepsEl=document.getElementById('steps'), actorsEl=document.getElementById('actors');
+  var bar=document.getElementById('bar'), playBtn=document.getElementById('play'), statusEl=document.getElementById('wa-status');
+  var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cur=0, playing=!reduce, timers=[], tick=null, t0=0, DWELL=5200;
+
+  SCENES.forEach(function(s,i){
+    var b=document.createElement('button'); b.type='button'; b.className='step';
+    b.innerHTML='<span class="k">0'+(i+1)+'</span>'+s.key;
+    b.addEventListener('click',function(){go(i,true)}); stepsEl.appendChild(b);
+  });
+
+  function clear(){timers.forEach(clearTimeout);timers=[];if(tick){clearInterval(tick);tick=null}}
+  function bubble(m){
+    var el=document.createElement('div');
+    if(m.day){el.className='day';el.textContent=m.day;return el}
+    if(m.sys){el.className='sys';el.textContent=m.sys;return el}
+    el.className='b '+m.d+(m.tpl?' tpl':'')+(m.file?' file':'');
+    if(m.file){
+      el.innerHTML='<div class="ic'+(m.img?' img':'')+'">'+m.file[0]+'</div><div><div class="fn">'+m.file[1]+'</div><div class="fs">'+m.file[2]+' · '+m.t+'</div></div>';
+    } else {
+      el.innerHTML=m.h+'<span class="tm">'+m.t+'</span>';
+    }
+    return el;
+  }
+  function scroll(){chat.scrollTop=chat.scrollHeight}
+  function renderSide(s,i){
+    document.getElementById('sc-when').textContent=s.when;
+    document.getElementById('sc-title').textContent=s.title;
+    document.getElementById('sc-text').textContent=s.text;
+    document.getElementById('sc-pain').innerHTML='<b>RESUELVE</b><span>'+s.pain+'</span>';
+    document.getElementById('sc-rule').innerHTML=s.rule;
+    actorsEl.innerHTML='';
+    s.actors.forEach(function(a,j){
+      var d=document.createElement('div'); d.className='actor '+(a[2]?'':'idle');
+      d.innerHTML='<div class="who"><i></i>'+a[0]+'</div><p>'+a[1]+'</p>';
+      actorsEl.appendChild(d);
+    });
+    Array.prototype.forEach.call(stepsEl.children,function(b,j){
+      b.setAttribute('aria-current',j===i?'true':'false'); b.classList.toggle('done',j<i);
+    });
+  }
+  function lightActor(j){var a=actorsEl.children[j];if(a&&!a.classList.contains('idle'))a.classList.add('on')}
+  function go(i,user){
+    clear(); cur=(i+SCENES.length)%SCENES.length; var s=SCENES[cur];
+    renderSide(s,cur);
+    chat.innerHTML=''; bar.style.width='0%';
+    if(!playing||reduce){
+      s.msgs.forEach(function(m){chat.appendChild(bubble(m))});
+      Array.prototype.forEach.call(actorsEl.children,function(a,j){lightActor(j)});
+      statusEl.textContent='cuenta de empresa · en línea'; scroll(); return;
+    }
+    var t=200, ai=0;
+    s.msgs.forEach(function(m){
+      if(m.d==='out' && !m.file){
+        timers.push(setTimeout(function(){statusEl.textContent='escribiendo…';var ty=document.createElement('div');ty.className='typing';ty.id='ty';ty.innerHTML='<span></span><span></span><span></span>';chat.appendChild(ty);scroll()},t));
+        t+=1100;
+      }
+      timers.push(setTimeout(function(){var ty=document.getElementById('ty');if(ty)ty.remove();statusEl.textContent='cuenta de empresa · en línea';chat.appendChild(bubble(m));scroll();lightActor(ai%4);ai++},t));
+      t+= m.day?350:(m.sys?900:1300);
+    });
+    var total=t+DWELL; t0=Date.now();
+    tick=setInterval(function(){var p=Math.min(1,(Date.now()-t0)/total);bar.style.width=(p*100)+'%'},120);
+    timers.push(setTimeout(function(){go(cur+1)},total));
+  }
+  document.getElementById('prev').addEventListener('click',function(){go(cur-1,true)});
+  document.getElementById('next').addEventListener('click',function(){go(cur+1,true)});
+  playBtn.addEventListener('click',function(){
+    playing=!playing; playBtn.textContent=playing?'Pausar':'Reproducir';
+    if(playing){go(cur)} else {clear();bar.style.width='0%';go(cur)}
+  });
+  if(reduce){playBtn.textContent='Reproducir';playing=false}
+
+  // Escena 1 visible desde el inicio; la animación parte cuando el caso entra en pantalla.
+  renderSide(SCENES[0],0);
+  Array.prototype.forEach.call(actorsEl.children,function(a,j){lightActor(j)});
+  var started=false;
+  function start(){if(started||!playing)return;started=true;go(0)}
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){start();io.disconnect()}})},{threshold:.35});
+    io.observe(document.querySelector('.stage'));
+  } else { start() }
+})();
+</script>
+<script is:inline>
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('[data-track]');if(!a)return;
+if(typeof window.gtag==='function'){window.gtag('event',a.getAttribute('data-track'),{page_path:location.pathname,placement:(a.closest('section')||{}).id||'header'})}});
+</script>
+</body>
+</html>

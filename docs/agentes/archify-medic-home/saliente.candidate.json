@@ -1,0 +1,212 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Medic Home · Flujo saliente (confirmaciones y devoluciones)",
+    "locale": "es",
+    "quality_profile": "showcase",
+    "output": ".archify/workflow-medic-home-saliente-20261112-0110/medic-home-saliente.html",
+    "views": [
+      {
+        "id": "recordatorio",
+        "label": "Recordatorio",
+        "focus": [
+          "disparador",
+          "lista",
+          "whatsapp",
+          "paciente",
+          "resultado"
+        ],
+        "note": "El asistente escribe primero por WhatsApp desde el número oficial."
+      },
+      {
+        "id": "sinrespuesta",
+        "label": "Sin respuesta",
+        "focus": [
+          "whatsapp",
+          "llamada",
+          "resultado"
+        ],
+        "note": "Si no responde, el asistente llama desde el 600."
+      },
+      {
+        "id": "devolucion",
+        "label": "Llamada perdida",
+        "focus": [
+          "lista",
+          "devuelve",
+          "resultado"
+        ],
+        "note": "Cada llamada abandonada se devuelve con responsable y plazo."
+      }
+    ]
+  },
+  "lanes": [
+    {
+      "id": "ldatos",
+      "label": "Agenda y CRM"
+    },
+    {
+      "id": "lia",
+      "label": "Asistente IA · n8n"
+    },
+    {
+      "id": "lequipo",
+      "label": "Equipo · Chatwoot",
+      "variant": "exception"
+    },
+    {
+      "id": "lcanales",
+      "label": "Canales"
+    },
+    {
+      "id": "lpaciente",
+      "label": "Paciente"
+    }
+  ],
+  "mainPath": [
+    "disparador",
+    "lista",
+    "whatsapp",
+    "paciente",
+    "resultado"
+  ],
+  "nodes": [
+    {
+      "id": "disparador",
+      "lane": "ldatos",
+      "col": 0,
+      "type": "database",
+      "icon": "calendar",
+      "label": "Disparador",
+      "sublabel": "visita mañana o perdida"
+    },
+    {
+      "id": "lista",
+      "lane": "lia",
+      "col": 1,
+      "type": "backend",
+      "label": "Lista del día",
+      "sublabel": "solo pacientes activos"
+    },
+    {
+      "id": "whatsapp",
+      "lane": "lcanales",
+      "col": 2,
+      "type": "frontend",
+      "label": "WhatsApp oficial",
+      "sublabel": "plantilla de Meta"
+    },
+    {
+      "id": "paciente",
+      "lane": "lpaciente",
+      "col": 3,
+      "type": "external",
+      "icon": "person",
+      "label": "Paciente",
+      "sublabel": "confirma o cambia"
+    },
+    {
+      "id": "llamada",
+      "lane": "lcanales",
+      "col": 4,
+      "type": "frontend",
+      "label": "Llamada desde el 600",
+      "sublabel": "asistente de voz"
+    },
+    {
+      "id": "devuelve",
+      "lane": "lequipo",
+      "col": 3,
+      "type": "frontend",
+      "icon": "person",
+      "label": "Ejecutivo devuelve",
+      "sublabel": "un clic desde Chatwoot"
+    },
+    {
+      "id": "resultado",
+      "lane": "ldatos",
+      "col": 5,
+      "type": "database",
+      "icon": "success",
+      "label": "Resultado",
+      "sublabel": "agenda y ficha al día"
+    }
+  ],
+  "edges": [
+    {
+      "id": "genera",
+      "from": "disparador",
+      "to": "lista",
+      "variant": "emphasis"
+    },
+    {
+      "id": "envia",
+      "from": "lista",
+      "to": "whatsapp",
+      "label": "envía",
+      "variant": "emphasis"
+    },
+    {
+      "id": "recibe",
+      "from": "whatsapp",
+      "to": "paciente",
+      "variant": "emphasis"
+    },
+    {
+      "id": "confirma",
+      "from": "paciente",
+      "to": "resultado",
+      "label": "responde",
+      "variant": "emphasis"
+    },
+    {
+      "id": "insiste",
+      "from": "whatsapp",
+      "to": "llamada",
+      "label": "sin respuesta",
+      "variant": "dashed",
+      "role": "branch"
+    },
+    {
+      "id": "voz",
+      "from": "llamada",
+      "to": "resultado",
+      "label": "confirma",
+      "variant": "default"
+    },
+    {
+      "id": "perdidas",
+      "from": "lista",
+      "to": "devuelve",
+      "label": "perdidas",
+      "variant": "default",
+      "role": "branch"
+    },
+    {
+      "id": "cierra",
+      "from": "devuelve",
+      "to": "resultado",
+      "label": "registra",
+      "variant": "default"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Hoy con CloudTalk",
+      "items": [
+        "Cada ejecutivo marca a mano, a veces desde su celular",
+        "Las llamadas perdidas no se devuelven de forma sistemática"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Con la propuesta",
+      "items": [
+        "Las confirmaciones de rutina las hace el asistente",
+        "Siempre sale el 600 o el WhatsApp oficial de Medic Home"
+      ]
+    }
+  ]
+}

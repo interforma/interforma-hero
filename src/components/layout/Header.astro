@@ -340,10 +340,28 @@ import { navigation } from '@config/navigation';
       if (e.key === 'Escape' && isOpen) closeMenu();
     });
 
+    // Mapa de anclas desktop → nodos del chat móvil
+    const anchorToChatNode: Record<string, string> = {
+      '/#metodo': 'metodo',
+      '/#servicios': 'capacidades',
+      '/#sectores': 'sectores',
+      '/#contacto': 'contacto',
+    };
+
     overlay.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((link) => {
-      link.addEventListener('click', () => {
+      link.addEventListener('click', (e) => {
         closeMenu();
         track({ name: 'nav_click', properties: { destination: link.getAttribute('href'), placement: 'mobile_menu' } });
+
+        // En móvil con PuntoChat activo: navegar en el chat en vez de scroll a ancla
+        const chatEl = document.getElementById('punto-chat');
+        const href = link.getAttribute('href') || '';
+        const chatNodeId = anchorToChatNode[href];
+        if (chatEl && chatNodeId && window.innerWidth <= 640) {
+          e.preventDefault();
+          // Disparar evento custom que PuntoChat escucha
+          chatEl.dispatchEvent(new CustomEvent('punto-navigate', { detail: chatNodeId }));
+        }
       });
     });
   }

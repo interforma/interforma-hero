@@ -1,0 +1,523 @@
+---
+// EscenariosAgentes.astro — «Velo funcionar»: dos escenarios navegables de Interforma Agents en /agentes.
+// Datos ficticios en src/lib/escenarios.ts. Sin nombres de clientes reales.
+import { escenarios, type EscStep } from '@lib/escenarios';
+
+const stepData = (steps: EscStep[]) => steps.map((s) => ({ label: s.label, heading: s.heading, cost: s.cost, hint: s.hint ?? '' }));
+const join = (list?: string[]) => (list ? list.join(' ') : undefined);
+---
+
+<section id="escenarios" class="esc" aria-labelledby="esc-heading">
+  <div class="esc__container">
+    <header class="esc__header">
+      <p class="esc__eyebrow" aria-hidden="true">Ejemplos de uso</p>
+      <h2 id="esc-heading" class="esc__h2">Velo funcionar, paso a paso.</h2>
+      <p class="esc__lead">
+        Dos recorridos completos con datos de ejemplo: lo que ve tu cliente en WhatsApp y lo que pasa
+        en tu negocio en cada momento. Avanza a tu ritmo y elige cómo responde el cliente.
+      </p>
+    </header>
+
+    <div class="esc__tabs" role="tablist" aria-label="Escenarios de ejemplo">
+      {escenarios.map((e, i) => (
+        <button
+          type="button"
+          role="tab"
+          class="esc__tab"
+          id={`esc-tab-${e.id}`}
+          aria-controls={`esc-panel-${e.id}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          tabindex={i === 0 ? 0 : -1}
+          data-esc-tab={e.id}
+        >{e.tab}</button>
+      ))}
+    </div>
+
+    {escenarios.map((e, i) => (
+      <div
+        class="esc-demo"
+        role="tabpanel"
+        id={`esc-panel-${e.id}`}
+        aria-labelledby={`esc-tab-${e.id}`}
+        hidden={i !== 0}
+        data-esc-demo={e.id}
+        data-steps={JSON.stringify(stepData(e.steps))}
+        data-choice-step={e.choice.step}
+        data-choice-default={e.choice.default}
+      >
+        <div class="esc-demo__intro">
+          <h3 class="esc-demo__title">{e.title}</h3>
+          <p class="esc-demo__text">{e.intro}</p>
+        </div>
+
+        <div class="esc-demo__grid">
+          <ol class="esc-steps" aria-label="Pasos del recorrido">
+            {e.steps.map((s, n) => (
+              <li>
+                <button type="button" class="esc-steps__btn" data-goto={n + 1} aria-current={n === 0 ? 'step' : undefined}>
+                  <span class="esc-steps__num">{String(n + 1).padStart(2, '0')}</span>
+                  <span class="esc-steps__label">{s.label}</span>
+                </button>
+              </li>
+            ))}
+          </ol>
+
+          <div class="esc-phone" aria-label={`Conversación de WhatsApp con ${e.business.name}`} role="region">
+            <div class="esc-phone__head">
+              <span class="esc-phone__avatar" aria-hidden="true">{e.business.initials}</span>
+              <span class="esc-phone__who">
+                <span class="esc-phone__name">{e.business.name}</span>
+                <span class="esc-phone__sub">Cuenta de empresa · WhatsApp</span>
+              </span>
+            </div>
+            <div class="esc-phone__chat" data-esc-chat aria-live="polite">
+              {e.messages.map((m) => (
+                <div
+                  class={`esc-msg esc-msg--${m.from}${m.tone ? ` esc-msg--${m.tone}` : ''}${m.ad ? ' esc-msg--ad' : ''}${m.template ? ' esc-msg--tpl' : ''}`}
+                  data-step={m.step}
+                  data-until={m.until}
+                  data-outcome={join(m.outcome)}
+                  hidden
+                >
+                  {m.ad ? (
+                    <div class="esc-ad">
+                      <div class="esc-ad__top">
+                        <span class="esc-ad__logo" aria-hidden="true">{e.business.initials}</span>
+                        <span><strong>{m.ad.brand}</strong><small>Publicidad</small></span>
+                      </div>
+                      <div class="esc-ad__visual">
+                        <span class="esc-ad__kicker">{m.ad.kicker}</span>
+                        <span class="esc-ad__title">{m.ad.title}</span>
+                      </div>
+                      <p class="esc-ad__body">{m.ad.body}</p>
+                      <button type="button" class="esc-ad__cta" data-esc-next>{m.ad.cta}</button>
+                    </div>
+                  ) : m.file ? (
+                    <div class="esc-file">
+                      <span class="esc-file__icon" aria-hidden="true">PDF</span>
+                      <span><strong>{m.file.name}</strong><small>{m.file.meta}</small></span>
+                    </div>
+                  ) : (
+                    <>
+                      {m.who && <strong class="esc-msg__who">{m.who}</strong>}
+                      <span class="esc-msg__text">{m.text}</span>
+                      {(m.template || m.time) && (
+                        <span class="esc-msg__meta">
+                          <span>{m.template ? m.template.label : ''}</span>
+                          <span>{m.time}</span>
+                        </span>
+                      )}
+                      {m.template && (
+                        <span class="esc-msg__buttons">
+                          {m.template.buttons.map((b, bi) =>
+                            m.template?.pick ? (
+                              <button type="button" class="esc-msg__btn" data-esc-pick={m.template.pick[bi]} data-pick-step={m.step}>{b}</button>
+                            ) : (
+                              <span class="esc-msg__btn" aria-hidden="true">{b}</span>
+                            )
+                          )}
+                        </span>
+                      )}
+                    </>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div class="esc-phone__input" aria-hidden="true">Mensaje</div>
+          </div>
+
+          <div class="esc-choice" role="group" aria-label={e.choice.prompt}>
+            <p class="esc-choice__prompt">{e.choice.prompt}</p>
+            <div class="esc-choice__options">
+              {e.choice.options.map((o) => (
+                <button type="button" class="esc-choice__btn" data-esc-choice={o.id} aria-pressed="false">{o.label}</button>
+              ))}
+            </div>
+          </div>
+
+          <div class="esc-nav">
+            <button type="button" class="esc-nav__btn" data-esc-prev>Anterior</button>
+            <button type="button" class="esc-nav__btn esc-nav__btn--primary" data-esc-next>Siguiente</button>
+            <button type="button" class="esc-nav__btn esc-nav__btn--icon" data-esc-reset aria-label="Volver al inicio del recorrido">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"></path><path d="M3 4v5h5"></path></svg>
+            </button>
+          </div>
+
+          <div class="esc-panel">
+            <p class="esc-panel__eyebrow" data-esc-eyebrow>Paso 1</p>
+            <h4 class="esc-panel__h" data-esc-heading aria-live="polite"></h4>
+            <p class="esc-panel__hint" data-esc-hint hidden></p>
+
+            {e.cards.map((c) => (
+              <article class="esc-card" data-step={c.step} data-outcome={join(c.outcome)} hidden>
+                <div class="esc-card__top">
+                  <span class="esc-card__label">{c.label}</span>
+                  {c.badge && <span class={`esc-badge esc-badge--${c.badge.tone}`}>{c.badge.text}</span>}
+                </div>
+                <p class="esc-card__title">{c.title}</p>
+                {c.body && <p class="esc-card__body">{c.body}</p>}
+                {c.fields && (
+                  <dl class="esc-card__fields">
+                    {c.fields.map(([k, v]) => (
+                      <div><dt>{k}</dt><dd>{v}</dd></div>
+                    ))}
+                  </dl>
+                )}
+              </article>
+            ))}
+
+            <details class="esc-inside" data-esc-inside>
+              <summary>¿Qué pasa por dentro?</summary>
+              {e.flows.map((f) => (
+                <div class="esc-flow" data-step={f.step} data-outcome={join(f.outcome)} hidden>
+                  <p class="esc-flow__title"><strong>{f.title}</strong> · {f.type}</p>
+                  <ol class="esc-flow__chain">
+                    {f.nodes.map((nd, ni) => (
+                      <li class="esc-flow__item">
+                        {ni > 0 && <span class="esc-flow__arrow" aria-hidden="true">→</span>}
+                        <span class={`esc-node esc-node--${nd.kind}`}>{nd.label}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              ))}
+              <ul class="esc-legend" aria-label="Leyenda">
+                <li><span class="esc-node esc-node--cliente">Tu cliente</span></li>
+                <li><span class="esc-node esc-node--meta">WhatsApp oficial</span></li>
+                <li><span class="esc-node esc-node--agents">Interforma Agents</span></li>
+                <li><span class="esc-node esc-node--plantilla">Mensaje aprobado por Meta</span></li>
+              </ul>
+            </details>
+
+            <div class="esc-cost">
+              <span>Costo de WhatsApp de este recorrido</span>
+              <strong data-esc-cost>US$0,00</strong>
+            </div>
+            <p class="esc-panel__note">Ejemplo con datos ficticios. Costos estimados según la tarifa de Meta para Chile; cada empresa paga su consumo directamente a Meta.</p>
+          </div>
+        </div>
+      </div>
+    ))}
+
+    <aside class="esc-sector" aria-labelledby="esc-sector-heading">
+      <div class="esc-sector__text">
+        <p class="esc-sector__eyebrow">Caso por sector · Agencias de aduana</p>
+        <h3 id="esc-sector-heading" class="esc-sector__h">Una importación de punta a punta: estado de la carga, documentos, provisión de fondos y aforo.</h3>
+        <p class="esc-sector__body">Mira cómo un agente le quita a tu agencia las preguntas de siempre, con tus ejecutivos aprobando cada monto.</p>
+      </div>
+      <div class="esc-sector__actions">
+        <a class="esc-sector__btn esc-sector__btn--primary" href="/agentes/aduanas" data-sector-link="open">Ver el caso animado</a>
+        <a class="esc-sector__btn" href="/descargas/Interforma-Agente-WhatsApp-Agencias-de-Aduana.pdf" download data-sector-link="pdf">Descargar PDF</a>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<script>
+  import { track } from '@lib/analytics/track';
+
+  type StepInfo = { label: string; heading: string | Record<string, string>; cost: string | Record<string, string>; hint: string };
+
+  const pick = (v: string | Record<string, string>, outcome: string | null) =>
+    typeof v === 'string' ? v : (outcome && v[outcome]) || Object.values(v)[0];
+
+  function initDemo(root: HTMLElement) {
+    const id = root.dataset.escDemo || '';
+    const steps: StepInfo[] = JSON.parse(root.dataset.steps || '[]');
+    const choiceStep = Number(root.dataset.choiceStep || steps.length);
+    const choiceDefault = root.dataset.choiceDefault || '';
+    const total = steps.length;
+    let step = 1;
+    let outcome: string | null = null;
+
+    const chat = root.querySelector<HTMLElement>('[data-esc-chat]');
+    const eyebrow = root.querySelector<HTMLElement>('[data-esc-eyebrow]');
+    const heading = root.querySelector<HTMLElement>('[data-esc-heading]');
+    const hint = root.querySelector<HTMLElement>('[data-esc-hint]');
+    const cost = root.querySelector<HTMLElement>('[data-esc-cost]');
+
+    const effective = () => outcome ?? (step >= choiceStep ? choiceDefault : null);
+    const matches = (el: HTMLElement, eff: string | null) => {
+      const list = el.dataset.outcome;
+      return !list || (!!eff && list.split(' ').includes(eff));
+    };
+
+    function render() {
+      const eff = effective();
+      const info = steps[step - 1];
+
+      root.querySelectorAll<HTMLElement>('.esc-msg').forEach((el) => {
+        const from = Number(el.dataset.step);
+        const until = el.dataset.until ? Number(el.dataset.until) : Infinity;
+        el.hidden = !(step >= from && step <= until && matches(el, eff));
+      });
+      root.querySelectorAll<HTMLElement>('.esc-card, .esc-flow').forEach((el) => {
+        el.hidden = !(Number(el.dataset.step) === step && matches(el, eff));
+      });
+      root.querySelectorAll<HTMLButtonElement>('[data-esc-pick]').forEach((b) => {
+        b.disabled = Number(b.dataset.pickStep) !== step;
+      });
+      root.querySelectorAll<HTMLButtonElement>('[data-goto]').forEach((b) => {
+        const n = Number(b.dataset.goto);
+        b.classList.toggle('is-done', n < step);
+        if (n === step) b.setAttribute('aria-current', 'step');
+        else b.removeAttribute('aria-current');
+      });
+      root.querySelectorAll<HTMLButtonElement>('[data-esc-choice]').forEach((b) => {
+        b.setAttribute('aria-pressed', String(step >= choiceStep && b.dataset.escChoice === eff));
+      });
+      root.querySelectorAll<HTMLButtonElement>('[data-esc-prev]').forEach((b) => (b.disabled = step === 1));
+      root.querySelectorAll<HTMLButtonElement>('.esc-nav [data-esc-next]').forEach((b) => (b.disabled = step === total));
+
+      if (eyebrow) eyebrow.textContent = `Paso ${step} de ${total} · ${info.label}`;
+      if (heading) heading.textContent = pick(info.heading, eff);
+      if (hint) {
+        hint.textContent = info.hint;
+        hint.hidden = !info.hint;
+      }
+      if (cost) cost.textContent = pick(info.cost, eff);
+      if (chat) requestAnimationFrame(() => chat.scrollTo({ top: chat.scrollHeight, behavior: 'smooth' }));
+    }
+
+    function go(n: number, source: string) {
+      const next = Math.min(total, Math.max(1, n));
+      if (next < choiceStep) outcome = null;
+      if (next === step) return render();
+      step = next;
+      render();
+      track('agents_scenario_step', { scenario: id, step, source, page: 'agentes' });
+    }
+
+    function choose(value: string, source: string) {
+      outcome = value;
+      step = Math.max(step, choiceStep);
+      render();
+      track('agents_scenario_outcome', { scenario: id, outcome: value, source, page: 'agentes' });
+    }
+
+    root.addEventListener('click', (ev) => {
+      const t = (ev.target as HTMLElement).closest<HTMLElement>('button');
+      if (!t || !root.contains(t) || (t as HTMLButtonElement).disabled) return;
+      if (t.dataset.goto) go(Number(t.dataset.goto), 'step_list');
+      else if (t.dataset.escPick) choose(t.dataset.escPick, 'phone');
+      else if (t.dataset.escChoice) choose(t.dataset.escChoice, 'buttons');
+      else if (t.hasAttribute('data-esc-next')) go(step + 1, t.closest('.esc-phone') ? 'phone' : 'next');
+      else if (t.hasAttribute('data-esc-prev')) go(step - 1, 'prev');
+      else if (t.hasAttribute('data-esc-reset')) { outcome = null; go(1, 'reset'); }
+    });
+
+    root.querySelector('[data-esc-inside]')?.addEventListener('toggle', (ev) => {
+      if ((ev.currentTarget as HTMLDetailsElement).open) track('agents_scenario_inside', { scenario: id, step, page: 'agentes' });
+    });
+
+    render();
+  }
+
+  function initTabs(section: HTMLElement) {
+    const tabs = Array.from(section.querySelectorAll<HTMLButtonElement>('[data-esc-tab]'));
+    const select = (tab: HTMLButtonElement, focus: boolean) => {
+      tabs.forEach((t) => {
+        const on = t === tab;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        const panel = section.querySelector<HTMLElement>(`#${t.getAttribute('aria-controls')}`);
+        if (panel) panel.hidden = !on;
+      });
+      if (focus) tab.focus();
+    };
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => {
+        if (tab.getAttribute('aria-selected') === 'true') return;
+        select(tab, false);
+        track('agents_scenario_tab', { scenario: tab.dataset.escTab, page: 'agentes' });
+      });
+      tab.addEventListener('keydown', (ev) => {
+        const d = ev.key === 'ArrowRight' ? 1 : ev.key === 'ArrowLeft' ? -1 : 0;
+        if (!d) return;
+        ev.preventDefault();
+        select(tabs[(i + d + tabs.length) % tabs.length], true);
+      });
+    });
+  }
+
+  document.querySelectorAll<HTMLElement>('#escenarios').forEach(initTabs);
+  document.querySelectorAll<HTMLElement>('[data-esc-demo]').forEach(initDemo);
+  document.querySelectorAll<HTMLAnchorElement>('[data-sector-link]').forEach((a) =>
+    a.addEventListener('click', () =>
+      track(a.dataset.sectorLink === 'pdf' ? 'agents_sector_pdf_download' : 'agents_sector_case_open', { sector: 'aduanas', page: 'agentes' })));
+</script>
+
+<style>
+  .esc { padding: 96px 0; background: var(--paper); }
+  .esc__container { max-width: 1280px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 72px); }
+  .esc__header { max-width: 760px; display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
+  .esc__eyebrow { margin: 0; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--agents-700); }
+  .esc__h2 { margin: 0; font-family: var(--font-family-heading); font-weight: var(--font-weight-heading); font-size: clamp(30px, 3.6vw, 44px); line-height: 1.1; letter-spacing: -0.02em; color: var(--ink); }
+  .esc__lead { margin: 0; font-size: 17px; line-height: 1.6; color: var(--gray-500); }
+
+  .esc__tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+  .esc__tab { min-height: 44px; padding: 0 18px; border-radius: var(--radius-badge); border: 1px solid var(--gray-200); background: var(--white); color: var(--ink); font: 600 15px var(--font-family-ui); cursor: pointer; }
+  .esc__tab[aria-selected='true'] { background: var(--ink); border-color: var(--ink); color: var(--white); }
+  .esc__tab:focus-visible, .esc-demo button:focus-visible, .esc-inside summary:focus-visible { outline: 2px solid var(--brand-800); outline-offset: 2px; }
+
+  .esc-demo__intro { margin-bottom: 24px; }
+  .esc-demo__title { margin: 0 0 6px; font-family: var(--font-family-heading); font-weight: var(--font-weight-heading); font-size: 24px; letter-spacing: -0.02em; color: var(--ink); }
+  .esc-demo__text { margin: 0; font-size: 15px; color: var(--gray-500); }
+
+  .esc-demo__grid {
+    display: grid;
+    gap: 20px 32px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'steps' 'phone' 'choice' 'nav' 'panel';
+  }
+  .esc-steps { grid-area: steps; }
+  .esc-phone { grid-area: phone; }
+  .esc-choice { grid-area: choice; }
+  .esc-nav { grid-area: nav; }
+  .esc-panel { grid-area: panel; }
+
+  @media (min-width: 760px) {
+    .esc-demo__grid {
+      grid-template-columns: 340px minmax(0, 1fr);
+      grid-template-areas: 'steps steps' 'phone panel' 'choice panel' 'nav panel';
+      align-items: start;
+    }
+  }
+  @media (min-width: 1140px) {
+    .esc-demo__grid {
+      grid-template-columns: 250px 360px minmax(0, 1fr);
+      grid-template-areas: 'steps phone panel' 'choice phone panel' 'nav phone panel';
+      grid-template-rows: auto auto 1fr;
+    }
+  }
+
+  /* Pasos */
+  .esc-steps { margin: 0; padding: 0; list-style: none; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: thin; }
+  @media (min-width: 1140px) { .esc-steps { flex-direction: column; overflow: visible; } }
+  .esc-steps li { flex-shrink: 0; }
+  .esc-steps__btn { width: 100%; min-height: 44px; display: flex; align-items: center; gap: 10px; padding: 6px 12px; border-radius: var(--radius-btn); border: 1px solid var(--gray-200); background: transparent; color: var(--ink); font: 600 14px var(--font-family-ui); text-align: left; cursor: pointer; white-space: nowrap; }
+  @media (min-width: 1140px) { .esc-steps__btn { white-space: normal; } }
+  .esc-steps__num { font-family: var(--font-family-mono); font-size: 12px; font-weight: 400; color: var(--gray-500); }
+  .esc-steps__btn.is-done .esc-steps__num { color: var(--ink); }
+  .esc-steps__btn[aria-current='step'] { background: var(--white); border-color: var(--ink); }
+  .esc-steps__btn[aria-current='step'] .esc-steps__num { color: var(--brand-800); }
+
+  /* Teléfono */
+  .esc-phone { width: 100%; max-width: 360px; justify-self: center; height: 620px; box-sizing: border-box; border: 9px solid var(--ink); border-radius: 42px; background: #EFEBE4; overflow: hidden; display: flex; flex-direction: column; }
+  @media (max-width: 759px) { .esc-phone { height: 540px; } }
+  .esc-phone__head { display: flex; align-items: center; gap: 10px; padding: 16px; background: var(--ink); color: var(--white); }
+  .esc-phone__avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--brand-500); color: var(--ink); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; }
+  .esc-phone__who { display: flex; flex-direction: column; }
+  .esc-phone__name { font-weight: 700; font-size: 15px; }
+  .esc-phone__sub { font-size: 12px; color: var(--stone); }
+  .esc-phone__chat { flex: 1; overflow-y: auto; padding: 14px 12px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 1.45; color: var(--ink); }
+  .esc-phone__input { margin: 8px 10px 14px; min-height: 40px; border-radius: 20px; background: #FFFFFF; display: flex; align-items: center; padding: 0 14px; font-size: 13px; color: var(--gray-500); }
+
+  .esc-msg { flex-shrink: 0; max-width: 86%; padding: 8px 11px; border-radius: 14px; box-shadow: 0 1px 1px rgba(40, 31, 24, 0.08); white-space: pre-line; }
+  .esc-msg[hidden] { display: none; }
+  .esc-msg--empresa { align-self: flex-start; background: #FFFFFF; border-top-left-radius: 4px; }
+  .esc-msg--cliente { align-self: flex-end; background: var(--brand-50); border-top-right-radius: 4px; }
+  .esc-msg--sistema { align-self: center; max-width: 92%; padding: 4px 10px; border-radius: 8px; background: var(--white); color: var(--gray-500); font-size: 12px; box-shadow: none; text-align: center; }
+  .esc-msg--sistema.esc-msg--warn { background: var(--color-warning-50); color: #8A5A00; }
+  .esc-msg--sistema.esc-msg--ok { background: var(--color-success-50); color: var(--color-success-500); }
+  .esc-msg--tpl, .esc-msg--ad { padding: 0; overflow: hidden; }
+  .esc-msg--tpl .esc-msg__text, .esc-msg--tpl .esc-msg__who { display: block; padding: 8px 11px 0; }
+  .esc-msg--ad { max-width: 100%; align-self: stretch; }
+  .esc-msg__who { display: block; font-size: 12px; color: var(--brand-800); }
+  .esc-msg__meta { display: flex; justify-content: space-between; gap: 12px; margin-top: 2px; font-size: 11.5px; color: var(--gray-500); white-space: normal; }
+  .esc-msg--tpl .esc-msg__meta { padding: 4px 11px 8px; }
+  .esc-msg__buttons { display: flex; flex-direction: column; border-top: 1px solid var(--gray-100); }
+  .esc-msg__btn { min-height: 42px; display: flex; align-items: center; justify-content: center; border: 0; border-bottom: 1px solid var(--gray-100); background: transparent; color: var(--color-success-500); font: 600 14px var(--font-family-ui); }
+  .esc-msg__btn:last-child { border-bottom: 0; }
+  button.esc-msg__btn:not(:disabled) { cursor: pointer; background: var(--color-success-50); }
+  button.esc-msg__btn:disabled { color: var(--color-success-500); opacity: 0.75; }
+
+  .esc-ad { background: #FFFFFF; }
+  .esc-ad__top { display: flex; align-items: center; gap: 8px; padding: 10px 12px; }
+  .esc-ad__top span:last-child { display: flex; flex-direction: column; font-size: 13px; }
+  .esc-ad__top small { font-size: 11.5px; color: var(--gray-500); }
+  .esc-ad__logo { width: 28px; height: 28px; border-radius: 50%; background: var(--brand-500); color: var(--ink); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 11px; }
+  .esc-ad__visual { height: 220px; background: var(--ink); display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; padding: 18px; }
+  .esc-ad__kicker { font-family: var(--font-family-mono); font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-500); }
+  .esc-ad__title { font-family: var(--font-family-heading); font-size: 24px; line-height: 1.1; color: var(--white); }
+  .esc-ad__body { margin: 0; padding: 10px 12px; font-size: 13px; }
+  .esc-ad__cta { display: block; width: calc(100% - 24px); margin: 0 12px 12px; min-height: 44px; border: 0; border-radius: 8px; background: var(--brand-500); color: var(--ink); font: 700 14px var(--font-family-ui); cursor: pointer; }
+
+  .esc-file { display: flex; align-items: center; gap: 10px; }
+  .esc-file span:last-child { display: flex; flex-direction: column; font-size: 13px; }
+  .esc-file small { font-size: 11.5px; color: var(--gray-500); }
+  .esc-file__icon { width: 34px; height: 42px; border-radius: 4px; background: var(--color-error-50); color: var(--color-error-500); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+  /* Elección y navegación */
+  .esc-choice { padding: 14px; border-radius: 12px; border: 1px solid var(--gray-200); background: var(--white); }
+  .esc-choice__prompt { margin: 0 0 10px; font-family: var(--font-family-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-500); }
+  .esc-choice__options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .esc-choice__btn { min-height: 44px; border-radius: var(--radius-btn); border: 1px solid var(--gray-200); background: #FFFFFF; color: var(--ink); font: 600 14px var(--font-family-ui); cursor: pointer; }
+  .esc-choice__btn[aria-pressed='true'] { background: var(--ink); border-color: var(--ink); color: var(--white); }
+
+  .esc-nav { display: flex; gap: 8px; }
+  .esc-nav__btn { flex: 1; min-height: 46px; border-radius: var(--radius-btn); border: 1px solid var(--gray-400); background: transparent; color: var(--ink); font: 600 14px var(--font-family-ui); cursor: pointer; }
+  .esc-nav__btn--primary { background: var(--brand-500); border-color: var(--brand-500); font-weight: 700; }
+  .esc-nav__btn--primary:hover:not(:disabled) { background: var(--brand-400); }
+  .esc-nav__btn--icon { flex: 0 0 46px; display: flex; align-items: center; justify-content: center; }
+  .esc-nav__btn:disabled { opacity: 0.45; cursor: default; }
+
+  /* Panel del negocio */
+  .esc-panel { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .esc-panel__eyebrow { margin: 0; font-family: var(--font-family-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-800); }
+  .esc-panel__h { margin: 0; font-family: var(--font-family-heading); font-weight: var(--font-weight-heading); font-size: clamp(22px, 2.4vw, 28px); line-height: 1.2; letter-spacing: -0.02em; color: var(--ink); }
+  .esc-panel__hint { margin: 0; padding: 12px 16px; border-radius: 12px; background: var(--sky); font-size: 14px; color: var(--ink); }
+  .esc-panel__note { margin: 0; font-size: 12.5px; color: var(--gray-500); }
+
+  .esc-card { padding: 18px 20px; border-radius: 12px; border: 1px solid var(--gray-200); background: var(--white); display: flex; flex-direction: column; gap: 8px; }
+  .esc-card[hidden], .esc-flow[hidden] { display: none; }
+  .esc-card__top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .esc-card__label { font-family: var(--font-family-mono); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--gray-500); }
+  .esc-card__title { margin: 0; font-size: 16px; font-weight: 700; color: var(--ink); }
+  .esc-card__body { margin: 0; font-size: 14px; line-height: 1.55; color: var(--gray-500); }
+  .esc-card__fields { margin: 4px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px 20px; }
+  .esc-card__fields dt { font-size: 12px; color: var(--gray-500); }
+  .esc-card__fields dd { margin: 0; font-size: 14px; color: var(--ink); }
+
+  .esc-badge { font-size: 12.5px; font-weight: 600; padding: 2px 10px; border-radius: var(--radius-badge); }
+  .esc-badge--ok { background: var(--color-success-50); color: var(--color-success-500); }
+  .esc-badge--warn { background: var(--color-warning-50); color: #8A5A00; }
+  .esc-badge--bad { background: var(--color-error-50); color: #B3261E; }
+  .esc-badge--info { background: var(--sky); color: var(--ink); }
+
+  .esc-inside { border-radius: 12px; border: 1px solid var(--gray-200); background: var(--white); padding: 0 20px; }
+  .esc-inside summary { min-height: 48px; display: flex; align-items: center; cursor: pointer; font-weight: 700; font-size: 14px; color: var(--ink); }
+  .esc-inside[open] { padding-bottom: 16px; }
+  .esc-flow { margin-bottom: 12px; }
+  .esc-flow__title { margin: 0 0 6px; font-size: 13px; color: var(--gray-500); }
+  .esc-flow__title strong { color: var(--ink); }
+  .esc-flow__chain { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+  .esc-flow__item { display: inline-flex; align-items: center; gap: 6px; }
+  .esc-flow__arrow { color: var(--gray-400); font-size: 13px; }
+  .esc-node { display: inline-block; font-size: 12.5px; font-weight: 600; padding: 4px 9px; border-radius: 8px; border: 1px solid transparent; }
+  .esc-node--cliente { background: var(--sky); color: var(--ink); }
+  .esc-node--meta { background: var(--ink); color: var(--white); }
+  .esc-node--agents { background: #FFFFFF; color: var(--ink); border-color: var(--gray-200); }
+  .esc-node--plantilla { background: var(--brand-50); color: var(--brand-900); border-color: var(--brand-100); }
+  .esc-legend { margin: 12px 0 0; padding: 12px 0 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px 10px; border-top: 1px solid var(--gray-100); }
+  .esc-legend .esc-node { font-size: 11.5px; }
+
+  .esc-cost { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 16px 20px; border-radius: 12px; background: var(--ink); color: var(--stone); font-size: 14px; }
+  .esc-cost strong { font-family: var(--font-family-heading); font-weight: var(--font-weight-heading); font-size: 24px; color: var(--brand-500); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .esc-phone__chat { scroll-behavior: auto; }
+  }
+
+  /* Caso por sector */
+  .esc-sector { margin-top: 48px; padding: 28px clamp(20px, 3vw, 36px); border-radius: 16px; background: var(--ink); color: var(--white); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 32px; }
+  .esc-sector__text { flex: 1 1 460px; display: flex; flex-direction: column; gap: 8px; }
+  .esc-sector__eyebrow { margin: 0; font-family: var(--font-family-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-500); }
+  .esc-sector__h { margin: 0; font-family: var(--font-family-heading); font-weight: var(--font-weight-heading); font-size: clamp(20px, 2.2vw, 26px); line-height: 1.2; letter-spacing: -0.02em; text-wrap: balance; }
+  .esc-sector__body { margin: 0; font-size: 15px; color: var(--stone); }
+  .esc-sector__actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .esc-sector__btn { min-height: 46px; display: inline-flex; align-items: center; padding: 0 20px; border-radius: var(--radius-btn); border: 1px solid var(--stone); color: var(--white); font: 600 15px var(--font-family-ui); text-decoration: none; }
+  .esc-sector__btn--primary { background: var(--brand-500); border-color: var(--brand-500); color: var(--ink); font-weight: 700; }
+  .esc-sector__btn--primary:hover { background: var(--brand-400); }
+  .esc-sector__btn:focus-visible { outline: 2px solid var(--brand-500); outline-offset: 3px; }
+</style>

@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Medic Home · Arquitectura del centro de contacto IA",
+    "locale": "es",
+    "quality_profile": "showcase",
+    "output": ".archify/architecture-medic-home-20261112-0120/medic-home-arquitectura.html",
+    "views": [
+      { "id": "canales", "label": "Canales", "focus": ["paciente", "asterisk", "whatsapp"], "note": "El 600 entra por Asterisk y el WhatsApp oficial por la API de Meta." },
+      { "id": "inteligencia", "label": "Inteligencia", "focus": ["orquestador", "agenda"], "note": "Un solo cerebro atiende voz y WhatsApp y consulta la agenda clínica." },
+      { "id": "atencion", "label": "Atención y datos", "focus": ["chatwoot", "ejecutivos", "twenty"], "note": "El equipo atiende en Chatwoot y todo queda en la ficha de Twenty." }
+    ]
+  },
+  "components": [
+    { "id": "paciente", "type": "external", "icon": "person", "label": "Paciente o familiar", "sublabel": "teléfono y WhatsApp", "pos": [40, 200], "size": [140, 64] },
+    { "id": "asterisk", "type": "frontend", "label": "Número 600", "sublabel": "Asterisk · SIP chileno", "pos": [270, 200], "size": [150, 64] },
+    { "id": "whatsapp", "type": "cloud", "label": "WhatsApp oficial", "sublabel": "API de Meta", "pos": [270, 520], "size": [150, 64] },
+    { "id": "agenda", "type": "external", "icon": "calendar", "label": "Agenda clínica", "sublabel": "sistema de Medic Home", "pos": [510, 40], "size": [160, 64] },
+    { "id": "orquestador", "type": "backend", "label": "Orquestador IA", "sublabel": "n8n + LLM · voz y chat", "tag": "reglas de urgencia", "pos": [510, 196], "size": [160, 72] },
+    { "id": "chatwoot", "type": "frontend", "label": "Consola · Chatwoot", "sublabel": "web y app iOS/Android", "pos": [770, 200], "size": [160, 64] },
+    { "id": "twenty", "type": "database", "label": "CRM · Twenty", "sublabel": "ficha e historial", "pos": [770, 380], "size": [160, 64] },
+    { "id": "ejecutivos", "type": "external", "icon": "person", "label": "Ejecutivos", "sublabel": "computador o celular", "pos": [1020, 200], "size": [140, 64] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Servidor dedicado de Medic Home", "wraps": ["asterisk", "orquestador", "chatwoot", "twenty"] }
+  ],
+  "connections": [
+    { "id": "llama", "from": "paciente", "to": "asterisk", "label": "llama", "variant": "emphasis" },
+    { "id": "escribe", "from": "paciente", "to": "whatsapp", "label": "escribe", "variant": "emphasis" },
+    { "id": "voz", "from": "asterisk", "to": "orquestador", "label": "voz", "variant": "emphasis" },
+    { "id": "mensajes", "from": "whatsapp", "to": "orquestador", "label": "mensajes", "variant": "emphasis" },
+    { "id": "consulta", "from": "orquestador", "to": "agenda", "label": "consulta y mueve", "variant": "dashed" },
+    { "id": "deriva", "from": "orquestador", "to": "chatwoot", "label": "deriva", "variant": "emphasis" },
+    { "id": "atiende", "from": "ejecutivos", "to": "chatwoot", "label": "atiende" },
+    { "id": "registra-ia", "from": "orquestador", "to": "twenty", "label": "registra" },
+    { "id": "registra-equipo", "from": "chatwoot", "to": "twenty", "label": "cierra" }
+  ],
+  "cards": [
+    { "dot": "rose", "title": "Qué reemplaza", "items": ["Telefonía y menú de grabaciones de CloudTalk", "WhatsApp personales de cada ejecutivo", "Integración CloudTalk–Zoho que no registra bien"] },
+    { "dot": "amber", "title": "Datos y Ley 21.719", "items": ["Servidor propio: datos no mezclados con otros clientes", "Cifrado, respaldos y accesos por rol", "Medic Home responsable; Interforma encargado con contrato"] },
+    { "dot": "cyan", "title": "Herramientas", "items": ["Asterisk, n8n y Chatwoot: código abierto", "Twenty: CRM autoalojado sin licencia por usuario"] }
+  ]
+}
