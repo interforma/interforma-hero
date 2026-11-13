@@ -8,3 +8,5 @@
 - **Pendiente:** eventos de analytics si se enlaza desde la página pública de Agentes.
 - **Arquitectura (sección 05):** `arquitectura.html`, generado con Archify (architecture, showcase) y el mismo bloque de marca; origen en `docs/agentes/archify-medic-home/arquitectura.candidate.json`.
 - **Flujos (sección 06):** `flujo-entrante.html` y `flujo-saliente.html`, generados con Archify 3.2 (workflow, showcase, validaciones y browser-check en verde) y con el bloque `interforma-brand` de `/diagramas/metodo-interforma.html` (paleta y tipografía), `noindex` y canonical a la maqueta. Para editarlos: modificar el `candidate.json`, regenerar con `archify finalize workflow` y volver a insertar el bloque de marca.
+- **Versión para presentar (13/11/2026):** las secciones 07 («Uso y control») y 08 («Etapas y plazos») no muestran montos ni horas. Los enlaces antiguos `#costos` y `#inversion` redirigen a ellas.
+- **Calculadora interna:** `/agente-medic-home/centro-contacto/interno/` (no enlazada, noindex). Tiene tarifas, costos mensuales, horas e implementación. No compartir con el cliente.
