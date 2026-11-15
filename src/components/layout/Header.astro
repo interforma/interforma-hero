@@ -33,13 +33,14 @@ import { navigation } from '@config/navigation';
       </ul>
     </nav>
 
-    <!-- Acceso al portal de clientes (secundario, no compite con el CTA) -->
+    <!-- Acceso al portal de clientes: botón Umbra con luz de estado -->
     <a
       href="https://portal.interforma.digital/login"
       class="header__portal"
       data-track-event="click_portal_clientes"
       data-placement="header"
     >
+      <span class="portal-led" aria-hidden="true"></span>
       Acceso clientes
     </a>
 
@@ -93,6 +94,7 @@ import { navigation } from '@config/navigation';
   </nav>
   <div class="mobile-overlay__footer">
     <a href="https://portal.interforma.digital/login" class="mobile-overlay__portal" data-track-event="click_portal_clientes" data-placement="mobile_menu">
+      <span class="portal-led" aria-hidden="true"></span>
       Acceso clientes
     </a>
     <a href="https://wa.me/56985408771" class="mobile-overlay__cta">
@@ -300,36 +302,59 @@ import { navigation } from '@config/navigation';
 
   .mobile-overlay__cta:hover { background: var(--brand-400); }
 
-  /* ── Acceso clientes ─────────────────────────────────── */
+  /* ── Acceso clientes ─────────────────────────────────
+     Botón Umbra (ink) con luz de estado Energía: se distingue del
+     CTA comercial sin competir en color. */
   .header__portal {
     display: none;
     align-items: center;
+    gap: 10px;
     height: 44px;
-    padding: 0 4px;
+    padding: 0 18px 0 16px;
+    margin-right: var(--spacing-2, 8px);
+    background: var(--ink);
+    color: var(--white);
+    border-radius: var(--radius-btn);
     font-size: var(--font-size-body-sm);
-    font-weight: var(--font-weight-medium);
-    color: var(--gray-700);
+    font-weight: var(--font-weight-semibold);
     text-decoration: none;
     white-space: nowrap;
     flex-shrink: 0;
+    transition: background 150ms;
   }
-  .header__portal:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
-  .header__portal:focus-visible { outline: 2px solid var(--primary-500); outline-offset: 3px; border-radius: 4px; }
+  .header__portal:hover { background: var(--gray-800); color: var(--white); }
+  .header__portal:focus-visible { outline: 2px solid var(--primary-500); outline-offset: 3px; }
+
+  .portal-led {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--brand-500);
+    box-shadow: 0 0 0 3px rgba(238, 110, 67, 0.22), 0 0 8px rgba(238, 110, 67, 0.55);
+    flex-shrink: 0;
+  }
+  .header__portal:hover .portal-led { animation: portal-led 1.2s ease-in-out infinite; }
+  @keyframes portal-led { 50% { opacity: 0.45; } }
+  @media (prefers-reduced-motion: reduce) {
+    .header__portal:hover .portal-led { animation: none; }
+  }
 
   .mobile-overlay__portal {
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 10px;
     width: 100%;
     height: 52px;
     margin-bottom: var(--spacing-3);
-    border: 1px solid var(--gray-200);
+    background: var(--ink);
     border-radius: var(--radius-cta);
-    color: var(--ink);
+    color: var(--white);
     font-size: var(--font-size-body-md);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-semibold);
     text-decoration: none;
   }
+  .mobile-overlay__portal:hover { background: var(--gray-800); }
 
   /* ── Desktop breakpoint ──────────────────────────────── */
   /* El enlace al portal aparece cuando hay espacio junto al menú y el CTA */
