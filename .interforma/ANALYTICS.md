@@ -97,6 +97,7 @@ Comportamiento por entorno:
 | `click_whatsapp` | «Hablar con ventas» en `/agentes` | `placement: 'agentes_cta'`, `page: 'agentes'` |
 | `click_whatsapp` | Botón flotante | `placement: 'float'` |
 | `click_whatsapp` | Botón dentro del saludo de Punto | `placement: 'punto_bubble'` |
+| `click_portal_clientes` | Enlace «Acceso clientes» al portal (portal.interforma.digital) | `placement` (`header` \| `mobile_menu` \| `footer`) |
 | `punto_bubble_view` | Aparece el saludo «¿Conversamos?» (una vez por sesión, a los 6 s) | `path` |
 | `punto_bubble_dismiss` | El visitante cierra el saludo (× o Escape) | — |
 
