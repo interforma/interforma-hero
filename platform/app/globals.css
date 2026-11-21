@@ -1,0 +1,100 @@
+@import "tailwindcss";
+@import "@fontsource-variable/outfit";
+@import "@fontsource-variable/manrope";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+
+:root {
+  /* Interforma Identidad 2026 */
+  --brand-50:   #FBE6DC;
+  --brand-100:  #F7CDBB;
+  --brand-400:  #F2906D;
+  --brand-500:  #EE6E43;
+  --brand-600:  #D9582E;
+  --brand-800:  #9A3D1A;
+  --brand-900:  #7A2F13;
+  --brand-950:  #4A1C0B;
+
+  --ink:    #281F18;
+  --paper:  #E4E3DF;
+  --white:  #F2F1EE;
+  --stone:  #BEB8AE;
+  --sky:    #CCE2ED;
+
+  --gray-100: #DCD9D3;
+  --gray-200: #D0CCC4;
+  --gray-400: #8F887E;
+  --gray-500: #5C564E;
+  --gray-700: #3F3A34;
+  --gray-800: #2F2620;
+
+  --color-success-50:  #EFFAF6;
+  --color-success-500: #18794E;
+  --color-warning-50:  #FFF8ED;
+  --color-warning-500: #A35200;
+  --color-error-50:    #FFF0F0;
+  --color-error-500:   #C53030;
+
+  --radius-btn:     11px;
+  --radius-card:    16px;
+  --radius-card-lg: 20px;
+  --radius-badge:   13px;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+
+  --ease-default: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-normal: 200ms;
+  --duration-enter:  400ms;
+}
+
+@theme inline {
+  --font-sans: 'Manrope Variable', 'Manrope', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Outfit Variable', 'Outfit', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --color-ink: var(--ink);
+  --color-papel: var(--white);
+  --color-piedra: var(--paper);
+  --color-stone: var(--stone);
+  --color-sky: var(--sky);
+
+  --color-energia: var(--brand-500);
+  --color-energia-hover: var(--brand-400);
+  --color-energia-text: var(--brand-800);
+  --color-energia-dark: var(--brand-900);
+  --color-energia-50: var(--brand-50);
+  --color-energia-100: var(--brand-100);
+
+  --color-border: var(--gray-200);
+  --color-border-subtle: var(--gray-100);
+  --color-muted: var(--gray-500);
+  --color-muted-light: var(--gray-400);
+
+  --color-sidebar: var(--ink);
+  --color-sidebar-card: var(--gray-800);
+  --color-sidebar-border: var(--gray-700);
+  --color-sidebar-text: var(--white);
+  --color-sidebar-muted: var(--gray-400);
+
+  --color-success: var(--color-success-500);
+  --color-success-bg: var(--color-success-50);
+  --color-warning: var(--color-warning-500);
+  --color-warning-bg: var(--color-warning-50);
+  --color-error: var(--color-error-500);
+  --color-error-bg: var(--color-error-50);
+}
+
+body {
+  background: var(--white);
+  color: var(--ink);
+  font-family: 'Manrope Variable', 'Manrope', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3 {
+  font-family: 'Outfit Variable', 'Outfit', system-ui, sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
