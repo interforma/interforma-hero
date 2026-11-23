@@ -48,3 +48,24 @@ export interface Agent {
 export async function getAgents(): Promise<Agent[]> {
   return chatwootFetch("/agents");
 }
+
+/* ---- Contacts ---- */
+export interface Contact {
+  id: number;
+  name: string;
+  email: string | null;
+  phone_number: string | null;
+  thumbnail: string;
+  created_at: number;
+  last_activity_at: number;
+  contact_inboxes?: Array<{ inbox: { channel_type: string; name: string } }>;
+}
+
+export async function getContacts(page = 1): Promise<{ meta: { count: number }; payload: Contact[] }> {
+  return chatwootFetch(`/contacts?page=${page}`);
+}
+
+/* ---- Conversation messages (for atencion detail) ---- */
+export async function getConversationMessages(conversationId: number): Promise<{ payload: Array<{ content: string; message_type: number; created_at: number }> }> {
+  return chatwootFetch(`/conversations/${conversationId}/messages?before=999999999999`);
+}

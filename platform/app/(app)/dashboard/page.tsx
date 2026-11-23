@@ -1,5 +1,4 @@
-import { getConversations } from "@/lib/chatwoot";
-import { getAtenciones } from "@/lib/twenty";
+import { getConversations, type Conversation } from "@/lib/chatwoot";
 import { getUpcomingBookings } from "@/lib/calcom";
 import Punto from "@/components/punto";
 import { getSession } from "@/lib/auth";
@@ -70,17 +69,35 @@ const STATUS_MAP: Record<string, { dot: string; text: string; label?: string }> 
 };
 
 export default async function DashboardPage() {
-  let conversations: { data: { payload: Array<{ id: number; status: string; meta: { sender?: { name: string } }; last_activity_at: number }> } } = { data: { payload: [] } };
-  let atenciones: { data: { atenciones: Array<{ id: string; estado: string; nombrePaciente: string; tipo: string; createdAt: string }> } } = { data: { atenciones: [] } };
+  let conversations: { data: { payload: Conversation[] } } = { data: { payload: [] } };
   let bookings: { data: Array<{ id: number; title: string; start: string; attendees: Array<{ name: string }> }> } = { data: [] };
 
-  try { conversations = await getConversations(); } catch {}
-  try { atenciones = await getAtenciones(); } catch {}
+  try { conversations = await getConversations("all"); } catch {}
   try { bookings = await getUpcomingBookings(); } catch {}
 
   const convos = conversations?.data?.payload || [];
-  const atencionList = atenciones?.data?.atenciones || [];
   const bookingList = bookings?.data || [];
+
+  // Derive atenciones from conversations
+  const atencionList = convos.map((conv) => {
+    const lastMsg = conv.messages?.[0]?.content || "";
+    const lower = lastMsg.toLowerCase();
+    let estado = "EN_CURSO";
+    if (lower.includes("agendada con exito") || lower.includes("hora ha sido agendada")) estado = "AGENDADA";
+    else if (conv.status === "resolved") estado = "COMPLETADA";
+    else if (conv.status === "pending") estado = "PENDIENTE";
+
+    let tipo = "WHATSAPP";
+    if (estado === "AGENDADA") tipo = "AGENDAMIENTO";
+
+    return {
+      id: String(conv.id),
+      estado,
+      nombrePaciente: conv.meta?.sender?.name || "Paciente",
+      tipo,
+      createdAt: new Date(conv.created_at * 1000).toISOString(),
+    };
+  });
 
   const openConvos = convos.filter((c) => c.status === "open").length;
   const pendingAtenciones = atencionList.filter((a) => a.estado === "PENDIENTE").length;
