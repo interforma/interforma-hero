@@ -24,6 +24,7 @@ Todo se dibuja con código: `engine.html` contiene un motor SVG que dibuja cualq
 | `audio_cap09.py` | Cap. 09: vals folk en 3/4 a 138 bpm en Sol mayor, guitarra pulsada y glockenspiel; lápiz, taza, hojas y campanita como efectos (32 s) |
 | `audio_cap09b.py` | Cap. 09 B (tienda de ropa): indie-pop a 116 bpm en Si bemol, piano eléctrico y chasquidos; pings de mensajes y batería que se agota (32 s) |
 | `audio_semana47.py` | Semana 47 (16–20 nov): `python3 audio_semana47.py news01\|news02\|cap11\|barrio03\|caso03`. Reggae, tango electrónico, funk disco, chiptune y son cubano |
+| `audio_semana48.py` | Semana 48 (25 nov – 3 dic): `python3 audio_semana48.py caso04\|cap12\|barrio04\|cap13\|news03\|barrio05\|cap14\|cuida01`. Surf rock, jazz manouche, ska, banda de bronces, cortina de noticiero, caja de música → pop acústico, bluegrass y jazz noir |
 | `audio_rosa01.py` | El barrio de Punto · Ep. 01: acordeón de noche que se vuelve cumbia suave a 100 bpm (28 s) |
 | `audio_problemas.py` | «¿Le suena familiar?»: lo-fi en re menor a 96 bpm que resuelve a fa mayor en el cierre (34,7 s); efectos con la misma lista de eventos que el sitio |
 | `render_problemas.mjs` | Renderiza el reel «¿Le suena familiar?» desde el componente real del sitio (ver abajo) |
@@ -54,6 +55,7 @@ Todo se dibuja con código: `engine.html` contiene un motor SVG que dibuja cualq
 | `cap11(t)` | Cap. 11 · ¿Qué es una automatización? Carla copia y pega; pizarra CUANDO → HAZ con 3 ejemplos en dominó | 1080×1920, 32 s |
 | `barrio03(t)` | Barrio Ep. 03: Fer y los «¿me la guardas?» (probador con 14 reservas y las reglas de Punto) | 1080×1920, 31 s |
 | `caso03(t)` | Punto en acción · Caso 03: centro de kinesiología (confirmar, reagendar, lista de espera, panel) | 1080×1920, 34 s |
+| Semana 48 · «un mundo por serie» | Cada serie con escenario propio: `caso04` carretera al atardecer con travelling · `cap12` cocina (recetario) · `barrio04` cerros de Valparaíso con ascensor · `cap13` estadio y carrera de postas · `news03` set de noticiero con zócalo · `barrio05` calle de noche con lluvia → amanecer · `cap14` feria libre en verano · `cuida01` casa de Punto de noche con linterna | 1080×1920, 29–33 s |
 | `rosa01(t)` | El barrio de Punto · Ep. 01: Doña Rosa y los 40 audios (ferretería, Doña Rosa, el gato) | 1080×1920, 28 s |
 | `portada(k)`, `portadaCliSq()`, `post03()` | Portadas de grilla e imagen fija del Cap. 03 | — |
 | `sticker(nombre, p)` | Stickers de Punto | 512×512 |
